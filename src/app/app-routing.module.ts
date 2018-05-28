@@ -59,7 +59,8 @@ import {ReportLivestockComponent} from './report/livestock/report.livestock';
 import {ReportFertilizerAccountingComponent} from './report/fertilityAccounting/report.fertilizer-accounting.component';
 import {ReportOffspringComponent} from './report/offspring/report.offspring.component';
 
-const appRoutes: Routes = [
+// const appRoutes: Routes = [
+const appRoutes = [
   {
     path: '/main',  component: MainComponent, index: true, canActivate: [NSFOAuthService],
     children: [
