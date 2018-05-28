@@ -3,8 +3,7 @@ import {Component, EventEmitter, Input, Output} from '@angular/core';
 
 @Component({
   selector: 'app-revoke-button',
-  templateUrl: './revoke-button.component.html',
-  
+  templateUrl: './revoke-button.component.html'
 })
 export class RevokeButtonComponent {
   @Input() isActive = true;

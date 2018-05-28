@@ -7,8 +7,7 @@ import {Subscription} from 'rxjs';
 
 @Component({
   selector: 'app-download-modal',
-  templateUrl: './download-modal.component.html',
-  
+  templateUrl: './download-modal.component.html'
 })
 export class DownloadModalComponent implements OnInit, OnDestroy {
   public downloadRequestsShownInModal: DownloadRequest[];

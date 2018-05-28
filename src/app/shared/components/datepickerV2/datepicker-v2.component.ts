@@ -4,8 +4,7 @@ import {Component, EventEmitter, Input, OnChanges, OnInit, Output, ViewContainer
 
 @Component({
   selector: 'app-datepicker-v2',
-  templateUrl: './datepicker-v2.component.html',
-  
+  templateUrl: './datepicker-v2.component.html'
 })
 export class DatepickerV2Component implements OnInit, OnChanges {
   @Input() disabled = false;

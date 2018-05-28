@@ -1,7 +1,7 @@
 import {Component, EventEmitter, Input, OnChanges, Output} from '@angular/core';
 
 @Component({
-  selector: 'livesearch',
+  selector: 'app-livesearch',
   templateUrl: './livesearch.component.html',
 })
 

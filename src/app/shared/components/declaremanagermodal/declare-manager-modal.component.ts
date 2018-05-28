@@ -10,8 +10,7 @@ import moment = require('moment');
 @Component({
   selector: 'app-declare-manager-modal',
   templateUrl: './declare-manager-modal.component.html',
-  directives: [CheckMarkComponent],
-  
+  directives: [CheckMarkComponent]
 })
 export class DeclareManagerModalComponent implements OnInit, OnDestroy {
   title = 'DECLARES';
