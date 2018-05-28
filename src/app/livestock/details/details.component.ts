@@ -17,16 +17,13 @@ import {FormControl, FormGroup, FormBuilder, Validators} from '@angular/forms';
 import {DateValidator} from '../../shared/validation/nsfo-validation';
 import {SettingsService} from '../../shared/services/settings/settings.service';
 import {Datepicker} from '../../shared/components/datepicker/datepicker.component';
-import {ExteriorComponent} from './exterior/exterior.component';
 import {DownloadService} from '../../shared/services/download/download.service';
-import {DownloadButtonComponent} from '../../shared/components/downloadbutton/download-button.component';
 import {Animal} from '../../shared/models/animal.model';
 import {Exterior} from '../../shared/models/measurement.model';
 import {Inspector, User} from '../../shared/models/person.model';
 import {DeclareLog} from './declare-log.model';
 
 @Component({
-  directives: [Datepicker, ExteriorComponent, DownloadButtonComponent],
   templateUrl: './details.component.html',
 })
 

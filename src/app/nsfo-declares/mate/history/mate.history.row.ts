@@ -3,7 +3,6 @@ import * as _ from 'lodash';
 import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {FormControl, FormGroup, FormBuilder} from '@angular/forms';
 
-import {Datepicker} from '../../../shared/components/datepicker/datepicker.component';
 import {NSFOService} from '../../../shared/services/nsfo-api/nsfo.service';
 import {API_URI_CHANGE_MATE} from '../../../shared/services/nsfo-api/nsfo.settings';
 import {SettingsService} from '../../../shared/services/settings/settings.service';
@@ -11,7 +10,6 @@ import {MateChangeResponse} from '../../../shared/models/nsfo-declare.model';
 
 @Component({
   selector: 'app-mate-history-row',
-  directives: [Datepicker],
   templateUrl: './mate.history.row.html',
 
 })

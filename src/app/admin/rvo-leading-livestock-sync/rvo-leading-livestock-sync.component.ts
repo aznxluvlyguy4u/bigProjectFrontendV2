@@ -12,7 +12,6 @@ import {Subscription} from 'rxjs';
 @Component({
   templateUrl: './rvo-leading-livestock-sync.component.html'
 })
-
 export class RvoLeadingLivestockSyncComponent implements OnInit, OnDestroy {
   private user = new User();
   private latestSyncData: RetrieveAnimals;

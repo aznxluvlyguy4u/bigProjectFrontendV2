@@ -4,7 +4,6 @@ import {Router} from '@angular/router/router';
 import {LivestockOverviewComponent} from '../shared/components/livestock/overview.component';
 
 @Component({
-  directives: [LivestockOverviewComponent],
   templateUrl: './invoice.component.html'
 })
 

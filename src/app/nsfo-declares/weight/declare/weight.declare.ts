@@ -1,11 +1,9 @@
 import moment = require('moment');
 import {Component} from '@angular/core';
 import {FormControl, FormGroup, FormBuilder, Validators} from '@angular/forms';
-import {Datepicker} from '../../../shared/components/datepicker/datepicker.component';
-import {TranslatePipe, TranslateService} from '@ngx-translate/core';
+import {TranslateService} from '@ngx-translate/core';
 import {NSFOService} from '../../../shared/services/nsfo-api/nsfo.service';
 import {DateValidator} from '../../../shared/validation/nsfo-validation';
-import {LivestockOverviewComponent} from '../../../shared/components/livestock/overview.component';
 import {SettingsService} from '../../../shared/services/settings/settings.service';
 import {API_URI_DECLARE_WEIGHT} from '../../../shared/services/nsfo-api/nsfo.settings';
 import {Animal} from '../../../shared/models/animal.model';
@@ -13,7 +11,6 @@ import {ErrorMessage} from '../../../shared/models/error-message.model';
 import {AnimalsOverviewSelection} from '../../../shared/components/livestock/animals-overview-selection.model';
 
 @Component({
-  directives: [Datepicker, LivestockOverviewComponent],
   templateUrl: './weight.declare.html',
 })
 

@@ -1,14 +1,12 @@
 import * as _ from 'lodash';
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {Datepicker} from '../../../shared/components/datepicker/datepicker.component';
 import {FormControl, FormGroup, FormBuilder, Validators} from '@angular/forms';
-import {TranslatePipe, TranslateService} from '@ngx-translate/core';
+import {TranslateService} from '@ngx-translate/core';
 import {NSFOService} from '../../../shared/services/nsfo-api/nsfo.service';
 import {Constants} from '../../../shared/variables/constants';
-import {LIVESTOCK_TYPE_MATE, LivestockOverviewComponent} from '../../../shared/components/livestock/overview.component';
+import {LIVESTOCK_TYPE_MATE} from '../../../shared/components/livestock/overview.component';
 import {SettingsService} from '../../../shared/services/settings/settings.service';
 import {API_URI_DECLARE_MATE, API_URI_GET_ANIMALS} from '../../../shared/services/nsfo-api/nsfo.settings';
-import {SelectorComponent} from '../../../shared/components/selector/selector.component';
 import {Router} from '@angular/router/router';
 import {Settings} from '../../../shared/variables/settings';
 import {Subject} from 'rxjs';
@@ -19,7 +17,6 @@ import {AnimalsOverviewSelection} from '../../../shared/components/livestock/ani
 import {ErrorMessage} from '../../../shared/models/error-message.model';
 
 @Component({
-  directives: [Datepicker, LivestockOverviewComponent, SelectorComponent],
   providers: [NSFOService, Constants],
   templateUrl: './mate.declare.html',
 })

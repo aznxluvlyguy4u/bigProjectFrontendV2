@@ -1,5 +1,5 @@
 import {Pipe, PipeTransform} from '@angular/core';
-import {MateChangeResponse} from '../../mate.model';
+import {MateChangeResponse} from '../../../../shared/models/nsfo-declare.model';
 
 @Pipe({
   name: 'mateHistoryFilter'
@@ -14,7 +14,7 @@ export class MateHistoryPipe implements PipeTransform {
     return value.filter((mate: MateChangeResponse) => {
       const needle = term.toLowerCase();
 
-      let haystack =
+      const haystack =
         mate.ewe.uln_country_code + mate.ewe.uln_number +
         mate.ram.uln_country_code + mate.ram.uln_number
       ;

@@ -1,8 +1,6 @@
 import moment = require('moment');
 import * as _ from 'lodash';
 import {Component, EventEmitter, Input, Output} from '@angular/core';
-
-import {Datepicker} from '../../../shared/components/datepicker/datepicker.component';
 import {NSFOService} from '../../../shared/services/nsfo-api/nsfo.service';
 import {SettingsService} from '../../../shared/services/settings/settings.service';
 import {API_URI_CHANGE_WEIGHT} from '../../../shared/services/nsfo-api/nsfo.settings';
@@ -11,7 +9,6 @@ import {WeightChangeResponse} from '../../../shared/models/nsfo-declare.model';
 
 @Component({
   selector: 'app-weight-history-row',
-  directives: [Datepicker],
   templateUrl: './weight.history.row.html',
 })
 
