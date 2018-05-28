@@ -5,7 +5,7 @@ import {DeclareManagerItem} from '../../services/declaremanager/declare-manager-
 import {DeclareManagerService} from '../../services/declaremanager/declare-manager.service';
 import {CheckMarkComponent} from '../checkmark/check-mark.component';
 import {SettingsService} from '../../services/settings/settings.service';
-import moment = require('moment');
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-declare-manager-modal',

@@ -1,4 +1,4 @@
-import moment = require('moment');
+import * as moment from 'moment';
 import {AfterViewInit, Component, EventEmitter, Input, Output, ViewContainerRef} from '@angular/core';
 import {FormControl} from '@angular/forms';
 

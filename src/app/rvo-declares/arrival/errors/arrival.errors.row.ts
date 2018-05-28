@@ -1,4 +1,4 @@
-import moment = require('moment');
+import * as moment from 'moment';
 
 import * as _ from 'lodash';
 import {AfterViewChecked, Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
@@ -17,7 +17,7 @@ declare var $;
   selector: 'app-arrival-errors-row',
   directives: [Datepicker],
   templateUrl: './arrival.errors.row.html',
-  
+
 })
 
 export class ArrivalErrorRowComponent implements OnInit, AfterViewChecked {

@@ -1,5 +1,5 @@
 import * as _ from 'lodash';
-import moment = require('moment');
+import * as moment from 'moment';
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {FormControl, FormGroup, FormBuilder, Validators} from '@angular/forms';
 import {TranslateService} from '@ngx-translate/core';

@@ -1,4 +1,4 @@
-import moment = require('moment');
+import * as moment from 'moment';
 import {AfterViewInit, Component, OnDestroy, OnInit} from '@angular/core';
 import {FormControl, FormGroup, FormBuilder, Validators} from '@angular/forms';
 import {ArrivalRequest} from '../arrival.model';

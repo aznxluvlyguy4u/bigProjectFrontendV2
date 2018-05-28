@@ -1,5 +1,5 @@
 import * as _ from 'lodash';
-import moment = require('moment');
+import * as moment from 'moment';
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {
   BIRTH_PROGRESS_TYPES,
@@ -32,7 +32,7 @@ import {User} from '../../../shared/models/person.model';
 @Component({
   directives: [Datepicker, BirthDeclareRowComponent, SelectorComponent],
   templateUrl: './birth.declare.html',
-  
+
 })
 
 export class BirthDeclareComponent implements OnInit, OnDestroy {

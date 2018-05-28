@@ -1,4 +1,4 @@
-import moment = require('moment');
+import * as moment from 'moment';
 import {Component, OnInit} from '@angular/core';
 
 import {BirthErrorRowComponent} from './birth.errors.row';

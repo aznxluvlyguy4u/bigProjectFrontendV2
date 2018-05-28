@@ -64,6 +64,7 @@ import {LoadingComponent} from './redirect/loading/loading.component';
 import {InvoiceFilterPipe} from './invoices/pipes/invoice-filter.pipe';
 import {DatepickerComponent} from './shared/components/datepicker/datepicker.component';
 import {DatepickerV2Component} from './shared/components/datepickerV2/datepicker-v2.component';
+import {MomentModule} from 'ngx-moment';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
@@ -131,6 +132,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     HttpClientModule,
     AppRoutingModule,
     NgxPaginationModule,
+    MomentModule,
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,

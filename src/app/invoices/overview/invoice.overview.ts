@@ -1,4 +1,4 @@
-import moment = require('moment');
+import * as moment from 'moment';
 import {Component, OnDestroy, OnInit} from '@angular/core';
 
 import {PaginationComponent} from '../../shared/components/pagination/pagination.component';

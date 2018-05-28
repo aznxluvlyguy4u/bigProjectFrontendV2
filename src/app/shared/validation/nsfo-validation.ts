@@ -1,4 +1,4 @@
-import moment = require('moment');
+import * as moment from 'moment';
 import {FormControl, FormGroup} from '@angular/forms';
 
 interface ValidationResult {

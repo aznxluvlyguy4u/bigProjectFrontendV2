@@ -1,4 +1,4 @@
-import moment = require('moment');
+import * as moment from 'moment';
 import {Injectable} from '@angular/core';
 import {ReplaySubject, Subject} from 'rxjs';
 import {API_URI_GET_COMPANY_LOGIN, GHOST_TOKEN_NAMESPACE} from '../nsfo-api/nsfo.settings';
