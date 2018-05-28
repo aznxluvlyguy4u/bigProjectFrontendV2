@@ -1,6 +1,6 @@
 import moment = require('moment');
 import * as _ from 'lodash';
-import {TranslatePipe} from '@ngx-translate/core';
+
 import {Component, OnInit} from '@angular/core';
 
 import {PaginationComponent} from '../../../shared/components/pagination/pagination.component';
@@ -9,14 +9,12 @@ import {SettingsService} from '../../../shared/services/settings/settings.servic
 import {TagReplacementHistoryChangeResponse} from '../tagReplacement.model';
 import {API_URI_GET_TAG_REPLACEMENT_HISTORY, API_URI_REVOKE_DECLARATION} from '../../../shared/services/nsfo-api/nsfo.settings';
 import {TagReplacementHistoryRowComponent} from './tagReplacement.history.row';
-import {TagReplacementHistoryFilterPipe} from './pipes/TagReplacementHistoryFilter';
 import {NgxPaginationModule} from 'ngx-pagination';
 
 @Component({
   providers: [NgxPaginationModule],
   directives: [TagReplacementHistoryRowComponent, PaginationComponent],
   templateUrl: './tagReplacement.history.html',
-  pipes: [TagReplacementHistoryFilterPipe]
 })
 
 export class TagReplacementHistoryComponent implements OnInit {

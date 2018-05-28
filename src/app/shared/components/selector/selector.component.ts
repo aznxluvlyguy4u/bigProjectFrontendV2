@@ -1,9 +1,8 @@
 import * as _ from 'lodash';
 import {Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output} from '@angular/core';
-import {TranslatePipe} from '@ngx-translate/core';
+
 import {PaginationComponent} from '../pagination/pagination.component';
 
-import {SelectorFilterPipe} from './pipes/selectorFilter';
 import {FormControl, FormGroup, FormBuilder} from '@angular/forms';
 import {NSFOService} from '../../services/nsfo-api/nsfo.service';
 import {SettingsService} from '../../services/settings/settings.service';
@@ -15,7 +14,6 @@ import {NgxPaginationModule} from 'ngx-pagination';
   providers: [NgxPaginationModule],
   directives: [PaginationComponent],
   templateUrl: './selector.component.html',
-  pipes: [SelectorFilterPipe]
 })
 
 export class SelectorComponent implements OnInit, OnChanges, OnDestroy {

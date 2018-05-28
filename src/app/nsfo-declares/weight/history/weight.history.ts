@@ -3,7 +3,7 @@ import * as _ from 'lodash';
 import {Component, OnInit} from '@angular/core';
 
 import {PaginationComponent} from '../../../shared/components/pagination/pagination.component';
-import {TranslatePipe} from '@ngx-translate/core';
+
 
 import {NSFOService} from '../../../shared/services/nsfo-api/nsfo.service';
 import {SettingsService} from '../../../shared/services/settings/settings.service';
@@ -17,7 +17,6 @@ import {WeightHistoryRowComponent} from './weight.history.row';
   providers: [NgxPaginationModule],
   directives: [WeightHistoryRowComponent, PaginationComponent],
   templateUrl: './weight.history.html',
-
 })
 
 export class WeightHistoryComponent implements OnInit {

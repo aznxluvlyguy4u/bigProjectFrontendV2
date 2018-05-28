@@ -1,28 +1,26 @@
 import * as _ from 'lodash';
-import {Component} from '@angular/core';
-import {TranslatePipe} from '@ngx-translate/core';
+import {Component, OnInit} from '@angular/core';
+
 
 import {BirthHistoryRow} from './birth.history.row';
 
-import {BirthChangeResponse, Litter} from '../birth.model';
+import {Litter} from '../birth.model';
 import {NSFOService} from '../../../shared/services/nsfo-api/nsfo.service';
 import {
   API_URI_GET_BIRTHS_HISTORY,
   API_URI_REVOKE_BIRTH,
-  API_URI_REVOKE_DECLARATION
 } from '../../../shared/services/nsfo-api/nsfo.settings';
 import {Settings} from '../../../shared/variables/settings';
 import {PaginationComponent} from '../../../shared/components/pagination/pagination.component';
-import {BirthHistoryPipe} from './pipes/birth.history.pipe';
+import {NgxPaginationModule} from 'ngx-pagination';
 
 @Component({
   providers: [NgxPaginationModule],
-  directives: [BirthHistoryRow, FORM_DIRECTIVES, PaginationComponent],
+  directives: [BirthHistoryRow, PaginationComponent],
   templateUrl: './birth.history.html',
-  pipes: [BirthHistoryPipe]
 })
 
-export class BirthHistoryComponent {
+export class BirthHistoryComponent implements OnInit {
   private litters = <Litter[]>[];
   private modalDisplay = 'none';
   private selectedLitter: Litter;
@@ -65,7 +63,7 @@ export class BirthHistoryComponent {
     const originalRequestState = this.selectedLitter.request_state;
     this.selectedLitter.request_state = 'REVOKING';
 
-    let jsonpayload = {
+    const jsonpayload = {
       litter_id: this.selectedLitter.litter_id
     };
 

@@ -2,7 +2,7 @@ import moment = require('moment');
 import * as _ from 'lodash';
 import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {FormControl, FormGroup, FormBuilder} from '@angular/forms';
-import {TranslatePipe} from '@ngx-translate/core';
+
 import {Datepicker} from '../../../shared/components/datepicker/datepicker.component';
 import {LOSS_REASON_OF_LOSS, LossChangeResponse} from '../loss.model';
 import {Settings} from '../../../shared/variables/settings';

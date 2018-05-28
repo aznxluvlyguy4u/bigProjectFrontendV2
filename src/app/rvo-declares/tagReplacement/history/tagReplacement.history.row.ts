@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
-import {TranslatePipe} from '@ngx-translate/core';
+
 import {TagReplacementHistoryChangeResponse} from '../tagReplacement.model';
 import {RevokeButtonComponent} from '../../../shared/components/revokebutton/revoke-button.component';
 

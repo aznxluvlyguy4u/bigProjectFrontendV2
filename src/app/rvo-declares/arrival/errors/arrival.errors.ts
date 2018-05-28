@@ -2,21 +2,19 @@ import moment = require('moment');
 import * as _ from 'lodash';
 import {Component, OnInit} from '@angular/core';
 import {ArrivalErrorResponse} from '../arrival.model';
-import {TranslatePipe} from '@ngx-translate/core';
+
 import {ArrivalErrorRowComponent} from './arrival.errors.row';
 
 import {NSFOService} from '../../../shared/services/nsfo-api/nsfo.service';
 import {API_URI_GET_ARRIVALS_ERRORS} from '../../../shared/services/nsfo-api/nsfo.settings';
 import {Settings} from '../../../shared/variables/settings';
 import {PaginationComponent} from '../../../shared/components/pagination/pagination.component';
-import {HiddenMessagesFilterPipe} from '../../../shared/pipes/hiddenMessagesFilter';
 import {NgxPaginationModule} from 'ngx-pagination';
 
 @Component({
   providers: [NgxPaginationModule],
   directives: [ArrivalErrorRowComponent, PaginationComponent],
   templateUrl: './arrival.errors.html',
-  pipes: [HiddenMessagesFilterPipe]
 })
 
 export class ArrivalErrorsComponent implements OnInit {

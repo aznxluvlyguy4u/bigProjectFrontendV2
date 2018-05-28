@@ -4,7 +4,7 @@ import { CSV } from '../../shared/variables/file-type.enum';
 import { Animal } from '../../shared/models/animal.model';
 import { LivestockOverview } from '../../shared/components/livestock';
 import { BooleanSwitchComponent } from '../../shared/components/booleanswitch/boolean-switch.component';
-import {TranslatePipe} from '@ngx-translate/core';
+
 
 @Component({
   selector: 'app-offspring-report',

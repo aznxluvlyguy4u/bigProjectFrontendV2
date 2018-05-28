@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {Location} from '@angular/common';
 import {Router} from '@angular/router/router';
-import {TranslatePipe} from '@ngx-translate/core';
+
 
 @Component({
   templateUrl: './tagReplacement.component.html',

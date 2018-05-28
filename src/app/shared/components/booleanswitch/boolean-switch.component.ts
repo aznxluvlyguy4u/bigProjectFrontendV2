@@ -1,10 +1,9 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
-import {TranslatePipe} from '@ngx-translate/core';
+
 
 @Component({
   selector: 'app-boolean-switch',
   templateUrl: './boolean-switch.component.html',
-
 })
 export class BooleanSwitchComponent {
   @Input() allowNull = false;

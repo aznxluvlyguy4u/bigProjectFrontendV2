@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {TranslatePipe} from '@ngx-translate/core';
+
 
 @Component({
   selector: 'app-file-type-dropdown',

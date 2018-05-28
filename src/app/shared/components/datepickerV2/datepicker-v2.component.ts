@@ -1,6 +1,6 @@
 import moment = require('moment');
 import {Component, EventEmitter, Input, OnChanges, OnInit, Output, ViewContainerRef} from '@angular/core';
-import {TranslatePipe} from '@ngx-translate/core';
+
 
 @Component({
   selector: 'app-datepicker-v2',

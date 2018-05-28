@@ -1,11 +1,8 @@
 import {Component, EventEmitter, Input, OnChanges, Output} from '@angular/core';
-import {LivesearchFilterPipe} from './pipes/livesearchFilter';
-import {TranslatePipe} from '@ngx-translate/core';
 
 @Component({
   selector: 'livesearch',
   templateUrl: './livesearch.component.html',
-  pipes: [LivesearchFilterPipe, TranslatePipe]
 })
 
 export class LiveSearchComponent implements OnChanges {

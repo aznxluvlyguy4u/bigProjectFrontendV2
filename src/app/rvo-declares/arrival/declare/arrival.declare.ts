@@ -2,7 +2,7 @@ import moment = require('moment');
 import {AfterViewInit, Component, OnDestroy, OnInit} from '@angular/core';
 import {FormControl, FormGroup, FormBuilder, Validators} from '@angular/forms';
 import {ArrivalRequest} from '../arrival.model';
-import {TranslatePipe} from '@ngx-translate/core';
+
 import {NSFOService} from '../../../shared/services/nsfo-api/nsfo.service';
 import {Datepicker} from '../../../shared/components/datepicker/datepicker.component';
 import {Constants} from '../../../shared/variables/constants';
@@ -15,7 +15,7 @@ declare var $;
 @Component({
   directives: [Datepicker],
   templateUrl: './arrival.declare.html',
-  
+
 })
 
 export class ArrivalDeclareComponent implements OnInit, OnDestroy, AfterViewInit {

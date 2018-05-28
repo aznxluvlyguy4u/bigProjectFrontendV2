@@ -1,6 +1,6 @@
 import moment = require('moment');
 import * as _ from 'lodash';
-import {TranslatePipe} from '@ngx-translate/core';
+
 import {AfterViewInit, Component, EventEmitter, Input, OnChanges, OnInit, Output} from '@angular/core';
 import {FormGroup, FormBuilder, FormControl} from '@angular/forms';
 
@@ -17,7 +17,6 @@ import {User} from '../../../shared/models/person.model';
   selector: 'app-exterior-component',
   directives: [Datepicker],
   templateUrl: './exterior.component.html',
-  
 })
 
 export class ExteriorComponent implements OnInit, AfterViewInit, OnChanges {

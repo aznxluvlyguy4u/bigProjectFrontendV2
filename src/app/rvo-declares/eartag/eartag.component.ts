@@ -1,7 +1,7 @@
 import {Component} from '@angular/core';
 import {Location} from '@angular/common';
 import {Router} from '@angular/router/router';
-import {TranslatePipe} from '@ngx-translate/core';
+
 import {NSFOService} from '../../shared/services/nsfo-api/nsfo.service';
 
 @Component({

@@ -1,4 +1,4 @@
-import {TranslatePipe} from '@ngx-translate/core';
+
 import {Component} from '@angular/core';
 import {LivestockOverviewComponent} from '../../../shared/components/livestock/overview.component';
 import {SelectorComponent} from '../../../shared/components/selector/selector.component';

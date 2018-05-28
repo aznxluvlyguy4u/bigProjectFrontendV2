@@ -1,6 +1,6 @@
 import moment = require('moment');
 import * as _ from 'lodash';
-import {TranslatePipe} from '@ngx-translate/core';
+
 import {AfterViewChecked, Component, EventEmitter, Input, Output} from '@angular/core';
 import {FormControl, FormGroup, FormBuilder, Validators} from '@angular/forms';
 import {Datepicker} from '../../../shared/components/datepicker/datepicker.component';

@@ -12,7 +12,7 @@ import {
   StillBorn
 } from '../birth.model';
 import {FormGroup, FormBuilder, Validators, FormControl} from '@angular/forms';
-import {TranslatePipe} from '@ngx-translate/core';
+
 import {BirthDeclareRowComponent} from './birth.declare.row';
 import {Datepicker} from '../../../shared/components/datepicker/datepicker.component';
 import {NSFOService} from '../../../shared/services/nsfo-api/nsfo.service';

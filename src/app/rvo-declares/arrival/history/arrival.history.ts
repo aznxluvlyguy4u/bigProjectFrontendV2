@@ -2,13 +2,12 @@ import moment = require('moment');
 import * as _ from 'lodash';
 import {Component, OnInit} from '@angular/core';
 import {ArrivalChangeResponse} from '../arrival.model';
-import {TranslatePipe} from '@ngx-translate/core';
+
 
 import {NSFOService} from '../../../shared/services/nsfo-api/nsfo.service';
 import {API_URI_GET_ARRIVALS_HISTORY, API_URI_REVOKE_DECLARATION} from '../../../shared/services/nsfo-api/nsfo.settings';
 import {Settings} from '../../../shared/variables/settings';
 import {PaginationComponent} from '../../../shared/components/pagination/pagination.component';
-import {ArrivalHistoryFilterPipe} from './pipes/arrivalHistoryFilter';
 import {NgxPaginationModule} from 'ngx-pagination';
 import {ArrivalHistoryRowComponent} from './arrival.history.row';
 
@@ -16,7 +15,6 @@ import {ArrivalHistoryRowComponent} from './arrival.history.row';
   providers: [NgxPaginationModule],
   directives: [ArrivalHistoryRowComponent, PaginationComponent],
   templateUrl: './arrival.history.html',
-  pipes: [ArrivalHistoryFilterPipe]
 })
 
 export class ArrivalHistoryComponent implements OnInit {

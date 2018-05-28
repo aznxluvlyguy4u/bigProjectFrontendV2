@@ -3,13 +3,12 @@ import * as _ from 'lodash';
 import {Component, OnInit} from '@angular/core';
 
 import {LossChangeResponse} from '../loss.model';
-import {TranslatePipe} from '@ngx-translate/core';
+
 
 import {NSFOService} from '../../../shared/services/nsfo-api/nsfo.service';
 import {API_URI_GET_LOSS_HISTORY, API_URI_REVOKE_DECLARATION} from '../../../shared/services/nsfo-api/nsfo.settings';
 import {Settings} from '../../../shared/variables/settings';
 import {PaginationComponent} from '../../../shared/components/pagination/pagination.component';
-import {LossHistoryFilterPipe} from './pipes/lossHistoryFilter';
 import {NgxPaginationModule} from 'ngx-pagination';
 import {LossHistoryRowComponent} from './loss.history.row';
 
@@ -17,7 +16,6 @@ import {LossHistoryRowComponent} from './loss.history.row';
   providers: [NgxPaginationModule],
   directives: [LossHistoryRowComponent, PaginationComponent],
   templateUrl: './loss.history.html',
-  pipes: [LossHistoryFilterPipe]
 })
 
 export class LossHistoryComponent implements OnInit {

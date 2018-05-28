@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
 import {Router} from '@angular/router/router';
-import {TranslatePipe} from '@ngx-translate/core';
+
 
 @Component({
   templateUrl: './profile.component.html',

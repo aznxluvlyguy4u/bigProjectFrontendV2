@@ -2,7 +2,7 @@ import moment = require('moment');
 import * as _ from 'lodash';
 import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {FormControl, FormGroup, FormBuilder} from '@angular/forms';
-import {TranslatePipe} from '@ngx-translate/core';
+
 import {Datepicker} from '../../../shared/components/datepicker/datepicker.component';
 import {NSFOService} from '../../../shared/services/nsfo-api/nsfo.service';
 import {API_URI_CHANGE_MATE} from '../../../shared/services/nsfo-api/nsfo.settings';

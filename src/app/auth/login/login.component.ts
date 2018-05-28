@@ -1,6 +1,5 @@
 import {Component} from '@angular/core';
 import {Router} from '@angular/router/router';
-import {TranslatePipe} from '@ngx-translate/core';
 import {NSFOService} from '../../shared/services/nsfo-api/nsfo.service';
 import {ACCESS_TOKEN_NAMESPACE, API_URI_RESET_PASSWORD} from '../../shared/services/nsfo-api/nsfo.settings';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';

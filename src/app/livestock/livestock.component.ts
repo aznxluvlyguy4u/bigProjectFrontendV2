@@ -1,12 +1,11 @@
 import {Component} from '@angular/core';
-import {TranslatePipe} from '@ngx-translate/core';
+
 import {Router} from '@angular/router/router';
 import {LivestockOverviewComponent} from '../shared/components/livestock/overview.component';
 
 @Component({
   directives: [LivestockOverviewComponent],
   templateUrl: './livestock.component.html',
-  
 })
 
 export class LivestockComponent {

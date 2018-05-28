@@ -1,4 +1,4 @@
-import {TranslatePipe} from '@ngx-translate/core';
+
 import {Component, EventEmitter, Input, Output} from '@angular/core';
 
 @Component({

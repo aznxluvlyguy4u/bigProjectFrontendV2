@@ -1,5 +1,5 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {TranslatePipe} from '@ngx-translate/core';
+
 import {DownloadRequest} from '../../services/download/download-request.model';
 import {DownloadService} from '../../services/download/download.service';
 import {PDF} from '../../variables/file-type.enum';

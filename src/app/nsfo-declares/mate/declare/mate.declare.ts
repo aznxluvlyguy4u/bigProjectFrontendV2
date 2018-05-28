@@ -22,7 +22,6 @@ import {ErrorMessage} from '../../../shared/models/error-message.model';
   directives: [Datepicker, LivestockOverviewComponent, SelectorComponent],
   providers: [NSFOService, Constants],
   templateUrl: './mate.declare.html',
-
 })
 
 export class MateDeclareComponent implements OnInit, OnDestroy {

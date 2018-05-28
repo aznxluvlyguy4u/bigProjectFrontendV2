@@ -15,7 +15,6 @@ import {AnimalsOverviewSelection} from '../../../shared/components/livestock/ani
 @Component({
   directives: [Datepicker, LivestockOverviewComponent],
   templateUrl: './weight.declare.html',
-  
 })
 
 export class WeightDeclareComponent {

@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
-import {TranslatePipe} from '@ngx-translate/core';
+
 import {TagReplacementErrorResponse} from '../tagReplacement.model';
 import {API_URI_HIDE_ERROR} from '../../../shared/services/nsfo-api/nsfo.settings';
 import {NSFOService} from '../../../shared/services/nsfo-api/nsfo.service';

@@ -1,7 +1,7 @@
 import moment = require('moment');
 
 import {Component, EventEmitter, Input, Output} from '@angular/core';
-import {TranslatePipe} from '@ngx-translate/core';
+
 import {Datepicker} from '../../../shared/components/datepicker/datepicker.component';
 import {Litter, LitterDetails} from '../birth.model';
 import {Settings} from '../../../shared/variables/settings';

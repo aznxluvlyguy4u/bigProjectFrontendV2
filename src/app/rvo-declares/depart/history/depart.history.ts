@@ -1,7 +1,7 @@
 import moment = require('moment');
 import * as _ from 'lodash';
 import {Component, OnInit} from '@angular/core';
-import {TranslatePipe} from '@ngx-translate/core';
+
 import {DepartChangeResponse} from '../depart.model';
 import {DepartHistoryRowComponent} from './depart.history.row';
 
@@ -9,14 +9,12 @@ import {NSFOService} from '../../../shared/services/nsfo-api/nsfo.service';
 import {API_URI_GET_DEPARTS_HISTORY, API_URI_REVOKE_DECLARATION} from '../../../shared/services/nsfo-api/nsfo.settings';
 import {Settings} from '../../../shared/variables/settings';
 import {PaginationComponent} from '../../../shared/components/pagination/pagination.component';
-import {DepartHistoryFilterPipe} from './pipes/departHistoryFilter';
 import {NgxPaginationModule} from 'ngx-pagination';
 
 @Component({
   providers: [NgxPaginationModule],
   directives: [DepartHistoryRowComponent, PaginationComponent],
   templateUrl: './depart.history.html',
-  pipes: [DepartHistoryFilterPipe]
 })
 
 export class DepartHistoryComponent implements OnInit {

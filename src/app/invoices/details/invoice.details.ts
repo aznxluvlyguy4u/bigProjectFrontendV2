@@ -1,26 +1,15 @@
 import {API_URI_INVOICE_PAYMENT, API_URI_INVOICES} from '../../shared/services/nsfo-api/nsfo.settings';
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
-import {TranslatePipe} from '@ngx-translate/core';
 import {NSFOService} from '../../shared/services/nsfo-api/nsfo.service';
 import {Invoice} from '../../shared/models/invoice.model';
 import {SettingsService} from '../../shared/services/settings/settings.service';
-import {DecimalPipe} from '@angular/common';
-import {localNumberFormat} from '../../shared/pipes/localNumberFormat';
 import {DownloadService} from '../../shared/services/download/download.service';
 import {InvoiceSenderDetails} from '../../shared/models/invoice-sender-details.model';
 
 @Component({
   selector: 'app-invoice-details',
-  properties: [
-    'allowClear',
-    'placeholder',
-    'items',
-    'multiple',
-    'showSearchInputInDropdown'
-  ],
-  templateUrl: './invoice.details.html',
-  pipes: [localNumberFormat, DecimalPipe]
+  templateUrl: './invoice.details.html'
 })
 
 export class InvoiceDetailsComponent implements OnInit {

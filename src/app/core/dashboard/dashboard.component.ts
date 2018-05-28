@@ -1,7 +1,6 @@
 import moment = require('moment');
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Router} from '@angular/router/router';
-import {TranslatePipe} from '@ngx-translate/core';
 import {DashboardInfo} from './dashboard.model';
 import {NSFOService} from '../../shared/services/nsfo-api/nsfo.service';
 import {API_URI_GET_DASHBOARD_INFO, API_URI_SYNC_ANIMALS, API_URI_SYNC_EARTAGS} from '../../shared/services/nsfo-api/nsfo.settings';

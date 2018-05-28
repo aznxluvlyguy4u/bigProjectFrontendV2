@@ -2,9 +2,7 @@ import moment = require('moment');
 import {Component, OnDestroy, OnInit} from '@angular/core';
 
 import {PaginationComponent} from '../../shared/components/pagination/pagination.component';
-import {TranslatePipe} from '@ngx-translate/core';
 import {Invoice} from '../../shared/models/invoice.model';
-import {invoiceFilterPipe} from '../pipes/invoiceFilter.pipe';
 import {NSFOService} from '../../shared/services/nsfo-api/nsfo.service';
 import {SettingsService} from '../../shared/services/settings/settings.service';
 import {Router} from '@angular/router';
@@ -16,7 +14,6 @@ import {NgxPaginationModule} from 'ngx-pagination';
   providers: [NgxPaginationModule],
   directives: [PaginationComponent],
   templateUrl: './invoice.overview.html',
-  pipes: [invoiceFilterPipe]
 })
 
 export class InvoiceOverviewComponent implements OnInit, OnDestroy {

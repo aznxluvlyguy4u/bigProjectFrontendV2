@@ -1,7 +1,7 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Location} from '@angular/common';
 import {Router} from '@angular/router/router';
-import {TranslatePipe} from '@ngx-translate/core';
+
 import {API_URI_GET_LOSS_ERRORS} from '../../shared/services/nsfo-api/nsfo.settings';
 import {LossErrorResponse} from './loss.model';
 import {NSFOService} from '../../shared/services/nsfo-api/nsfo.service';

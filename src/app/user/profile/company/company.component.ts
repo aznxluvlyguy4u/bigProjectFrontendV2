@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {TranslatePipe} from '@ngx-translate/core';
+
 import {NSFOService} from '../../../shared/services/nsfo-api/nsfo.service';
 import {
   API_URI_CHANGE_COMPANY_PROFILE,
@@ -13,7 +13,7 @@ import {Company} from '../../../shared/models/company.model';
 
 @Component({
   templateUrl: './company.component.html',
-  
+
 })
 
 export class ProfileCompanyComponent implements OnInit {

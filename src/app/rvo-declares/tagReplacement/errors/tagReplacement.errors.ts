@@ -1,13 +1,12 @@
 import moment = require('moment');
 import * as _ from 'lodash';
-import {TranslatePipe} from '@ngx-translate/core';
+
 import {Component, OnInit} from '@angular/core';
 import {NSFOService} from '../../../shared/services/nsfo-api/nsfo.service';
 import {SettingsService} from '../../../shared/services/settings/settings.service';
 import {API_URI_GET_TAG_REPLACEMENT_ERRORS} from '../../../shared/services/nsfo-api/nsfo.settings';
 import {TagReplacementErrorResponse} from '../tagReplacement.model';
 
-import {HiddenMessagesFilterPipe} from '../../../shared/pipes/hiddenMessagesFilter';
 import {TagReplacementErrorRowComponent} from './tagReplacement.errors.row';
 import {PaginationComponent} from '../../../shared/components/pagination/pagination.component';
 import {NgxPaginationModule} from 'ngx-pagination';
@@ -16,7 +15,6 @@ import {NgxPaginationModule} from 'ngx-pagination';
   providers: [NgxPaginationModule],
   directives: [TagReplacementErrorRowComponent, PaginationComponent],
   templateUrl: './tagReplacement.errors.html',
-  pipes: [HiddenMessagesFilterPipe]
 })
 
 export class TagReplacementErrorsComponent implements OnInit {

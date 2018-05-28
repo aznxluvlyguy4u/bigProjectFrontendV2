@@ -1,6 +1,6 @@
 import moment = require('moment');
 import * as _ from 'lodash';
-import {TranslatePipe} from '@ngx-translate/core';
+
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {LIVESTOCK_BREED_OPTIONS, LIVESTOCK_GENDER_OPTIONS} from '../livestock.model';
@@ -28,7 +28,6 @@ import {DeclareLog} from './declare-log.model';
 @Component({
   directives: [Datepicker, ExteriorComponent, DownloadButtonComponent],
   templateUrl: './details.component.html',
-  
 })
 
 export class LivestockDetailComponent implements OnInit {

@@ -4,7 +4,7 @@ import {
 } from '@angular/core';
 import {Subscription} from 'rxjs';
 import {PaginationInstance} from 'ngx-pagination';
-import {TranslatePipe} from '@ngx-translate/core';
+
 import {NgxPaginationModule} from 'ngx-pagination';
 
 export interface IPage {

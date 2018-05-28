@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {TranslatePipe} from '@ngx-translate/core';
+
 import {BIRTH_PROGRESS_TYPES, LAMBAR_SURROGATE_OPTIONS, SurrogateMotherByUln} from '../birth.model';
 import {Constants} from '../../../shared/variables/constants';
 import {NSFOService} from '../../../shared/services/nsfo-api/nsfo.service';

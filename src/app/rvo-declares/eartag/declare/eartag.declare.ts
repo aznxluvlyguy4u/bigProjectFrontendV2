@@ -2,7 +2,7 @@ import * as _ from 'lodash';
 import moment = require('moment');
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {FormControl, FormGroup, FormBuilder, Validators} from '@angular/forms';
-import {TranslatePipe, TranslateService} from '@ngx-translate/core';
+import {TranslateService} from '@ngx-translate/core';
 
 import {EartagRequest, EartagStatusOverviewResponse, EartagTransfer} from '../eartag.model';
 import {NSFOService} from '../../../shared/services/nsfo-api/nsfo.service';
@@ -13,7 +13,6 @@ import {
   API_URI_SYNC_EARTAGS,
   API_URI_TRANSFER_EARTAGS
 } from '../../../shared/services/nsfo-api/nsfo.settings';
-import {EartagFilterPipe} from './pipes/eartagFilter';
 import {SettingsService} from '../../../shared/services/settings/settings.service';
 import {NgxPaginationModule} from 'ngx-pagination';
 import {User} from '../../../shared/models/person.model';
@@ -24,7 +23,6 @@ declare var $;
   providers: [NgxPaginationModule],
   directives: [PaginationComponent],
   templateUrl: './eartag.declare.html',
-  pipes: [EartagFilterPipe]
 })
 
 export class EartagDeclareComponent implements OnInit, OnDestroy {

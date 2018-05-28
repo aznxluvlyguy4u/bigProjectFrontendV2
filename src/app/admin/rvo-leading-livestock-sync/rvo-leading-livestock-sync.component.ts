@@ -1,5 +1,4 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {TranslatePipe} from '@ngx-translate/core';
 import {NSFOService} from '../../shared/services/nsfo-api/nsfo.service';
 import {
   API_URI_SYNC_ANIMALS,

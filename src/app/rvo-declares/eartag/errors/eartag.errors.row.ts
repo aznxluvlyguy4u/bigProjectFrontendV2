@@ -2,7 +2,7 @@ import moment = require('moment');
 import * as _ from 'lodash';
 import {AfterViewChecked, Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {FormControl, FormGroup, FormBuilder, Validators} from '@angular/forms';
-import {TranslatePipe} from '@ngx-translate/core';
+
 import {EartagErrorResponse} from '../eartag.model';
 import {NSFOService} from '../../../shared/services/nsfo-api/nsfo.service';
 import {SettingsService} from '../../../shared/services/settings/settings.service';

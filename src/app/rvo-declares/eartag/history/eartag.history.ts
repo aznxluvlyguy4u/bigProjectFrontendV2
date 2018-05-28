@@ -1,13 +1,12 @@
 import * as _ from 'lodash';
 import {Component, OnInit} from '@angular/core';
 
-import {TranslatePipe} from '@ngx-translate/core';
+
 import {PaginationComponent} from '../../../shared/components/pagination/pagination.component';
 import {EartagChangeResponse} from '../eartag.model';
 import {NSFOService} from '../../../shared/services/nsfo-api/nsfo.service';
 import {SettingsService} from '../../../shared/services/settings/settings.service';
 import {API_URI_GET_EARTAGS_HISTORY, API_URI_REVOKE_DECLARATION} from '../../../shared/services/nsfo-api/nsfo.settings';
-import {EartagHistoryFilterPipe} from './pipes/eartagHistoryFilter';
 import {EartagHistoryRowComponent} from './eartag.history.row';
 import {NgxPaginationModule} from 'ngx-pagination';
 
@@ -15,7 +14,6 @@ import {NgxPaginationModule} from 'ngx-pagination';
   providers: [NgxPaginationModule],
   directives: [EartagHistoryRowComponent, PaginationComponent],
   templateUrl: './eartag.history.html',
-  pipes: [EartagHistoryFilterPipe]
 })
 
 export class EartagHistoryComponent implements OnInit {

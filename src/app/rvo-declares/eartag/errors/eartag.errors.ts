@@ -1,9 +1,8 @@
 import * as _ from 'lodash';
 import {Component, OnInit} from '@angular/core';
-import {TranslatePipe} from '@ngx-translate/core';
+
 
 import {PaginationComponent} from '../../../shared/components/pagination/pagination.component';
-import {HiddenMessagesFilterPipe} from '../../../shared/pipes/hiddenMessagesFilter';
 import {NSFOService} from '../../../shared/services/nsfo-api/nsfo.service';
 import {SettingsService} from '../../../shared/services/settings/settings.service';
 import {EartagErrorResponse} from '../eartag.model';
@@ -15,7 +14,6 @@ import {NgxPaginationModule} from 'ngx-pagination';
   providers: [NgxPaginationModule],
   directives: [EartagErrorRowComponent, PaginationComponent],
   templateUrl: './eartag.errors.html',
-  pipes: [HiddenMessagesFilterPipe]
 })
 
 export class EartagErrorsComponent implements OnInit {

@@ -1,7 +1,7 @@
 import moment = require('moment');
 import * as _ from 'lodash';
 import {Component, OnInit} from '@angular/core';
-import {TranslatePipe} from '@ngx-translate/core';
+
 import {DepartErrorResponse} from '../depart.model';
 import {DepartErrorRowComponent} from './depart.errors.row';
 
@@ -9,14 +9,12 @@ import {NSFOService} from '../../../shared/services/nsfo-api/nsfo.service';
 import {Settings} from '../../../shared/variables/settings';
 import {API_URI_GET_DEPARTS_ERRORS} from '../../../shared/services/nsfo-api/nsfo.settings';
 import {PaginationComponent} from '../../../shared/components/pagination/pagination.component';
-import {HiddenMessagesFilterPipe} from '../../../shared/pipes/hiddenMessagesFilter';
 import {NgxPaginationModule} from 'ngx-pagination';
 
 @Component({
   providers: [NgxPaginationModule],
   directives: [DepartErrorRowComponent, PaginationComponent],
   templateUrl: './depart.errors.html',
-  pipes: [HiddenMessagesFilterPipe]
 })
 
 export class DepartErrorsComponent implements OnInit {

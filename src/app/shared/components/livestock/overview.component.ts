@@ -1,13 +1,12 @@
 import moment = require('moment');
 import * as _ from 'lodash';
 import {Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
-import {TranslatePipe} from '@ngx-translate/core';
+
 import {
   LIVESTOCK_GENDER_FILTER_OPTIONS,
   LIVESTOCK_SORT_OPTIONS,
 } from '../../models/animal.model';
 import {LivestockFilterPipe} from './pipes/livestockFilter';
-import {LivestockOrderBy} from './pipes/livestockSort';
 import {Router} from '@angular/router/router';
 
 import {PaginationComponent} from '../pagination/pagination.component';
@@ -18,7 +17,6 @@ import {Datepicker} from '../datepicker/datepicker.component';
 import {UtilsService} from '../../services/utils/utils.services';
 import {DownloadService} from '../../services/download/download.service';
 import {DownloadButtonComponent} from '../downloadbutton/download-button.component';
-import {DatePipe} from '@angular/common';
 import {Subscription} from 'rxjs';
 import {Subject} from 'rxjs';
 import {NgxPaginationModule} from 'ngx-pagination';
@@ -34,7 +32,6 @@ export const LIVESTOCK_TYPE_MATE = 'LIVE_STOCK_TYPE_MATE';
   providers: [NgxPaginationModule, LivestockFilterPipe],
   directives: [Datepicker, PaginationComponent, DownloadButtonComponent],
   templateUrl: './overview.component.html',
-  pipes: [LivestockFilterPipe, LivestockOrderBy, DatePipe]
 })
 export class LivestockOverviewComponent implements OnInit, OnDestroy {
   @Input() selectedFileType: string;

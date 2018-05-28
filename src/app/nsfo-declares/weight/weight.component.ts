@@ -1,11 +1,10 @@
 import {Component, OnInit} from '@angular/core';
 import {Location} from '@angular/common';
 import {Router} from '@angular/router/router';
-import {TranslatePipe} from '@ngx-translate/core';
+
 
 @Component({
   templateUrl: './weight.component.html',
-  
 })
 
 export class WeightComponent implements OnInit {

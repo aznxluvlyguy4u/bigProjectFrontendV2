@@ -1,14 +1,14 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Location} from '@angular/common';
 import {Router} from '@angular/router/router';
-import {TranslatePipe} from '@ngx-translate/core';
+
 import {DepartErrorResponse} from './depart.model';
 import {API_URI_GET_DEPARTS_ERRORS} from '../../shared/services/nsfo-api/nsfo.settings';
 import {NSFOService} from '../../shared/services/nsfo-api/nsfo.service';
 
 @Component({
   templateUrl: './depart.component.html',
-  
+
 })
 
 export class DepartComponent implements OnInit, OnDestroy {

@@ -9,7 +9,7 @@ import { DownloadService } from '../../shared/services/download/download.service
 
 import _ = require('lodash');
 import {AnimalsOverviewSelection} from '../../shared/components/livestock/animals-overview-selection.model';
-import {TranslatePipe} from '@ngx-translate/core';
+
 import {FormBuilder, FormControl, FormGroup} from '@angular/forms';
 import {Animal, LivestockAnimal} from '../../shared/models/animal.model';
 

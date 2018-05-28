@@ -2,7 +2,7 @@ import moment = require('moment');
 import * as _ from 'lodash';
 import {AfterViewChecked, Component, EventEmitter, Input, Output} from '@angular/core';
 import {FormGroup, FormBuilder, Validators, FormControl} from '@angular/forms';
-import {TranslatePipe} from '@ngx-translate/core';
+
 import {Datepicker} from '../../../shared/components/datepicker/datepicker.component';
 import {BirthErrorResponse} from '../birth.model';
 import {NSFOService} from '../../../shared/services/nsfo-api/nsfo.service';
@@ -17,7 +17,7 @@ declare var $;
   selector: 'app-birth-error-row',
   directives: [Datepicker],
   templateUrl: './birth.errors.row.html',
-  
+
 })
 
 export class BirthErrorRowComponent implements AfterViewChecked {

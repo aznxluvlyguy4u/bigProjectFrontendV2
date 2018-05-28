@@ -1,7 +1,7 @@
 import moment = require('moment');
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
-import {TranslatePipe} from '@ngx-translate/core';
+
 import {Router} from '@angular/router/router';
 import {NSFOService} from '../shared/services/nsfo-api/nsfo.service';
 import {UtilsService} from '../shared/services/utils/utils.services';
@@ -10,12 +10,12 @@ import {API_URI_CHANGE_MESSAGES_READ_STATUS} from '../shared/services/nsfo-api/n
 
 import {PaginationComponent} from '../shared/components/pagination/pagination.component';
 import {Message} from '../shared/models/message.model';
+import {NgxPaginationModule} from 'ngx-pagination';
 
 @Component({
   providers: [NgxPaginationModule],
   directives: [PaginationComponent],
   templateUrl: './messages.component.html',
-  pipes: [PaginatePipe]
 })
 
 export class MessagesComponent implements OnInit {

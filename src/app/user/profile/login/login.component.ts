@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup, FormBuilder, Validators} from '@angular/forms';
-import {TranslatePipe} from '@ngx-translate/core';
+
 import {NSFOService} from '../../../shared/services/nsfo-api/nsfo.service';
 import {PasswordValidator} from '../../../shared/validation/nsfo-validation';
 import {API_URI_CHANGE_PASSWORD, API_URI_GET_COMPANY_LOGIN} from '../../../shared/services/nsfo-api/nsfo.settings';
