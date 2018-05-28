@@ -1,20 +1,15 @@
 import moment = require('moment');
 import * as _ from 'lodash';
 import {Component, OnInit} from '@angular/core';
-
-
 import {NSFOService} from '../../../shared/services/nsfo-api/nsfo.service';
-import {PaginationComponent} from '../../../shared/components/pagination/pagination.component';
 import {API_URI_GET_MATE_HISTORY, API_URI_REVOKE_MATE} from '../../../shared/services/nsfo-api/nsfo.settings';
 import {SettingsService} from '../../../shared/services/settings/settings.service';
 import {NgxPaginationModule} from 'ngx-pagination';
-import {MateHistoryRowComponent} from './mate.history.row';
 import {MateChangeResponse} from '../../../shared/models/nsfo-declare.model';
 import {ErrorMessage} from '../../../shared/models/error-message.model';
 
 @Component({
   providers: [NgxPaginationModule],
-  directives: [MateHistoryRowComponent, PaginationComponent],
   templateUrl: './mate.history.html',
 })
 

@@ -15,7 +15,6 @@ import {User} from '../../../shared/models/person.model';
 
 @Component({
   selector: 'app-exterior-component',
-  directives: [Datepicker],
   templateUrl: './exterior.component.html',
 })
 

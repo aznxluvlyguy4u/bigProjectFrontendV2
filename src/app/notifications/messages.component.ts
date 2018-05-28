@@ -8,13 +8,11 @@ import {UtilsService} from '../shared/services/utils/utils.services';
 import {SettingsService} from '../shared/services/settings/settings.service';
 import {API_URI_CHANGE_MESSAGES_READ_STATUS} from '../shared/services/nsfo-api/nsfo.settings';
 
-import {PaginationComponent} from '../shared/components/pagination/pagination.component';
 import {Message} from '../shared/models/message.model';
 import {NgxPaginationModule} from 'ngx-pagination';
 
 @Component({
   providers: [NgxPaginationModule],
-  directives: [PaginationComponent],
   templateUrl: './messages.component.html',
 })
 

@@ -4,10 +4,10 @@ import {Pipe, PipeTransform} from '@angular/core';
   name: 'invoiceFilter'
 })
 
-export class invoiceFilterPipe implements PipeTransform {
+export class InvoiceFilterPipe implements PipeTransform {
   transform(list: any, args: string[]): any {
-    let filterInput = args[0];
-    let statusFilter = args[1];
+    const filterInput = args[0];
+    const statusFilter = args[1];
     let filtered = list;
 
     if (statusFilter) {
