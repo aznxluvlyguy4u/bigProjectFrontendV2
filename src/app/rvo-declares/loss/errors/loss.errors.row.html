@@ -1,0 +1,71 @@
+<!--LOG DATE-->
+<td>
+    <span [hidden]="editMode">
+        <label class="show-for-small-only">{{ 'DATE' | translate }}</label>
+        {{ stringAsViewDateTime(loss.log_date) }}
+    </span>
+
+  <span [hidden]="!editMode"> <i class="fa fa-pencil" aria-hidden="true"></i> </span>
+</td>
+
+<!--ULN-->
+<td>
+  <label class="show-for-small-only">{{ 'ULN' | translate }}</label>
+  {{ loss.uln_country_code + loss.uln_number }}
+</td>
+
+<!--PEDIGREE-->
+<td>
+  <label class="show-for-small-only">{{ 'PEDIGREE NUMBER' | translate }}</label>
+  <span *ngIf="(loss.pedigree_country_code && loss.pedigree_number)">
+        {{ loss.pedigree_country_code + loss.pedigree_number }}
+    </span>
+  <span *ngIf="!(loss.pedigree_country_code && loss.pedigree_number)">
+        --
+    </span>
+</td>
+
+<!--DATE OF DEATH-->
+<td>
+  <label class="show-for-small-only">{{ 'DATE OF LOSS' | translate }}</label>
+  <span [hidden]="editMode">{{ loss.date_of_death }}</span>
+  <span [hidden]="!editMode" [ngFormModel]="form">
+        <datepicker [formCtrl]="form.controls['date_of_death']" [initDate]="loss.date_of_death"
+                    [viewFormat]="view_date_format" [modelFormat]="model_datetime_format"></datepicker>
+        <div [hidden]="form.controls['date_of_death'].valid || form_valid" class="input-error-msg text-center">{{ 'FILL IN THE DATE OF LOSS' | translate }}</div>
+    </span>
+</td>
+
+<!--REASON OF LOSS-->
+<td>
+  <label class="show-for-small-only">{{ 'REASON OF LOSS' | translate }}</label>
+  <span [hidden]="editMode">{{ loss.reason_of_loss | translate }}</span>
+  <span [hidden]="!editMode" [ngFormModel]="form">
+        <select [(ngModel)]="loss.reason_of_loss" ngControl="reason_death">
+            <option *ngFor="let reason of options_reason_of_loss" value="{{reason}}">{{reason | translate}}</option>
+        </select>
+    </span>
+</td>
+
+<!--ERROR CODE-->
+<td>
+  <label class="show-for-small-only">{{ 'ERROR CODE' | translate }}</label>
+  <span [hidden]="editMode" id="error-{{ loss_index }}" data-tooltip aria-haspopup="true" class="has-tip top"
+        data-disable-hover="false" title="{{ loss.error_message }}">
+        {{ loss.error_code }}
+    </span>
+</td>
+
+<!--ROW BUTTONS-->
+<td>
+    <span [hidden]="editMode">
+        <button *ngIf="false" class="tiny primary button" (click)="enableEditing()">{{ 'REVISE' | translate }}</button>
+        <button *ngIf="!loss.is_removed_by_user" class="tiny alert button" (click)="sendRemoveErrorRequest()">{{ 'DONT SHOW' | translate }}</button>
+        <button *ngIf="loss.is_removed_by_user" class="tiny alert button" disabled>{{ 'HIDDEN' | translate}}</button>
+    </span>
+
+  <span [hidden]="!editMode">
+        <button class="tiny primary button" (click)="sendChangeRequest()">{{ 'SEND' | translate }}</button>
+        <button class="tiny alert button" (click)="cancelEditing()">{{ 'CANCEL' | translate }}</button>
+    </span>
+</td>

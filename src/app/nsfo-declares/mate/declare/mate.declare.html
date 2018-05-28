@@ -1,0 +1,134 @@
+<form [ngFormModel]="form" class="form-declare">
+
+  <!--MATE BEGIN DATE-->
+  <div class="medium-2 columns">
+    <label>
+      {{ 'MATE PERIOD' | translate }} &nbsp;
+      <datepicker [formCtrl]="form.controls['mate_startdate']" [viewFormat]="view_date_format"
+                  [modelFormat]="model_datetime_format"></datepicker>
+      <div [hidden]="form.controls['mate_startdate'].valid || form_valid" class="input-error-msg pull-right">{{ 'FILL IN
+        THE MATE PERIOD' | translate }}
+      </div>
+    </label>
+  </div>
+
+  <!--MATE END DATE-->
+  <div class="medium-2 columns">
+    <label>
+      {{ 'TILL' | translate }} &nbsp;
+      <datepicker [formCtrl]="form.controls['mate_enddate']" [viewFormat]="view_date_format"
+                  [modelFormat]="model_datetime_format"></datepicker>
+      <div [hidden]="form.controls['mate_enddate'].valid || form_valid" class="input-error-msg pull-right">{{ 'FILL IN
+        THE MATE PERIOD' | translate }}
+      </div>
+    </label>
+  </div>
+
+  <!--ULN-->
+  <div class="medium-3 columns">
+    <label>
+      {{ 'ULN' | translate }} ({{ 'MATE RAM' | translate }})
+      <input type="text" ngControl="uln" (focus)="RamSelector.openModal()">
+    </label>
+  </div>
+
+  <!--PMSG FLAG-->
+  <div class="medium-2 columns">
+    <label>{{ 'PMSG' | translate }} &nbsp;
+      <select ngControl="pmsg">
+        <option value="YES">{{ 'YES' | translate }}</option>
+        <option value="NO">{{ 'NO' | translate }}</option>
+      </select>
+    </label>
+  </div>
+
+  <!--KI FLAG-->
+  <div class="medium-1 columns">
+    <label>{{ 'KI' | translate }} &nbsp;
+      <select ngControl="ki">
+        <option value="YES">{{ 'YES' | translate }}</option>
+        <option value="NO">{{ 'NO' | translate }}</option>
+      </select>
+    </label>
+  </div>
+
+  <!--ERROR OVERVIEW-->
+  <div class="medium-1 columns">
+    <label> &nbsp;
+      <button
+        type="button"
+        class="button alert"
+        [disabled]="errorMessages == null || errorMessages.length == 0"
+        (click)="openModal()"
+        title="{{'THERE ERRORS ARE ONLY SAVED IN THIS BROWSER SESSION' | translate }}"
+      >
+        <span *ngIf="errorMessages !== null && errorMessages.length > 0" class="badge">{{errorMessages.length}}</span>
+        {{'ERRORS'|translate}}
+      </button>
+    </label>
+  </div>
+
+  <!--INBREEDING COEFFICIENT-->
+  <!--<div class="medium-1 columns end" >-->
+  <!--<label>&nbsp;-->
+  <!--<button type="button" class="small primary button" (click)="navigateTo('/main/report/inbreeding')"> {{ 'INBREEDING COEFFICIENT' | translate }}</button>-->
+  <!--</label>-->
+  <!--</div>-->
+</form>
+
+<!--LIVESTOCK OVERVIEW-->
+<div class="row">
+  <div class="medium-12 columns">
+    <app-livestock-overview
+      [customType]="livestockType"
+      [items_per_page]="100"
+      [onlyFemales]="true"
+      (selected)="declareMate($event)"
+      [lastMateChanged]="lastDeclareUpdateSubject"
+    ></app-livestock-overview>
+  </div>
+</div>
+
+<selector
+  #RamSelector
+  [size]="'small'"
+  [title]="'SELECT A STUD RAM'"
+  [sectionTitles]="['SEARCH A RAM FROM NSFO DATABASE', 'OR SEARCH FOR A RAM FROM OWN LIVESTOCK']"
+  [columns]="['ULN', 'PEDIGREE NUMBER']"
+  [list]="livestock"
+  [allowCustomSelection]="true"
+  [filter]="'MALES'"
+  (selection)="selectRam($event)">
+</selector>
+
+<!--ERROR MODAL-->
+<div class="reveal-overlay" [ngStyle]="{'display': modalDisplay}">
+  <div class="tiny reveal" [ngStyle]="{'display': modalDisplay}">
+    <div class="modal-header">
+      {{ 'ERROR' | translate }}
+      <button type="button" class="pull-right" aria-label="Close modal" (click)="closeModal()">
+        <i class="fa fa-times" aria-hidden="true"></i>
+      </button>
+    </div>
+    <div class="modal-body">
+
+      <p class="text-center">
+        {{'THERE ERRORS ARE ONLY SAVED IN THIS BROWSER SESSION' | translate }}
+      </p>
+
+      <hr>
+
+      <ul>
+        <li *ngFor="let errorMessage of errorMessages">
+          {{ errorMessage.message | translate }}
+        </li>
+      </ul>
+    </div>
+    <div class="modal-footer">
+      <button [disabled]="errorMessages == null || errorMessages.length == 0"
+              class="tiny alert button pull-left" (click)="purgeErrors()">{{ 'PURGE ERRORS' | translate}}
+      </button>
+      <button class="tiny primary button pull-right" (click)="closeModal()">{{ 'OK' | translate}}</button>
+    </div>
+  </div>
+</div>

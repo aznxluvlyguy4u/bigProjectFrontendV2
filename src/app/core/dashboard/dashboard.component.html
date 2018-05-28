@@ -1,0 +1,451 @@
+<div id="dashboard">
+
+  <!--BREADCRUMBS-->
+  <div class="row">
+    <ul class="breadcrumbs">
+      <li class="disabled">{{ 'NSFO ONLINE' | translate }}</li>
+      <li>{{ 'DASHBOARD' | translate }}</li>
+    </ul>
+  </div>
+
+  <!--INTRODUCTORY & HEALTH (HIDE ON SMALL)-->
+  <div class="row show-for-large">
+    <div class="large-4 columns">
+      <div class="info-container">
+        <div class="info-header">
+          {{ 'INTRODUCTORY MESSAGE' | translate }}
+        </div>
+        <div class="info-body" [innerHtml]="dashboard_info.introduction"></div>
+      </div>
+    </div>
+
+    <div class="large-8 columns">
+      <table class="stack health">
+        <thead>
+        <tr>
+          <td>{{ 'NSFO ANIMAL HEALTH' | translate }}</td>
+          <td>
+            {{ 'MAEDI VISNA' | translate }}
+          </td>
+          <td>
+            {{ 'SCRAPIE' | translate }}
+          </td>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+          <td></td>
+          <td>
+            <div class="description">{{ 'STATUS' | translate }}</div>
+            <span *ngIf="!dashboard_info.health_status.maedi_visna_status">
+                                --
+                            </span>
+            <span *ngIf="dashboard_info.health_status.maedi_visna_status">
+                                {{ dashboard_info.health_status.maedi_visna_status | translate }}
+                            </span>
+          </td>
+          <td>
+            <div class="description">{{ 'STATUS' | translate }}</div>
+            <span *ngIf="!dashboard_info.health_status.scrapie_status">
+                                --
+                            </span>
+            <span *ngIf="dashboard_info.health_status.scrapie_status">
+                                {{ dashboard_info.health_status.scrapie_status | translate }}
+                            </span>
+          </td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>
+            <div class="description">{{ 'DATE' | translate }} {{ 'TILL' | translate }}</div>
+            <span *ngIf="!dashboard_info.health_status.maedi_visna_check_date">
+                                --
+                            </span>
+            <span *ngIf="dashboard_info.health_status.maedi_visna_check_date ">
+                                {{ stringAsDate(dashboard_info.health_status.maedi_visna_check_date)}}
+                            </span>
+          </td>
+          <td>
+            <div class="description">{{ 'DATE' | translate }} {{ 'SINCE' | translate }}</div>
+            <span *ngIf="!dashboard_info.health_status.scrapie_check_date">
+                                --
+                            </span>
+            <span *ngIf="dashboard_info.health_status.scrapie_check_date ">
+                                {{ stringAsDate(dashboard_info.health_status.scrapie_check_date)}}
+                            </span>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!--LIVESTOCK COUNT (HIDE ON SMALL)-->
+  <div class="row show-for-large">
+    <div class="large-12 columns">
+      <table class="stack">
+        <thead>
+        <tr>
+          <td></td>
+          <td>{{ 'TOTAL' | translate }}</td>
+          <td>{{ 'OLDER THAN 1 YEAR' | translate }}</td>
+          <td>{{ 'LAMBS' | translate }}</td>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+          <td>{{ 'PEDIGREE ANIMALS' | translate }}</td>
+          <td>
+            <label class="show-for-small-only">{{ 'TOTAL' | translate }}</label>
+            {{ dashboard_info.livestock.pedigree_animals.total }}
+          </td>
+          <td>
+            <label class="show-for-small-only">{{ 'OLDER THAN 1 YEAR' | translate }}</label>
+            {{ dashboard_info.livestock.pedigree_animals.adults }}
+          </td>
+          <td>
+            <label class="show-for-small-only">{{ 'LAMBS' | translate }}</label>
+            {{ dashboard_info.livestock.pedigree_animals.lambs }}
+          </td>
+        </tr>
+        <tr>
+          <td>{{ 'NON PEDIGREE ANIMALS' | translate }}</td>
+          <td>
+            <label class="show-for-small-only">{{ 'TOTAL' | translate }}</label>
+            {{ dashboard_info.livestock.non_pedigree_animals.total }}
+          </td>
+          <td>
+            <label class="show-for-small-only">{{ 'OLDER THAN 1 YEAR' | translate }}</label>
+            {{ dashboard_info.livestock.non_pedigree_animals.adults }}
+          </td>
+          <td>
+            <label class="show-for-small-only">{{ 'LAMBS' | translate }}</label>
+            {{ dashboard_info.livestock.non_pedigree_animals.lambs }}
+          </td>
+        </tr>
+        <tr>
+          <td>{{ 'ALL ANIMALS' | translate }}</td>
+          <td>
+            <label class="show-for-small-only">{{ 'TOTAL' | translate }}</label>
+            {{ dashboard_info.livestock.all_animals.total }}
+          </td>
+          <td>
+            <label class="show-for-small-only">{{ 'OLDER THAN 1 YEAR' | translate }}</label>
+            {{ dashboard_info.livestock.all_animals.adults }}
+          </td>
+          <td>
+            <label class="show-for-small-only">{{ 'LAMBS' | translate }}</label>
+            {{ dashboard_info.livestock.all_animals.lambs }}
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!--CARDS-->
+  <div class="row">
+
+    <!--ARRIVAL CARD-->
+    <div class="large-4 columns">
+      <div class="card callout">
+        <div class="card-header">{{ 'ARRIVAL' | translate }}</div>
+        <div class="card-body">
+          <label>{{ 'LAST DECLARATION' | translate }}</label>
+          <div class="value">
+                        <span *ngIf="!dashboard_info.arrival.date_last_declaration">
+                            --
+                        </span>
+            <span *ngIf="dashboard_info.arrival.date_last_declaration">
+                            {{ stringAsDatetime(dashboard_info.arrival.date_last_declaration) }}
+                        </span>
+          </div>
+          <label>{{ 'AMOUNT ERRORS' | translate }}</label>
+          <div class="value">{{ dashboard_info.arrival.error_count }}</div>
+        </div>
+        <div class="card-footer text-center">
+          <button (click)="navigateTo('/main/arrival/declare')" class="tiny button">{{ 'DECLARE ARRIVAL' | translate
+            }}
+          </button>
+          <button (click)="navigateTo('/main/arrival/errors')" class="tiny button">{{ 'ERRORS' | translate }}</button>
+        </div>
+      </div>
+    </div>
+
+    <!--DEPART CARD-->
+    <div class="large-4 columns">
+      <div class="card callout">
+        <div class="card-header">{{ 'DEPART' | translate }}</div>
+        <div class="card-body">
+          <label>{{ 'LAST DECLARATION' | translate }}</label>
+          <div class="value">
+                        <span *ngIf="!dashboard_info.depart.date_last_declaration">
+                            --
+                        </span>
+            <span *ngIf="dashboard_info.depart.date_last_declaration">
+                            {{ stringAsDatetime(dashboard_info.depart.date_last_declaration) }}
+                        </span>
+          </div>
+          <label>{{ 'AMOUNT ERRORS' | translate }}</label>
+          <div class="value">{{ dashboard_info.depart.error_count }}</div>
+        </div>
+        <div class="card-footer text-center">
+          <button (click)="navigateTo('/main/depart/declare')" class="tiny button">{{ 'DECLARE DEPART' | translate }}
+          </button>
+          <button (click)="navigateTo('/main/depart/errors')" class="tiny button">{{ 'ERRORS' | translate }}</button>
+        </div>
+      </div>
+    </div>
+
+    <!--MATE CARD-->
+    <div class="large-4 columns">
+      <div class="card callout">
+        <div class="card-header">{{ 'MATE' | translate }}</div>
+        <div class="card-body">
+          <label>{{ 'LAST DECLARATION' | translate }}</label>
+          <div class="value">
+                        <span *ngIf="!dashboard_info.mate.date_last_declaration">
+                            --
+                        </span>
+            <span *ngIf="dashboard_info.mate.date_last_declaration">
+                            {{ stringAsDatetime(dashboard_info.mate.date_last_declaration) }}
+                        </span>
+          </div>
+          <label>{{ 'AMOUNT ERRORS' | translate }}</label>
+          <div class="value">{{ dashboard_info.mate.error_count }}</div>
+        </div>
+        <div class="card-footer text-center">
+          <button (click)="navigateTo('/main/mate/declare')" class="tiny button">{{ 'DECLARE MATE' | translate }}
+          </button>
+          <button (click)="navigateTo('/main/mate/errors')" class="tiny button">{{ 'ERRORS' | translate }}</button>
+        </div>
+      </div>
+    </div>
+
+    <!--BIRTH CARD-->
+    <div class="large-4 columns">
+      <div class="card callout">
+        <div class="card-header">{{ 'BIRTH' | translate }}</div>
+        <div class="card-body">
+          <label>{{ 'LAST DECLARATION' | translate }}</label>
+          <div class="value">
+                        <span *ngIf="!dashboard_info.birth.date_last_declaration">
+                            &#45;&#45;
+                        </span>
+            <span *ngIf="dashboard_info.birth.date_last_declaration">
+                            {{ stringAsDatetime(dashboard_info.birth.date_last_declaration) }}
+                        </span>
+          </div>
+          <label>{{ 'AMOUNT ERRORS' | translate }}</label>
+          <div class="value">{{ dashboard_info.birth.error_count }}</div>
+        </div>
+        <div class="card-footer text-center">
+          <button (click)="navigateTo('/main/birth/declare')" class="tiny button">{{ 'DECLARE BIRTH' | translate }}
+          </button>
+          <button (click)="navigateTo('/main/birth/errors')" class="tiny button">{{ 'ERRORS' | translate }}</button>
+        </div>
+      </div>
+    </div>
+
+    <!--LOSS CARD-->
+    <div class="large-4 columns end">
+      <div class="card callout">
+        <div class="card-header">{{ 'LOSS' | translate }}</div>
+        <div class="card-body">
+          <label>{{ 'LAST DECLARATION' | translate }}</label>
+          <div class="value">
+                        <span *ngIf="!dashboard_info.loss.date_last_declaration">
+                            --
+                        </span>
+            <span *ngIf="dashboard_info.loss.date_last_declaration">
+                            {{ stringAsDatetime(dashboard_info.loss.date_last_declaration) }}
+                        </span>
+          </div>
+          <label>{{ 'AMOUNT ERRORS' | translate }}</label>
+          <div class="value"> {{ dashboard_info.loss.error_count }}</div>
+        </div>
+        <div class="card-footer text-center">
+          <button (click)="navigateTo('/main/loss/declare')" class="tiny button">{{ 'DECLARE LOSS' | translate }}
+          </button>
+          <button (click)="navigateTo('/main/loss/errors')" class="tiny button">{{ 'ERRORS' | translate }}</button>
+        </div>
+      </div>
+    </div>
+
+    <!--WEIGHTS CARD-->
+    <!--<div class="large-4 columns end">-->
+    <!--<div class="card callout">-->
+    <!--<div class="card-header">{{ 'WEIGHTS' | translate }}</div>-->
+    <!--<div class="card-body">-->
+    <!--<label>{{ 'LAST WEIGHT DATE' | translate }}</label>-->
+    <!--<div class="value">-->
+    <!--<span *ngIf="!dashboard_info.weights.date_last_declaration">-->
+    <!--&#45;&#45;-->
+    <!--</span>-->
+    <!--<span *ngIf="dashboard_info.weights.date_last_declaration">-->
+    <!--{{ stringAsDatetime(dashboard_info.weights.date_last_declaration) }}-->
+    <!--</span>-->
+    <!--</div>-->
+    <!--<label>&nbsp;</label>-->
+    <!--<div class="value"></div>-->
+    <!--</div>-->
+    <!--<div class="card-footer text-center">-->
+    <!--<button (click)="navigateTo('/main/weight')" class="tiny button">{{ 'DECLARE WEIGHTS' | translate }}</button>-->
+    <!--</div>-->
+    <!--</div>-->
+    <!--</div>-->
+
+    <!--EARTAG CARD-->
+    <div class="large-4 columns end">
+      <div class="card callout">
+        <div class="card-header">{{ 'EARTAGS' | translate }}</div>
+        <div class="card-body">
+          <label>{{ 'LAST TRANSFER' | translate }}</label>
+          <div class="value">
+                        <span *ngIf="!dashboard_info.tag_transfer.date_last_declaration">
+                            --
+                        </span>
+            <span *ngIf="dashboard_info.tag_transfer.date_last_declaration">
+                            {{ stringAsDatetime(dashboard_info.tag_transfer.date_last_declaration) }}
+                        </span>
+          </div>
+
+
+          <ng-template *ngIf="!showUsedEartagsCount">
+            <label>{{ 'AMOUNT FREE EARTAGS' | translate }}</label>
+            <div class="value">{{ dashboard_info.tag_transfer.unassigned_tags }}</div>
+          </ng-template>
+
+          <ng-template *ngIf="showUsedEartagsCount">
+            <div class="row">
+              <div class="large-6 columns">
+                <label>{{ 'AMOUNT FREE' | translate }}</label>
+                <div class="value">{{ dashboard_info.tag_transfer.unassigned_tags }}</div>
+              </div>
+              <div class="large-6 columns">
+                <label>{{ 'AMOUNT USED' | translate }}</label>
+                <div class="value">{{ dashboard_info.tag_transfer.used_tags }}</div>
+              </div>
+            </div>
+          </ng-template>
+
+        </div>
+        <div class="card-footer text-center">
+          <button (click)="navigateTo('/main/eartag')" class="tiny button">{{ 'TRANSFER EARTAGS' | translate }}</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!--INTRODUCTORY & HEALTH (SHOW ON SMALL)-->
+  <div class="row hide-for-large">
+    <div class="large-4 columns">
+      <div class="info-container">
+        <div class="info-header">
+          {{ 'INTRODUCTORY MESSAGE' | translate }}
+        </div>
+        <div class="info-body" [innerHtml]="dashboard_info.introduction"></div>
+      </div>
+    </div>
+
+    <div class="large-8 columns">
+      <table class="stack health">
+        <tbody>
+        <tr>
+          <td class="header">
+            <strong>{{ 'NSFO ANIMAL HEALTH' | translate }}</strong>
+          </td>
+          <td>
+            <label class="hide-for-large">{{ 'MAEDI VISNA' | translate }}</label>
+            <span *ngIf="!dashboard_info.health_status.maedi_visna_status">
+                                --
+                            </span>
+            <span *ngIf="dashboard_info.health_status.maedi_visna_status">
+                                {{ dashboard_info.health_status.maedi_visna_status | translate }}
+                            </span>
+            | {{ 'DATE' | translate }} {{ 'TILL' | translate }}:
+            <span *ngIf="!dashboard_info.health_status.maedi_visna_check_date">
+                                --
+                            </span>
+            <span *ngIf="dashboard_info.health_status.maedi_visna_check_date ">
+                                {{ stringAsDate(dashboard_info.health_status.maedi_visna_check_date)}}
+                            </span>
+          </td>
+          <td>
+            <label class="hide-for-large">{{ 'SCRAPIE' | translate }}</label>
+            <span *ngIf="!dashboard_info.health_status.scrapie_status">
+                                --
+                            </span>
+            <span *ngIf="dashboard_info.health_status.scrapie_status">
+                                {{ dashboard_info.health_status.scrapie_status | translate }}
+                            </span>
+            | {{ 'DATE' | translate }} {{ 'SINCE' | translate }}:
+            <span *ngIf="!dashboard_info.health_status.scrapie_check_date">
+                                --
+                            </span>
+            <span *ngIf="dashboard_info.health_status.scrapie_check_date ">
+                                {{ stringAsDate(dashboard_info.health_status.scrapie_check_date)}}
+                            </span>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!--LIVESTOCK COUNT (SHOW ON SMALL)-->
+  <div class="row hide-for-large">
+    <div class="large-12 columns">
+      <table class="stack">
+        <tbody>
+        <tr>
+          <td class="header"><strong>{{ 'ANIMAL OVERVIEW' | translate }}</strong></td>
+          <td><strong>{{ 'PEDIGREE ANIMALS' | translate }}</strong></td>
+          <td>
+            <label class="hide-for-large">{{ 'TOTAL' | translate }}</label>
+            {{ dashboard_info.livestock.pedigree_animals.total }}
+          </td>
+          <td>
+            <label class="hide-for-large">{{ 'OLDER THAN 1 YEAR' | translate }}</label>
+            {{ dashboard_info.livestock.pedigree_animals.adults }}
+          </td>
+          <td>
+            <label class="hide-for-large">{{ 'LAMBS' | translate }}</label>
+            {{ dashboard_info.livestock.pedigree_animals.lambs }}
+          </td>
+        </tr>
+        <tr>
+          <td><strong>{{ 'NON PEDIGREE ANIMALS' | translate }}</strong></td>
+          <td>
+            <label class="hide-for-large">{{ 'TOTAL' | translate }}</label>
+            {{ dashboard_info.livestock.non_pedigree_animals.total }}
+          </td>
+          <td>
+            <label class="hide-for-large">{{ 'OLDER THAN 1 YEAR' | translate }}</label>
+            {{ dashboard_info.livestock.non_pedigree_animals.adults }}
+          </td>
+          <td>
+            <label class="hide-for-large">{{ 'LAMBS' | translate }}</label>
+            {{ dashboard_info.livestock.non_pedigree_animals.lambs }}
+          </td>
+        </tr>
+        <tr>
+          <td><strong>{{ 'ALL ANIMALS' | translate }}</strong></td>
+          <td>
+            <label class="hide-for-large">{{ 'TOTAL' | translate }}</label>
+            {{ dashboard_info.livestock.all_animals.total }}
+          </td>
+          <td>
+            <label class="hide-for-large">{{ 'OLDER THAN 1 YEAR' | translate }}</label>
+            {{ dashboard_info.livestock.all_animals.adults }}
+          </td>
+          <td>
+            <label class="hide-for-large">{{ 'LAMBS' | translate }}</label>
+            {{ dashboard_info.livestock.all_animals.lambs }}
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

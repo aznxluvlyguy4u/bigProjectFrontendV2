@@ -1,0 +1,319 @@
+<div class="livestock-container">
+
+  <!--TABS-->
+  <div *ngIf="showOptionsBar()" class="row">
+    <div class="large-10 columns">
+      &nbsp;
+    </div>
+    <div *ngIf="showFileTypesDropdown()" class="large-2 columns end">
+      <label class="text-center">
+        {{ 'SELECT FILETYPE' | translate }}
+        <select [(ngModel)]="selectedFileType">
+          <option
+            *ngFor="let file_type of file_types_list"
+            [ngValue]="file_type"
+            [selected]="file_type == selectedFileType"
+          >{{ file_type }}
+          </option>
+        </select>
+      </label>
+    </div>
+  </div>
+
+  <div class="filters small-12 large-2 columns">
+
+    <div class="row hide-for-large" style="margin-left: 20px">
+      <template [ngTemplateOutlet]="downloadButtons"></template>
+    </div>
+
+    <div class="large-11">
+      <!--SEARCH INPUT FIELD-->
+      <label class="search-input">
+        {{ 'SEARCH' | translate }}
+        <input [(ngModel)]="searchFieldFilter" type="text" #searchField (keyup)="0"
+               placeholder="{{ 'SEARCH' | translate }}">
+      </label>
+
+      <!--ACCORDION BUTTON-->
+      <button class="accordion-button expanded" [ngClass]="{'toggled': filter_toggled}"
+              (click)="filter_toggled = !filter_toggled">
+        <i *ngIf="!filter_toggled" class="fa fa-caret-right fa-fw" aria-hidden="true"></i>
+        <i *ngIf="filter_toggled" class="fa fa-caret-down fa-fw" aria-hidden="true"></i>
+        {{ '' | translate }} -
+        <span> {{ 'REFINE RESULTS' | translate }} </span>
+      </button>
+
+      <!--FILTERS-->
+      <div class="accordion-container" [hidden]="!filter_toggled">
+        <div class="filler-block">
+          {{ 'FILTERS' | translate }}
+        </div>
+
+        <!--FILTER BIRTH OF DATE-->
+        <label>{{ 'DATE OF BIRTH' | translate }}
+          <input [(ngModel)]="startDateFieldFilter" type="text" #startDateField (keyup)="0" id="filter_begindate"
+                 placeholder="{{ 'VIEW_DATE_FORMAT' | translate }}">
+        </label>
+        <label> {{'TILL' | translate }}
+          <input [(ngModel)]="endDateFieldFilter" type="text" #endDateField (keyup)="0" id="filter_enddate"
+                 placeholder="{{ 'VIEW_DATE_FORMAT' | translate }}">
+        </label>
+
+        <!--FILTER GENDER-->
+        <label>{{ 'GENDER' | translate }}
+          <select #filters_gender [(ngModel)]="genderFilterValue" [disabled]="onlyFemales">
+            <option *ngFor="let gender of gender_filter_options" value="{{ gender }}">{{ gender | translate }}</option>
+          </select>
+        </label>
+
+        <!--FILTER HISTORIC ANIMALS-->
+        <label *ngIf="activateHistoricAnimalsFilter()">{{ 'SHOW HISTORIC ANIMALS' | translate }}
+          <select #filter_historic (change)="showHistoricAnimals(filter_historic.value)">
+            <option value="NO" selected>{{ 'NO' | translate}}</option>
+            <option value="YES">{{ 'YES' | translate}}</option>
+          </select>
+        </label>
+      </div>
+
+
+      <ng-template *ngIf="view_mode">
+
+        <!--ACCORDION BUTTON-->
+        <button class="accordion-button expanded" [ngClass]="{'toggled': report_options_toggled}"
+                (click)="report_options_toggled = !report_options_toggled">
+          <i *ngIf="!report_options_toggled" class="fa fa-caret-right fa-fw" aria-hidden="true"></i>
+          <i *ngIf="report_options_toggled" class="fa fa-caret-down fa-fw" aria-hidden="true"></i>
+          {{ '' | translate }} -
+          <span> {{ 'CSV REPORT OPTIONS' | translate }} </span>
+        </button>
+
+        <!--REPORT OPTIONS-->
+        <div class="accordion-container" [hidden]="!report_options_toggled">
+          <div class="filler-block">
+            {{ 'CSV REPORT OPTIONS' | translate }}
+          </div>
+
+          <!--CONCATENATE BREED VALUE AND ACCURACY COLUMNS-->
+          <label>{{ 'CONCATENATE BREED VALUE AND ACCURACY COLUMNS' | translate }}
+            <!--<select #filters_gender [(ngModel)]="concatBreedValueAndAccuracyColumns">-->
+            <!--<option *ngFor="let gender of gender_filter_options" value="{{ gender }}">{{ gender | translate }}</option>-->
+            <!--</select>-->
+
+            <select #filter_historic [(ngModel)]="concatBreedValueAndAccuracyColumns">
+              <option value="NO" selected>{{ 'NO' | translate}}</option>
+              <option value="YES">{{ 'YES' | translate}}</option>
+            </select>
+
+          </label>
+        </div>
+
+      </ng-template>
+
+
+    </div>
+  </div>
+
+  <!--OVERVIEW-->
+  <div class="large-10 expanded no-side-padding columns">
+    <table class="stack">
+      <thead>
+      <tr>
+        <th>
+          <input type="checkbox" *ngIf="!weightMode && !view_mode && !disableMultipleSelection"
+                 (click)="selectAllAnimals($event)">
+        </th>
+        <th class="padding-column">
+          {{ 'ULN' | translate }}
+          <span (click)="setOrderULN()">
+                            <i *ngIf="order_column_uln_asc" class="fa fa-arrow-down" aria-hidden="true"></i>
+                            <i *ngIf="!order_column_uln_asc" class="fa fa-arrow-up" aria-hidden="true"></i>
+                        </span>
+        </th>
+        <th class="padding-column">
+          <select [(ngModel)]="selection_column_one">
+            <option *ngFor="let option of sort_options" value="{{option}}"> {{ option | translate }}</option>
+          </select>
+          <span (click)="setOrderColumnOne()">
+                            <i *ngIf="order_column_one_asc" class="fa fa-arrow-down" aria-hidden="true"></i>
+                            <i *ngIf="!order_column_one_asc" class="fa fa-arrow-up" aria-hidden="true"></i>
+                        </span>
+        </th>
+        <th class="padding-column">
+                        <span *ngIf="!weightMode">
+                            <select [(ngModel)]="selection_column_two">
+                                <option *ngFor="let option of sort_options"
+                                        value="{{option}}"> {{ option | translate }}</option>
+                            </select>
+                            <span (click)="setOrderColumnTwo()">
+                                <i *ngIf="order_column_two_asc" class="fa fa-arrow-down" aria-hidden="true"></i>
+                                <i *ngIf="!order_column_two_asc" class="fa fa-arrow-up" aria-hidden="true"></i>
+                            </span>
+                        </span>
+          <span *ngIf="weightMode" class="text-center">
+                            {{ 'PREVIOUS WEIGHT' | translate }}
+                        </span>
+        </th>
+        <th *ngIf="weightMode"></th>
+        <th *ngIf="mateMode" class="padding-column">
+          <span class="align-center">{{'LAST MATE' | translate}}<i class="fa fa-info-circle" aria-hidden="true"
+                                                                   title="{{ 'LAST MATE INFO' | translate }}"></i></span>
+        </th>
+        <th style="text-align: right">
+          <template [ngTemplateOutlet]="downloadButtons"></template>
+
+          <app-download-button
+            *ngIf="!weightMode && !view_mode && !disableMultipleSelection"
+            [includeBadgeCount]="true"
+            [badgeCount]="selectionList.length"
+            [labelText]="(reportMode ? 'GENERATE' : 'DECLARE') | translate"
+            (click)="declareAllAnimals()"
+          ></app-download-button>
+
+        </th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr class="hide-for-large">
+        <td *ngIf="!weightMode && !view_mode">
+          <input type="checkbox" *ngIf="!weightMode && !view_mode && !disableMultipleSelection"
+                 (click)="selectAllAnimals($event)">
+          <label class="show-for-small-only">{{ 'SELECT ALL' | translate }}</label>
+        </td>
+        <td *ngIf="!weightMode && !view_mode">
+          <button type="button" class="tiny primary button expanded" (click)="declareAllAnimals()"
+                  [disabled]="!(selectionList.length > 0)">
+            <span class="badge">{{selectionList.length}}</span>
+            <span *ngIf="reportMode">
+                                {{ 'GENERATE' | translate }}
+                            </span>
+            <span *ngIf="!reportMode">
+                                 {{ 'DECLARE' | translate }}
+                            </span>
+          </button>
+        </td>
+      </tr>
+      <tr
+        *ngFor="let animal of livestock_list | livestockFilter:[searchField.value, startDateField.value, endDateField.value, filters_gender.value] | paginate: {itemsPerPage: items_per_page, currentPage: page}">
+        <td>
+                        <span *ngIf="!weightMode && !view_mode && !disableMultipleSelection">
+                            <input type="checkbox" [checked]="animal.selected"
+                                   [disabled]="animal.successful || animal.sending"
+                                   (click)="selectAnimal($event, animal)">
+                            <label class="show-for-small-only">{{ 'SELECT' | translate }}</label>
+                        </span>
+        </td>
+        <td class="padding-column">
+          <label class="show-for-small-only">{{ 'ULN' | translate }}</label>
+          {{ animal.uln_country_code + animal.uln_number }}
+        </td>
+        <td class="padding-column">
+          <label class="show-for-small-only">{{ selection_column_one | translate }}</label>
+          <span *ngIf="getSelectionValue(selection_column_one, animal)">
+                            {{ getSelectionValue(selection_column_one, animal) | translate }}
+                        </span>
+          <span *ngIf="!(getSelectionValue(selection_column_one, animal))">
+                            --
+                        </span>
+        </td>
+        <td class="padding-column">
+                        <span *ngIf="!weightMode">
+                            <label class="show-for-small-only">{{ selection_column_two | translate }}</label>
+                            {{ getSelectionValue(selection_column_two, animal) | translate }}
+                        </span>
+          <span *ngIf="weightMode" class="large-text-center">
+                            <label class="show-for-small-only">{{ 'PREVIOUS WEIGHT' | translate }}</label>
+                            <span *ngIf="animal.weight">
+                                {{ animal.weight }}
+                            </span>
+                            <span *ngIf="!animal.weight">
+                                --
+                            </span>
+                            <span>kg</span>
+                        </span>
+        </td>
+        <td *ngIf="weightMode" id="weight">
+          <div class="row">
+            <div class="large-8 small-11 large-push-1 columns">
+              <input type="number" [(ngModel)]="animal.new_weight" min="0.01" max="200" step="0.01"
+                     value="{{ animal.new_weight }}">
+            </div>
+            <div class="large-4 small-1 columns">
+              <label class="text-left middle">kg</label>
+            </div>
+          </div>
+        </td>
+        <td *ngIf="mateMode" class="padding-column">
+          <label class="show-for-small-only">{{ 'LAST MATE' | translate }}</label>
+          <ng-template *ngIf="animal.last_mate != null">
+            <ng-template *ngIf="animal.last_mate.start_date == null && animal.last_mate.end_date == null">
+              <span>-</span>
+            </ng-template>
+            <ng-template *ngIf="animal.last_mate.start_date != null || animal.last_mate.end_date != null">
+                                <span
+                                  title="ram: {{animal.last_mate.ram_uln_country_code + animal.last_mate.ram_uln_number}} {{animal.last_mate.pmsg ? ('PMSG' | translate) : ''}} {{animal.last_mate.ki ? ('KI' | translate) : ''}}"
+                                >{{ animal.last_mate ? animal.last_mate.start_date : '...' }} - {{ animal.last_mate ? animal.last_mate.end_date : '...' }}</span>
+            </ng-template>
+          </ng-template>
+          <ng-template *ngIf="animal.last_mate == null">
+            <span>-</span>
+          </ng-template>
+        </td>
+        <td>
+          <app-download-button
+            *ngIf="reportMode"
+            [labelText]="'GENERATE'"
+            (click)="declareAnimal(animal, $event)"
+          ></app-download-button>
+
+          <button type="button" *ngIf="!view_mode && !reportMode" class="tiny button expanded"
+                  [ngClass]="{'primary': !animal.successful, 'success': animal.successful}"
+                  [disabled]="animal.successful || animal.sending" (click)="declareAnimal(animal)">
+            <span
+              *ngIf="!animal.sending && !animal.successful && !enableTagReplace"> {{ 'DECLARE' | translate }} </span>
+            <span
+              *ngIf="!animal.sending && !animal.successful && enableTagReplace"> {{ 'REPLACE EARTAG' | translate }} </span>
+            <span *ngIf="animal.sending && !animal.successful"> <i class="fa fa-gear fa-spin fa-fw"></i> </span>
+            <span *ngIf="animal.successful"> <i class="fa fa-check" aria-hidden="true"></i> </span>
+          </button>
+          <button type="button" *ngIf="view_mode && animal.is_public" class="tiny primary button expanded"
+                  (click)="viewAnimalDetails(animal)">
+            {{ 'VIEW DETAILS' | translate }}
+          </button>
+
+          <div *ngIf="view_mode && !animal.is_public">
+            {{ 'NOT PUBLIC' | translate }} ({{ 'LOCATION' | translate }}:
+            <span *ngIf="animal.ubn"> {{animal.ubn}})</span>
+            <span *ngIf="!animal.ubn"> -- )</span>
+          </div>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+    <pagination (pageChange)="page = $event"></pagination>
+  </div>
+</div>
+
+<!-- DOWNLOAD BUTTONS TEMPLATE -->
+<template #downloadButtons>
+
+  <app-download-button
+    *ngIf="view_mode"
+    [labelText]="'PDF'"
+    [includeDownloadIcon]="true"
+    [fontSize]="'15px'"
+    [title]="'DOWNLOAD LIVESTOCK PDF' | translate"
+    [isExpandedButton]="false"
+    (click)="generateLivestockDocument('PDF')"
+  ></app-download-button>
+
+  <app-download-button
+    *ngIf="view_mode"
+    [labelText]="'CSV'"
+    [includeDownloadIcon]="true"
+    [fontSize]="'15px'"
+    [title]="'DOWNLOAD LIVESTOCK CSV' | translate"
+    [isExpandedButton]="false"
+    (click)="generateLivestockDocument('CSV')"
+  ></app-download-button>
+
+</template>

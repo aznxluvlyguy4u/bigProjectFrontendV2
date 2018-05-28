@@ -1,0 +1,38 @@
+<!--LOG DATE-->
+<td>
+  <label class="show-for-small-only">{{ 'DATE' | translate }}</label>
+  {{ tagReplacement.log_date }}
+</td>
+
+<!--ANIMAL-->
+<td>
+  <label class="show-for-small-only">{{ 'ANIMAL' | translate }}</label>
+  {{ tagReplacement.animal.uln_country_code + tagReplacement.animal.uln_number }}
+</td>
+
+<!--TAG-->
+<td>
+  <label class="show-for-small-only">{{ 'NEW EARTAG' | translate }}</label>
+  {{ tagReplacement.tag.uln_country_code + tagReplacement.tag.uln_number }}
+</td>
+
+<!--STATUS-->
+<td>
+  <label class="show-for-small-only">{{ 'STATUS' | translate }}</label>
+  <span [ngSwitch]="tagReplacement.request_state">
+        <template ngSwitchWhen="OPEN"> {{ 'PROCESSING' | translate }} </template>
+        <template ngSwitchWhen="REVOKING"> {{ 'PROCESSING' | translate }} </template>
+        <template ngSwitchWhen="FINISHED"> {{ 'SENT' | translate }} </template>
+        <template ngSwitchWhen="FINISHED_WITH_WARNING"> {{ 'SENT' | translate }} </template>
+        <template ngSwitchWhen="REVOKED"> {{ 'REVOKED' | translate }} </template>
+    </span>
+</td>
+
+<!--ROW BUTTONS-->
+<td>
+    <span
+      [hidden]="tagReplacement.request_state == 'OPEN' || tagReplacement.request_state == 'REVOKING' ||  tagReplacement.request_state == 'REVOKED'"
+      class="pull-right">
+        <app-revoke-button [isActive]="tagReplacement.message_number" (click)="sendRevokeRequest()"></app-revoke-button>
+    </span>
+</td>

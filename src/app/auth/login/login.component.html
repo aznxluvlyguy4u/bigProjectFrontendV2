@@ -1,0 +1,80 @@
+<div id="login">
+  <div class="login-container">
+
+    <!--LOGO SECTION-->
+    <section class="logo column row">
+      NSFO <span>Online</span>
+    </section>
+
+    <!--LOGIN SECTION-->
+    <section class="login column row">
+
+      <!--FORM-->
+      <form [ngFormModel]="form" *ngIf="!enable_forgot_pw" class="ng-animate">
+
+        <!--INPUT FIELD: USERNAME-->
+        <div class="input column row">
+          <input type="text" placeholder="{{ 'USERNAME' | translate }}" ngControl="username"/>
+          <i class="fa fa-user fa-fw"></i>
+        </div>
+
+        <!--INPUT FIELD: PASSWORD-->
+        <div class="input column row">
+          <input type="password" ngControl="password" (keyup.enter)="doLogin()"
+                 placeholder="{{ 'PASSWORD' | translate }}"/>
+          <i class="fa fa-lock fa-fw"></i>
+        </div>
+
+        <!--SUBMIT BUTTON-->
+        <button type="button" (click)="doLogin()" [disabled]="login_in_progress" class="button expanded">
+          <span *ngIf="!login_in_progress"> {{ 'LOGIN' | translate }} </span>
+          <span *ngIf="login_in_progress"> <i class="fa fa-gear fa-spin fa-fw"></i> </span>
+        </button>
+
+        <!--ERROR MESSAGE-->
+        <div [hidden]="form_valid" class="error-message text-right">
+          <span>{{ 'USERNAME' | translate }}</span>
+          {{ 'AND/OR' | translate }}
+          <span>{{ 'PASSWORD' | translate }}</span>
+          {{ 'ARE INCORRECT.' | translate }}
+        </div>
+
+        <div class="text-right link">
+          {{ 'FORGOT PASSWORD?' | translate }}
+          <a (click)="enableForgetPassword();resetForm();"> {{ 'CLICK HERE' | translate }} </a>
+        </div>
+      </form>
+
+      <form [ngFormModel]="form_forgot_pw" *ngIf="enable_forgot_pw" class="ng-animate forgot-pw">
+        <h5>{{ 'FORGOT PASSWORD?' | translate }}</h5>
+        <p>
+          {{ 'ENTER YOUR EMAIL ADDRESS TO RESET YOUR PASSWORD.' | translate }}
+        </p>
+
+        <!--EMAIL ADDRESS-->
+        <div class="input column row">
+          <input type="text" ngControl="email_address" (keyup.enter)="requestNewPassword()"
+                 placeholder="{{ 'E-MAIL ADDRESS' | translate }}"/>
+          <i class="fa fa-envelope fa-fw"></i>
+        </div>
+
+        <!--SUBMIT BUTTON-->
+        <button type="button" (click)="requestNewPassword()" [disabled]="sent_email" class="button expanded">{{ 'RESET'
+          | translate }}
+        </button>
+
+        <div *ngIf="sent_email" class="success-message">{{ 'AN EMAIL WITH INSTRUCTIONS HAS BEEN SENT' | translate }}
+        </div>
+
+        <div class="text-left">
+          <a (click)="enableForgetPassword();resetForm();"><i class="fa fa-chevron-left fa-fw"></i>{{ 'BACK TO THE LOGIN
+            PAGE' | translate }}</a>
+        </div>
+      </form>
+    </section>
+
+    <section class="sheep-image hide-for-small-only">
+      <img src="/assets/images/sheep-art.png"/>
+    </section>
+  </div>
+</div>

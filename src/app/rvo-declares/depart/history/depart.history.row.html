@@ -1,0 +1,112 @@
+<!--LOG DATE-->
+<td>
+    <span [hidden]="editMode">
+        <label class="show-for-small-only">{{ 'DATE' | translate }}</label>
+        {{ stringAsViewDateTime(depart.log_date) }}
+    </span>
+
+  <span [hidden]="!editMode"> <i class="fa fa-pencil" aria-hidden="true"></i> </span>
+</td>
+
+<!--ULN-->
+<td>
+  <label class="show-for-small-only">{{ 'ULN' | translate }}</label>
+  {{ depart.uln_country_code + depart.uln_number }}
+</td>
+
+<!--PEDIGREE-->
+<td>
+  <label class="show-for-small-only">{{ 'PEDIGREE NUMBER' | translate }}</label>
+  <span *ngIf="(depart.pedigree_country_code && depart.pedigree_number)">
+        {{ depart.pedigree_country_code + depart.pedigree_number }}
+    </span>
+  <span *ngIf="!(depart.pedigree_country_code && depart.pedigree_number)">
+        --
+    </span>
+</td>
+
+<!--DEPART DATE-->
+<td>
+  <label class="show-for-small-only">{{ 'DEPART DATE' | translate }}</label>
+  <span [hidden]="editMode">{{ depart.depart_date }}</span>
+  <span [hidden]="!editMode" [ngFormModel]="form">
+        <datepicker [formCtrl]="form.controls['depart_date']" [initDate]="depart.depart_date"
+                    [viewFormat]="view_date_format" [modelFormat]="model_datetime_format"></datepicker>
+        <div [hidden]="form.controls['depart_date'].valid || form_valid" class="input-error-msg text-center">{{ 'FILL IN THE DEPART DATE' | translate }}</div>
+    </span>
+</td>
+
+
+<!--REASON OF DEPART-->
+<td>
+  <label class="show-for-small-only">{{ 'REASON OF DEPART' | translate }}</label>
+  <span [hidden]="editMode">{{ depart.reason_of_depart | translate }}</span>
+  <span [hidden]="!editMode" [ngFormModel]="form">
+        <select *ngIf="!depart.is_export_animal" [(ngModel)]="depart.reason_of_depart" ngControl="reason_of_depart">
+            <option *ngFor="let reason of options_reason_of_depart" value="{{reason}}">{{reason | translate}}</option>
+        </select>
+    </span>
+</td>
+
+<!--UBN NEW OWNER-->
+<td>
+  <label class="show-for-small-only">{{ 'UBN NEW OWNER' | translate }}</label>
+  <span [hidden]="editMode">
+        <span *ngIf="(depart.ubn_new_owner)">
+            {{ depart.ubn_new_owner }}
+        </span>
+        <span *ngIf="!(depart.ubn_new_owner)">
+            --
+        </span>
+    </span>
+  <span [hidden]="!editMode" [ngFormModel]="form">
+        <input type="text" *ngIf="!depart.is_export_animal" [(ngModel)]="depart.ubn_new_owner"
+               ngControl="ubn_new_owner">
+        <div [hidden]="form.controls['ubn_new_owner'].valid || form_valid" class="input-error-msg text-center">{{ 'UBN IS INVALID' | translate }}</div>
+    </span>
+</td>
+
+<!--CERTIFICATE NUMBER-->
+<td *ngIf="false">
+  <label class="show-for-small-only">{{ 'CERTIFICATE NUMBER' | translate }}</label>
+  <span [hidden]="editMode">
+        <span *ngIf="(depart.certificate_number)">
+            {{ depart.certificate_number }}
+        </span>
+        <span *ngIf="!(depart.certificate_number)">
+            --
+        </span>
+    </span>
+  <span [hidden]="!editMode" [ngFormModel]="form">
+        <input type="text" *ngIf="depart.is_export_animal" [(ngModel)]="depart.certificate_number"
+               ngControl="ubn_new_owner">
+        <div [hidden]="form.controls['certificate_number'].valid || form_valid" class="input-error-msg text-center">{{ 'UBN IS INVALID' | translate }}</div>
+    </span>
+</td>
+
+<!--STATUS-->
+<td>
+  <label class="show-for-small-only">{{ 'STATUS' | translate }}</label>
+  <span [hidden]="editMode" [ngSwitch]="depart.request_state">
+        <template ngSwitchWhen="OPEN"> {{ 'PROCESSING' | translate }} </template>
+        <template ngSwitchWhen="REVOKING"> {{ 'PROCESSING' | translate }} </template>
+        <template ngSwitchWhen="FINISHED"> {{ 'SENT' | translate }} </template>
+        <template ngSwitchWhen="FINISHED_WITH_WARNING"> {{ 'SENT' | translate }} <app-history-error-info
+          [historyResponse]="depart"></app-history-error-info> </template>
+        <template ngSwitchWhen="REVOKED"> {{ 'REVOKED' | translate }} </template>
+    </span>
+</td>
+
+<!--ROW BUTTONS-->
+<td>
+    <span
+      [hidden]="editMode || depart.request_state == 'OPEN' || depart.request_state == 'REVOKING' ||  depart.request_state == 'REVOKED'">
+        <button *ngIf="false" class="tiny primary button" (click)="enableEditing()">{{ 'EDIT' | translate }}</button>
+        <app-revoke-button [isActive]="depart.message_number" (click)="sendRevokeRequest()"></app-revoke-button>
+    </span>
+
+  <span [hidden]="!editMode">
+        <button class="tiny primary button" (click)="sendChangeRequest()">{{ 'SEND' | translate }}</button>
+        <button class="tiny alert button" (click)="cancelEditing()">{{ 'CANCEL' | translate }}</button>
+    </span>
+</td>

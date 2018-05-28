@@ -1,0 +1,16 @@
+<input type="text" [(ngModel)]="searchQuery" [disabled]="!editMode" (focus)="enableLivesearch(true)"
+       (keydown)="changeSearchQuery()">
+
+<div *ngIf="editMode && livesearchEnabled">
+  <div id="livesearch">
+    <div class="small close-button" (click)="enableLivesearch(false)"><i class="fa fa-times-circle"
+                                                                         aria-hidden="true"></i></div>
+    <div class="search-title">{{ searchTitle | translate }}:</div>
+    <ul>
+      <li *ngFor="let object of list | livesearchFilter:[searchQuery]"
+          (click)="selectObject(object); enableLivesearch(false)">
+        {{ object.uln_country_code + object.uln_number}}
+      </li>
+    </ul>
+  </div>
+</div>

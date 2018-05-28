@@ -1,0 +1,326 @@
+<div class="row" [ngFormModel]="form">
+  <div class="large-6 columns">
+    <div class="info-container">
+      <div class="info-header">
+        {{ 'COMPANY INFO' | translate }}
+        <span class="pull-right"> {{ 'FIELDS WITH A * ARE MANDATORY' | translate }} </span>
+      </div>
+      <div class="info-body">
+
+        <!-- UBN -->
+        <div class="row">
+          <div class="large-6 columns">
+            <label class="middle"> {{ 'UBN_SHORT' | translate }} </label>
+          </div>
+          <div class="large-6 columns">
+            <input type="text" [(ngModel)]="company.ubn" disabled>
+          </div>
+        </div>
+
+        <!-- BRS NUMBER -->
+        <div class="row">
+          <div class="large-6 columns">
+            <label class="middle"> {{ 'BRS NUMBER' | translate }} </label>
+          </div>
+          <div class="large-6 columns">
+            <input type="text" [(ngModel)]="company.company_relation_number" ngControl="company_relation_number"
+                   [ngClass]="{'input-error-border': !form.controls.company_relation_number.valid && !form_valid}"
+                   maxlength="20" disabled>
+          </div>
+        </div>
+
+        <!-- COMPANY NAME -->
+        <div class="row">
+          <div class="large-6 columns">
+            <label class="middle"> {{ 'COMPANY NAME' | translate }} * </label>
+          </div>
+          <div class="large-6 columns">
+            <input type="text" [(ngModel)]="company.company_name" ngControl="company_name"
+                   [ngClass]="{'input-error-border': !form.controls.company_name.valid && !form_valid}">
+          </div>
+        </div>
+
+        <!-- TELEPHONE -->
+        <div class="row">
+          <div class="large-6 columns">
+            <label class="middle"> {{ 'TELEPHONE NUMBER' | translate }} </label>
+          </div>
+          <div class="large-6 columns">
+            <input type="text" [(ngModel)]="company.telephone_number" ngControl="telephone_number" maxlength="12">
+          </div>
+        </div>
+
+        <!-- BTW NUMBER -->
+        <div class="row">
+          <div class="large-6 columns">
+            <label class="middle"> {{ 'BTW NUMBER' | translate }} </label>
+          </div>
+          <div class="large-6 columns">
+            <input type="text" [(ngModel)]="company.vat_number" ngControl="vat_number"
+                   [ngClass]="{'input-error-border': !form.controls.vat_number.valid && !form_valid}" maxlength="18">
+          </div>
+        </div>
+
+        <!-- KVK NUMBER -->
+        <div class="row">
+          <div class="large-6 columns">
+            <label class="middle"> {{ 'KVK NUMBER' | translate }} </label>
+          </div>
+          <div class="large-6 columns">
+            <input type="text" [(ngModel)]="company.chamber_of_commerce_number" ngControl="chamber_of_commerce_number"
+                   [ngClass]="{'input-error-border': !form.controls.chamber_of_commerce_number.valid && !form_valid}"
+                   maxlength="15">
+          </div>
+        </div>
+
+        <!-- HISTORIC ANIMALS -->
+        <div class="row">
+          <div class="large-6 columns">
+            <label class="middle"> {{ 'MAKE LIVESTOCK PUBLIC' | translate }} </label>
+          </div>
+          <div class="large-6 columns">
+            <select [(ngModel)]="company.is_reveal_historic_animals" ngControl="is_reveal_historic_animals">
+              <option [value]="false">{{ 'NO' | translate}}</option>
+              <option [value]="true">{{ 'YES' | translate}}</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- CONTACT PERSON -->
+        <div class="row">
+          <div class="large-12 columns">
+            <label class="category bottom"> {{ 'CONTACT PERSON' | translate }} </label>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="large-6 columns">
+            <label class="middle"> {{ 'FIRST NAME' | translate }} * </label>
+          </div>
+          <div class="large-6 columns">
+            <input type="text" [(ngModel)]="company.contact_person.first_name" ngControl="first_name"
+                   [ngClass]="{'input-error-border': !form.controls.first_name.valid && !form_valid}">
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="large-6 columns">
+            <label class="middle"> {{ 'LAST NAME' | translate }} * </label>
+          </div>
+          <div class="large-6 columns">
+            <input type="text" [(ngModel)]="company.contact_person.last_name" ngControl="last_name"
+                   [ngClass]="{'input-error-border': !form.controls.last_name.valid && !form_valid}">
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="large-6 columns">
+            <label class="middle"> {{ 'CELLPHONE NUMBER' | translate }} </label>
+          </div>
+          <div class="large-6 columns">
+            <input type="text" [(ngModel)]="company.contact_person.cellphone_number" ngControl="cellphone_number"
+                   [ngClass]="{'input-error-border': !form.controls.cellphone_number.valid && !form_valid}"
+                   maxlength="12">
+          </div>
+        </div>
+
+        <!-- ADDRESS -->
+        <div class="row">
+          <div class="large-12 columns">
+            <label class="category bottom"> {{ 'ADDRESS' | translate }} </label>
+          </div>
+        </div>
+        <div class="row">
+          <div class="large-6 columns">
+            <label class="middle"> {{ 'STREET NAME' | translate }} * </label>
+          </div>
+          <div class="large-6 columns">
+            <input type="text" [(ngModel)]="company.address.street_name" ngControl="address_street_name"
+                   [ngClass]="{'input-error-border': !form.controls.address_street_name.valid && !form_valid}">
+          </div>
+        </div>
+        <div class="row">
+          <div class="large-6 columns">
+            <label class="middle"> {{ 'STREET NUMBER' | translate }} * </label>
+          </div>
+          <div class="large-6 columns">
+            <input type="number" [(ngModel)]="company.address.address_number" ngControl="address_address_number"
+                   [ngClass]="{'input-error-border': !form.controls.address_address_number.valid && !form_valid}">
+          </div>
+        </div>
+        <div class="row">
+          <div class="large-6 columns">
+            <label class="middle"> {{ 'STREET NUMBER SUFFIX' | translate }} </label>
+          </div>
+          <div class="large-6 columns">
+            <input type="text" [(ngModel)]="company.address.suffix" ngControl="address_suffix">
+          </div>
+        </div>
+        <div class="row">
+          <div class="large-6 columns">
+            <label class="middle"> {{ 'POSTAL CODE' | translate }} * </label>
+          </div>
+          <div class="large-6 columns">
+            <input type="text" [(ngModel)]="company.address.postal_code" ngControl="address_postal_code"
+                   [ngClass]="{'input-error-border': !form.controls.address_postal_code.valid && !form_valid}"
+                   maxlength="6">
+          </div>
+        </div>
+        <div class="row">
+          <div class="large-6 columns">
+            <label class="middle"> {{ 'PLACE' | translate }} * </label>
+          </div>
+          <div class="large-6 columns">
+            <input type="text" [(ngModel)]="company.address.city" ngControl="address_city"
+                   [ngClass]="{'input-error-border': !form.controls.address_city.valid && !form_valid}">
+          </div>
+        </div>
+        <div class="row">
+          <div class="large-6 columns">
+            <label class="middle"> {{ 'STATE' | translate }} * </label>
+          </div>
+          <div class="large-6 columns">
+            <select [(ngModel)]="company.address.state" ngControl="address_state"
+                    [ngClass]="{'input-error-border': !form.controls.address_state.valid && !form_valid}">
+              <option value="">--</option>
+              <option *ngFor="let state of stateList" value="{{ state.code }}">{{ state.name }}</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- BILLING ADDRESS -->
+        <div class="row">
+          <div class="large-12 columns">
+            <label class="category bottom"> {{ 'BILLING ADDRESS' | translate }} </label>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="large-6 columns">
+            <label class="middle"> {{ 'STREET NAME' | translate }} * </label>
+          </div>
+          <div class="large-6 columns">
+            <input type="text" [(ngModel)]="company.billing_address.street_name" ngControl="billing_address_street_name"
+                   [ngClass]="{'input-error-border': !form.controls.billing_address_street_name.valid && !form_valid}">
+          </div>
+        </div>
+        <div class="row">
+          <div class="large-6 columns">
+            <label class="middle"> {{ 'STREET NUMBER' | translate }} * </label>
+          </div>
+          <div class="large-6 columns">
+            <input type="number" [(ngModel)]="company.billing_address.address_number"
+                   ngControl="billing_address_address_number"
+                   [ngClass]="{'input-error-border': !form.controls.billing_address_address_number.valid && !form_valid}">
+          </div>
+        </div>
+        <div class="row">
+          <div class="large-6 columns">
+            <label class="middle"> {{ 'STREET NUMBER SUFFIX' | translate }} </label>
+          </div>
+          <div class="large-6 columns">
+            <input type="text" [(ngModel)]="company.billing_address.suffix" ngControl="billing_address_suffix">
+          </div>
+        </div>
+        <div class="row">
+          <div class="large-6 columns">
+            <label class="middle"> {{ 'POSTAL CODE' | translate }} * </label>
+          </div>
+          <div class="large-6 columns">
+            <input type="text" [(ngModel)]="company.billing_address.postal_code" ngControl="billing_address_postal_code"
+                   [ngClass]="{'input-error-border': !form.controls.billing_address_postal_code.valid && !form_valid}"
+                   maxlength="6">
+          </div>
+        </div>
+        <div class="row">
+          <div class="large-6 columns">
+            <label class="middle"> {{ 'PLACE' | translate }} * </label>
+          </div>
+          <div class="large-6 columns">
+            <input type="text" [(ngModel)]="company.billing_address.city" ngControl="billing_address_city"
+                   [ngClass]="{'input-error-border': !form.controls.billing_address_city.valid && !form_valid}">
+          </div>
+        </div>
+        <div class="row">
+          <div class="large-6 columns">
+            <label class="middle"> {{ 'STATE' | translate }} </label>
+          </div>
+          <div class="large-6 columns">
+            <select [(ngModel)]="company.billing_address.state" ngControl="billing_address_state"
+                    [ngClass]="{'input-error-border': !form.controls.billing_address_state.valid && !form_valid}">
+              <option value="">--</option>
+              <option *ngFor="let state of stateList" value="{{ state.code }}">{{ state.name }}</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+    <span *ngIf="changed_company_info"
+          class="input-success-msg">{{ 'YOUR COMPANY INFO HAS BEEN SAVED' | translate }}</span>
+    <span *ngIf="!form_valid" class="input-error-msg">{{ 'FILL IN THE MANDATORY FIELDS' | translate }}</span>
+    <span>
+            <div class="large-2 end pull-right">
+                <button type="button" [disabled]="in_progress" (click)="saveCompanyInfo()"
+                        class="small primary button expanded">
+                    <span *ngIf="!in_progress">
+                        {{ 'SAVE' | translate }}
+                    </span>
+                    <span *ngIf="in_progress">
+                        <i class="fa fa-gear fa-spin fa-fw"></i>
+                    </span>
+                </button>
+            </div>
+        </span>
+  </div>
+
+  <div class="large-6 columns end">
+    <div *ngIf="false" class="info-container">
+      <div class="info-header">
+        {{ 'VETERINARIAN INFO' | translate }}
+      </div>
+      <div class="info-body">
+
+        <!-- VETERINARIAN DAP NUMBER -->
+        <div class="row">
+          <div class="large-6 columns">
+            <label class="middle"> {{ 'DAP NUMBER' | translate }} </label>
+          </div>
+          <div class="large-6 columns">
+            <input type="text" [(ngModel)]="company.veterinarian.dap_number" ngControl="veterinarian_dap_number">
+          </div>
+        </div>
+
+        <!-- VETERINARIAN NAME-->
+        <div class="row">
+          <div class="large-6 columns">
+            <label class="middle"> {{ 'NAME' | translate }} </label>
+          </div>
+          <div class="large-6 columns">
+            <input type="text" [(ngModel)]="company.veterinarian.company_name" ngControl="veterinarian_company_name">
+          </div>
+        </div>
+
+        <!-- VETERINARIAN TELEPHONE -->
+        <div class="row">
+          <div class="large-6 columns">
+            <label class="middle"> {{ 'TELEPHONE NUMBER' | translate }} </label>
+          </div>
+          <div class="large-6 columns">
+            <input type="text" [(ngModel)]="company.veterinarian.telephone_number"
+                   ngControl="veterinarian_telephone_number" maxlength="12">
+          </div>
+        </div>
+
+        <!-- VETERINARIAN EMAIL -->
+        <div class="row">
+          <div class="large-6 columns">
+            <label class="middle"> {{ 'E-MAIL ADDRESS' | translate }} </label>
+          </div>
+          <div class="large-6 columns">
+            <input type="email" [(ngModel)]="company.veterinarian.email_address" ngControl="veterinarian_email_address">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

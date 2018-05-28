@@ -1,0 +1,6 @@
+<ng-template *ngIf="showErrorInfo()">
+    <span
+      data-tooltip aria-haspopup="true" class="has-tip top" data-disable-hover="false"
+      [title]="getErrorData()"
+    ><i class="fa fa-exclamation-triangle" aria-hidden="true"></i></span>
+</ng-template>

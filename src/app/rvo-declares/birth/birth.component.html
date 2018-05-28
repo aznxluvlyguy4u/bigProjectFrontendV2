@@ -1,0 +1,42 @@
+<div id="birth">
+
+  <!--BREADCRUMBS-->
+  <div class="row">
+    <ul class="breadcrumbs">
+      <li><a [routerLink]="['/main']">{{ 'DASHBOARD' | translate }}</a></li>
+      <li>{{ 'BIRTH' | translate }}</li>
+    </ul>
+  </div>
+
+  <!--TABS MEDIUM/LARGE SCREENS-->
+  <div class="row hide-for-small-only">
+    <ul class="tabs">
+      <li [class.active]="isActiveRoute('/main/birth/declare')" class="tabs-title">
+        <a (click)="navigateTo('/main/birth/declare')">{{ 'DECLARE BIRTH' | translate }}</a>
+      </li>
+      <li [class.active]="isActiveRoute('/main/birth/history')" class="tabs-title">
+        <a (click)="navigateTo('/main/birth/history')">{{ 'HISTORY' | translate }}</a>
+      </li>
+      <!--<li [class.active]="isActiveRoute('/main/birth/errors')" class="tabs-title">
+          <a (click)="navigateTo('/main/birth/errors')">{{ 'ERRORS' | translate }}</a>
+      </li>-->
+    </ul>
+  </div>
+
+  <!--TABS SMALL SCREENS-->
+  <div class="row show-for-small-only">
+    <label> {{ 'TAB' | translate }}
+      <select [(ngModel)]="selectedRoute" (change)="selectRoute($event)">
+        <option value="/main/birth/declare">{{ 'DECLARE BIRTH' | translate }}</option>
+        <option value="/main/birth/history">{{ 'HISTORY' | translate }}</option>
+        <option value="/main/birth/errors">{{ 'ERRORS' | translate }}</option>
+      </select>
+    </label>
+  </div>
+
+
+  <!--TAB CONTENT-->
+  <div class="row">
+    <router-outlet></router-outlet>
+  </div>
+</div>

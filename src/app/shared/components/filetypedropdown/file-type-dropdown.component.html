@@ -1,0 +1,11 @@
+<label class="text-center">
+  {{ 'SELECT FILETYPE' | translate }}
+  <select #eventData (click)="onClickyClick(eventData.value)"
+          [(ngModel)]="selectedFileType">
+    <option
+      *ngFor="let fileType of fileTypeOptions"
+      [value]="fileType"
+    >{{ fileType }}
+    </option>
+  </select>
+</label>

@@ -1,0 +1,44 @@
+<div id="eartag">
+
+  <!--BREADCRUMBS-->
+  <div class="row">
+    <ul class="breadcrumbs">
+      <li><a [routerLink]="['/main']">{{ 'DASHBOARD' | translate }}</a></li>
+      <li>{{ 'REPLACE EARTAG' | translate }}</li>
+    </ul>
+  </div>
+
+  <!--TABS MEDIUM/LARGE SCREENS-->
+  <div class="row hide-for-small-only">
+    <ul class="tabs">
+      <li [class.active]="isActiveRoute('/main/tag-replacement/declare')" class="tabs-title">
+        <a (click)="navigateTo('/main/tag-replacement/declare')">{{ 'REPLACE EARTAG' | translate }}</a>
+      </li>
+      <li [class.active]="isActiveRoute('/main/tag-replacement/history')" class="tabs-title">
+        <a (click)="navigateTo('/main/tag-replacement/history')">{{ 'HISTORY' | translate }}</a>
+      </li>
+      <li [class.active]="isActiveRoute('/main/tag-replacement/errors')" class="tabs-title">
+        <a (click)="navigateTo('/main/tag-replacement/errors')">
+          {{ 'ERRORS' | translate }} <span *ngIf="errorAmount > 0"
+                                           class="alert badge tab-badge">{{ errorAmount }}</span>
+        </a>
+      </li>
+    </ul>
+  </div>
+
+  <!--TABS SMALL SCREENS-->
+  <div class="row show-for-small-only">
+    <label> {{ 'TAB' | translate }}
+      <select [(ngModel)]="selectedRoute" (change)="selectRoute($event)">
+        <option value="/main/tag-replacement/declare">{{ 'REPLACE EARTAG' | translate }}</option>
+        <option value="/main/tag-replacement/history">{{ 'HISTORY' | translate }}</option>
+        <option value="/main/tag-replacement/errors">{{ 'ERRORS' | translate }} ({{ errorAmount }})</option>
+      </select>
+    </label>
+  </div>
+
+  <!--TAB CONTENT-->
+  <div class="row">
+    <router-outlet></router-outlet>
+  </div>
+</div>

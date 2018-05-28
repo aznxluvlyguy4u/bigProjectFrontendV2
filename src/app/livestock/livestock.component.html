@@ -1,0 +1,14 @@
+<div id="livestock">
+
+  <!--BREADCRUMBS-->
+  <div class="row">
+    <ul class="breadcrumbs">
+      <li><a [routerLink]="['/main']">{{ 'DASHBOARD' | translate }}</a></li>
+      <li>{{ 'LIVESTOCK' | translate }}</li>
+    </ul>
+  </div>
+
+  <div class="row">
+    <router-outlet></router-outlet>
+  </div>
+</div>

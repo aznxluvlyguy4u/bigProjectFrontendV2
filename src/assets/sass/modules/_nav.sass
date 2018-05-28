@@ -1,0 +1,332 @@
+// TOP NAVIGATION BAR
+
+nav
+  position: fixed
+  display: flex
+  width: 100%
+  background-color: $nsfo-green
+  align-items: center
+  font-family: $lato !important
+  z-index: 10000
+
+  &.is_admin
+    background-color: $nsfo-is_admin
+    .ubn-container
+      select
+        background-color: $nsfo-is_admin
+
+  // UBN SELECTOR
+  .ubn-description
+    margin-top: 0.2em
+    padding-left: 0.4em
+    color: #FFF
+    font-size: 0.75em
+    font-weight: 700
+
+  .ubn-description-postfix
+    margin-top: 0.2em
+    color: #FFF
+    font-size: 0.75em
+    font-weight: 700
+
+  .ubn-container
+    margin-top: 0.2em
+    align-content: center
+
+    select
+      display: inline-block
+      color: #FFF
+      font-size: 0.75em
+      font-weight: 700
+      margin: 0
+      padding: 0 1.4em 0 0.1em
+      background-color: $nsfo-green
+      border: none
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' version='1.1' width='32' height='24' viewBox='0 0 32 24'><polygon points='0,0 32,0 16,24' style='fill: rgb%28255, 255, 255%29'></polygon></svg>")
+      background-position: right -0.8rem center
+
+      &:focus
+        outline: none
+
+  // TOGGLE BUTTONS
+
+  button
+    background-color: transparent
+    color: #FFF
+    border: none
+    height: 100%
+
+    &.active
+      background-color: $nsfo-dark-green
+
+    &:hover
+      background-color: $nsfo-dark-green
+
+    &:focus
+      outline: none
+
+    // SIDEBAR TOGGLE BUTTON
+
+    &.menu-toggle
+      font-size: 1.8em
+      padding: 0.4rem 0.5em
+
+    // MESSAGES TOGGLE BUTTON
+
+    &.message-toggle
+      font-size: 1.2em
+      padding: 0.7rem 0.5em
+
+      i
+        position: relative
+        padding: 0 0.3em
+
+        span
+          position: absolute
+          background-color: #FF0000
+          border-radius: 50%
+          padding: 0.2em 0.4em
+          //height: 1.5em
+          //width: 1.5em
+          right: -0.1em
+          top: -0.4em
+          font-size: 0.75rem
+          font-weight: 900
+          font-family: $lato !important
+
+    // DECLARE TOGGLE BUTTON
+
+    &.declare-modal-toggle
+      font-size: 1.2em
+      padding: 0.7rem 0.5em
+
+      i
+        position: relative
+        padding: 0 0.3em
+
+        span
+          position: absolute
+          background-color: #FF0000
+          border-radius: 50%
+          padding: 0.2em 0.4em
+          //height: 1.5em
+          //width: 1.5em
+          right: -0.1em
+          top: -0.4em
+          font-size: 0.75rem
+          font-weight: 900
+          font-family: $lato !important
+
+    // DOWNLOAD TOGGLE BUTTON
+
+    &.download-toggle
+      font-size: 1.2em
+      padding: 0.7rem 0.5em
+
+      i
+        position: relative
+        padding: 0 0.3em
+
+        span
+          position: absolute
+          background-color: #FF0000
+          border-radius: 50%
+          padding: 0.2em 0.4em
+          //height: 1.5em
+          //width: 1.5em
+          right: -0.1em
+          top: -0.4em
+          font-size: 0.75rem
+          font-weight: 900
+          font-family: $lato !important
+
+    // PROFILE TOGGLE BUTTON
+
+    &.profile-toggle
+      font-size: 1.2em
+      padding: 0.7rem 0.5em
+
+      span
+        margin-left: 0.3em
+        font-family: $lato
+        font-size: 0.65em
+
+  // BRAND NAME
+
+  .brand-name
+    padding-left: 0.4em
+    color: #FFF
+    font-size: 1.2em
+    font-weight: 900
+
+    span
+      font-weight: 400
+
+    &:hover
+      cursor: pointer
+
+  // EMPTY CONTAINER - NAVIGATION BAR FILLER
+
+  .empty-block
+    flex: 1
+
+// SIDE MENU
+
+.side-menu
+  height: 100%
+  width: 250px
+  position: fixed
+  z-index: 9999
+  left: -250px
+  background-color: rgba(0, 0, 0, 0.85)
+  overflow-x: hidden
+  padding-top: 4em
+  transition: 0.5s
+  font-family: $lato
+  //font-weight: 300
+
+  &.enabled
+    left: 0
+
+  ul
+    padding: 1em 0 1em 0.6em
+
+    li
+      list-style: none
+      padding: 0.4em 0
+      font-size: 1em
+      color: #FFF
+
+      i
+        font-size: 1.1em
+        margin-right: 0.4em
+
+      &.active
+        background-color: $nsfo-green
+
+      &.link
+        transition: 0.5s
+        padding-left: 0.6rem
+
+        &:hover
+          background-color: $nsfo-green
+          cursor: pointer
+
+      &.category
+        color: #57CD8A
+        padding-top: 2.4em
+        font-size: 1em
+        text-transform: uppercase
+        font-weight: 600
+        padding-left: 0.5rem
+
+      &.item
+        padding-left: 0.6rem
+
+// MESSAGE MENU
+
+.message-menu
+  position: fixed
+  background-color: rgba(0, 0, 0, 0.85)
+  right: 0
+  top: -1000px
+  width: 262px
+  transition: 0.5s
+  color: #FFFFFF
+  z-index: 9999
+  padding: 0.75em 0.5em 0.5em 0.4em
+  text-align: center
+  font-size: 0.9em
+  font-style: italic
+  font-weight: 300
+  border-bottom: 4px solid #57CD8A
+  max-height: 95%
+  overflow-y: scroll
+
+  &.enabled
+    top: 40px
+
+  .no-messages
+    font-size: 0.7rem
+    font-weight: 400
+    padding-top: 0.7em
+    padding-bottom: 1em
+
+  .message-menu-header
+    background-color: $nsfo-green
+    font-size: 0.7rem
+    margin-bottom: 0.9em
+    font-weight: 400
+    padding: 0.2em
+
+  .message
+    padding: 0 0.8em 0 0.8em
+    margin-bottom: 1em
+    text-align: left
+    font-size: 0.7rem
+    font-style: normal
+    font-weight: 400
+    border-left: solid 5px #FFFFFF
+
+    .sender
+      position: relative
+      font-size: 1.3em
+      font-weight: 100
+
+      .creation-date
+        position: absolute
+        font-size: 0.7em
+        color: #FFFFFF
+        bottom: 3px
+        right: 0
+
+    &:hover
+      color: #57CD8A
+      border-left: solid 5px #57CD8A
+      cursor: pointer
+
+  button
+    margin-bottom: 0
+    background-color: $nsfo-green
+    font-style: normal
+    font-weight: 700
+
+    &:hover
+      background-color: $nsfo-dark-green
+
+// USER MENU
+
+.user-menu
+  position: fixed
+  background-color: rgba(0, 0, 0, 0.85)
+  right: 0
+  top: -200px
+  transition: 0.5s
+  z-index: 9999
+  color: #FFFFFF
+  text-align: right
+
+  &.enabled
+    top: 40px
+
+  .item
+    padding: 0.5em 1em 0.5em 2.5em
+    font-size: 0.9em
+    width: 100%
+
+    &:hover
+      background-color: $nsfo-green
+      cursor: pointer
+
+    &:first-child
+      padding-top: 1em
+
+    &:last-child
+      padding-bottom: 1em
+      border-bottom: 4px solid #57CD8A
+
+    i
+      font-size: 0.9em
+      margin-left: 0.4em
+
+

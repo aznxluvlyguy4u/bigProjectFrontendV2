@@ -1,0 +1,40 @@
+<div id="profile">
+
+  <!--BREADCRUMBS-->
+  <div class="row">
+    <ul class="breadcrumbs">
+      <li><a [routerLink]="['/main']">{{ 'DASHBOARD' | translate }}</a></li>
+      <li>{{ 'PROFILE' | translate }}</li>
+    </ul>
+  </div>
+
+  <!--TABS MEDIUM/LARGE SCREENS-->
+  <div class="row hide-for-small-only">
+    <ul class="tabs">
+      <li [class.active]="isActiveRoute('/main/profile/company')" class="tabs-title">
+        <a (click)="navigateTo('/main/profile/company')">{{ 'COMPANY INFO' | translate }}</a>
+      </li>
+      <li [class.active]="isActiveRoute('/main/profile/login')" class="tabs-title">
+        <a (click)="navigateTo('/main/profile/login')">{{ 'LOGIN INFO' | translate }}</a>
+      </li>
+      <li [class.active]="isActiveRoute('/main/profile/email')" class="tabs-title">
+        <a (click)="navigateTo('/main/profile/email')">{{ 'EMAIL INFO' | translate }}</a>
+      </li>
+    </ul>
+  </div>
+
+  <!--TABS SMALL SCREENS-->
+  <div class="row show-for-small-only">
+    <label> {{ 'TAB' | translate }}
+      <select [(ngModel)]="selectedRoute" (change)="selectRoute($event)">
+        <option value="/main/profile/company">{{ 'COMPANY INFO' | translate }}</option>
+        <option value="/main/profile/login">{{ 'LOGIN INFO' | translate }}</option>
+      </select>
+    </label>
+  </div>
+
+  <!--TAB CONTENT-->
+  <div class="row">
+    <router-outlet></router-outlet>
+  </div>
+</div>

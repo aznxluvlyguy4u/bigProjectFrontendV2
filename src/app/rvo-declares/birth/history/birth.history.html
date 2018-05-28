@@ -1,0 +1,52 @@
+<div class="large-12 table-search">
+  <div class="large-2 large-push-10">
+    <input
+      title="{{'ULN OF FATHER OR MOTHER'|translate}}"
+      type="text"
+      [(ngModel)]="searchValue"
+      maxlength="20"
+      placeholder="{{ 'SEARCH' | translate }}"
+    >
+  </div>
+</div>
+
+
+<!--TABLE HEADER-->
+<table class="stack">
+  <thead>
+  <th>{{ 'DATE' | translate }}</th>
+  <th>{{ 'DATE OF BIRTH' | translate }}</th>
+  <th>{{ 'ULN (MOTHER)' | translate }}</th>
+  <th>{{ 'ULN (FATHER)' | translate }}</th>
+  <th class="text-center">{{ 'STILLBORN' | translate }}</th>
+  <th class="text-center">{{ 'BORN ALIVE' | translate }}</th>
+  <th class="text-center">{{ 'ABORTED' | translate }}</th>
+  <th class="text-center">{{ 'PSEUDOPREGNANCY' | translate }}</th>
+  <th>{{ 'STATUS' | translate }}</th>
+  <th></th>
+  </thead>
+  <tbody>
+  <tr
+    *ngFor="let litter of litters | birthHistoryFilter: searchValue | paginate: {itemsPerPage: 10, currentPage: page}; let i = index"
+    (revokeLitter)="selectLitter($event)" [litter-object]="litter"></tr>
+  </tbody>
+</table>
+
+<pagination (pageChange)="page = $event"></pagination>
+
+<!--REVOKE MODAL-->
+<div class="reveal-overlay" [ngStyle]="{'display': modal_display}">
+  <div class="tiny reveal" [ngStyle]="{'display': modal_display}">
+    <div class="modal-header">
+      {{ 'REVOKE DECLARATION' | translate }}
+      <button type="button" (click)="closeModal()" class="pull-right" aria-label="Close modal">
+        <i class="fa fa-times" aria-hidden="true"></i>
+      </button>
+    </div>
+    <div class="modal-body"> {{ 'ARE YOU SURE YOU WANT TO REVOKE DECLARATION' | translate }}</div>
+    <div class="modal-footer">
+      <button class="tiny alert button pull-right" (click)="revokeLitter()">{{ 'REVOKE' | translate}}</button>
+      <button class="tiny primary button pull-right" (click)="closeModal()">{{ 'CANCEL' | translate}}</button>
+    </div>
+  </div>
+</div>

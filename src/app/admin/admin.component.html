@@ -1,0 +1,33 @@
+<div id="profile">
+
+    <!--BREADCRUMBS-->
+    <div class="row">
+        <ul class="breadcrumbs">
+            <li><a [routerLink]="['/main']">{{ 'DASHBOARD' | translate }}</a></li>
+            <li>{{ 'ADMIN' | translate }}</li>
+        </ul>
+    </div>
+
+    <!--TABS MEDIUM/LARGE SCREENS-->
+    <div class="row hide-for-small-only">
+        <ul class="tabs">
+            <li [class.active]="isActiveRoute('/main/admin/rvo-leading-livestock-sync')" class="tabs-title">
+                <a (click)="navigateTo('/main/admin/rvo-leading-livestock-sync')">{{ 'LIVESTOCK SYNC' | translate }}</a>
+            </li>
+        </ul>
+    </div>
+
+    <!--TABS SMALL SCREENS-->
+    <div class="row show-for-small-only">
+        <label> {{ 'TAB' | translate }}
+            <select [(ngModel)]="selectedRoute" (change)="selectRoute($event)">
+                <option value="/main/admin/rvo-leading-livestock-sync">{{ 'LIVESTOCK SYNC' | translate }}</option>
+            </select>
+        </label>
+    </div>
+
+    <!--TAB CONTENT-->
+    <div class="row">
+        <router-outlet></router-outlet>
+    </div>
+</div>

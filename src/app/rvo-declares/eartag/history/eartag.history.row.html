@@ -1,0 +1,44 @@
+<!--LOG DATE-->
+<td>
+    <span [hidden]="editMode">
+        <label class="show-for-small-only">{{ 'DATE' | translate }}</label>
+        {{ stringAsViewDateTime(eartag.log_date) }}
+    </span>
+
+  <span [hidden]="!editMode"> <i class="fa fa-pencil" aria-hidden="true"></i> </span>
+</td>
+
+<!--ULN-->
+<td>
+  <label class="show-for-small-only">{{ 'ULN' | translate }}</label>
+  {{ eartag.uln_country_code + eartag.uln_number }}
+</td>
+
+<!--UBN NEW OWNER-->
+<td>
+  <label class="show-for-small-only">{{ 'UBN NEW OWNER' | translate }}</label>
+  <span [hidden]="editMode">{{ eartag.ubn_new_owner }}</span>
+  <span [hidden]="!editMode" [ngFormModel]="form">
+        <input type="text" [(ngModel)]="eartag.ubn_new_owner" ngControl="ubn_new_owner">
+        <div [hidden]="form.controls['ubn_new_owner'].valid || form_valid" class="input-error-msg text-center">{{ 'UBN IS INVALID' | translate }}</div>
+    </span>
+</td>
+
+<!--STATUS-->
+<td>
+  <label class="show-for-small-only">{{ 'STATUS' | translate }}</label>
+  <span [hidden]="editMode" [ngSwitch]="eartag.request_state">
+        <template ngSwitchWhen="OPEN"> {{ 'PROCESSING' | translate }} </template>
+        <template ngSwitchWhen="REVOKING"> {{ 'PROCESSING' | translate }} </template>
+        <template ngSwitchWhen="FINISHED"> {{ 'SENT' | translate }} </template>
+        <template ngSwitchWhen="REVOKED"> {{ 'REVOKED' | translate }} </template>
+    </span>
+</td>
+
+<!--ROW BUTTONS-->
+<td>
+    <span
+      [hidden]="editMode || eartag.request_state == 'OPEN' || eartag.request_state == 'REVOKING' || eartag.request_state == 'REVOKED'">
+        <app-revoke-button [isActive]="eartag.message_number" (click)="sendRevokeRequest()"></app-revoke-button>
+    </span>
+</td>

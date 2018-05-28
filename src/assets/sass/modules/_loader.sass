@@ -1,0 +1,111 @@
+$animationLength: 1.5s
+$animationRadius: 12px
+$dotSize: 8px
+
+#loader
+  min-height: 100%
+  background-color: $nsfo-green
+  background-size: cover
+  display: flex
+  align-items: center
+  justify-content: center
+  flex-direction: column
+
+  .description
+    padding-top: 1em
+    color: #2f2f2f
+    font-size: 1em
+    font-weight: 300
+    font-style: italic
+
+  .logo
+    font-family: $lato
+    font-weight: 900
+    font-size: 2em
+    text-align: center
+    color: #FFF
+    padding: 0.5em 0 0.5em 0
+    margin-top: -4em
+
+    span
+      font-weight: 300
+
+  .loader-container
+    display: block
+    margin-top: -1em
+
+  .loader-icon
+    position: relative
+    width: $animationRadius * 3 + $dotSize
+    height: $dotSize
+    margin: $animationRadius auto
+
+  .dot
+    display: inline-block
+    width: $dotSize
+    height: $dotSize
+    border-radius: $dotSize * 0.5
+    background: #FFF
+    position: absolute
+
+  .dot_1
+    animation: animateDot1 $animationLength linear infinite
+    left: $animationRadius
+    background: #263238
+
+  .dot_2
+    animation: animateDot2 $animationLength linear infinite
+    animation-delay: $animationLength / 3
+    left: $animationRadius * 2
+
+  .dot_3
+    animation: animateDot3 $animationLength linear infinite
+    left: $animationRadius
+
+  .dot_4
+    animation: animateDot4 $animationLength linear infinite
+    animation-delay: $animationLength / 3
+    left: $animationRadius * 2
+
+@keyframes animateDot1
+  0%
+    transform: rotate(0deg) translateX(-$animationRadius)
+  25%
+    transform: rotate(180deg) translateX(-$animationRadius)
+  75%
+    transform: rotate(180deg) translateX(-$animationRadius)
+  100%
+    transform: rotate(360deg) translateX(-$animationRadius)
+
+@keyframes animateDot2
+  0%
+    transform: rotate(-0deg) translateX(-$animationRadius)
+  25%
+    transform: rotate(-180deg) translateX(-$animationRadius)
+  75%
+    transform: rotate(-180deg) translateX(-$animationRadius)
+  100%
+    transform: rotate(-360deg) translateX(-$animationRadius)
+
+@keyframes animateDot3
+  0%
+    transform: rotate(0deg) translateX($animationRadius)
+  25%
+    transform: rotate(180deg) translateX($animationRadius)
+  75%
+    transform: rotate(180deg) translateX($animationRadius)
+  100%
+    transform: rotate(360deg) translateX($animationRadius)
+
+@keyframes animateDot4
+  0%
+    transform: rotate(-0deg) translateX($animationRadius)
+  25%
+    transform: rotate(-180deg) translateX($animationRadius)
+  75%
+    transform: rotate(-180deg) translateX($animationRadius)
+  100%
+    transform: rotate(-360deg) translateX($animationRadius)
+
+
+

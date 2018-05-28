@@ -1,0 +1,225 @@
+<form [ngFormModel]="form" class="form-declare">
+
+  <!--LITTER-->
+  <div class="row">
+    <div class="medium-2 columns">
+      <label> &nbsp;
+        <label class="text-right middle section-label">{{ 'LITTER' | translate }}</label>
+      </label>
+    </div>
+
+    <!--BIRTH DATE-->
+    <div class="medium-2 columns">
+      <label>
+        {{ 'DATE OF BIRTH' | translate }} &nbsp;
+        <datepicker [formCtrl]="form.controls['date_of_birth']" [editMode]="!isChildListOn"
+                    [viewFormat]="view_date_format" [modelFormat]="model_datetime_format"></datepicker>
+        <div *ngIf="form.controls['date_of_birth'].errors && form.controls['date_of_birth'].errors.invalidDateFormat"
+             class="input-error-msg pull-right">{{ 'FILL IN THE BIRTH DATE' | translate }}
+        </div>
+        <div
+          *ngIf="form.controls['date_of_birth'].errors && form.controls['date_of_birth'].errors.invalidDateItIsInTheFuture"
+          class="input-error-msg pull-right">{{ 'DATE CAN NOT BE IN THE FUTURE' | translate }}
+        </div>
+      </label>
+    </div>
+
+    <!--ABORTED-->
+    <div class="medium-2 columns">
+      <label>
+        {{ 'ABORTED' | translate }} &nbsp;
+        <select #abortedSelect ngControl="aborted"
+                [disabled]="litterSizeInput.value > 0 || PseudoPregnancySelect.value == 'YES' || isChildListOn">
+          <option value="{{ constants.YES }}">{{ constants.YES | translate }}</option>
+          <option value="{{ constants.NO }}">{{ constants.NO | translate }}</option>
+        </select>
+      </label>
+    </div>
+
+    <!--PSEUDOPREGNANCY-->
+    <div class="medium-2 columns end">
+      <label>
+        {{ 'PSEUDOPREGNANCY' | translate }} &nbsp;
+        <select #PseudoPregnancySelect ngControl="pseudopregnancy"
+                [disabled]="litterSizeInput.value > 0 || abortedSelect.value == 'YES' || isChildListOn">
+          <option value="{{ constants.YES }}">{{ constants.YES | translate }}</option>
+          <option value="{{ constants.NO }}">{{ constants.NO | translate }}</option>
+        </select>
+      </label>
+    </div>
+  </div>
+
+  <!--FEMALE ANIMAL-->
+  <div class="row">
+    <div class="medium-2 columns">
+      <label> &nbsp;
+        <label class="text-right middle section-label">{{ 'MOTHER' | translate }}</label>
+      </label>
+    </div>
+
+    <!--ULN-->
+    <div class="medium-2 columns">
+      <label>
+        {{ 'ULN' | translate }}
+        <input (keyup)="preventKeyPress($event)" (keydown)="preventKeyPress($event)"
+               (keypress)="preventKeyPress($event)" id="uln_mother" type="text" ngControl="uid_number_mother"
+               (focus)="getCandidateMothers(); motherSelector.openModal()" [disabled]="isChildListOn">
+      </label>
+      <div [hidden]="form.controls['uid_number_mother'].valid || isValidForm" class="input-error-msg pull-right">{{
+        'FILL IN THE ULN' | translate }}
+      </div>
+    </div>
+
+    <!--LITTER SIZE-->
+    <div ngControlGroup="litter" class="medium-2 columns">
+      <label>
+        {{ 'LITTER SIZE' | translate }} &nbsp;
+        <input #litterSizeInput ngControl="litter_size" type="number" min='0'
+               [disabled]="abortedSelect.value == 'YES' || PseudoPregnancySelect.value == 'YES' || isChildListOn"
+               class="form-control">
+        <div *ngIf="litter.errors && litter.errors.invalidLitterSizeGreaterThenSeven"
+             class="input-error-msg pull-right">{{ 'CAN NOT BE GREATER THEN 7' | translate }}
+        </div>
+        <div
+          *ngIf="litter.controls['litter_size']._touched && litter.controls['litter_size'].errors && litter.controls['litter_size'].errors.required"
+          class="input-error-msg pull-right">{{ 'FILL IN A VALUE' | translate }}
+        </div>
+      </label>
+    </div>
+
+    <!--AMOUNT ALIVE-->
+    <div ngControlGroup="litter" class="medium-2 columns end">
+      <label>
+        {{ 'AMOUNT ALIVE' | translate }} &nbsp;
+        <input #amountAliveInput ngControl="litter_alive" type="number" min='0'
+               [disabled]="abortedSelect.value == 'YES' || PseudoPregnancySelect.value == 'YES' || isChildListOn"
+               class="form-control">
+        <div *ngIf="litter.errors && litter.errors.invalidLitterSizeGreaterThenAlive"
+             class="input-error-msg pull-right">{{ 'ALIVE AMOUNT MUST BE EQUAL OR LESS THAN LITTER SIZE' | translate }}
+        </div>
+        <div
+          *ngIf="litter.controls['litter_alive']._touched && litter.controls['litter_alive'].errors && litter.controls['litter_alive'].errors.required"
+          class="input-error-msg pull-right">{{ 'FILL IN A VALUE' | translate }}
+        </div>
+      </label>
+    </div>
+  </div>
+
+  <!--MALE ANIMAL-->
+  <div class="row">
+    <div class="medium-2 columns">
+      <label> &nbsp;
+        <label class="text-right middle section-label">{{ 'FATHER' | translate }}</label>
+      </label>
+    </div>
+
+    <!--IDENTIFICATION TYPE-->
+    <div class="medium-2 columns end">
+
+      <label>
+        {{ 'ULN' | translate }}
+        <input (keyup)="preventKeyPress($event)" (keydown)="preventKeyPress($event)"
+               (keypress)="preventKeyPress($event)" type="text" ngControl="uid_number_father"
+               (focus)="fatherSelector.openModal()" [disabled]="isChildListOn || !selectedMother">
+      </label>
+      <div [hidden]="form.controls['uid_number_father'].valid || isValidForm" class="input-error-msg pull-right">{{
+        'FILL IN THE ULN' | translate }}
+      </div>
+
+      <!--<label>
+          {{ 'IDENTIFICATION TYPE' | translate }}
+          <select [disabled]="PseudoPregnancySelect.value == 'YES' || abortedSelect.value == 'YES'" ngControl="uid_type_father" [disabled]="isChildListOn">
+              <option value="{{ constants.ULN }}">{{ constants.ULN | translate }}</option>
+              <option value="{{ constants.PEDIGREE }}">{{ constants.PEDIGREE | translate }}</option>
+          </select>
+      </label>-->
+    </div>
+
+    <!--IDENTIFICATION NUMBER-->
+    <!--<div class="medium-2 columns end">
+        <label>{{ 'IDENTIFICATION NUMBER' | translate }}</label>
+        <div class="uid-input-group">
+            <select [disabled]="PseudoPregnancySelect.value == 'YES' || abortedSelect.value == 'YES'" ngControl="uid_country_code_father" [disabled]="isChildListOn">
+                <option *ngFor="let country_code of country_code_list" value="{{ country_code.code }}">{{ country_code.code }}</option>
+            </select>
+            <input [disabled]="PseudoPregnancySelect.value == 'YES' || abortedSelect.value == 'YES'" type="text" ngControl="uid_number_father" [disabled]="isChildListOn">
+        </div>
+        <div [hidden]="form.controls['uid_number_father'].valid || isValidForm" class="input-error-msg pull-right">{{ 'FILL IN THE ULN OR PEDIGREE' | translate }}</div>
+    </div>-->
+  </div>
+
+  <!--NEXT BUTTON-->
+  <div class="row">
+    <div class="medium-2 large-centered columns centered">
+      <button type="button"
+              *ngIf="!(abortedSelect.value == 'YES' || PseudoPregnancySelect.value == 'YES' || isChildListOn)"
+              (click)="createChildList()" class="small primary button expanded">{{ 'NEXT' | translate }}
+      </button>
+      <button type="button" *ngIf="isChildListOn" (click)="destroyChildList()" [disabled]="isSending"
+              class="small alert button expanded">{{ 'BACK' | translate }}
+      </button>
+
+      <button type="button" *ngIf="abortedSelect.value == 'YES' || PseudoPregnancySelect.value == 'YES'"
+              [disabled]="isSending" (click)="declareBirth()" class="small primary button expanded">
+                <span *ngIf="!isSending">
+                    {{ 'DECLARE' | translate }}
+                </span>
+        <span *ngIf="isSending">
+                    <i class="fa fa-gear fa-spin fa-fw"></i>
+                </span>
+      </button>
+    </div>
+  </div>
+</form>
+
+<div *ngIf="birth_list.length > 0">
+  <table class="stack">
+    <thead>
+    <th>
+      {{ 'ULN' | translate }}*
+    </th>
+    <th>
+      {{ 'GENDER' | translate }}
+    </th>
+    <th>
+      {{ 'BIRTH PROGRESS' | translate }}
+    </th>
+    <th>
+      {{ 'BIRTH WEIGHT (KG)' | translate }}
+    </th>
+    <th>
+      {{ 'TAIL LENGTH (CM)' | translate }}
+    </th>
+    <th>
+      {{ 'LAMBAR/SURROGATE' | translate }}
+    </th>
+    <th>
+      {{ 'ULN' | translate }} ({{ 'SURROGATE' | translate }})
+    </th>
+    </thead>
+    <tbody>
+    <app-birth-declare-row *ngFor="let child of birth_list; let i = index" [country_code_list]="country_code_list"
+        [candidateSurrogates]="candidateSurrogates" [animal]="child" [index]="i" [parent_form]="formChildren"
+        [isDisabled]="isSending" [form_valid]="isValidFormChildren" [tags]="filteredTags"
+        (selectedTag)="addToSelection($event)" (birthRowEvent)="getChildData($event)"
+        [selectedMother]="selectedMother"></app-birth-declare-row>
+    </tbody>
+  </table>
+  <button type="button" [disabled]="isSending" (click)="declareBirth()" class="small primary button pull-right">
+        <span *ngIf="!isSending">
+            <span class="badge">{{ birth_list.length }}</span>
+            {{ 'DECLARE' | translate }}
+        </span>
+    <span *ngIf="isSending">
+            <i class="fa fa-gear fa-spin fa-fw"></i>
+        </span>
+  </button>
+  <label class="optional-message middle pull-right"> * {{ 'REQUIRED' | translate }} </label>
+</div>
+
+<selector #motherSelector [columns]="['ULN', 'PEDIGREE NUMBER']" [list]="suggestedCandidateMothers" [filter]="'FEMALES'"
+          [SUGGESTION_LABEL]="'POSSIBLE MOTHER'" [isLoading]="isLoadingCandidateMothers"
+          (selection)="selectMother($event, mateSelector)"></selector>
+<selector #fatherSelector [columns]="['ULN', 'PEDIGREE NUMBER']" [list]="suggestedCandidateFathers" [filter]="'MALES'"
+          [SUGGESTION_LABEL]="'POSSIBLE FATHER'" [isLoading]="isLoadingCandidateFathers"
+          (selection)="selectFather($event)"></selector>

@@ -1,0 +1,474 @@
+<div class="info-header">
+  {{ 'EXTERIOR' | translate }} | {{ 'DATE' | translate }}:
+  <select #exteriorDateField [(ngModel)]="selectedExterior.measurement_date"
+          (change)="selectExteriorData(exteriorDateField.value)" [disabled]="exteriors.length == 0">
+    <option *ngIf="exteriors.length == 0" value=""> --</option>
+    <option *ngFor="let exterior of exteriors" [value]="exterior.measurement_date">{{
+      stringAsViewDate(exterior.measurement_date) }}
+    </option>
+  </select>
+
+  <span *ngIf="isAdmin">
+        <!--[disabled]="edit_mode || !changeEnabled" -->
+        <button type="button" [disabled]="exteriors.length == 0" *ngIf="selectedExterior"
+                (click)="openExteriorModal(true)"
+                class="tiny primary button pull-right"> {{ 'EDIT' | translate }} </button>
+    <!--[disabled]="edit_mode || !changeEnabled"-->
+        <button type="button" (click)="openExteriorModal(false)" class="tiny primary button pull-right"> {{ 'NEW EXTERIOR' | translate }} </button>
+        <button type="button" [disabled]="exteriors.length == 0" *ngIf="selectedExterior"
+                (click)="openConfirmDeleteModal()"
+                class="tiny alert button pull-right"> {{ 'DELETE' | translate }} </button>
+    </span>
+</div>
+
+<div class="info-body">
+  <!-- KIND -->
+  <div class="row">
+    <div class="medium-6 columns">
+      <label class="middle">{{ 'KIND CODE' | translate }}</label>
+    </div>
+    <div class="medium-6 columns">
+      <input type="text" [(ngModel)]="selectedExterior.kind" disabled>
+    </div>
+  </div>
+
+  <!-- SKULL -->
+  <div class="row">
+    <div class="medium-6 columns">
+      <label class="middle">{{ 'HEAD' | translate }}</label>
+    </div>
+    <div class="medium-6 columns">
+      <input *ngIf="selectedExterior.skull == 0" type="text" disabled>
+      <input type="number" *ngIf="selectedExterior.skull != 0" [(ngModel)]="selectedExterior.skull" disabled>
+    </div>
+  </div>
+
+  <!-- PROGRESS -->
+  <div class="row">
+    <div class="medium-6 columns">
+      <label class="middle">{{ 'PROGRESS' | translate }}</label>
+    </div>
+    <div class="medium-6 columns">
+      <input *ngIf="selectedExterior.progress == 0" type="text" disabled>
+      <input *ngIf="selectedExterior.progress != 0" type="number" [(ngModel)]="selectedExterior.progress" disabled>
+    </div>
+  </div>
+
+  <!-- MUSCULARITY -->
+  <div class="row">
+    <div class="medium-6 columns">
+      <label class="middle">{{ 'MUSCULARITY' | translate }}</label>
+    </div>
+    <div class="medium-6 columns">
+      <input *ngIf="selectedExterior.muscularity == 0" type="text" disabled>
+      <input type="number" *ngIf="selectedExterior.muscularity != 0" [(ngModel)]="selectedExterior.muscularity"
+             disabled>
+    </div>
+  </div>
+
+  <!-- PROPORTION -->
+  <div class="row">
+    <div class="medium-6 columns">
+      <label class="middle">{{ 'PROPORTION' | translate }}</label>
+    </div>
+    <div class="medium-6 columns">
+      <input *ngIf="selectedExterior.proportion == 0" type="text" disabled>
+      <input type="number" *ngIf="selectedExterior.proportion != 0" [(ngModel)]="selectedExterior.proportion" disabled>
+    </div>
+  </div>
+
+  <!-- TYPE -->
+  <div class="row">
+    <div class="medium-6 columns">
+      <label class="middle">{{ 'TYPE' | translate }}</label>
+    </div>
+    <div class="medium-6 columns">
+      <input *ngIf="selectedExterior.exterior_type == 0" type="text" disabled>
+      <input type="number" *ngIf="selectedExterior.exterior_type != 0" [(ngModel)]="selectedExterior.exterior_type"
+             disabled>
+    </div>
+  </div>
+
+  <!-- LEG WORK -->
+  <div class="row">
+    <div class="medium-6 columns">
+      <label class="middle">{{ 'LEG WORK' | translate }}</label>
+    </div>
+    <div class="medium-6 columns">
+      <input *ngIf="selectedExterior.leg_work  == 0" type="text" disabled>
+      <input type="number" *ngIf="selectedExterior.leg_work != 0" [(ngModel)]="selectedExterior.leg_work" disabled>
+    </div>
+  </div>
+
+  <!-- FUR -->
+  <div class="row">
+    <div class="medium-6 columns">
+      <label class="middle">{{ 'PELT' | translate }}</label>
+    </div>
+    <div class="medium-6 columns">
+      <input *ngIf="selectedExterior.fur == 0" type="text" disabled>
+      <input type="number" *ngIf="selectedExterior.fur != 0" [(ngModel)]="selectedExterior.fur" disabled>
+    </div>
+  </div>
+
+  <!-- GENERAL APPEARANCE -->
+  <div class="row">
+    <div class="medium-6 columns">
+      <label class="middle">{{ 'GENERAL APPEARANCE' | translate }}</label>
+    </div>
+    <div class="medium-6 columns">
+      <input *ngIf="selectedExterior.general_appearance == 0" type="text" disabled>
+      <input type="number" *ngIf="selectedExterior.general_appearance != 0"
+             [(ngModel)]="selectedExterior.general_appearance" disabled>
+    </div>
+  </div>
+
+  <!-- HEIGHT -->
+  <div class="row">
+    <div class="medium-6 columns">
+      <label class="middle">{{ 'HEIGHT' | translate }}</label>
+    </div>
+    <div class="medium-6 columns">
+      <input *ngIf="selectedExterior.height == 0" type="text" disabled>
+      <input type="number" *ngIf="selectedExterior.height != 0" [(ngModel)]="selectedExterior.height" disabled>
+    </div>
+  </div>
+
+  <!-- BREAST DEPTH -->
+  <div class="row">
+    <div class="medium-6 columns">
+      <label class="middle">{{ 'BREAST DEPTH' | translate }}</label>
+    </div>
+    <div class="medium-6 columns">
+      <input *ngIf="selectedExterior.breast_depth == 0" type="text" disabled>
+      <input type="number" *ngIf="selectedExterior.breast_depth != 0" [(ngModel)]="selectedExterior.breast_depth"
+             disabled>
+    </div>
+  </div>
+
+  <!-- TORSO LENGTH -->
+  <div class="row">
+    <div class="medium-6 columns">
+      <label class="middle">{{ 'TORSO LENGTH' | translate }}</label>
+    </div>
+    <div class="medium-6 columns">
+      <input *ngIf="selectedExterior.torso_length == 0" type="text" disabled>
+      <input type="number" *ngIf="selectedExterior.torso_length != 0" [(ngModel)]="selectedExterior.torso_length"
+             disabled>
+    </div>
+  </div>
+
+  <!-- MARKINGS -->
+  <div class="row">
+    <div class="medium-6 columns">
+      <label class="middle">{{ 'MARKINGS' | translate }}</label>
+    </div>
+    <div class="medium-6 columns">
+      <input *ngIf="selectedExterior.markings == 0" type="text" disabled>
+      <input type="number" *ngIf="selectedExterior.markings != 0" [(ngModel)]="selectedExterior.markings" disabled>
+    </div>
+  </div>
+
+  <!-- INSPECTORS -->
+  <div class="row">
+    <div class="medium-6 columns">
+      <label class="middle">{{ 'INSPECTOR' | translate }}</label>
+    </div>
+    <div class="medium-6 columns">
+      <!-- ONLY SHOW NAME IF THERE IS AN INSPECTOR -->
+
+      <input type="text" *ngIf="selectedExterior.inspector.first_name || selectedExterior.inspector.last_name"
+             [value]="selectedExterior.inspector.first_name + ' ' + selectedExterior.inspector.last_name" disabled>
+      <input type="text" *ngIf="!selectedExterior.inspector.first_name && !selectedExterior?.inspector.last_name"
+             [value]="" disabled>
+    </div>
+  </div>
+</div>
+
+<!--CONFIRM DELETE MODAL-->
+<div class="reveal-overlay" *ngIf="showConfirmDeleteModal" style="display:block">
+  <div class="tiny reveal" style="display:block">
+    <div class="modal-header">
+            <span *ngIf="isAdmin">
+                <span> {{ 'DELETE EXTERIOR' | translate }} </span>
+            </span>
+      <button type="button" class="pull-right" aria-label="Close modal" (click)="closeConfirmDeleteModal()">
+        <i class="fa fa-times" aria-hidden="true"></i>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="row">
+        <div class="medium-12 columns">
+          {{ "ARE YOU SURE YOU WOULD LIKE TO DELETE THIS EXTERIOR MEASUREMENT" | translate }}
+        </div>
+      </div>
+
+    </div>
+    <div class="modal-footer">
+      <button class="tiny primary button" [disabled]="isRequestingExterior" (click)="doPutExteriorDeactivateRequest()">
+        <span> {{ 'DELETE' | translate }}</span>
+      </button>
+      <button class="tiny alert button" (click)="closeConfirmDeleteModal()">{{ 'CLOSE' | translate }}</button>
+    </div>
+  </div>
+</div>
+
+<!--MEASUREMENT MODAL-->
+<!--[ngStyle]="{'display': displayExteriorModal}"-->
+<div id="measurement-modal" class="reveal-overlay" *ngIf="showExteriorModal" style="display:block">
+  <!--[ngStyle]="{'display': displayExteriorModal}"-->
+  <div class="tiny reveal" [ngFormModel]="exteriorForm" style="display:block">
+    <div class="modal-header">
+            <span *ngIf="isAdmin">
+                <span *ngIf="!isExteriorEditMode"> {{ 'NEW EXTERIOR' | translate }} </span>
+                <span *ngIf="isExteriorEditMode"> {{ 'EDIT EXTERIOR' | translate }} </span>
+            </span>
+      <button type="button" class="pull-right" aria-label="Close modal" (click)="closeExteriorModal()">
+        <i class="fa fa-times" aria-hidden="true"></i>
+      </button>
+    </div>
+    <div class="modal-body">
+      <!-- DATE -->
+      <div class="row">
+        <div class="medium-6 columns">
+          <label class="middle">{{ 'DATE' | translate }}</label>
+        </div>
+        <div class="medium-6 columns">
+          <!-- selectedDate -->
+          <datepicker [editMode]="true" [initDate]="initDate" [formCtrl]="exteriorForm.controls['measurement_date']"
+                      [viewFormat]="view_date_format" [modelFormat]="model_datetime_format"></datepicker>
+          <div class="pull-right input-error-msg" [hidden]="!invalidMeasurementDate"> {{'AN EXTERIOR ALREADY EXISTS FOR
+            THIS DATE' | translate}}
+          </div>
+        </div>
+      </div>
+
+      <!-- KIND -->
+      <div class="row">
+        <div class="medium-6 columns">
+          <label class="middle">{{ 'KIND CODE' | translate }}
+            <span *ngIf="kinds.length == 0">
+                            <i class="fa fa-gear fa-spin fa-fw"></i>
+                        </span>
+          </label>
+        </div>
+        <div class="medium-6 columns">
+          <select [(ngModel)]="tempExterior.kind" ngControl="kind">
+            <option value=""> --</option>
+            <option *ngFor="let kind of kinds" value="{{ kind.code }}"> {{ kind.code }}</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- SKULL -->
+      <div class="row">
+        <div class="medium-6 columns">
+          <label class="middle">{{ 'HEAD' | translate }}</label>
+        </div>
+        <div class="medium-6 columns">
+          <input type="number" [(ngModel)]="tempExterior.skull" ngControl="skull">
+          <div class="pull-right input-error-msg"
+               [hidden]="exteriorForm.controls['skull'].valid || isValidExteriorForm"> {{ 'THE MEASUREMENTS NEED TO BE
+            BETWEEN 69 AND 99' | translate }}.
+          </div>
+        </div>
+      </div>
+
+      <!-- PROGRESS -->
+      <div class="row">
+        <div class="medium-6 columns">
+          <label class="middle">{{ 'PROGRESS' | translate }}</label>
+        </div>
+        <div class="medium-6 columns">
+          <input type="number" [(ngModel)]="tempExterior.progress" ngControl="progress">
+          <div class="pull-right input-error-msg"
+               [hidden]="exteriorForm.controls['progress'].valid || isValidExteriorForm"> {{ 'THE MEASUREMENTS NEED TO
+            BE BETWEEN 69 AND 99' | translate }}.
+          </div>
+        </div>
+      </div>
+
+      <!-- MUSCULARITY -->
+      <div class="row">
+        <div class="medium-6 columns">
+          <label class="middle">{{ 'MUSCULARITY' | translate }}</label>
+        </div>
+        <div class="medium-6 columns">
+          <input type="number" [(ngModel)]="tempExterior.muscularity" ngControl="muscularity">
+          <div class="pull-right input-error-msg"
+               [hidden]="exteriorForm.controls['muscularity'].valid || isValidExteriorForm"> {{ 'THE MEASUREMENTS NEED
+            TO BE BETWEEN 69 AND 99' | translate }}.
+          </div>
+        </div>
+      </div>
+
+      <!-- PROPORTION -->
+      <div class="row">
+        <div class="medium-6 columns">
+          <label class="middle">{{ 'PROPORTION' | translate }}</label>
+        </div>
+        <div class="medium-6 columns">
+          <input type="number" [(ngModel)]="tempExterior.proportion" ngControl="proportion">
+          <div class="pull-right input-error-msg"
+               [hidden]="exteriorForm.controls['proportion'].valid || isValidExteriorForm"> {{ 'THE MEASUREMENTS NEED TO
+            BE BETWEEN 69 AND 99' | translate }}.
+          </div>
+        </div>
+      </div>
+
+      <!-- TYPE -->
+      <div class="row">
+        <div class="medium-6 columns">
+          <label class="middle">{{ 'TYPE' | translate }}</label>
+        </div>
+        <div class="medium-6 columns">
+          <input type="number" [(ngModel)]="tempExterior.exterior_type" ngControl="exterior_type">
+          <div class="pull-right input-error-msg"
+               [hidden]="exteriorForm.controls['exterior_type'].valid || isValidExteriorForm"> {{ 'THE MEASUREMENTS NEED
+            TO BE BETWEEN 69 AND 99' | translate }}.
+          </div>
+        </div>
+      </div>
+
+      <!-- LEG WORK -->
+      <div class="row">
+        <div class="medium-6 columns">
+          <label class="middle">{{ 'LEG WORK' | translate }}</label>
+        </div>
+        <div class="medium-6 columns">
+          <input type="number" [(ngModel)]="tempExterior.leg_work" ngControl="leg_work">
+          <div class="pull-right input-error-msg"
+               [hidden]="exteriorForm.controls['leg_work'].valid || isValidExteriorForm"> {{ 'THE MEASUREMENTS NEED TO
+            BE BETWEEN 69 AND 99' | translate }}.
+          </div>
+        </div>
+      </div>
+
+      <!-- PELT -->
+      <div class="row">
+        <div class="medium-6 columns">
+          <label class="middle">{{ 'PELT' | translate }}</label>
+        </div>
+        <div class="medium-6 columns">
+          <input type="number" [(ngModel)]="tempExterior.fur" ngControl="fur">
+          <div class="pull-right input-error-msg" [hidden]="exteriorForm.controls['fur'].valid || isValidExteriorForm">
+            {{ 'THE MEASUREMENTS NEED TO BE BETWEEN 69 AND 99' | translate }}.
+          </div>
+        </div>
+      </div>
+
+      <!-- GENERAL APPEARANCE -->
+      <div class="row">
+        <div class="medium-6 columns">
+          <label class="middle">{{ 'GENERAL APPEARANCE' | translate }}</label>
+        </div>
+        <div class="medium-6 columns">
+          <input type="number" [(ngModel)]="tempExterior.general_appearance" ngControl="general_appearance">
+          <div class="pull-right input-error-msg"
+               [hidden]="exteriorForm.controls['general_appearance'].valid || isValidExteriorForm"> {{ 'THE MEASUREMENTS
+            NEED TO BE BETWEEN 69 AND 99' | translate }}.
+          </div>
+        </div>
+      </div>
+
+      <!-- HEIGHT -->
+      <div class="row">
+        <div class="medium-6 columns">
+          <label class="middle">{{ 'HEIGHT' | translate }}</label>
+        </div>
+        <div class="medium-6 columns">
+          <input type="number" [(ngModel)]="tempExterior.height" ngControl="height">
+          <div class="pull-right input-error-msg"
+               [hidden]="exteriorForm.controls['height'].valid || isValidExteriorForm"> {{ 'THE MEASUREMENTS NEED TO BE
+            BETWEEN 0 AND 99' | translate }}.
+          </div>
+        </div>
+      </div>
+
+      <!-- BREAST DEPTH -->
+      <div class="row">
+        <div class="medium-6 columns">
+          <label class="middle">{{ 'BREAST DEPTH' | translate }}</label>
+        </div>
+        <div class="medium-6 columns">
+          <input type="number" [(ngModel)]="tempExterior.breast_depth" ngControl="breast_depth">
+          <div class="pull-right input-error-msg"
+               [hidden]="exteriorForm.controls['breast_depth'].valid || isValidExteriorForm"> {{ 'THE MEASUREMENTS NEED
+            TO BE BETWEEN 0 AND 99' | translate }}.
+          </div>
+        </div>
+      </div>
+
+      <!-- TORSO LENGTH -->
+      <div class="row">
+        <div class="medium-6 columns">
+          <label class="middle">{{ 'TORSO LENGTH' | translate }}</label>
+        </div>
+        <div class="medium-6 columns">
+          <input type="number" [(ngModel)]="tempExterior.torso_length" ngControl="torso_length">
+          <div class="pull-right input-error-msg"
+               [hidden]="exteriorForm.controls['torso_length'].valid || isValidExteriorForm"> {{ 'THE MEASUREMENTS NEED
+            TO BE BETWEEN 0 AND 99' | translate }}.
+          </div>
+        </div>
+      </div>
+
+      <!-- MARKINGS -->
+      <div class="row">
+        <div class="medium-6 columns">
+          <label class="middle">{{ 'MARKINGS' | translate }}</label>
+        </div>
+        <div class="medium-6 columns">
+          <input type="number" [(ngModel)]="tempExterior.markings" ngControl="markings">
+          <div class="pull-right input-error-msg"
+               [hidden]="exteriorForm.controls['markings'].valid || isValidExteriorForm"> {{ 'THE MEASUREMENTS NEED TO
+            BE BETWEEN 69 AND 99' | translate }}.
+          </div>
+        </div>
+      </div>
+
+      <!-- INSPECTOR -->
+      <div class="row">
+        <div class="medium-6 columns">
+          <label class="middle">{{ 'INSPECTOR' | translate }}</label>
+        </div>
+        <div class="medium-6 columns">
+          <select *ngIf="tempExterior.inspector" [(ngModel)]="tempExterior.inspector.person_id" ngControl="inspector">
+            <option *ngFor="let inspector of inspectors" value="{{inspector.person_id}}"
+                    [selected]="tempExterior.inspector.person_id == inspector.person_id">
+              {{ inspector.first_name }} {{ inspector.last_name }}
+            </option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+            <span *ngIf="!isValidExteriorForm && !exteriorForm.valid" class="pull-left input-error-msg">
+                {{ 'THE MEASUREMENTS NEED TO BE BETWEEN 69 AND 99' | translate }}.
+            </span>
+
+      <span *ngIf="hasServerError" class="pull-left input-error-msg">
+                {{ 'SOMETHING WENT WRONG! TRY AGAIN AT LATER TIME!' | translate }}
+            </span>
+
+      <span class="pull-right">
+            <button *ngIf="!isExteriorEditMode" class="tiny primary button" [disabled]="isRequestingExterior"
+                    (click)="doPostExteriorRequest()">
+                <span *ngIf="!isRequestingExterior"> {{ 'SAVE' | translate }}</span>
+                <span *ngIf="isRequestingExterior">
+                    <i class="fa fa-gear fa-spin fa-fw"></i>
+                </span>
+            </button>
+
+            <button *ngIf="isExteriorEditMode" class="tiny primary button" [disabled]="isRequestingExterior"
+                    (click)="doPutExteriorRequest()">
+                <span *ngIf="!isRequestingExterior"> {{ 'SAVE' | translate }}</span>
+                <span *ngIf="isRequestingExterior">
+                    <i class="fa fa-gear fa-spin fa-fw"></i>
+                </span>
+            </button>
+            <button class="tiny alert button" (click)="closeExteriorModal()">{{ 'CLOSE' | translate }}</button>
+            </span>
+    </div>
+  </div>
+</div>

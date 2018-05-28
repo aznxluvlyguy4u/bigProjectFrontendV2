@@ -1,0 +1,207 @@
+<div id="invoice-details">
+  <div class="row">
+    <div class="page-header">
+      <div class="page-title">{{ 'INVOICE DETAILS' | translate }}</div>
+    </div>
+    <div class="row information-overview">
+      <div class="large-6 columns">
+        <div class="large-12 columns section-title">
+          {{ 'YOUR INFORMATION' | translate }}
+        </div>
+        <table>
+          <tr>
+            <td class="large-6 columns">
+              {{ 'UBN' | translate }}
+            </td>
+            <td class="large-6 columns">
+                            <span>
+                                {{ invoice.ubn }}
+                            </span>
+            </td>
+          </tr>
+          <tr class="row">
+            <td class="large-6 columns">
+              {{ 'INVOICE NUMBER' | translate }}
+            </td>
+            <td class="large-6 columns">
+              {{ invoice.invoice_number}}
+            </td>
+          </tr>
+          <tr class="row">
+            <td class="large-6 columns">
+              {{ 'NAME' | translate }}
+            </td>
+            <td class="large-6 columns">
+                            <span>
+                                {{ invoice.company_name }}
+                            </span>
+            </td>
+          </tr>
+          <tr class="row">
+            <td class="large-6 columns">
+              {{ 'VAT NUMBER' | translate }}
+            </td>
+            <td class="large-6 columns">
+                            <span>
+                                {{ invoice.company_vat_number }}
+                            </span>
+            </td>
+          </tr>
+        </table>
+      </div>
+      <div class="large-6 columns end">
+        <div class="large-12 columns section-title">
+          {{ 'SENDER INFORMATION' | translate }}
+        </div>
+        <table>
+          <tr class="row">
+            <td class="large-6 columns">
+              {{ 'NAME' | translate }}
+            </td>
+            <td class="large-6 columns">
+                            <span>
+                                {{ senderDetails.name }}
+                            </span>
+            </td>
+          </tr>
+          <tr class="row">
+            <td class="large-6 columns">
+              {{ 'IBAN' | translate }}
+            </td>
+            <td class="large-6 columns">
+                            <span>
+                                {{senderDetails.iban}}
+                            </span>
+            </td>
+          </tr>
+          <tr class="row">
+            <td class="large-6 columns">
+              {{ 'VAT NUMBER' | translate }}
+            </td>
+            <td class="large-6 columns">
+                            <span>
+                                {{senderDetails.vat_number}}
+                            </span>
+            </td>
+          </tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="row invoice-table">
+      <div class="large-12 columns">
+        <table>
+          <thead>
+          <tr>
+            <td>
+              {{ "DATE" | translate}}
+            </td>
+            <td>
+              {{"CATEGORY" | translate }}
+            </td>
+            <td>
+              {{ 'DESCRIPTION' | translate }}
+            </td>
+            <td class="text-right">
+              {{ 'VAT RATE' | translate }}
+            </td>
+            <td class="text-right">
+              {{ 'UNIT COST' | translate }}
+            </td>
+            <td class="text-right">
+              {{ 'AMOUNT' | translate }}
+            </td>
+            <td class="text-right">
+              {{ 'PRICE' | translate }}
+            </td>
+          </tr>
+          </thead>
+          <tbody *ngIf="invoice && invoice.invoice_rule_selections">
+          <tr *ngFor="let invoice_rule_selection of invoice.invoice_rule_selections"
+              *ngIf="invoice_rule_selection != null && invoice_rule_selection.invoice_rule != null">
+            <td>
+              {{ settingsService.convertToViewDate(invoice_rule_selection.date) }}
+            </td>
+            <td>
+              {{invoice_rule_selection.invoice_rule.ledger_category ?
+              invoice_rule_selection.invoice_rule.ledger_category.code + ': ' +
+              invoice_rule_selection.invoice_rule.ledger_category.description : ''}}
+            </td>
+            <td>
+              {{invoice_rule_selection.invoice_rule.description}}
+            </td>
+            <td class="text-right">
+              {{invoice_rule_selection.invoice_rule.vat_percentage_rate}}%
+            </td>
+            <td class="text-right">
+              {{invoice_rule_selection.invoice_rule.price_excl_vat | localNumberFormat:3 }}
+            </td>
+            <td class="text-right">
+              {{invoice_rule_selection.amount}}
+            </td>
+            <td class="text-right">
+              {{(invoice_rule_selection.invoice_rule.price_excl_vat * invoice_rule_selection.amount) |
+              localNumberFormat:3 }}
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="large-push-8 large-4 columns">
+        <table>
+          <tbody *ngIf="invoice && invoice.vat_breakdown">
+          <tr>
+            <td> {{ 'TOTAL EXCL VAT' | translate }}</td>
+            <td>
+                            <span class="pull-right">
+                                {{ invoice.vat_breakdown.total_excl_vat  | localNumberFormat}}
+                            </span>
+            </td>
+          </tr>
+          <tr *ngFor="let vatBreakdownRecord of invoice.vat_breakdown.records">
+            <td>
+              {{ vatBreakdownRecord.vat_percentage_rate }}% {{ 'VAT ON' | translate }} {{
+              vatBreakdownRecord.price_excl_vat_total | localNumberFormat:3 }}
+            </td>
+            <td>
+                            <span class="pull-right">
+                                {{ vatBreakdownRecord.vat  | localNumberFormat:3 }}
+                            </span>
+            </td>
+          </tr>
+          <tr>
+            <td> {{ 'TOTAL INCL VAT' | translate }} <i class="fa fa-info-circle" aria-hidden="true"
+                                                       title="{{ 'ROUNDED TO THE NEAREST TWO DECIMALS' | translate }}"></i>
+            </td>
+            <td>
+                            <span class="pull-right">
+                                {{ invoice.vat_breakdown.total_incl_vat | localNumberFormat:2 }}
+                            </span>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+  <div class="large-12 columns">
+        <span class="pull-right">
+            <button *ngIf="invoice.status != 'PAID'" type="button" class="small primary button"
+                    (click)="startInvoicePaymentProcedure()">
+                {{'PAY INVOICE' | translate}}
+            </button>
+            <a [routerLink]="['/main/invoices/overview']">
+                <button type="button" class="small primary button">
+                    {{ 'RETURN TO OVERVIEW' | translate }}
+                </button>
+            </a>
+            <button type="button" (click)="downloadPdf()" class="small primary button">
+                {{ "DOWNLOAD PDF" | translate }}
+            </button>
+        </span>
+  </div>
+</div>

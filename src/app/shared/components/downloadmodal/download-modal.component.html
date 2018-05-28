@@ -1,0 +1,78 @@
+<div class="reveal-overlay" [ngStyle]="{'display': modalDisplay}">
+  <div class="reveal tiny" [ngStyle]="{'display': modalDisplay}">
+
+    <!--<div class="modal-header" style="min-height: 2em; background: #48A770" >-->
+    <div class="modal-header-download">
+      {{ title | translate }}
+      <button type="button" class="pull-right" aria-label="Close modal" (click)="closeModal()">
+        <i class="fa fa-times" aria-hidden="true"></i>
+      </button>
+    </div>
+
+    <ng-template *ngIf="isModalEmpty()">
+      <div class="modal-body">
+        <p>{{ 'THERE ARE NO DOWNLOADS READY FOR DOWNLOAD YET' | translate }}</p>
+      </div>
+    </ng-template>
+
+    <ng-template *ngIf="!isModalEmpty()">
+      <div class="modal-body">
+
+        <table>
+          <thead>
+          <tr>
+            <th>#</th>
+            <th>{{ 'TIME' | translate }}</th>
+            <th>{{ 'CATEGORY' | translate }}</th>
+            <th>{{ 'AMOUNT' | translate }}<i class="fa fa-info-circle" aria-hidden="true"
+                                             title="{{ 'DOWNLOAD MODAL AMOUNT INFO TEXT' | translate }}"></i></th>
+            <th>{{ 'FILE TYPE' | translate }}</th>
+            <th>{{ 'DOWNLOAD' | translate }}</th>
+          </tr>
+          </thead>
+          <tbody>
+
+          <tr *ngFor="let downloadRequest of downloadRequestsShownInModal">
+            <td>{{downloadRequest.id}}</td>
+            <td>{{downloadRequest.logDate | date:'HH:mm:ss' }}</td>
+            <td>{{downloadRequest.downloadType | translate}}</td>
+            <td>{{downloadRequest.reportCount === 0 ? '-' : downloadRequest.reportCount}}</td>
+            <td>{{downloadRequest.fileType }}</td>
+
+            <td *ngIf="!downloadRequest.isCompleted && !downloadRequest.isFailed">
+              <i class="fa fa-spinner fa-pulse fa-2x fa-fw"
+                 title="{{ 'YOUR FILE IS NOW BEING GENERATED' | translate }}"></i>
+            </td>
+            <td *ngIf="!downloadRequest.isFailed && downloadRequest.isCompleted">
+              <button type="button"
+                      class="button primary pull-left"
+                      aria-label="Download file"
+                      (click)="downloadFile(downloadRequest)">
+                {{ 'DOWNLOAD' | translate }}
+              </button>
+            </td>
+            <td *ngIf="downloadRequest.isFailed">
+              {{ 'FAILED' | translate }}
+              <i class="fa fa-info-circle"
+                 aria-hidden="true"
+                 title="{{(downloadRequest.errorMessage != null ? downloadRequest.errorMessage : 'DOWNLOAD MODAL FAILED DEFAULT INFO TEXT') | translate}}">
+              </i>
+            </td>
+
+          </tr>
+          </tbody>
+        </table>
+
+        <button *ngIf="hasFailedDownloads()"
+                type="button"
+                class="button alert pull-right"
+                aria-label="Clear list"
+                (click)="removeDownloadedAndFailedDownloads()">
+          {{ 'REMOVE FAILED FILES' | translate }}
+        </button>
+      </div>
+    </ng-template>
+
+
+  </div>
+</div>

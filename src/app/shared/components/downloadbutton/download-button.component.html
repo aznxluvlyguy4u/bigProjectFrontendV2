@@ -1,0 +1,15 @@
+<button
+  type="button"
+  class="button tiny primary"
+  title="{{title}}"
+  [disabled]="disableButton()"
+  [ngClass]="{'success': showSuccess, 'expanded': isExpandedButton}"
+  [ngStyle]="{'font-size': fontSize}"
+  (click)="onClickyClick()"
+>
+  <span *ngIf="includeBadgeCount" class="badge">{{badgeCount}}</span>
+  <i *ngIf="includeDownloadIcon" class="fa fa-download" aria-hidden="true" [ngStyle]="{'font-size': fontSize}"></i>
+  <span *ngIf="!showSpinner && !showSuccess" [ngStyle]="{'font-size': fontSize}">{{ labelText | translate }}</span>
+  <span *ngIf="showSpinner"> <i class="fa fa-gear fa-spin fa-fw"></i> </span>
+  <span *ngIf="!showSpinner && showSuccess"> <i class="fa fa-check" aria-hidden="true"></i> </span>
+</button>

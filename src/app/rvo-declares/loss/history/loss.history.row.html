@@ -1,0 +1,77 @@
+<!--LOG DATE-->
+<td>
+    <span [hidden]="editMode">
+        <label class="show-for-small-only">{{ 'DATE' | translate }}</label>
+        {{ stringAsViewDateTime(loss.log_date) }}
+    </span>
+
+  <span [hidden]="!editMode"> <i class="fa fa-pencil" aria-hidden="true"></i> </span>
+</td>
+
+<!--ULN-->
+<td>
+  <label class="show-for-small-only">{{ 'ULN' | translate }}</label>
+  {{ loss.uln_country_code + loss.uln_number }}
+</td>
+
+<!--PEDIGREE-->
+<td>
+  <label class="show-for-small-only">{{ 'PEDIGREE NUMBER' | translate }}</label>
+  <span *ngIf="(loss.pedigree_country_code && loss.pedigree_number)">
+        {{ loss.pedigree_country_code + loss.pedigree_number }}
+    </span>
+  <span *ngIf="!(loss.pedigree_country_code && loss.pedigree_number)">
+        --
+    </span>
+</td>
+
+<!--LOSS DATE-->
+<td>
+  <label class="show-for-small-only">{{ 'LOSS DATE' | translate }}</label>
+  <span [hidden]="editMode">{{ loss.date_of_death }}</span>
+  <span [hidden]="!editMode" [ngFormModel]="form">
+        <datepicker [formCtrl]="form.controls['date_of_death']" [initDate]="loss.date_of_death"
+                    [viewFormat]="view_date_format" [modelFormat]="model_datetime_format"></datepicker>
+        <div [hidden]="form.controls['date_of_death'].valid || form_valid" class="input-error-msg text-center"
+        >{{ 'FILL IN THE DATE OF LOSS' | translate }}</div>
+    </span>
+</td>
+
+<!--REASON OF LOSS-->
+<td>
+  <label class="show-for-small-only">{{ 'REASON OF LOSS' | translate }}</label>
+  <span [hidden]="editMode">{{ loss.reason_of_loss | translate }}</span>
+  <span [hidden]="!editMode" [ngFormModel]="form">
+        <select [(ngModel)]="loss.reason_of_loss" ngControl="reason_death">
+            <option *ngFor="let reason of options_reason_of_loss" value="{{reason}}">{{reason | translate}}</option>
+        </select>
+    </span>
+</td>
+
+<!--STATUS-->
+<td>
+  <label class="show-for-small-only">{{ 'STATUS' | translate }}</label>
+  <span [hidden]="editMode" [ngSwitch]="loss.request_state">
+        <template ngSwitchWhen="OPEN"> {{ 'PROCESSING' | translate }} </template>
+        <template ngSwitchWhen="REVOKING"> {{ 'PROCESSING' | translate }} </template>
+        <template ngSwitchWhen="FINISHED"> {{ 'SENT' | translate }} </template>
+        <template ngSwitchWhen="FINISHED_WITH_WARNING"> {{ 'SENT' | translate }} <app-history-error-info
+          [historyResponse]="loss"></app-history-error-info></template>
+        <template ngSwitchWhen="REVOKED"> {{ 'REVOKED' | translate }} </template>
+    </span>
+</td>
+
+<!--ROW BUTTONS-->
+<td>
+    <span
+      [hidden]="editMode || loss.request_state == 'OPEN' || loss.request_state == 'REVOKING'
+      || loss.request_state == 'REVOKED'">
+        <button *ngIf="false" class="tiny primary button" (click)="enableEditing()">{{ 'EDIT' | translate }}</button>
+        <app-revoke-button [isActive]="loss.message_number" (click)="sendRevokeRequest()"></app-revoke-button>
+    </span>
+
+  <span [hidden]="!editMode">
+        <button class="tiny primary button" (click)="sendChangeRequest()">{{ 'SEND' | translate }}</button>
+        <button class="tiny alert button" (click)="cancelEditing()">{{ 'CANCEL' | translate }}</button>
+    </span>
+</td>

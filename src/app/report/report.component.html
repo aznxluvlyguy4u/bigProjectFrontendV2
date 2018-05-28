@@ -1,0 +1,33 @@
+<div id='report'>
+
+    <!--BREADCRUMBS-->
+    <div class='row'>
+        <ul class='breadcrumbs'>
+            <li><a [routerLink]="['/main']">{{ 'DASHBOARD' | translate }}</a></li>
+            <li>{{ 'REPORT' | translate }}</li>
+        </ul>
+    </div>
+
+    <!--EMPTY SPACE-->
+    <div class='show-for-large empty-space'></div>
+
+    <!--TABS-->
+    <div class='row'>
+        <div class='large-4 columns small-centered'>
+            <label>
+                {{ 'REPORT' | translate }}
+                <select (change)='selectRoute($event)'>
+                    <option *ngFor='let report_option of report_options_list' value='{{ report_option.url }}'>{{ report_option.name | translate }}</option>
+                </select>
+            </label>
+        </div>
+    </div>
+
+    <!--EMPTY SPACE-->
+    <div class='show-for-large empty-space'></div>
+
+    <!--TAB CONTENT-->
+    <div class='row report'>
+        <router-outlet></router-outlet>
+    </div>
+</div>

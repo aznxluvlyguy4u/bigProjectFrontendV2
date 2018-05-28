@@ -1,0 +1,78 @@
+#dashboard
+  font-family: $lato
+
+  .columns
+    padding-left: 0
+
+  table
+    font-size: 0.8em
+
+    label
+      font-weight: 700
+
+    tbody
+      .header
+        background-color: #EEEEEE
+
+  .info-container
+    background-color: #F5F5F5
+    margin-bottom: 0.5em
+    font-size: 0.8em
+    min-height: 150px
+
+    .info-header
+      background-color: #EEEEEE
+      padding: 0.8em 1em
+      font-weight: 600
+
+    .info-body
+      padding: 1em 0.9em
+
+  .card
+    width: 100%
+    border: 1px solid #CAD0D2
+    overflow: hidden
+
+    .card-header
+      text-align: center
+      color: #57727C
+      font-size: 0.8em
+      font-weight: 700
+      padding: 0.8em 0.8em
+      border-top: 1px solid #D7DBDD
+      background-color: #EEF3F5
+
+    .card-body
+      padding: 1em 2em
+      text-align: center
+      font-size: 0.8em
+
+      .value
+        padding-bottom: 0.8em
+
+      label
+        font-size: 1em
+        font-weight: 700
+
+    .card-footer
+      button
+        font-weight: 700
+        background-color: $nsfo-green
+        margin-bottom: 0.4em
+
+        &:hover
+          background-color: $nsfo-dark-green
+
+  table.health
+    thead
+      tr
+        background-color: #EEEEEE
+
+    tbody
+      tr:nth-child(odd), tr:nth-child(even)
+        background-color: #F5F5F5
+
+      td
+        .description
+          font-size: 0.95em
+          font-weight: 600

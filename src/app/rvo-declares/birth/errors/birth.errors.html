@@ -1,0 +1,28 @@
+<!--SHOW HIDDEN MESSAGE-->
+<div class="large-12 table-search">
+  <div class="large-2 large-push-10">
+    <button (click)="displayHiddenMessages()" [ngClass]="{'toggled': showHiddenMessages}" class="small primary button">
+      {{ 'SHOW HIDDEN ERRORS' | translate}}
+    </button>
+  </div>
+</div>
+<!--TABLE HEADER-->
+<table class="stack">
+  <thead>
+  <th>{{ 'DATE' | translate }}</th>
+  <th>{{ 'DATE OF BIRTH' | translate }}</th>
+  <th>{{ 'ULN' | translate }} {{ 'MOTHER' | translate }}</th>
+  <th>{{ 'ULN' | translate }} {{ 'FATHER' | translate }}</th>
+  <th>{{ 'LITTER' | translate }}</th>
+  <th>{{ 'ERROR CODE' | translate }}</th>
+  <th></th>
+  </thead>
+  <tbody>
+  <app-birth-declare-row
+    *ngFor="let birth of birthErrorList | hiddenMessagesFilter:[showHiddenMessages] | paginate: {itemsPerPage: 10, currentPage: page}; let i = index"
+    [ngClass]="{'hidden-message': birth.is_removed_by_user}" (revokeLitter)="revokeLitter($event)"
+    (removeBirth)="removeBirth($event)" [birth]="birth" [birth_index]="i"></app-birth-declare-row>
+  </tbody>
+</table>
+
+<pagination (pageChange)="page = $event"></pagination>

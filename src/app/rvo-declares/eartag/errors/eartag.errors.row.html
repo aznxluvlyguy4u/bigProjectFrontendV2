@@ -1,0 +1,47 @@
+<!--LOG DATE-->
+<td>
+    <span [hidden]="editMode">
+        <label class="show-for-small-only">{{ 'DATE' | translate }}</label>
+        {{ stringAsViewDateTime(eartag.log_date) }}
+    </span>
+
+  <span [hidden]="!editMode"> <i class="fa fa-pencil" aria-hidden="true"></i> </span>
+</td>
+
+<!--ULN-->
+<td>
+  <label class="show-for-small-only">{{ 'ULN' | translate }}</label>
+  {{ eartag.uln_country_code + eartag.uln_number }}
+</td>
+
+<!--UBN NEW OWNER-->
+<td>
+  <label class="show-for-small-only">{{ 'UBN NEW OWNER' | translate }}</label>
+  <span [hidden]="editMode">{{ eartag.ubn_new_owner }}</span>
+  <span [hidden]="!editMode" [ngFormModel]="form">
+        <input type="text" [(ngModel)]="eartag.ubn_new_owner" ngControl="ubn_new_owner">
+        <div [hidden]="form.controls['ubn_new_owner'].valid || form_valid" class="input-error-msg text-center">{{ 'UBN IS INVALID' | translate }}</div>
+    </span>
+</td>
+
+<!--ERROR CODE-->
+<td>
+  <label class="show-for-small-only">{{ 'ERROR CODE' | translate }}</label>
+  <span [hidden]="editMode" id="error-{{ eartag_index }}" data-tooltip aria-haspopup="true" class="has-tip top"
+        data-disable-hover="false" title="{{ eartag.error_message }}">
+        {{ eartag.error_code }}
+    </span>
+</td>
+
+<!--ROW BUTTONS-->
+<td>
+    <span [hidden]="editMode">
+        <button class="tiny primary button" (click)="enableEditing()">{{ 'REVISE' | translate }}</button>
+        <button class="tiny alert button" (click)="sendRemoveErrorRequest()">{{ 'DONT SHOW' | translate }}</button>
+    </span>
+
+  <span [hidden]="!editMode">
+        <button class="tiny primary button" (click)="sendChangeRequest()">{{ 'SEND' | translate }}</button>
+        <button class="tiny alert button" (click)="cancelEditing()">{{ 'CANCEL' | translate }}</button>
+    </span>
+</td>

@@ -1,0 +1,261 @@
+<!--LOG DATE-->
+<td>
+    <span>
+        <label class="show-for-small-only">{{ 'DATE' | translate }}</label>
+        {{ stringAsViewDateTime(litter.log_date) }}
+    </span>
+</td>
+
+<!--DATE OF BIRTH-->
+<td>
+  <label class="show-for-small-only">{{ 'DATE OF BIRTH' | translate }}</label>
+  <span>
+        {{ stringAsViewDate(litter.date_of_birth) }}
+    </span>
+</td>
+
+<!--MOTHER ULN-->
+<td>
+  <label class="show-for-small-only">{{ 'ULN (MOTHER)' | translate }}</label>
+  <span *ngIf="litter.mother_uln_number">
+        {{ litter.mother_uln_country_code + litter.mother_uln_number}}
+    </span>
+
+  <span *ngIf="!litter.mother_uln_number">
+
+    </span>
+</td>
+
+<!--FATHER ULN-->
+<td>
+  <label class="show-for-small-only">{{ 'ULN (FATHER)' | translate }}</label>
+  <span *ngIf="litter.father_uln_number">
+        {{ litter.father_uln_country_code + litter.father_uln_number}}
+    </span>
+
+  <span *ngIf="!litter.father_uln_number">
+       --
+    </span>
+</td>
+
+<!--STILLBORN-->
+<td class="text-center">
+  <label class="show-for-small-only">{{ 'STILLBORN' | translate }}</label>
+  {{ litter.stillborn_count }}
+</td>
+
+<!--BORN ALIVE-->
+<td class="text-center">
+  <label class="show-for-small-only">{{ 'BORN ALIVE' | translate }}</label>
+  {{ litter.born_alive_count }}
+</td>
+
+<!--ABORTION-->
+<td class="text-center">
+  <label class="show-for-small-only">{{ 'ABORTED' | translate }}</label>
+
+  <span *ngIf="litter.is_abortion">
+        {{ 'YES' | translate }}
+    </span>
+
+  <span *ngIf="!litter.is_abortion">
+        {{ 'NO' | translate }}
+    </span>
+</td>
+
+<!--PSEUDOPREGNANCY-->
+<td class="text-center">
+  <label class="show-for-small-only">{{ 'PSEUDOPREGNANCY' | translate }}</label>
+
+  <span *ngIf="litter.is_pseudo_pregnancy">
+        {{ 'YES' | translate }}
+    </span>
+
+  <span *ngIf="!litter.is_pseudo_pregnancy">
+        {{ 'NO' | translate }}
+    </span>
+</td>
+
+<!--STATUS-->
+<td>
+  <label class="show-for-small-only">{{ 'STATUS' | translate }}</label>
+  <span [ngSwitch]="litter.request_state">
+        <template ngSwitchWhen="OPEN"> {{ 'PROCESSING' | translate }} </template>
+        <template ngSwitchWhen="REVOKING"> {{ 'PROCESSING' | translate }} </template>
+        <template ngSwitchWhen="FINISHED"> {{ 'SENT' | translate }} </template>
+        <template ngSwitchWhen="FINISHED_WITH_WARNING"> {{ 'SENT' | translate }} </template>
+        <template ngSwitchWhen="REVOKED"> {{ 'REVOKED' | translate }} </template>
+    </span>
+</td>
+
+<!--ROW BUTTONS-->
+<td>
+    <span [hidden]="litter.request_state == 'REVOKING' || litter.request_state == 'REVOKED'">
+        <button class="tiny primary button" (click)="getLitterDetails(); openModal()">{{ 'VIEW' | translate }}</button>
+    </span>
+
+  <span
+    [hidden]="litter.request_state == 'OPEN' || litter.request_state == 'REVOKING' || litter.request_state == 'REVOKED'">
+        <button class="tiny alert button" (click)="sendRevokeRequest()">{{ 'REVOKE' | translate }}</button>
+    </span>
+</td>
+
+<!--REVOKE MODAL-->
+<div class="reveal-overlay" [ngStyle]="{'display': modalDisplay}">
+  <div class="large reveal" [ngStyle]="{'display': modalDisplay}">
+    <div class="modal-header">
+      {{ 'LITTER DETAILS' | translate }}
+      <button type="button" (click)="closeModal()" class="pull-right" aria-label="Close modal">
+        <i class="fa fa-times" aria-hidden="true"></i>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="row">
+        <div class="large-2 columns">
+          <label>
+            &nbsp;
+            <label class="middle title">{{ 'LITTER' | translate }}</label>
+          </label>
+        </div>
+        <div class="large-2 columns">
+          <label>
+            {{ 'DATE OF BIRTH' | translate }}
+            <input type="text" value="{{stringAsViewDate(litterDetails.date_of_birth)}}" disabled>
+          </label>
+        </div>
+        <div class="large-2 columns">
+          <label>
+            {{ 'LITTER SIZE' | translate }}
+            <input type="text" value="{{litterDetails.stillborn_count + litterDetails.born_alive_count}}" disabled>
+          </label>
+        </div>
+        <div class="large-2 columns end">
+          <label>
+            {{ 'AMOUNT ALIVE' | translate }}
+            <input type="text" value="{{litterDetails.born_alive_count}}" disabled>
+          </label>
+        </div>
+      </div>
+      <div class="row">
+        <div class="large-2 columns">
+          <label>
+            &nbsp;
+            <label class="middle title">{{ 'MOTHER' | translate }}</label>
+          </label>
+        </div>
+        <div class="large-2 columns">
+          <label>
+            {{ 'ULN' | translate }}
+            <input type="text" value="{{litterDetails.mother_uln_country_code + litterDetails.mother_uln_number}}"
+                   disabled>
+          </label>
+        </div>
+        <div class="large-2 columns">
+          <label>
+            {{ 'ABORTED' | translate }}
+            <input type="text" value="{{textify(litterDetails.is_abortion) | translate }}" disabled>
+          </label>
+        </div>
+        <div class="large-2 columns end">
+          <label>
+            {{ 'PSEUDOPREGNANCY' | translate }}
+            <input type="text" value="{{textify(litterDetails.is_pseudo_pregnancy) | translate }}" disabled>
+          </label>
+        </div>
+      </div>
+      <div class="row">
+        <div class="large-2 columns">
+          <label>
+            &nbsp;
+            <label class="middle title">{{ 'FATHER' | translate }}</label>
+          </label>
+        </div>
+        <div class="large-2 columns end">
+          <label>
+            {{ 'ULN' | translate }}
+            <input type="text" value="{{litterDetails.father_uln_country_code + litterDetails.father_uln_number}}"
+                   disabled>
+          </label>
+        </div>
+      </div>
+      <div class="row">
+        <div class="large-12 column">
+          <table>
+            <thead>
+            <tr>
+              <td>{{ 'ULN' | translate }}</td>
+              <td>{{ 'GENDER' | translate }}</td>
+              <td>{{ 'BIRTH PROGRESS' | translate }}</td>
+              <td>{{ 'BIRTH WEIGHT' | translate }}</td>
+              <td>{{ 'TAIL LENGTH' | translate }}</td>
+              <td>{{ 'LAMBAR/SURROGATE' | translate }}</td>
+              <td>{{ 'ULN (SURROGATE)' | translate }}</td>
+              <td></td>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let child of litterDetails.children">
+              <td>
+                                    <span *ngIf="child.is_stillborn == undefined || child.is_stillborn === false">
+                                        {{ child.uln_country_code + child.uln_number  }}
+                                    </span>
+                <span *ngIf="child.is_stillborn">
+                                        {{ 'STILLBORN' | translate }}
+                                    </span>
+              </td>
+              <td>
+                {{ child.gender | translate }}
+              </td>
+              <td>
+                {{ child.birth_progress | translate }}
+              </td>
+              <td>
+                <span *ngIf="child.birth_weight != undefined">{{ child.birth_weight + ' kg' }}</span>
+                <span *ngIf="!child.birth_weight">0 kg</span>
+              </td>
+              <td>
+                <span *ngIf="child.tail_length">{{ child.tail_length + ' cm' }}</span>
+                <span *ngIf="!child.tail_length">0 cm</span>
+              </td>
+              <td>
+                                    <span *ngIf="child.lambar">
+                                        {{ 'LAMBAR' | translate }}
+                                    </span>
+                <span *ngIf="child.surrogate_uln_number">
+                                        {{ 'SURROGATE' | translate }}
+                                    </span>
+                <span *ngIf="!child.surrogate_uln_number && !child.lambar">
+                                        --
+                                    </span>
+              </td>
+              <td>
+                                    <span *ngIf="child.surrogate_uln_number">
+                                        {{ child.surrogate_uln_country_code + child.surrogate_uln_number }}
+                                    </span>
+                <span *ngIf="!child.surrogate_uln_number">
+                                        --
+                                    </span>
+              </td>
+              <td (mouseover)="loadPopup(child)">
+                                    <span *ngIf="child.is_successful">
+                                        <i class="fa fa-check-circle-o" aria-hidden="true"></i>
+                                    </span>
+                <span *ngIf="!child.is_successful">
+                                        <span id="popup-{{child.uln_number}}" data-tooltip aria-haspopup="true"
+                                              class="has-tip top custom-tooltip" data-disable-hover="false"
+                                              title="{{child.error_message}}">
+                                            <i class="fa fa-times-circle-o" aria-hidden="true"></i>
+                                        </span>
+                                    </span>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer text-center">
+      <button class="tiny primary button" (click)="closeModal()">{{ 'CLOSE' | translate}}</button>
+    </div>
+  </div>
+</div>

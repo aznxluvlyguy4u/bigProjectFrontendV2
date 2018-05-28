@@ -1,0 +1,7 @@
+export const LIVESTOCK_GENDER_OPTIONS = [
+  'MALE', 'FEMALE'
+];
+
+export const LIVESTOCK_BREED_OPTIONS = [
+  '', 'PURE_BRED', 'REGISTER', 'ASSIST_PEDIGREE'
+];

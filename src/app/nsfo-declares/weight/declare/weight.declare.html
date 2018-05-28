@@ -1,0 +1,67 @@
+<!--TOP FORM-->
+<form [ngFormModel]="form" class="form-declare">
+
+  <!--WEIGHT DATE-->
+  <div class="large-2 columns">
+    <label>
+      {{ 'WEIGHT DATE' | translate }}
+      <datepicker [formCtrl]="form.controls['weight_date']" [viewFormat]="view_date_format"
+                  [modelFormat]="view_date_format"></datepicker>
+      <div [hidden]="form.controls['weight_date'].valid" class="input-error-msg pull-right">{{ 'FILL IN THE WEIGHT DATE'
+        | translate }}
+      </div>
+    </label>
+  </div>
+</form>
+
+
+<!--LIVESTOCK OVERVIEW-->
+<div class="row">
+  <div class="large-12 columns">
+    <app-livestock-overview [items_per_page]="100" [weightMode]="true"
+                        (selected)="declareWeight($event)"></app-livestock-overview>
+  </div>
+</div>
+
+<!--ERROR MODAL-->
+<div class="reveal-overlay" [ngStyle]="{'display': modalDisplay}">
+  <div class="tiny reveal" [ngStyle]="{'display': modalDisplay}">
+    <div class="modal-header">
+      {{ 'ERROR' | translate }}
+      <button type="button" class="pull-right" aria-label="Close modal" (click)="closeModal()">
+        <i class="fa fa-times" aria-hidden="true"></i>
+      </button>
+    </div>
+    <div class="modal-body">
+      <ul>
+        <li *ngFor="let errorMessage of errorMessages">
+          {{ errorMessage.message | translate }}
+        </li>
+      </ul>
+    </div>
+    <div class="modal-footer">
+      <button class="tiny primary button pull-right" (click)="closeModal()">{{ 'OK' | translate}}</button>
+    </div>
+  </div>
+</div>
+
+<!--WARNING MODAL-->
+<div class="reveal-overlay" [ngStyle]="{'display': warningModalDisplay}">
+  <div class="tiny reveal" [ngStyle]="{'display': warningModalDisplay}">
+    <div class="modal-header">
+      {{ 'WARNING' | translate }}
+      <button type="button" class="pull-right" aria-label="Close modal" (click)="closeWarningModal()">
+        <i class="fa fa-times" aria-hidden="true"></i>
+      </button>
+    </div>
+    <div class="modal-body">
+      {{ 'THE NEW WEIGHT IS LOWER THAN THE PREVIOUS WEIGHT. ARE YOU SURE YOU WANT TO DECLARE THIS' | translate }}
+    </div>
+    <div class="modal-footer">
+            <span class="pull-right">
+                <button class="tiny primary button" (click)="doDeclareRequest(); closeWarningModal()">{{ 'DECLARE' | translate}}</button>
+                <button class="tiny alert button" (click)="closeWarningModal()">{{ 'CANCEL' | translate}}</button>
+            </span>
+    </div>
+  </div>
+</div>

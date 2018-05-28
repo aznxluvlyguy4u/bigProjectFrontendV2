@@ -1,0 +1,45 @@
+<div class='row'>
+    <div class='medium-4 hide-for-small-only columns' style='text-align: right'>
+        <span style='color: transparent'>-</span>
+    </div>
+    <div class='small-12 large-2 medium-3 end columns'>
+        <label class='text-center'>
+            {{ 'REFERENCE DATE' | translate }}
+            <app-datepicker-v2
+                    [dateString]='referenceDateString'
+                    [modelFormat]='settings.getModelDateTimeFormat()'
+                    [disabled]='false'
+                    [updateInitialValues]='(initialValuesChanged)'
+                    [activateSetNullButton]='false'
+                    (isDateStringChanged)=updateReferenceDateString($event)
+            ></app-datepicker-v2>
+        </label>
+    </div>
+</div>
+
+<div class='row'>
+    <div class='medium-4 hide-for-small-only columns' style='text-align: right'>
+        <span style='color: transparent'>-</span>
+    </div>
+    <div class='small-12 large-2 medium-3 end columns'>
+        <app-file-type-dropdown
+                [fileTypeOptions]='getFileTypesList()'
+                (fileTypeChange)='selectedFileType = $event'
+        ></app-file-type-dropdown>
+    </div>
+</div>
+
+<div class='row'>
+    <div class='medium-4 columns'>
+        <span style='color: transparent'>-</span>
+    </div>
+
+    <div class='small-12 medium-1 end columns' style='padding: 0'>
+        <div class='large-3 columns'>
+            <button
+                    class='button primary'
+                    (click)='downloadReport()'
+            >{{ 'DOWNLOAD' | translate }}</button>
+        </div>
+    </div>
+</div>

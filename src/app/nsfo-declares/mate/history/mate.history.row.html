@@ -1,0 +1,118 @@
+<!--LOG DATE-->
+<td>
+    <span [hidden]="editMode">
+        <label class="show-for-small-only">{{ 'DATE' | translate }}</label>
+        {{ stringAsViewDateTime(mate.log_date) }}
+    </span>
+
+  <span [hidden]="!editMode"> <i class="fa fa-pencil" aria-hidden="true"></i> </span>
+</td>
+
+<!--ULN MALE-->
+<td>
+  <label class="show-for-small-only">{{ 'ULN (RAM)' | translate }}</label>
+  {{ mate.ram.uln_country_code + mate.ram.uln_number }}
+</td>
+
+<!--ULN FEMALE-->
+<td>
+  <label class="show-for-small-only">{{ 'ULN (EWE)' | translate }}</label>
+  {{ mate.ewe.uln_country_code + mate.ewe.uln_number }}
+</td>
+
+<!--MATE STARTDATE-->
+<td>
+  <label class="show-for-small-only">{{ 'MATE DATE' | translate }}</label>
+  <span [hidden]="editMode">{{ mate.start_date }}</span>
+  <span [hidden]="!editMode" [ngFormModel]="form">
+        <datepicker [formCtrl]="form.controls['start_date']" [initDate]="mate.start_date"
+                    [viewFormat]="view_date_format" [modelFormat]="model_datetime_format"></datepicker>
+        <div [hidden]="form.controls['start_date'].valid || form_valid" class="input-error-msg text-center">{{ 'FILL IN THE MATE STARTDATE' | translate }}</div>
+    </span>
+</td>
+
+<!--MATE ENDDATE-->
+<td>
+  <label class="show-for-small-only">{{ 'TILL' | translate }}</label>
+  <span [hidden]="editMode">{{ mate.end_date }}</span>
+  <span [hidden]="!editMode" [ngFormModel]="form">
+        <datepicker [formCtrl]="form.controls['end_date']" [initDate]="mate.end_date" [viewFormat]="view_date_format"
+                    [modelFormat]="model_datetime_format"></datepicker>
+        <div [hidden]="form.controls['end_date'].valid || form_valid" class="input-error-msg text-center">{{ 'FILL IN THE MATE ENDDATE' | translate }}</div>
+    </span>
+</td>
+
+<!--PMSG-->
+<td>
+  <label class="show-for-small-only">{{ 'PMSG' | translate }}</label>
+  <span [hidden]="editMode">{{ mate.pmsg | translate }}</span>
+  <span [hidden]="!editMode" [ngFormModel]="form">
+        <select ngControl="pmsg">
+            <option value="YES"> {{ 'YES' | translate }}</option>
+            <option value="NO"> {{ 'NO' | translate }}</option>
+        </select>
+    </span>
+</td>
+
+<!--KI-->
+<td>
+  <label class="show-for-small-only">{{ 'PMSG' | translate }}</label>
+  <span [hidden]="editMode">{{ mate.ki | translate }}</span>
+  <span [hidden]="!editMode" [ngFormModel]="form">
+        <select ngControl="ki">
+            <option value="YES"> {{ 'YES' | translate }}</option>
+            <option value="NO"> {{ 'NO' | translate }}</option>
+        </select>
+    </span>
+</td>
+
+
+<!--STATUS-->
+<td>
+  <label class="show-for-small-only">{{ 'STATUS' | translate }}</label>
+  <span [hidden]="editMode" [ngSwitch]="mate.request_state">
+        <template ngSwitchWhen="OPEN"> {{ 'PROCESSING' | translate }} </template>
+        <template ngSwitchWhen="REVOKING"> {{ 'PROCESSING' | translate }} </template>
+        <template ngSwitchWhen="FINISHED"> {{ 'SENT' | translate }} </template>
+        <template ngSwitchWhen="FINISHED_WITH_WARNING"> {{ 'SENT' | translate }} </template>
+        <template ngSwitchWhen="REVOKED"> {{ 'REVOKED' | translate }} </template>
+    </span>
+</td>
+
+<!--ROW BUTTONS-->
+<td>
+  <div class="row">
+        <span
+          [hidden]="editMode || mate.request_state == 'OPEN' || mate.request_state == 'REVOKING' ||  mate.request_state == 'REVOKED'">
+            <!--<div class="small-6 columns">-->
+          <!--<button class="tiny primary button expanded" (click)="enableEditing()">{{ 'EDIT' | translate }}</button>-->
+          <!--</div>-->
+            <div class="small-12 columns">
+                <button class="tiny alert button expanded"
+                        (click)="sendRevokeRequest()">{{ 'REVOKE' | translate }}</button>
+            </div>
+        </span>
+
+    <span [hidden]="!editMode">
+            <div class="small-6 columns">
+                <button class="tiny primary button expanded" (click)="sendChangeRequest()" [disabled]="isSending">
+                    <span *ngIf="!isSending">
+                        {{ 'SEND' | translate }}
+                    </span>
+                    <span *ngIf="isSending">
+                        <i class="fa fa-gear fa-spin fa-fw"></i>
+                    </span>
+                </button>
+            </div>
+            <div class="small-6 columns">
+                <button class="tiny alert button expanded" (click)="cancelEditing()" [disabled]="isSending">{{ 'CANCEL' | translate }}</button>
+            </div>
+        </span>
+
+    <span *ngIf="mate.request_state == 'REVOKED' && mate.revoke_date" class="revoke-date">
+            <div class="small-12 columns">
+                ({{ stringAsViewDateTime(mate.revoke_date) }})
+            </div>
+        </span>
+  </div>
+</td>

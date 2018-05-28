@@ -1,0 +1,1690 @@
+@import url(https://fonts.googleapis.com/css?family=Lato:300,400,700,900);
+
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+
+html {
+  box-sizing: border-box;
+}
+
+html, body {
+  min-height: 100%;
+}
+
+.content-container {
+  padding: 5em 2em 0 2em;
+}
+
+select {
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+input:disabled:hover {
+  cursor: default;
+}
+
+select:disabled:hover {
+  cursor: default;
+}
+
+button.alert:disabled:hover {
+  cursor: default;
+  background-color: #da3116;
+}
+
+.badge {
+  background-color: #FFFFFF;
+  color: #000;
+  padding: 0.15em;
+}
+
+.breadcrumbs li {
+  font-size: 0.85em;
+  color: #48A770;
+}
+
+.breadcrumbs li a {
+  color: #CACACA;
+}
+
+.tabs li.active {
+  background-color: #E1E1E1;
+}
+
+.tabs li.active a:hover {
+  cursor: default;
+  background-color: #E1E1E1;
+  color: #2199E8;
+}
+
+.tabs li a {
+  font-size: 0.9em;
+}
+
+.tabs li a:hover {
+  background-color: #F5F5F5;
+}
+
+.tabs .tab-badge {
+  font-weight: 800;
+}
+
+.data-loader {
+  font-size: 1.8rem;
+  font-family: "Lato", sans-serif;
+  color: #EC5840;
+  text-align: center;
+  padding: 1em;
+}
+
+.data-loader .description {
+  font-size: 1rem;
+  color: #000;
+  font-weight: 700;
+}
+
+.uid-input-group {
+  position: relative;
+  display: flex;
+}
+
+.uid-input-group select {
+  bottom: 0;
+  width: 60px;
+}
+
+.uid-input-group input {
+  max-width: 100%;
+}
+
+.input-error-msg {
+  font-size: 0.7rem;
+  font-weight: 400;
+  color: #EC5840;
+}
+
+.input-success-msg {
+  font-size: 0.7rem;
+  font-weight: 400;
+  color: #48A770;
+}
+
+.input-error-border {
+  border-color: #FF0000;
+}
+
+.reveal {
+  padding: 0;
+  outline: none;
+}
+
+.reveal .modal-header {
+  padding: 0.4em 0.8em;
+  background-color: #EC5840;
+  color: #FFFFFF;
+  font-weight: 600;
+  font-size: 0.9em;
+}
+
+.reveal .modal-header button {
+  font-size: 1.3em;
+}
+
+.reveal .modal-body {
+  padding: 2.8em 0.8em 1.8em 0.8em;
+  font-size: 0.85em;
+}
+
+.reveal .modal-footer {
+  padding: 0.8em;
+}
+
+.reveal .modal-footer button {
+  margin: 0 0 2em 1em;
+  font-size: 0.7em;
+}
+
+form.form-declare {
+  padding: 1.75rem 1.3em;
+  background-color: #E1E1E1;
+  overflow: hidden;
+}
+
+form.form-declare .columns {
+  padding-left: 0;
+}
+
+form.form-declare label {
+  font-size: 0.8em;
+  font-weight: 600;
+}
+
+form.form-declare button {
+  font-size: 0.84em;
+}
+
+form.form-declare select {
+  font-size: 1em;
+  font-weight: 400;
+  margin-bottom: 0;
+}
+
+form.form-declare input {
+  font-size: 1em;
+  font-weight: 400;
+  margin-bottom: 0;
+}
+
+form.form-declare .uid-input-group {
+  font-size: 0.81em;
+}
+
+.table-search {
+  padding: 0.4rem;
+  background-color: #F8F8F8;
+  border: 1px solid #f1f1f1;
+}
+
+.table-search input {
+  margin: 0;
+  font-size: 0.8rem;
+}
+
+.table-search button {
+  margin: 0;
+}
+
+.table-search button.toggled {
+  background-color: #147CC0;
+}
+
+table tbody tr.hidden-message {
+  background-color: rgba(72, 247, 187, 0.5);
+}
+
+.livestock-container label {
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.livestock-container label.search-input {
+  padding-top: 1em;
+}
+
+.livestock-container input {
+  font-size: 0.75rem;
+  font-weight: 400;
+}
+
+.livestock-container input[type="checkbox"] {
+  margin: 0;
+}
+
+.livestock-container select {
+  font-size: 0.75rem;
+  font-weight: 400;
+}
+
+.livestock-container .filters {
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.livestock-container .accordion-button {
+  padding: 0.8em;
+  margin-bottom: 1em;
+  font-size: 0.8em;
+  font-weight: 600;
+  outline: none;
+  background-color: #F5F5F5;
+  width: 100%;
+}
+
+.livestock-container .filler-block {
+  padding: 0.6em 0;
+  letter-spacing: 0.2em;
+  font-weight: 400;
+  font-size: 0.95em;
+}
+
+.livestock-container table {
+  font-size: 0.75rem;
+}
+
+.livestock-container table select {
+  margin: 0;
+  height: 30px;
+}
+
+.livestock-container table button {
+  margin: 0;
+  font-size: 0.9em !important;
+  font-weight: 600;
+}
+
+.livestock-container table button i {
+  font-size: 0.8em;
+}
+
+.livestock-container table #weight input {
+  margin-bottom: 0;
+}
+
+.livestock-container table #weight label {
+  margin-bottom: 0;
+}
+
+.livestock-container table .padding-column {
+  padding-right: 5em;
+}
+
+.livestock-container table thead th {
+  font-size: 0.75rem;
+  white-space: nowrap;
+}
+
+.livestock-container table thead th i {
+  padding-left: 0.2em;
+}
+
+.livestock-container table thead th i:hover {
+  cursor: pointer;
+}
+
+.livestock-container .no-side-padding {
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.checkout {
+  padding: 0.2em 0 1em 0;
+}
+
+.checkout .cards-container {
+  border: solid 1px #000;
+}
+
+.checkout .card {
+  padding: 1em 1.5em 1em 0.5em;
+  border-bottom: solid 2px #48A770;
+  margin-top: 0.5em;
+  font-size: 0.75em;
+}
+
+.checkout .card button {
+  margin-top: -0.65em;
+  font-size: 1.3em;
+  color: #EC5840;
+}
+
+.checkout .card label {
+  font-size: 1em;
+  font-weight: 600;
+}
+
+.livesearch-container {
+  position: relative;
+}
+
+.livesearch-container input {
+  margin-bottom: 0;
+}
+
+#livesearch {
+  z-index: 9999;
+  position: absolute;
+  background-color: #f5f5f5;
+  border-bottom: solid 1px #000;
+  border-left: solid 1px #000;
+  border-right: solid 1px #000;
+  width: 100%;
+  font-size: 0.8em;
+  overflow-x: scroll;
+  max-height: 200px;
+}
+
+#livesearch .close-button {
+  color: #ec5840;
+  margin-top: 0.2em;
+  font-size: 1.2em;
+}
+
+#livesearch .search-title {
+  font-weight: 600;
+  font-size: 0.9em;
+  padding-top: 1em;
+  padding-left: 1em;
+}
+
+#livesearch ul {
+  padding: 1em 0 1em 0;
+  margin: 0;
+}
+
+#livesearch ul li {
+  list-style: none;
+  padding-right: 1em;
+  padding-left: 1em;
+}
+
+#livesearch ul li:hover {
+  cursor: pointer;
+  background-color: #CACACA;
+}
+
+.ng-datepicker-input {
+  position: relative;
+  width: 100%;
+  cursor: pointer;
+}
+
+.ng-datepicker {
+  position: absolute;
+  z-index: 99;
+  width: 175px;
+  background: #fff;
+  font-size: 0.85em;
+  color: #565a5c;
+  display: inline-block;
+  border: 1px solid #c4c4c4;
+  border-radius: 2px;
+  margin: 0;
+  padding: 0;
+}
+
+.ng-datepicker .controls {
+  width: 175px;
+  display: inline-block;
+  padding: 5px 0 0 0;
+}
+
+.ng-datepicker .controls .left {
+  width: 35px;
+  display: inline-block;
+  float: left;
+  margin: 5px 0 0 3px;
+  padding-left: 6px;
+}
+
+.ng-datepicker .controls .left i {
+  font-size: 0.85em;
+  cursor: pointer;
+}
+
+.ng-datepicker .controls .left i.prev-year-btn {
+  margin-right: 10px;
+}
+
+.ng-datepicker .controls .left i.prev-month-btn {
+  margin-top: 1px;
+}
+
+.ng-datepicker .controls .right {
+  width: 35px;
+  display: inline-block;
+  float: right;
+  margin: 5px 0 0 0;
+  padding-right: 10px;
+  text-align: right;
+}
+
+.ng-datepicker .controls .right i {
+  font-size: 0.85em;
+  cursor: pointer;
+}
+
+.ng-datepicker .controls .right i.next-month-btn {
+  margin-top: 6px;
+  float: left;
+}
+
+.ng-datepicker .controls .date {
+  width: 95px;
+  text-align: center;
+  font-size: 14px;
+  color: #565a5c;
+  font-weight: bold;
+  float: left;
+  padding: 3px 0 0 0;
+}
+
+.ng-datepicker .day-names {
+  width: 174.5px;
+  font-size: 0.75em;
+  border-bottom: 1px solid #c4c4c4;
+  display: inline-block;
+}
+
+.ng-datepicker .day-names span {
+  width: 24.8px;
+  text-align: center;
+  color: #82888a;
+  float: left;
+  display: block;
+}
+
+.ng-datepicker .calendar {
+  width: 175px;
+  display: inline-block;
+  margin: -5px 0 -5.5px -1px;
+  padding: 0;
+}
+
+.ng-datepicker .calendar span .day {
+  width: 25px;
+  height: 25px;
+  border-left: 1px solid #c4c4c4;
+  border-bottom: 1px solid #c4c4c4;
+  float: left;
+  display: block;
+  color: #565a5c;
+  text-align: center;
+  font-weight: bold;
+  line-height: 25px;
+  margin: 0;
+  padding: 0;
+  font-size: 0.85em;
+  cursor: pointer;
+}
+
+.ng-datepicker .calendar span .day:hover {
+  background: #2193b0;
+  color: #fff;
+}
+
+.ng-datepicker .calendar span .day .selected {
+  background: #186c81;
+  cursor: default;
+  pointer-events: none;
+  color: #fff;
+}
+
+.ng-datepicker .calendar span .disabled {
+  border-left: 1px solid transparent;
+  cursor: default;
+  pointer-events: none;
+}
+
+.ng-datepicker .calendar span:last-child .day {
+  width: 26px;
+  border-right: 1px solid #c4c4c4;
+}
+
+.ng-datepicker .calendar span:nth-child(7n) span .day {
+  border-right: none;
+}
+
+.ng-datepicker .static {
+  position: relative;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.ng-datepicker .static .controls {
+  width: 100%;
+  text-align: center;
+  background-color: #eee;
+  padding: 5px 0;
+}
+
+.ng-datepicker .static .controls .left i .prev-month-btn {
+  margin-top: -6px;
+}
+
+.ng-datepicker .static .controls span .date {
+  width: auto;
+  float: none;
+  display: inline-block;
+  padding-top: 4px;
+}
+
+.ng-datepicker .static .controls .day-names {
+  width: 100%;
+  background-color: #f9f9f9;
+}
+
+.ng-datepicker .static .controls .day-names span {
+  width: calc(100% / 7);
+}
+
+.ng-datepicker .static .calendar {
+  width: 100%;
+}
+
+.ng-datepicker .static .calendar span .day {
+  width: calc(100% / 7 - 1px);
+  height: 50px;
+  line-height: 50px;
+}
+
+nav {
+  position: fixed;
+  display: flex;
+  width: 100%;
+  background-color: #48A770;
+  align-items: center;
+  font-family: "Lato", sans-serif !important;
+  z-index: 10000;
+}
+
+nav .ubn-description {
+  margin-top: 0.2em;
+  padding-left: 0.4em;
+  color: #FFF;
+  font-size: 0.75em;
+  font-weight: 700;
+}
+
+nav .ubn-description-postfix {
+  margin-top: 0.2em;
+  color: #FFF;
+  font-size: 0.75em;
+  font-weight: 700;
+}
+
+nav .ubn-container {
+  margin-top: 0.2em;
+  align-content: center;
+}
+
+nav .ubn-container select {
+  display: inline-block;
+  color: #FFF;
+  font-size: 0.75em;
+  font-weight: 700;
+  margin: 0;
+  padding: 0 1.4em 0 0.1em;
+  background-color: #48A770;
+  border: none;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' version='1.1' width='32' height='24' viewBox='0 0 32 24'><polygon points='0,0 32,0 16,24' style='fill: rgb%28255, 255, 255%29'></polygon></svg>");
+  background-position: right -0.8rem center;
+}
+
+nav .ubn-container select:focus {
+  outline: none;
+}
+
+nav button {
+  background-color: transparent;
+  color: #FFF;
+  border: none;
+  height: 100%;
+}
+
+nav button.active {
+  background-color: #155932;
+}
+
+nav button:hover {
+  background-color: #155932;
+}
+
+nav button:focus {
+  outline: none;
+}
+
+nav button.menu-toggle {
+  font-size: 1.8em;
+  padding: 0.4rem 0.5em;
+}
+
+nav button.message-toggle {
+  font-size: 1.2em;
+  padding: 0.7rem 0.5em;
+}
+
+nav button.message-toggle i {
+  position: relative;
+  padding: 0 0.3em;
+}
+
+nav button.message-toggle i span {
+  position: absolute;
+  background-color: #FF0000;
+  border-radius: 50%;
+  height: 0.5em;
+  width: 0.5em;
+  right: 0.1em;
+  top: 0;
+}
+
+nav button.profile-toggle {
+  font-size: 1.2em;
+  padding: 0.7rem 0.5em;
+}
+
+nav button.profile-toggle span {
+  margin-left: 0.3em;
+  font-family: "Lato", sans-serif;
+  font-size: 0.65em;
+}
+
+nav .brand-name {
+  padding-left: 0.4em;
+  color: #FFF;
+  font-size: 1.2em;
+  font-weight: 900;
+}
+
+nav .brand-name span {
+  font-weight: 400;
+}
+
+nav .brand-name:hover {
+  cursor: pointer;
+}
+
+nav .empty-block {
+  flex: 1;
+}
+
+.side-menu {
+  height: 100%;
+  width: 250px;
+  position: fixed;
+  z-index: 9999;
+  left: -250px;
+  background-color: rgba(0, 0, 0, 0.85);
+  overflow-x: hidden;
+  padding-top: 4em;
+  transition: 0.5s;
+  font-family: "Lato", sans-serif;
+}
+
+.side-menu.enabled {
+  left: 0;
+}
+
+.side-menu ul {
+  padding: 1em 0 1em 0.6em;
+}
+
+.side-menu ul li {
+  list-style: none;
+  padding: 0.4em 0;
+  font-size: 1em;
+  color: #FFF;
+}
+
+.side-menu ul li i {
+  font-size: 1.1em;
+  margin-right: 0.4em;
+}
+
+.side-menu ul li.active {
+  background-color: #48A770;
+}
+
+.side-menu ul li.link {
+  transition: 0.5s;
+  padding-left: 0.6rem;
+}
+
+.side-menu ul li.link:hover {
+  background-color: #48A770;
+  cursor: pointer;
+}
+
+.side-menu ul li.category {
+  color: #57CD8A;
+  padding-top: 2.4em;
+  font-size: 1em;
+  text-transform: uppercase;
+  font-weight: 600;
+  padding-left: 0.5rem;
+}
+
+.side-menu ul li.item {
+  padding-left: 0.6rem;
+}
+
+.message-menu {
+  position: fixed;
+  background-color: rgba(0, 0, 0, 0.85);
+  right: 0;
+  top: -200px;
+  width: 250px;
+  transition: 0.5s;
+  color: #FFFFFF;
+  z-index: 9999;
+  padding: 0.5em 1em 0.5em 2.5em;
+  text-align: center;
+  font-size: 0.9em;
+  font-style: italic;
+  font-weight: 300;
+  border-bottom: 4px solid #57CD8A;
+}
+
+.message-menu.enabled {
+  top: 40px;
+}
+
+.user-menu {
+  position: fixed;
+  background-color: rgba(0, 0, 0, 0.85);
+  right: 0;
+  top: -200px;
+  transition: 0.5s;
+  z-index: 9999;
+  color: #FFFFFF;
+  text-align: right;
+}
+
+.user-menu.enabled {
+  top: 40px;
+}
+
+.user-menu .item {
+  padding: 0.5em 1em 0.5em 2.5em;
+  font-size: 0.9em;
+  width: 100%;
+}
+
+.user-menu .item:hover {
+  background-color: #48A770;
+  cursor: pointer;
+}
+
+.user-menu .item:first-child {
+  padding-top: 1em;
+}
+
+.user-menu .item:last-child {
+  padding-bottom: 1em;
+  border-bottom: 4px solid #57CD8A;
+}
+
+.user-menu .item i {
+  font-size: 0.9em;
+  margin-left: 0.4em;
+}
+
+#loader {
+  min-height: 100%;
+  background-color: #48A770;
+  background-size: cover;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+#loader .logo {
+  font-family: "Lato", sans-serif;
+  font-weight: 900;
+  font-size: 2em;
+  text-align: center;
+  color: #FFF;
+  padding: 0.5em 0 0.5em 0;
+  margin-top: -4em;
+}
+
+#loader .logo span {
+  font-weight: 300;
+}
+
+#loader .loader-container {
+  display: block;
+  margin-top: -1em;
+}
+
+#loader .loader-icon {
+  position: relative;
+  width: 44px;
+  height: 8px;
+  margin: 12px auto;
+}
+
+#loader .dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 4px;
+  background: #FFF;
+  position: absolute;
+}
+
+#loader .dot_1 {
+  animation: animateDot1 1.5s linear infinite;
+  left: 12px;
+  background: #263238;
+}
+
+#loader .dot_2 {
+  animation: animateDot2 1.5s linear infinite;
+  animation-delay: 0.5s;
+  left: 24px;
+}
+
+#loader .dot_3 {
+  animation: animateDot3 1.5s linear infinite;
+  left: 12px;
+}
+
+#loader .dot_4 {
+  animation: animateDot4 1.5s linear infinite;
+  animation-delay: 0.5s;
+  left: 24px;
+}
+
+@keyframes animateDot1 {
+  0% {
+    transform: rotate(0deg) translateX(-12px);
+  }
+  25% {
+    transform: rotate(180deg) translateX(-12px);
+  }
+  75% {
+    transform: rotate(180deg) translateX(-12px);
+  }
+  100% {
+    transform: rotate(360deg) translateX(-12px);
+  }
+}
+
+@keyframes animateDot2 {
+  0% {
+    transform: rotate(0deg) translateX(-12px);
+  }
+  25% {
+    transform: rotate(-180deg) translateX(-12px);
+  }
+  75% {
+    transform: rotate(-180deg) translateX(-12px);
+  }
+  100% {
+    transform: rotate(-360deg) translateX(-12px);
+  }
+}
+
+@keyframes animateDot3 {
+  0% {
+    transform: rotate(0deg) translateX(12px);
+  }
+  25% {
+    transform: rotate(180deg) translateX(12px);
+  }
+  75% {
+    transform: rotate(180deg) translateX(12px);
+  }
+  100% {
+    transform: rotate(360deg) translateX(12px);
+  }
+}
+
+@keyframes animateDot4 {
+  0% {
+    transform: rotate(0deg) translateX(12px);
+  }
+  25% {
+    transform: rotate(-180deg) translateX(12px);
+  }
+  75% {
+    transform: rotate(-180deg) translateX(12px);
+  }
+  100% {
+    transform: rotate(-360deg) translateX(12px);
+  }
+}
+
+#login {
+  min-height: 100%;
+  background-color: #48A770;
+  background-size: cover;
+  font-family: "Lato", sans-serif;
+  padding-bottom: 3em;
+}
+
+#login .login-container {
+  height: 100%;
+  background-color: #48A770;
+}
+
+#login .logo {
+  font-weight: 900;
+  font-size: 5em;
+  text-align: center;
+  color: #FFF;
+  padding: 0.5em 0 0.5em 0;
+}
+
+#login .logo span {
+  font-weight: 300;
+}
+
+#login .sheep-image {
+  text-align: center;
+  margin-top: 6em;
+}
+
+#login .sheep-image img {
+  width: 400px;
+}
+
+#login form {
+  font-size: 0.8em;
+  padding: 3.55em 2em 1.5em 2em;
+  max-width: 35em;
+  margin: 0 auto;
+  background-color: #FFF;
+  box-shadow: 1px 1px 2px 0 rgba(104, 104, 104, 0.4);
+  -webkit-box-shadow: 1px 1px 2px 0 rgba(104, 104, 104, 0.4);
+  -moz-box-shadow: 1px 1px 2px 0 rgba(104, 104, 104, 0.4);
+  transition: opacity ease-in 0.5s;
+  -webkit-transition: opacity ease-in 0.5s;
+  -moz-transition: opacity ease-in 0.5s;
+}
+
+#login form input:focus {
+  background: #DEDEDE;
+}
+
+#login form input[type=text], #login form input[type=password] {
+  height: 2.3rem !important;
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
+  background-color: #EEEEEE;
+  padding-left: 2rem;
+  font-size: 0.8rem !important;
+}
+
+#login form button {
+  background-color: #48A770;
+  border-radius: 0;
+  border: none;
+}
+
+#login form button:hover {
+  background-color: #155932;
+}
+
+#login form .input {
+  position: relative;
+}
+
+#login form .input i {
+  position: absolute;
+  left: 0;
+  top: 14%;
+  font-size: 1.1em;
+  padding: 0.28rem 0 0 0.8rem;
+  color: #333;
+}
+
+#login form .error-message {
+  text-align: right;
+  color: #AB0000;
+  padding-bottom: 0.8em;
+}
+
+#login form .success-message {
+  text-align: left;
+  color: #155932;
+  padding-bottom: 0.8em;
+}
+
+#login form.forgot-pw {
+  padding-top: 1.5em;
+}
+
+#login form.forgot-pw .input i {
+  font-size: 1em;
+}
+
+#login form.ng-enter {
+  opacity: 0;
+}
+
+#login form.ng-enter-active {
+  opacity: 1;
+}
+
+#login form.ng-leave-active {
+  opacity: 0;
+}
+
+#dashboard {
+  font-family: "Lato", sans-serif;
+}
+
+#dashboard .columns {
+  padding-left: 0;
+}
+
+#dashboard table {
+  font-size: 0.8em;
+}
+
+#dashboard table label {
+  font-weight: 700;
+}
+
+#dashboard table tbody .header {
+  background-color: #EEEEEE;
+}
+
+#dashboard .info-container {
+  background-color: #F5F5F5;
+  margin-bottom: 0.5em;
+  font-size: 0.8em;
+  min-height: 150px;
+}
+
+#dashboard .info-container .info-header {
+  background-color: #EEEEEE;
+  padding: 0.8em 1em;
+  font-weight: 600;
+}
+
+#dashboard .info-container .info-body {
+  padding: 1em 0.9em;
+}
+
+#dashboard .card {
+  width: 100%;
+  border: 1px solid #CAD0D2;
+  overflow: hidden;
+}
+
+#dashboard .card .card-header {
+  text-align: center;
+  color: #57727C;
+  font-size: 0.8em;
+  font-weight: 700;
+  padding: 0.8em 0.8em;
+  border-top: 1px solid #D7DBDD;
+  background-color: #EEF3F5;
+}
+
+#dashboard .card .card-body {
+  padding: 1em 2em;
+  text-align: center;
+  font-size: 0.8em;
+}
+
+#dashboard .card .card-body .value {
+  padding-bottom: 0.8em;
+}
+
+#dashboard .card .card-body label {
+  font-size: 1em;
+  font-weight: 700;
+}
+
+#dashboard .card .card-footer button {
+  font-weight: 700;
+  background-color: #48A770;
+  margin-bottom: 0.4em;
+}
+
+#dashboard .card .card-footer button:hover {
+  background-color: #155932;
+}
+
+#dashboard table.health thead tr {
+  background-color: #EEEEEE;
+}
+
+#dashboard table.health tbody tr:nth-child(odd), #dashboard table.health tbody tr:nth-child(even) {
+  background-color: #F5F5F5;
+}
+
+#dashboard table.health tbody td .description {
+  font-size: 0.95em;
+  font-weight: 600;
+}
+
+#arrival {
+  font-family: "Lato", sans-serif;
+}
+
+#arrival .fa-check {
+  color: #3ADB76;
+}
+
+#arrival .fa-times {
+  color: #EC5840;
+}
+
+#arrival .arrival-list-medium {
+  padding: 1.75em 1.3em;
+  font-family: "Lato", sans-serif;
+}
+
+#arrival .arrival-list-medium .table-header {
+  font-size: 0.8em;
+  font-weight: 600;
+  padding-bottom: 0.6em;
+}
+
+#arrival .arrival-list-medium .table-body {
+  font-size: 0.8em;
+  padding-top: 0.5em;
+  padding-bottom: 0.5em;
+}
+
+#arrival .arrival-list-medium button {
+  font-size: 0.7em;
+  padding: 0.6em;
+  font-weight: 600;
+}
+
+#arrival .arrival-list-small {
+  padding: 1em 1.7em;
+  margin-top: 0.4em;
+  font-family: "Lato", sans-serif;
+  font-size: 0.85em;
+  background-color: #E1E1E1 !important;
+}
+
+#arrival .arrival-list-small label {
+  font-weight: 600;
+  font-size: 0.85em;
+  padding-top: 0.5em;
+}
+
+#arrival .declare-container {
+  padding: 0.6em 0.6em 4em 0.6em;
+}
+
+#arrival .declare-container .badge {
+  background-color: #FFFFFF;
+  color: #000;
+}
+
+#arrival table {
+  font-size: 0.8em;
+}
+
+#arrival table label {
+  font-size: 0.9em;
+  font-weight: 600;
+}
+
+#arrival table select {
+  font-size: 1em;
+  font-weight: 400;
+  width: 40px;
+  height: 25px;
+  margin-bottom: 0;
+  padding: 0.1em 0.4em;
+}
+
+#arrival table input {
+  font-size: 1em;
+  font-weight: 400;
+  height: 25px;
+  margin-bottom: 0;
+}
+
+#arrival table button {
+  margin-bottom: 0;
+  font-weight: 600;
+}
+
+#arrival table .uid-input-group input {
+  max-width: 125px;
+}
+
+#depart {
+  font-family: "Lato", sans-serif;
+}
+
+#depart table.history, #depart table.errors {
+  font-size: 0.8em;
+}
+
+#depart table.history label, #depart table.errors label {
+  font-size: 0.9em;
+  font-weight: 600;
+}
+
+#depart table.history input, #depart table.errors input {
+  font-size: 1em;
+  font-weight: 400;
+  height: 25px;
+  margin-bottom: 0;
+  max-width: 100px;
+}
+
+#depart table.history select, #depart table.errors select {
+  font-size: 1em;
+  font-weight: 400;
+  height: 25px;
+  margin-bottom: 0;
+  padding: 0.1em 0.4em;
+}
+
+#depart table.history button, #depart table.errors button {
+  margin-bottom: 0;
+  font-weight: 600;
+}
+
+#depart table.history .uid-input-group input, #depart table.errors .uid-input-group input {
+  max-width: 125px;
+}
+
+#depart table.history .uid-input-group select, #depart table.errors .uid-input-group select {
+  width: 40px;
+}
+
+#depart .no-side-padding {
+  padding-left: 0;
+  padding-right: 0;
+}
+
+#mate {
+  font-family: "Lato", sans-serif;
+}
+
+#mate table.confirmation, #mate table.history, #mate table.errors {
+  font-size: 0.8em;
+}
+
+#mate table.confirmation button, #mate table.history button, #mate table.errors button {
+  margin-bottom: 0;
+  font-weight: 600;
+}
+
+#mate table.confirmation input, #mate table.history input, #mate table.errors input {
+  font-size: 1em;
+  font-weight: 400;
+  height: 25px;
+  margin-bottom: 0;
+  max-width: 100px;
+}
+
+#birth {
+  font-family: "Lato", sans-serif;
+}
+
+#birth .form-declare .row {
+  padding-left: 1.5em;
+}
+
+#birth .form-declare .section-label {
+  margin: 0;
+  font-size: 1em;
+  font-weight: 400;
+  text-align: left;
+}
+
+#birth .form-declare button {
+  margin: 1.5em 0 0 0;
+}
+
+#birth .optional-message {
+  font-size: 0.7em;
+  padding: 0.5em;
+}
+
+#birth table {
+  font-size: 0.8em;
+}
+
+#birth table label {
+  font-size: 0.9em;
+  font-weight: 600;
+}
+
+#birth table select {
+  font-size: 1em;
+  font-weight: 400;
+  height: 25px;
+  margin-bottom: 0;
+  padding: 0.1em 0.4em;
+}
+
+#birth table input {
+  font-size: 1em;
+  font-weight: 400;
+  height: 25px;
+  margin-bottom: 0;
+}
+
+#birth table input[type='number'] {
+  padding: 0.1em 0.4em;
+  max-width: 100px;
+}
+
+#birth table button {
+  margin-bottom: 0;
+  font-weight: 600;
+}
+
+#birth table .uid-input-group input {
+  max-width: 125px;
+}
+
+#birth table .uid-input-group select {
+  width: 40px;
+}
+
+#loss {
+  font-family: "Lato", sans-serif;
+}
+
+#loss table.history, #loss table.errors {
+  font-size: 0.8em;
+}
+
+#loss table.history label, #loss table.errors label {
+  font-size: 0.9em;
+  font-weight: 600;
+}
+
+#loss table.history input, #loss table.errors input {
+  font-size: 1em;
+  font-weight: 400;
+  height: 25px;
+  margin-bottom: 0;
+  max-width: 100px;
+}
+
+#loss table.history select, #loss table.errors select {
+  font-size: 1em;
+  font-weight: 400;
+  height: 25px;
+  margin-bottom: 0;
+  padding: 0.1em 0.4em;
+}
+
+#loss table.history button, #loss table.errors button {
+  margin-bottom: 0;
+  font-weight: 600;
+}
+
+#loss table.history .uid-input-group input, #loss table.errors .uid-input-group input {
+  max-width: 125px;
+}
+
+#loss table.history .uid-input-group select, #loss table.errors .uid-input-group select {
+  width: 40px;
+}
+
+#loss .no-side-padding {
+  padding-left: 0;
+  padding-right: 0;
+}
+
+#livestock .detail-container {
+  display: block;
+}
+
+#livestock .detail-container button {
+  font-size: 0.75em;
+  margin-right: 0.4em;
+}
+
+#livestock .detail-container .input-success-msg {
+  padding-right: 0.5em;
+}
+
+#livestock .info-container {
+  background-color: #F5F5F5;
+  margin-bottom: 0.8em;
+}
+
+#livestock .info-container .info-header {
+  background-color: #EEEEEE;
+  padding: 0.8em 1em;
+  font-size: 0.85em;
+  font-weight: 600;
+}
+
+#livestock .info-container .info-header button {
+  font-size: 0.85em;
+  font-weight: 400;
+  padding: 0.4em 0.6em;
+}
+
+#livestock .info-container .info-body {
+  padding: 1em 0.9em;
+}
+
+#livestock .info-container .info-body label {
+  font-size: 0.8em;
+  font-weight: 400;
+}
+
+#livestock .info-container .info-body textarea {
+  resize: none;
+}
+
+#livestock .info-container .info-body select {
+  font-size: 0.8em;
+}
+
+#livestock .info-container .info-body input {
+  font-size: 0.8em;
+}
+
+#livestock .info-container .info-body .textarea {
+  padding: 0 1em;
+}
+
+#livestock i.prev-year-btn {
+  margin-right: 2px !important;
+}
+
+#eartag {
+  font-family: "Lato", sans-serif;
+}
+
+#eartag .retrieve-button {
+  padding-top: 0.5em;
+  padding-left: 0;
+}
+
+#eartag .retrieve-button button {
+  margin: 0;
+  padding: 1em;
+}
+
+#eartag .search-field {
+  padding: 0.5em 0;
+}
+
+#eartag .search-field input {
+  margin: 0;
+  font-size: 0.7rem;
+  padding: 0.5em;
+}
+
+#eartag table {
+  font-size: 0.8em;
+}
+
+#eartag table button {
+  margin-bottom: 0;
+  font-weight: 600;
+}
+
+#eartag table input {
+  margin-bottom: 0;
+}
+
+#eartag .input-error-msg {
+  font-size: 0.8em;
+}
+
+#report {
+  font-family: "Lato", sans-serif;
+}
+
+#report .empty-space-sm {
+  padding: 0.5em;
+}
+
+#report .empty-space {
+  padding: 2em;
+}
+
+#report .report select {
+  font-size: 0.9em;
+}
+
+#report .report button {
+  font-size: 0.7em;
+}
+
+#messages {
+  font-family: "Lato", sans-serif;
+}
+
+#messages table {
+  font-size: 0.85em;
+}
+
+#messages table tbody tr.unread {
+  font-weight: 600;
+}
+
+#contact {
+  font-family: "Lato", sans-serif;
+}
+
+#contact .name {
+  font-size: 1.4em;
+  font-weight: 600;
+  padding-bottom: 0.5em;
+}
+
+#contact .name span {
+  font-size: 0.6em;
+  font-weight: 400;
+  color: #999999;
+}
+
+#contact .address, #contact .city, #contact .country {
+  font-size: 0.8em;
+  font-weight: 600;
+}
+
+#contact .business-hours {
+  padding-top: 0.5em;
+  padding-bottom: 0.5em;
+  font-size: 0.8em;
+  font-weight: 600;
+}
+
+#contact .business-hours ul {
+  list-style: none;
+  margin: 0;
+}
+
+#contact .business-hours ul li {
+  font-weight: 400;
+}
+
+#contact .business-hours ul li span {
+  margin-right: 2em;
+}
+
+#contact .contact-info {
+  font-size: 0.8em;
+  font-weight: 600;
+}
+
+#contact .contact-info span {
+  font-weight: 400;
+}
+
+#contact label {
+  font-weight: 600;
+}
+
+#contact select {
+  font-size: 0.95em;
+  font-weight: 400;
+}
+
+#contact input {
+  font-size: 0.95em;
+  font-weight: 400;
+}
+
+#contact textarea {
+  font-size: 0.95em;
+  font-weight: 400;
+  height: 200px;
+  resize: none;
+}
+
+#contact .success-message {
+  font-size: 0.95em;
+  color: #48A770;
+}
+
+#contact .company-info {
+  margin-bottom: 40px;
+}
+
+#contact .contact-form {
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
+
+#profile {
+  font-family: "Lato", sans-serif;
+}
+
+#profile .info-container {
+  background-color: #F5F5F5;
+  margin-bottom: 0.5em;
+}
+
+#profile .info-container .info-header {
+  background-color: #EEEEEE;
+  padding: 0.8em 1em;
+  font-size: 0.85em;
+  font-weight: 600;
+}
+
+#profile .info-container .info-header span {
+  padding-top: 0.5em;
+  font-size: 0.7em;
+  color: #404040;
+}
+
+#profile .info-container .info-body {
+  padding: 1em 0.9em;
+}
+
+#profile .info-container .info-body label {
+  font-size: 0.8em;
+  font-weight: 400;
+}
+
+#profile .info-container .info-body label.category {
+  padding-bottom: 1.1em;
+  font-size: 0.8em;
+  font-weight: 600;
+}
+
+#profile .info-container .info-body input {
+  font-size: 0.8em;
+}
+
+#profile .info-container .info-body select {
+  font-size: 0.8em;
+}
+
+#profile .info-container .info-body button {
+  margin-bottom: 0;
+}
+
+#profile .info-container .info-body .textarea {
+  padding: 0 1em;
+}
+
+#profile .info-container .info-body .username {
+  font-size: 0.8em;
+}
+
+#profile .info-container .info-body .margin-spacing {
+  margin-bottom: 1em;
+}

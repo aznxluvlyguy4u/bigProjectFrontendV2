@@ -1,0 +1,84 @@
+<!--TOP FORM-->
+<form [ngFormModel]="form" class="form-declare">
+
+  <!--DEPART DATE-->
+  <div class="large-2 columns">
+    <label>
+      {{ 'DEPART DATE' | translate }}
+      <datepicker [formCtrl]="form.controls['depart_date']" [viewFormat]="view_date_format"
+                  [modelFormat]="view_date_format"></datepicker>
+      <div [hidden]="form.controls['depart_date'].valid || isValidForm" class="input-error-msg pull-right">{{ 'FILL IN
+        THE DEPART DATE' | translate }}
+      </div>
+    </label>
+  </div>
+
+  <!--EXPORT ANIMAL FLAG-->
+  <div ngControlGroup="export_animal" class="large-1 columns end">
+    <label>{{ 'EXPORT' | translate }} &nbsp;
+      <select ngControl="export_flag" (change)="clearUBNValue(); clearCertificateValue()">
+        <option value="YES">{{ 'YES' | translate }}</option>
+        <option value="NO">{{ 'NO' | translate }}</option>
+      </select>
+    </label>
+  </div>
+
+  <!--UBN NEW OWNER-->
+  <div ngControlGroup="export_animal" *ngIf="export_animal.controls['export_flag'].value == constants.NO"
+       class="large-2 columns">
+    <label>
+      {{ 'UBN NEW OWNER' | translate }}
+      <input type="text" ngControl="ubn_new_owner">
+      <div [hidden]="export_animal.valid || isValidForm" class="input-error-msg pull-right">{{ 'UBN IS INVALID' |
+        translate }}
+      </div>
+    </label>
+  </div>
+
+  <!--CERTIFICATE NUMBER-->
+  <!--<div ngControlGroup="export_animal" *ngIf="export_animal.controls['export_flag'].value == constants.YES" class="large-2 columns end">-->
+  <!--<label>-->
+  <!--{{ 'CERTIFICATE NUMBER' | translate }} &nbsp;-->
+  <!--<input type="text" ngControl="certificate_number">-->
+  <!--</label>-->
+  <!--</div>-->
+  <div ngControlGroup="export_animal" *ngIf="false" class="large-2 columns end">
+    <label>
+      {{ 'CERTIFICATE NUMBER' | translate }} &nbsp;
+      <input type="text" ngControl="certificate_number">
+    </label>
+  </div>
+
+  <!--REASON OF DEPART-->
+  <div *ngIf="export_animal.controls['export_flag'].value == 'NO'" class="large-2 columns end">
+    <label>
+      {{ 'REASON OF DEPART' | translate }} &nbsp;
+      <select ngControl="reason_depart">
+        <option *ngFor="let reason of options_reason_of_depart" value="{{ reason }}">{{ reason | translate }}</option>
+      </select>
+    </label>
+  </div>
+</form>
+
+<!--LIVESTOCK OVERVIEW-->
+<div class="large-12 columns no-side-padding">
+  <app-livestock-overview [items_per_page]="100" (selected)="declareDepart($event)"></app-livestock-overview>
+</div>
+
+<!--ERROR MODAL-->
+<div class="reveal-overlay" [ngStyle]="{'display': modalDisplay}">
+  <div class="tiny reveal" [ngStyle]="{'display': modalDisplay}">
+    <div class="modal-header">
+      {{ 'ERROR' | translate }}
+      <button type="button" class="pull-right" aria-label="Close modal" (click)="closeModal()">
+        <i class="fa fa-times" aria-hidden="true"></i>
+      </button>
+    </div>
+    <div class="modal-body">
+      {{ errorMessage | translate }}
+    </div>
+    <div class="modal-footer">
+      <button class="tiny primary button pull-right" (click)="closeModal()">{{ 'OK' | translate}}</button>
+    </div>
+  </div>
+</div>

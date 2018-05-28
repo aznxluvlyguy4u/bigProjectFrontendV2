@@ -1,0 +1,37 @@
+<div class='row'>
+    <div [ngFormModel]='form' class='large-4 large-centered columns form-controls'>
+        <div class='large-6 columns'>
+            <label class='middle'>
+                {{ 'ULN (RAM)' | translate }}
+            </label>
+        </div>
+        <div class='large-6 columns end'>
+            <input type='text' ngControl='uln' (focus)='selector.openModal()'>
+        </div>
+    </div>
+</div>
+
+<!--LIVESTOCK OVERVIEW-->
+<div class='large-10 columns'>
+    <livestock-overview
+            [reportMode]='true'
+            [items_per_page]='100'
+            [onlyFemales]='true'
+            [file_types_list]='getFileTypesList()'
+            [selectedFileType]='defaultFileType'
+            (selected)='generateReport($event)'
+            [maxSelectionCount]='inbreedingMaxSelectionCount'
+    ></livestock-overview>
+</div>
+
+<selector
+        #selector
+        [title]=''SELECT A STUD RAM''
+        [sectionTitles]='['SEARCH A RAM FROM NSFO DATABASE', 'OR SEARCH FOR A RAM FROM OWN LIVESTOCK']'
+        [columns]='['ULN', 'PEDIGREE NUMBER']'
+        [list]='livestock'
+        [allowCustomSelection]='true'
+        [filter]=''MALES''
+        [size]=''small''
+        (selection)='selectRam($event)'>
+</selector>

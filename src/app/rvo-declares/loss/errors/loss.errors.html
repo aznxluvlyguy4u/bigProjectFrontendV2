@@ -1,0 +1,33 @@
+<!--SHOW HIDDEN MESSAGE-->
+<div class="large-12 table-search">
+  <div class="large-2 large-push-10">
+    <button (click)="displayHiddenMessages()" [ngClass]="{'toggled': showHiddenMessages}" class="small primary button">
+      {{ 'SHOW HIDDEN ERRORS' | translate}}
+    </button>
+  </div>
+</div>
+
+<!--TABLE HEADER-->
+<table class="stack errors">
+  <thead>
+  <th>{{ 'DATE' | translate }}</th>
+  <th>{{ 'ULN' | translate }}</th>
+  <th>{{ 'PEDIGREE NUMBER' | translate }}</th>
+  <th>{{ 'LOSS DATE' | translate }}</th>
+  <th>{{ 'REASON OF LOSS' | translate }}</th>
+  <th>{{ 'ERROR CODE' | translate }}</th>
+  <th></th>
+  </thead>
+  <tbody>
+  <app-loss-error-row
+    *ngFor="let loss of lossErrorList | hiddenMessagesFilter:[showHiddenMessages] | paginate: {itemsPerPage: 10, currentPage: page}; let i = index"
+    (removeLoss)="removeLoss($event)" [loss]="loss" [loss_index]="i"></app-loss-error-row>
+  </tbody>
+</table>
+
+<div *ngIf="isLoading" class="data-loader">
+  <i class="fa fa-spinner fa-pulse fa-fw"></i>
+  <div class="description">{{ 'LOADING' | translate }}</div>
+</div>
+
+<pagination (pageChange)="page = $event"></pagination>

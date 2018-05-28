@@ -1,0 +1,97 @@
+#login
+  min-height: 100%
+  background-color: $nsfo-green
+  background-size: cover
+  font-family: $lato
+  padding-bottom: 3em
+
+  .login-container
+    height: 100%
+    background-color: $nsfo-green
+
+  .logo
+    font-weight: 900
+    font-size: 5em
+    text-align: center
+    color: #FFF
+    padding: 0.5em 0 0.5em 0
+
+    span
+      font-weight: 300
+
+  .sheep-image
+    text-align: center
+    margin-top: 6em
+
+    img
+      width: 400px
+
+  form
+    font-size: 0.8em
+    padding: 3.55em 2em 1.5em 2em
+    max-width: 35em
+    margin: 0 auto
+    background-color: #FFF
+    box-shadow: 1px 1px 2px 0 rgba(104, 104, 104, 0.4)
+    -webkit-box-shadow: 1px 1px 2px 0 rgba(104, 104, 104, 0.4)
+    -moz-box-shadow: 1px 1px 2px 0 rgba(104, 104, 104, 0.4)
+    transition: opacity ease-in 0.5s
+    -webkit-transition: opacity ease-in 0.5s
+    -moz-transition: opacity ease-in 0.5s
+
+    input:focus
+      background: #DEDEDE
+
+    input[type=text], input[type=password]
+      height: 2.3rem !important
+      border: none
+      border-radius: 0
+      box-shadow: none
+      background-color: #EEEEEE
+      padding-left: 2rem
+      font-size: 0.8rem !important
+
+    button
+      background-color: $nsfo-green
+      border-radius: 0
+      border: none
+
+      &:hover
+        background-color: $nsfo-dark-green
+
+    .input
+      position: relative
+
+      i
+        position: absolute
+        left: 0
+        top: 14%
+        font-size: 1.1em
+        padding: 0.28rem 0 0 0.8rem
+        color: #333
+
+    .error-message
+      text-align: right
+      color: #AB0000
+      padding-bottom: 0.8em
+
+    .success-message
+      text-align: left
+      color: $nsfo-dark-green
+      padding-bottom: 0.8em
+
+    &.forgot-pw
+      padding-top: 1.5em
+
+      .input
+        i
+          font-size: 1em
+
+    &.ng-enter
+      opacity: 0
+
+    &.ng-enter-active
+      opacity: 1
+
+    &.ng-leave-active
+      opacity: 0

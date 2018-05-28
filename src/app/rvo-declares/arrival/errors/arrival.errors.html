@@ -1,0 +1,54 @@
+<!--SHOW HIDDEN MESSAGE-->
+<div class="large-12 table-search">
+  <div class="large-2 large-push-10">
+    <button (click)="displayHiddenMessages()" [ngClass]="{'toggled': showHiddenMessages}" class="small primary button">
+      {{ 'SHOW HIDDEN ERRORS' | translate}}
+    </button>
+  </div>
+</div>
+
+<!--TABLE HEADER-->
+<table class="stack">
+  <thead>
+  <th>{{ 'DATE' | translate }}</th>
+  <th>{{ 'ULN' | translate }}</th>
+  <th>{{ 'PEDIGREE NUMBER' | translate }}</th>
+  <th>{{ 'ARRIVAL DATE' | translate }}</th>
+  <th>{{ 'IMPORT' | translate }}</th>
+  <th>{{ 'UBN PREVIOUS OWNER' | translate }}</th>
+  <th *ngIf="false">{{ 'CERTIFICATE NUMBER' | translate }}</th>
+  <th>{{ 'ERROR CODE' | translate }}</th>
+  <th></th>
+  </thead>
+  <tbody>
+  <app-arrival-errors-row
+    *ngFor="let arrival of arrivalErrorList | hiddenMessagesFilter:[showHiddenMessages] | paginate: {itemsPerPage: 10, currentPage: page}; let i = index"
+    (removeArrival)="removeArrival($event)" (showError)="showError($event)" [arrival]="arrival"
+    [arrival_index]="i"></app-arrival-errors-row>
+  </tbody>
+</table>
+
+<div *ngIf="isLoading" class="data-loader">
+  <i class="fa fa-spinner fa-pulse fa-fw"></i>
+  <div class="description">{{ 'LOADING' | translate }}</div>
+</div>
+
+<pagination (pageChange)="page = $event"></pagination>
+
+<!--ERROR MODAL-->
+<div class="reveal-overlay" [ngStyle]="{'display': modal_display}">
+  <div class="tiny reveal" [ngStyle]="{'display': modal_display}">
+    <div class="modal-header">
+      {{ 'ERROR' | translate }}
+      <button type="button" class="pull-right" aria-label="Close modal" (click)="closeModal()">
+        <i class="fa fa-times" aria-hidden="true"></i>
+      </button>
+    </div>
+    <div class="modal-body">
+      {{ error_message | translate:{value: error_number} }}
+    </div>
+    <div class="modal-footer">
+      <button class="tiny primary button pull-right" (click)="closeModal()">{{ 'OK' | translate}}</button>
+    </div>
+  </div>
+</div>

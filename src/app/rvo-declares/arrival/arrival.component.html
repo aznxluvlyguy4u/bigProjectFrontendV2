@@ -1,0 +1,45 @@
+<div id="arrival">
+
+  <!--BREADCRUMBS-->
+  <div class="row">
+    <ul class="breadcrumbs">
+      <li><a [routerLink]="['/main']">{{ 'DASHBOARD' | translate }}</a></li>
+      <li>{{ 'ARRIVAL' | translate }}</li>
+    </ul>
+  </div>
+
+  <!--TABS MEDIUM/LARGE SCREENS-->
+  <div class="row hide-for-small-only">
+    <ul class="tabs">
+      <li [class.active]="isActiveRoute('/main/arrival/declare')" class="tabs-title">
+        <a (click)="navigateTo('/main/arrival/declare')">{{ 'DECLARE ARRIVAL' | translate }}</a>
+      </li>
+      <li [class.active]="isActiveRoute('/main/arrival/history')" class="tabs-title">
+        <a (click)="navigateTo('/main/arrival/history')">{{ 'HISTORY' | translate }}</a>
+      </li>
+      <li [class.active]="isActiveRoute('/main/arrival/errors')" class="tabs-title">
+        <a (click)="navigateTo('/main/arrival/errors')">
+          {{ 'ERRORS' | translate }} <span *ngIf="errorAmount > 0"
+                                           class="alert badge tab-badge">{{ errorAmount }}</span>
+        </a>
+      </li>
+    </ul>
+  </div>
+
+  <!--TABS SMALL SCREENS-->
+  <div class="row show-for-small-only">
+    <label> {{ 'TAB' | translate }}
+      <select [(ngModel)]="selectedRoute" (change)="selectRoute($event)">
+        <option value="/main/arrival/declare">{{ 'DECLARE ARRIVAL' | translate }}</option>
+        <option value="/main/arrival/history">{{ 'HISTORY' | translate }}</option>
+        <option value="/main/arrival/errors">{{ 'ERRORS' | translate }} ({{ errorAmount }})</option>
+      </select>
+    </label>
+  </div>
+
+  <!--TAB CONTENT-->
+  <div class="row">
+    <router-outlet></router-outlet>
+  </div>
+</div>
+

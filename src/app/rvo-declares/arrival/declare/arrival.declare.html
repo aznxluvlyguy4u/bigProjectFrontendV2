@@ -1,0 +1,192 @@
+<form [ngFormModel]="form" class="form-declare">
+
+  <!--IDENTIFICATION TYPE-->
+  <div class="large-2 columns">
+    <label>
+      {{ 'IDENTIFICATION TYPE' | translate }}
+      <select ngControl="uid_type">
+        <option value="{{ constants.ULN }}">{{ constants.ULN | translate }}</option>
+        <option value="{{ constants.PEDIGREE }}">{{ constants.PEDIGREE | translate }}</option>
+      </select>
+    </label>
+  </div>
+
+  <!--IDENTIFICATION NUMBER-->
+  <div class="large-3 columns">
+    <label>{{ 'IDENTIFICATION NUMBER' | translate }}</label>
+    <div class="uid-input-group">
+      <select ngControl="uid_country_code">
+        <option *ngFor="let country_code of country_code_list" value="{{ country_code.code }}">{{ country_code.code }}
+        </option>
+      </select>
+      <input type="text" maxlength="12" ngControl="uid_number">
+    </div>
+    <div [hidden]="form.controls['uid_number'].valid || form_valid" class="input-error-msg pull-right">{{ 'FILL IN THE ULN OR PEDIGREE' | translate }}
+    </div>
+  </div>
+
+  <!--ARRIVAL DATE-->
+  <div class="large-2 columns">
+    <label>
+      {{ 'ARRIVAL DATE' | translate }} &nbsp;
+      <datepicker [formCtrl]="form.controls['arrival_date']" [viewFormat]="view_date_format"
+                  [modelFormat]="view_date_format"></datepicker>
+      <div [hidden]="form.controls['arrival_date'].valid || form_valid" class="input-error-msg pull-right">{{ 'FILL IN
+        THE ARRIVAL DATE' | translate }}
+      </div>
+    </label>
+  </div>
+
+  <!--IMPORT ANIMAL FLAG-->
+  <div ngControlGroup="import_animal" class="large-1 columns">
+    <label>{{ 'IMPORT' | translate }} &nbsp;
+      <select ngControl="import_flag" (change)="clearUBNValue(); clearCertificateValue();">
+        <option value="{{ constants.YES }}">{{ constants.YES | translate }}</option>
+        <option value="{{ constants.NO }}">{{ constants.NO | translate }}</option>
+      </select>
+    </label>
+  </div>
+
+  <!--UBN PREVIOUS OWNER-->
+  <div ngControlGroup="import_animal" *ngIf="import_animal.controls['import_flag'].value == constants.NO"
+       class="large-2 columns">
+    <label>
+      {{ 'UBN PREVIOUS OWNER' | translate }}
+      <input type="text" ngControl="ubn_previous_owner">
+      <div [hidden]="import_animal.valid || form_valid" class="input-error-msg pull-right">
+        {{ 'UBN IS INVALID' | translate }}
+      </div>
+    </label>
+  </div>
+
+  <!--CERTIFICATE NUMBER-->
+  <div ngControlGroup="import_animal" *ngIf="false" class="large-2 columns">
+    <label>
+      {{ 'CERTIFICATE NUMBER' | translate }}
+      <input type="text" ngControl="certificate_number">
+    </label>
+  </div>
+  <!--<div ngControlGroup="import_animal" *ngIf="import_animal.controls['import_flag'].value == constants.YES" class="large-2 columns">-->
+  <!--<label>-->
+  <!--{{ 'CERTIFICATE NUMBER' | translate }}-->
+  <!--<input type="text" ngControl="certificate_number">-->
+  <!--</label>-->
+  <!--</div>-->
+
+  <div class="large-2 columns">
+    <label> &nbsp;</label>
+    <button type="button" class="button expanded" [disabled]="in_progress" (click)="addNewArrival()">{{ 'ADD ARRIVAL' |
+      translate }}
+    </button>
+  </div>
+</form>
+
+<!--TABLE OVERVIEW-->
+<div *ngIf="arrival_list.length > 0">
+  <table class="stack">
+    <thead>
+    <tr>
+      <td>{{ 'ULN' | translate }}</td>
+      <td>{{ 'PEDIGREE NUMBER' | translate }}</td>
+      <td>{{ 'ARRIVAL DATE' | translate }}</td>
+      <td>{{ 'IMPORT' | translate }}</td>
+      <td>{{ 'UBN PREVIOUS OWNER' | translate }}</td>
+      <td>{{ 'CERTIFICATE NUMBER' | translate }}</td>
+      <td></td>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let arrival of arrival_list">
+      <td>
+        <label class="hide-for-large">{{ 'ULN' | translate }}</label>
+        <span *ngIf="(arrival.animal.uln_country_code && arrival.animal.uln_number)">
+                        {{ arrival.animal.uln_country_code + arrival.animal.uln_number }}
+                    </span>
+        <span *ngIf="!(arrival.animal.uln_country_code && arrival.animal.uln_number)">
+                        --
+                    </span>
+      </td>
+      <td>
+        <label class="hide-for-large">{{ 'PEDIGREE NUMBER' | translate }}</label>
+        <span *ngIf="(arrival.animal.pedigree_country_code && arrival.animal.pedigree_number)">
+                        {{ arrival.animal.pedigree_country_code + arrival.animal.pedigree_number }}
+                    </span>
+        <span *ngIf="!(arrival.animal.pedigree_country_code && arrival.animal.pedigree_number)" class="centered">
+                        --
+                    </span>
+      </td>
+      <td>
+        <label class="hide-for-large">{{ 'ARRIVAL DATE' | translate }}</label>
+        {{ stringAsDate(arrival.arrival_date) }}
+      </td>
+      <td>
+        <label class="hide-for-large">{{ 'IMPORT' | translate }}</label>
+        <span *ngIf="arrival.is_import_animal"><i class="fa fa-check"></i></span>
+        <span *ngIf="!arrival.is_import_animal"><i class="fa fa-times danger"></i></span>
+      </td>
+      <td>
+        <label class="hide-for-large">{{ 'UBN PREVIOUS OWNER' | translate }}</label>
+        <span *ngIf="arrival.ubn_previous_owner">
+                        {{ arrival.ubn_previous_owner }}
+                    </span>
+        <span *ngIf="!arrival.ubn_previous_owner">
+                        --
+                    </span>
+      </td>
+      <td>
+        <label class="hide-for-large">{{ 'CERTIFICATE NUMBER' | translate }}</label>
+        <!--<span *ngIf="arrival.certificate_number">-->
+        <!--{{ arrival.certificate_number }}-->
+        <!--</span>-->
+        <!--<span *ngIf="!arrival.certificate_number">-->
+        <!--&#45;&#45;-->
+        <!--</span>-->
+        <span *ngIf="false">
+                        {{ arrival.certificate_number }}
+                    </span>
+        <span *ngIf="!arrival.certificate_number">
+                        --
+                    </span>
+      </td>
+      <td>
+        <div class="large-push-3 large-8">
+          <button type="button" [disabled]="in_progress" (click)="removeArrival(arrival)"
+                  class="alert tiny button expanded">{{ 'REMOVE' | translate }}
+          </button>
+        </div>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+
+  <!--DECLARE BUTTON-->
+  <div class="large-12">
+    <button type="button" [disabled]="in_progress" (click)="declareArrivals()" class="small button pull-right">
+            <span *ngIf="!in_progress">
+                <span class="badge">{{ arrival_list.length }}</span>
+                {{ 'DECLARE' | translate }}
+            </span>
+      <span *ngIf="in_progress">
+                <i class="fa fa-gear fa-spin fa-fw"></i>
+            </span>
+    </button>
+  </div>
+</div>
+
+<!--ERROR MODAL-->
+<div class="reveal-overlay" [ngStyle]="{'display': modal_display}">
+  <div class="tiny reveal" [ngStyle]="{'display': modal_display}">
+    <div class="modal-header">
+      {{ 'ERROR' | translate }}
+      <button type="button" class="pull-right" aria-label="Close modal" (click)="closeModal()">
+        <i class="fa fa-times" aria-hidden="true"></i>
+      </button>
+    </div>
+    <div class="modal-body">
+      {{ error_message | translate:{value: error_number} }}
+    </div>
+    <div class="modal-footer">
+      <button class="tiny primary button pull-right" (click)="closeModal()">{{ 'OK' | translate}}</button>
+    </div>
+  </div>
+</div>

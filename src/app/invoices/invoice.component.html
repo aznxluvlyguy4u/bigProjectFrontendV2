@@ -1,0 +1,14 @@
+<div id="invoices">
+
+  <!--BREADCRUMBS-->
+  <div class="row">
+    <ul class="breadcrumbs">
+      <li><a [routerLink]="['/main']">{{ 'DASHBOARD' | translate }}</a></li>
+      <li>{{ 'INVOICES' | translate }}</li>
+    </ul>
+  </div>
+
+  <div class="row">
+    <router-outlet></router-outlet>
+  </div>
+</div>

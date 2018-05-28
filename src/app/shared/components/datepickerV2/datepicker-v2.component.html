@@ -1,0 +1,77 @@
+<span id="component-datepicker-v2" class="datepicker-v2-group">
+
+    <input *ngIf="dateString == null"
+           type="text"
+           class="ng-datepicker-input form-control"
+           size="10"
+           [value]="'NO DATE' | translate"
+           [hidden]="isStatic"
+           [disabled]="true"
+           [ngClass]="{'ng-dirty': isDirty}"
+           title="{{ 'NO DATE' | translate }}"
+    >
+
+    <input *ngIf="dateString != null"
+           type="text"
+           class="ng-datepicker-input form-control"
+           size="10"
+           (focus)="openDatepicker()"
+           [value]="viewValueWithNullCheck()"
+           [hidden]="isStatic"
+           [disabled]="disabled"
+           [ngClass]="{'ng-dirty': isDirty}"
+           title="{{ dateString != '' ? dateString : 'INVALID DATE STRING' | translate }}"
+    >
+    <button *ngIf="dateString != null && !disabled && activateSetNullButton"
+            type="button"
+            (click)="removeDate()"
+            class="button secondary null-toggle-off"
+            [disabled]="disabled"
+            title="{{'REMOVE DATE' | translate}}"
+    ><i class="fa fa-minus-circle" aria-hidden="true"></i></button>
+
+        <button *ngIf="dateString == null && !disabled"
+                type="button"
+                (click)="setDate()"
+                class="button secondary null-toggle-on"
+                [disabled]="disabled"
+                title="{{'SET DATE' | translate}}"
+        ><i class="fa fa-plus-circle" aria-hidden="true"></i></button>
+
+    <button *ngIf="!disabled"
+            type="submit"
+            (click)="reset()"
+            class="button secondary reset"
+            [disabled]="disabled || hasOriginalValues()"
+            title="{{'RESET TO ORIGINAL VALUE' | translate}}"
+    ><i class="fa fa-fast-backward" aria-hidden="true"></i></button>
+</span>
+
+<div class="ng-datepicker" *ngIf="isStatic || isOpened" [ngClass]="{ static: isStatic }">
+  <div class="controls">
+    <div class="left">
+      <span (click)="prevYear()"><i class="fa fa-backward prev-year-btn"></i></span>
+      <span (click)="prevMonth()"><i class="fa fa-chevron-left prev-month-btn"></i></span>
+    </div>
+    <span class="date">
+            {{ dateValue }}
+        </span>
+    <div class="right">
+      <span (click)="nextMonth()"><i class="fa fa-chevron-right next-month-btn"></i></span>
+      <span (click)="nextYear()"><i class="fa fa-forward next-year-btn"></i></span>
+    </div>
+  </div>
+  <div class="day-names">
+        <span *ngFor="let dn of dayNames">
+            <span>{{ dn }}</span>
+        </span>
+  </div>
+  <div class="calendar">
+        <span *ngFor="let d of days;">
+            <span class="day" [ngClass]="{'disabled': !d.enabled, 'selected': isSelected(d)}"
+                  (click)="selectDate($event, d)">
+                {{ d.day }}
+            </span>
+        </span>
+  </div>
+</div>

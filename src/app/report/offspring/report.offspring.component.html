@@ -1,0 +1,28 @@
+<div class='row'>
+    <div class='small-12 show-for-small-only columns' style='text-align: left'>
+        {{'CONCATENATE VALUE AND ACCURACY' | translate }}
+    </div>
+    <div class='medium-7 hide-for-small-only columns' style='text-align: right'>
+        {{'CONCATENATE VALUE AND ACCURACY' | translate }}
+    </div>
+    <div class='small-12 medium-2 end columns'>
+        <app-boolean-switch
+                [boolVal]='concatBreedValueAndAccuracyColumns'
+                [hideLabel]='true'
+                (boolValChanged)='concatBreedValueAndAccuracyColumns = $event'
+        ></app-boolean-switch>
+    </div>
+</div>
+
+<!--LIVESTOCK OVERVIEW-->
+<div class='large-10 columns'>
+    <livestock-overview
+            [load_historic_animals_in_non_view_mode]='true'
+            [reportMode]='true'
+            [items_per_page]='100'
+            [file_types_list]='getFileTypesList()'
+            [selectedFileType]='defaultFileType'
+            (selected)='generateReport($event.animals)'
+            [maxSelectionCount]='lineageProofMaxSelectionCount'
+    ></livestock-overview>
+</div>

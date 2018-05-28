@@ -1,0 +1,63 @@
+<!--TABLE SEARCH-->
+<div class="large-12 table-search">
+  <div class="large-2 large-push-10">
+    <input type="text" [(ngModel)]="searchValue" maxlength="20" placeholder="{{ 'SEARCH' | translate }}">
+  </div>
+</div>
+
+<!--TABLE HEADER-->
+<table class="stack">
+  <thead>
+  <th>{{ 'DATE' | translate }}</th>
+  <th>{{ 'ULN' | translate }}</th>
+  <th>{{ 'UBN NEW OWNER' | translate }}</th>
+  <th>{{ 'STATUS' | translate }}</th>
+  <th></th>
+  </thead>
+  <tbody>
+  <app-eartag-history-row
+    *ngFor="let eartag of eartagHistoryList | eartagHistoryFilter:[searchValue] | paginate: {itemsPerPage: 10, currentPage: page}; let i = index"
+    (revokeEartag)="selectEartag($event)" (showError)="showError($event)" [eartag]="eartag"
+    [eartag_index]="i"></app-eartag-history-row>
+  </tbody>
+</table>
+
+<div *ngIf="isLoading" class="data-loader">
+  <i class="fa fa-spinner fa-pulse fa-fw"></i>
+  <div class="description">{{ 'LOADING' | translate }}</div>
+</div>
+
+<pagination (pageChange)="page = $event"></pagination>
+
+<!--REVOKE MODAL-->
+<div class="reveal-overlay" [ngStyle]="{'display': modal_display}">
+  <div class="tiny reveal" [ngStyle]="{'display': modal_display}">
+    <div class="modal-header">
+      {{ 'REVOKE DECLARATION' | translate }}
+      <button type="button" (click)="closeModal()" class="pull-right" aria-label="Close modal">
+        <i class="fa fa-times" aria-hidden="true"></i>
+      </button>
+    </div>
+    <div class="modal-body"> {{ 'ARE YOU SURE YOU WANT TO REVOKE DECLARATION' | translate }}</div>
+    <div class="modal-footer">
+      <button class="tiny alert button pull-right" (click)="revokeEartag()">{{ 'REVOKE' | translate}}</button>
+      <button class="tiny primary button pull-right" (click)="closeModal()">{{ 'CANCEL' | translate}}</button>
+    </div>
+  </div>
+</div>
+
+<!--ERROR MODAL-->
+<div class="reveal-overlay" [ngStyle]="{'display': error_modal_display}">
+  <div class="tiny reveal" [ngStyle]="{'display': error_modal_display}">
+    <div class="modal-header">
+      {{ 'ERROR' | translate }}
+      <button type="button" (click)="closeModal()" class="pull-right" aria-label="Close modal">
+        <i class="fa fa-times" aria-hidden="true"></i>
+      </button>
+    </div>
+    <div class="modal-body"> {{ error_message | translate:{value: error_number} }}</div>
+    <div class="modal-footer">
+      <button class="tiny primary button pull-right" (click)="closeModal()">{{ 'OK' | translate}}</button>
+    </div>
+  </div>
+</div>

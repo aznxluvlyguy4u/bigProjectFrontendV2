@@ -1,0 +1,65 @@
+<table class="stack confirmation">
+  <thead>
+  <th>{{ 'DATE' | translate }}</th>
+  <th>{{ 'ULN' | translate }}</th>
+  <th>{{ 'WEIGHT DATE' | translate }}</th>
+  <th>{{ 'WEIGHT' | translate }}</th>
+  <th>{{ 'STATUS' | translate }}</th>
+  <th></th>
+  </thead>
+  <tbody>
+  <app-mate-history-row *ngFor="let weight of weightHistoryList | paginate: {itemsPerPage: 10, currentPage: page}; let i = index"
+      (revokeWeight)="selectWeight($event)" (showError)="showError($event)" [weight-object]="weight"
+      [weight-index]="i"></app-mate-history-row>
+  </tbody>
+</table>
+
+<pagination (pageChange)="page = $event"></pagination>
+
+<!--REVOKE MODAL-->
+<div class="reveal-overlay" [ngStyle]="{'display': modalDisplay}">
+  <div class="tiny reveal" [ngStyle]="{'display': modalDisplay}">
+    <div class="modal-header">
+      {{ 'REVOKE DECLARATION' | translate }}
+      <button type="button" (click)="closeModal()" [disabled]="isSending" class="pull-right" aria-label="Close modal">
+        <i class="fa fa-times" aria-hidden="true"></i>
+      </button>
+    </div>
+    <div class="modal-body"> {{ 'ARE YOU SURE YOU WANT TO REVOKE DECLARATION' | translate }}</div>
+    <div class="modal-footer">
+            <span class="pull-right">
+                <button class="tiny alert button" (click)="revokeWeight()" [disabled]="isSending">
+                    <span *ngIf="!isSending">
+                        {{ 'REVOKE' | translate}}
+                    </span>
+                    <span *ngIf="isSending">
+                        <i class="fa fa-gear fa-spin fa-fw"></i>
+                    </span>
+                </button>
+                <button class="tiny primary button" (click)="closeModal()" [disabled]="isSending">{{ 'CANCEL' | translate}}</button>
+            </span>
+    </div>
+  </div>
+</div>
+
+<!--ERROR MODAL-->
+<div class="reveal-overlay" [ngStyle]="{'display': errorModalDisplay}">
+  <div class="tiny reveal" [ngStyle]="{'display': errorModalDisplay}">
+    <div class="modal-header">
+      {{ 'ERROR' | translate }}
+      <button type="button" (click)="closeErrorModal()" class="pull-right" aria-label="Close modal">
+        <i class="fa fa-times" aria-hidden="true"></i>
+      </button>
+    </div>
+    <div class="modal-body">
+      <ul>
+        <li *ngFor="let errorMessage of errorMessages">
+          {{ errorMessage.message | translate }}
+        </li>
+      </ul>
+    </div>
+    <div class="modal-footer">
+      <button class="tiny primary button pull-right" (click)="closeErrorModal()">{{ 'OK' | translate}}</button>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,34 @@
+<!--LOG DATE-->
+<td>
+  <label class="show-for-small-only">{{ 'DATE' | translate }}</label>
+  {{ tagReplacement.log_date }}
+</td>
+
+<!--ANIMAL-->
+<td>
+  <label class="show-for-small-only">{{ 'ANIMAL' | translate }}</label>
+  {{ tagReplacement.animal.uln_country_code + tagReplacement.animal.uln_number }}
+</td>
+
+<!--TAG-->
+<td>
+  <label class="show-for-small-only">{{ 'NEW EARTAG' | translate }}</label>
+  {{ tagReplacement.tag.uln_country_code + tagReplacement.tag.uln_number }}
+</td>
+
+<!--ERROR CODE-->
+<td>
+  <label class="show-for-small-only">{{ 'ERROR CODE' | translate }}</label>
+  <span id="error-{{ tagReplacementIndex }}" data-tooltip aria-haspopup="true" class="has-tip top"
+        data-disable-hover="false" title="{{ tagReplacement.error_message }}">
+        {{ tagReplacement.error_code }}
+    </span>
+</td>
+
+<!--ROW BUTTONS-->
+<td>
+    <span
+      [hidden]="tagReplacement.request_state == 'OPEN' || tagReplacement.request_state == 'REVOKING' ||  tagReplacement.request_state == 'REVOKED'">
+        <button class="tiny alert button" (click)="sendRemoveErrorRequest()">{{ 'DONT SHOW' | translate }}</button>
+    </span>
+</td>

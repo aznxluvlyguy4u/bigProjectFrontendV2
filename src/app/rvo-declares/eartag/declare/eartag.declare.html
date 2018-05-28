@@ -1,0 +1,181 @@
+<div class="large-12 columns">
+  <div class="row table-search">
+    <div *ngIf="statusHasBeenRetrieved" class="large-2 columns retrieve-button">
+      <button *ngIf="areBirthsInProgress"
+              type="button"
+              [disabled]="true"
+              class="small alert button"
+              [title]="getBirthsInProgressMessage()"
+      >
+                <span>
+                    {{ 'RETRIEVE EARTAGS' | translate}}
+                </span>
+        <span>
+                    <i class="fa fa-exclamation-triangle fa-fw"></i>
+                </span>
+      </button>
+      <button *ngIf="!areBirthsInProgress"
+              type="button" [disabled]="sync_in_progress" (click)="syncEartagsList()" class="small primary button">
+                <span *ngIf="!sync_in_progress">
+                    {{ 'RETRIEVE EARTAGS' | translate}}
+                </span>
+        <span *ngIf="sync_in_progress">
+                    <i class="fa fa-gear fa-spin fa-fw"></i>
+                </span>
+      </button>
+    </div>
+    <div class="large-2 columns last-tag-overview" *ngIf="hasLastManualRetrieveTag()">
+      {{('LAST MANUAL SYNC' | translate)}}
+    </div>
+    <div class="large-2 columns last-tag-overview" *ngIf="hasLastManualRetrieveTag()">
+      <div class="row">
+        {{('LOG DATE' | translate)}}
+      </div>
+      <div class="row">
+        {{getLastManualRetrieveTagLogDate()}}
+      </div>
+    </div>
+    <div class="large-2 columns last-tag-overview" *ngIf="hasLastManualRetrieveTag()">
+      <div class="row">
+        {{('STATUS' | translate)}}
+      </div>
+      <div class="row">
+        {{getLastManualRetrieveTagRequestState()}}
+        <span *ngIf="hasForceDeleteAnimalsFailed()">
+                    <i class="fa fa-exclamation-triangle fa-fw" aria-hidden="true"
+                       title="{{ 'DELETING ANIMALS WITH SAME ULN AS THE RETRIEVED TAGS FAILED FOR AT LEAST ONE ANIMAL' | translate }}"></i>
+                </span>
+        <span *ngIf="isLastManualRetrieveTagRequestCancelled()">
+                    <i class="fa fa-info-circle" aria-hidden="true"
+                       title="{{ ('THIS TAG SYNC WAS LIKELY CANCELLED BECAUSE IT WAS OVERWRITTEN BY A NEWER AUTOMATIC SYNC' | translate) + '. '
+                       + ('REDO THE MANUAL TAG SYNC' | translate) + '.'}}"></i>
+                </span>
+      </div>
+    </div>
+    <div class="large-2 columns last-tag-overview" *ngIf="hasLastManualRetrieveTag()">
+      <div class="row">
+        {{('ACTION BY' | translate)}}
+      </div>
+      <div class="row">
+        {{getLastManualRetrieveTagActionBy()}}
+      </div>
+    </div>
+
+    <div class="large-2 columns search-field">
+      <input type="text" [(ngModel)]="searchValue" maxlength="20" placeholder="{{ 'SEARCH' | translate }}">
+    </div>
+  </div>
+
+
+  <!--TABLE-->
+  <div class="row">
+    <table>
+      <thead>
+      <tr>
+        <th>
+          <input type="checkbox" (click)="selectAllEartags($event)">
+        </th>
+        <th>
+          {{ 'ULN' | translate}}
+          <span (click)="setOrderULN()">
+                            <i *ngIf="order_column_uln_asc" class="fa fa-arrow-down" aria-hidden="true"></i>
+                            <i *ngIf="!order_column_uln_asc" class="fa fa-arrow-up" aria-hidden="true"></i>
+                        </span>
+        </th>
+        <th>{{ 'STATUS' | translate}}</th>
+        <th>
+          <button type="button" [disabled]="!(selected_eartags_list.length > 0) || sync_in_progress"
+                  (click)="openModalAll()" class="tiny primary button pull-right">
+            <span class="badge">{{ selected_eartags_list.length }}</span>
+            {{ 'TRANSFER ALL' | translate}}
+          </button>
+        </th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr
+        *ngFor="let eartag of eartags_list | eartagFilter:[searchValue] | paginate: {itemsPerPage: 10, currentPage: page}">
+        <td>
+          <input type="checkbox" (click)="selectEartag(eartag, $event)" [checked]="eartag.selected">
+        </td>
+        <td>{{ eartag.uln_country_code + eartag.uln_number }}</td>
+        <td>{{ eartag.tag_status | translate }}</td>
+        <td>
+          <button type="button" [disabled]="sync_in_progress" (click)="selected_eartag = eartag; openModal()"
+                  class="tiny primary button pull-right">{{ 'TRANSFER' | translate }}
+          </button>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+    <pagination (pageChange)="page = $event"></pagination>
+  </div>
+
+  <!--TRANSFER ALL MODAL-->
+  <div class="reveal-overlay" [ngStyle]="{'display': modal_all_display}">
+    <div class="tiny reveal" id="transferAllEartagModal" [ngStyle]="{'display': modal_all_display}">
+      <div class="modal-header">
+        {{ 'TRANSFER EARTAGS' | translate }}
+        <button type="button" class="pull-right" aria-label="Close modal" (click)="closeModalAll()">
+          <i class="fa fa-times" aria-hidden="true"></i>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form [ngFormModel]="form">
+          <label> {{ 'UBN NEW OWNER' | translate }}
+            <span class="input">
+                            <div [hidden]="form.controls['ubn_new_owner'].valid || form_valid"
+                                 class="input-error-msg pull-right">{{ 'UBN IS INVALID' | translate }}</div>
+                            <input type="text" ngControl="ubn_new_owner">
+                        </span>
+          </label>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <span class="input-error-msg"> {{ error_message | translate }} </span>
+        <button (click)="sendAllEartagTransferRequest()" [disabled]="all_eartags_in_progress"
+                class="tiny alert button pull-right">
+          <span *ngIf="!all_eartags_in_progress">{{ 'TRANSFER' | translate}}</span>
+          <span *ngIf="all_eartags_in_progress"><i class="fa fa-gear fa-spin fa-fw"></i></span>
+        </button>
+        <button (click)="closeModalAll()" [disabled]="all_eartags_in_progress" class="tiny primary button pull-right">{{
+          'CANCEL' | translate}}
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!--TRANSFER EARTAG MODAL-->
+  <div class="reveal-overlay" [ngStyle]="{'display': modal_display}">
+    <div class="tiny reveal" id="transferEartagModal" [ngStyle]="{'display': modal_display}">
+      <div class="modal-header">
+        {{ 'TRANSFER EARTAGS' | translate }}
+        <button type="button" class="pull-right" aria-label="Close modal" (click)="closeModal()">
+          <i class="fa fa-times" aria-hidden="true"></i>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form [ngFormModel]="form_single_tag">
+          <label> {{ 'UBN NEW OWNER' | translate }}
+            <span class="input">
+                            <div [hidden]="form_single_tag.controls['ubn_new_owner'].valid || form_single_valid"
+                                 class="input-error-msg pull-right">{{ 'UBN IS INVALID' | translate }}</div>
+                            <input type="text" ngControl="ubn_new_owner">
+                        </span>
+          </label>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <span class="input-error-msg"> {{ error_message | translate }} </span>
+        <button (click)="sendEartagTransferRequest()" [disabled]="eartag_in_progress"
+                class="tiny alert button pull-right">
+          <span *ngIf="!eartag_in_progress">{{ 'TRANSFER' | translate}}</span>
+          <span *ngIf="eartag_in_progress"><i class="fa fa-gear fa-spin fa-fw"></i></span>
+        </button>
+        <button (click)="closeModal()" [disabled]="eartag_in_progress" class="tiny primary button pull-right">{{
+          'CANCEL' | translate}}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

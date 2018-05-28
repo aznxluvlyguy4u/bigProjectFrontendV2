@@ -1,0 +1,56 @@
+<div id="contact">
+
+  <!--BREADCRUMBS-->
+  <div class="row">
+    <ul class="breadcrumbs">
+      <li><a [routerLink]="['/main']">{{ 'DASHBOARD' | translate }}</a></li>
+      <li>{{ 'CONTACT NSFO' | translate }}</li>
+    </ul>
+
+    <div class="row">
+      <div class="large-6 columns company-info">
+        <div class="name">
+          NSFO <span class="hide-for-small-only"> Nederlandse Schapen-en geitenfokkers Organisatie </span>
+        </div>
+
+        <div class="contact-info-container" [innerHtml]="contactInfo"></div>
+      </div>
+      <div class="large-6 columns contact-form" [(ngFormModel)]="form">
+        <div class="large-4 columns">
+          <label>{{ 'E-MAIL ADDRESS' | translate }}
+            <input type="email" [(ngModel)]="userEmail" ngControl="email">
+          </label>
+        </div>
+        <div class="large-4 columns">
+          <label>{{ 'CATEGORY' | translate }}
+            <select [(ngModel)]="category" ngControl="category">
+              <option value="{{ 'GENERAL' | translate}}"> {{ 'GENERAL' | translate}}</option>
+              <option value="{{ 'PAYMENT' | translate}}"> {{ 'PAYMENT' | translate}}</option>
+              <option value="{{ 'I&R DECLARATION' | translate}}"> {{ 'I&R DECLARATION' | translate}}</option>
+              <option value="{{ 'NSFO ONLINE' | translate}}"> {{ 'NSFO ONLINE' | translate}}</option>
+              <option value="{{ 'OTHER' | translate}}"> {{ 'OTHER' | translate}}</option>
+            </select>
+          </label>
+        </div>
+        <div class="large-4 columns">
+          <label>{{ 'I AM ...' | translate }}
+            <select [(ngModel)]="mood" ngControl="mood">
+              <option value="{{ 'HAPPY' | translate}}"> {{ 'HAPPY' | translate}}</option>
+              <option value="{{ 'SATISFIED' | translate}}"> {{ 'SATISFIED' | translate}}</option>
+              <option value="{{ 'DISAPPOINTED' | translate}}"> {{ 'DISAPPOINTED' | translate}}</option>
+              <option value="{{ 'MAD' | translate}}"> {{ 'MAD' | translate}}</option>
+            </select>
+          </label>
+        </div>
+        <div class="large-12 columns">
+          <label>{{ 'MESSAGE' | translate }}</label>
+          <textarea ngControl="message"></textarea>
+          <button type="button" (click)="sendMessage()" class="small primary button pull-right">{{ 'SEND' | translate
+            }}
+          </button>
+          <div class="success-message"> {{ feedback | translate}}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

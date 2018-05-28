@@ -1,0 +1,48 @@
+<!--TABLE SEARCH-->
+<div class="large-12 table-search">
+  <div class="large-2 large-push-10">
+    <input type="text" [(ngModel)]="searchValue" maxlength="20" placeholder="{{ 'SEARCH' | translate }}">
+  </div>
+</div>
+
+<!--TABLE HEADER-->
+<table class="stack errors">
+  <thead>
+  <th>{{ 'DATE' | translate }}</th>
+  <th>{{ 'ULN' | translate }}</th>
+  <th>{{ 'PEDIGREE NUMBER' | translate }}</th>
+  <th>{{ 'LOSS DATE' | translate }}</th>
+  <th>{{ 'REASON OF LOSS' | translate }}</th>
+  <th>{{ 'STATUS' | translate }}</th>
+  <th></th>
+  </thead>
+  <tbody>
+  <app-loss-history-row
+    *ngFor="let loss of lossHistoryList | lossHistoryFilter:[searchValue] | paginate: {itemsPerPage: 10, currentPage: page}; let i = index"
+    (revokeLoss)="selectLoss($event)" [loss]="loss" [loss_index]="i"></app-loss-history-row>
+  </tbody>
+</table>
+
+<div *ngIf="isLoading" class="data-loader">
+  <i class="fa fa-spinner fa-pulse fa-fw"></i>
+  <div class="description">{{ 'LOADING' | translate }}</div>
+</div>
+
+<pagination (pageChange)="page = $event"></pagination>
+
+<!--REVOKE MODAL-->
+<div class="reveal-overlay" [ngStyle]="{'display': modal_display}">
+  <div class="tiny reveal" [ngStyle]="{'display': modal_display}">
+    <div class="modal-header">
+      {{ 'REVOKE DECLARATION' | translate }}
+      <button type="button" (click)="closeModal()" class="pull-right" aria-label="Close modal">
+        <i class="fa fa-times" aria-hidden="true"></i>
+      </button>
+    </div>
+    <div class="modal-body"> {{ 'ARE YOU SURE YOU WANT TO REVOKE DECLARATION' | translate }}</div>
+    <div class="modal-footer">
+      <button class="tiny alert button pull-right" (click)="revokeLoss()">{{ 'REVOKE' | translate}}</button>
+      <button class="tiny primary button pull-right" (click)="closeModal()">{{ 'CANCEL' | translate}}</button>
+    </div>
+  </div>
+</div>

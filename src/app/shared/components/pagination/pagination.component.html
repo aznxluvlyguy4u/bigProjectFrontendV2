@@ -1,0 +1,38 @@
+<ul class="pagination text-center" role="navigation" aria-label="Pagination"
+    *ngIf="!hasTemplate && !(autoHide && pages.length === 1)">
+  <li class="pagination-previous" [class.disabled]="isFirstPage()" *ngIf="directionLinks">
+    <a *ngIf="1 < getCurrent()" (click)="previous()" aria-label="Next page">
+      {{ 'PREVIOUS' | translate }}
+      <span class="show-for-sr">{{ 'PAGE' | translate }}</span>
+    </a>
+
+    <span *ngIf="isFirstPage()">
+			{{ 'PREVIOUS' | translate }}
+            <span class="show-for-sr">{{ 'PAGE' | translate }}</span>
+        </span>
+  </li>
+
+  <li [class.current]="getCurrent() === page.value" *ngFor="let page of pages">
+    <a (click)="setCurrent(page.value)" *ngIf="getCurrent() !== page.value">
+      <span class="show-for-sr">{{ 'PAGE' | translate }}</span>
+      <span>{{ page.label }}</span>
+    </a>
+
+    <div *ngIf="getCurrent() === page.value">
+      <span class="show-for-sr">{{ 'YOU ARE ON PAGE' | translate }}</span>
+      <span>{{ page.label }}</span>
+    </div>
+  </li>
+
+  <li class="pagination-next" [class.disabled]="isLastPage()" *ngIf="directionLinks">
+    <a *ngIf="!isLastPage()" (click)="next()" aria-label="Next page">
+      {{ 'NEXT' | translate }}
+      <span class="show-for-sr">{{ 'PAGE' | translate }}</span>
+    </a>
+
+    <span *ngIf="isLastPage()">
+            {{ 'NEXT' | translate }}
+            <span class="show-for-sr">{{ 'PAGE' | translate }}</span>
+        </span>
+  </li>
+</ul>

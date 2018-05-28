@@ -1,0 +1,86 @@
+<!--LOG DATE-->
+<td>
+    <span [hidden]="editMode">
+        <label class="show-for-small-only">{{ 'DATE' | translate }}</label>
+        {{ stringAsViewDateTime(weight.log_date) }}
+    </span>
+
+  <span [hidden]="!editMode"> <i class="fa fa-pencil" aria-hidden="true"></i> </span>
+</td>
+
+<!--ULN-->
+<td>
+  <label class="show-for-small-only">{{ 'ULN' | translate }}</label>
+  {{ weight.animal.uln_country_code + weight.animal.uln_number }}
+</td>
+
+<!--MEASUREMENT DATE-->
+<td>
+  <label class="show-for-small-only">{{ 'WEIGHT DATE' | translate }}</label>
+  <span [hidden]="editMode">{{ weight.measurement_date }}</span>
+  <span [hidden]="!editMode" [ngFormModel]="form">
+        <datepicker [formCtrl]="form.controls['measurement_date']" [initDate]="weight.measurement_date"
+                    [viewFormat]="view_date_format" [modelFormat]="model_datetime_format"></datepicker>
+        <div [hidden]="form.controls['measurement_date'].valid || form_valid" class="input-error-msg text-center">{{ 'FILL IN THE MEASUREMENT DATE' | translate }}</div>
+    </span>
+</td>
+
+<!--WEIGHT-->
+<td>
+  <label class="show-for-small-only">{{ 'WEIGHT' | translate }}</label>
+  <span [hidden]="editMode">{{ weight.weight }} kg</span>
+  <span [hidden]="!editMode" [ngFormModel]="form">
+        <div class="row">
+            <input type="number" [(ngModel)]="weight.weight" ngControl="weight" min="0.01" max="200" step="0.01">
+        </div>
+    </span>
+</td>
+
+<!--STATUS-->
+<td>
+  <label class="show-for-small-only">{{ 'STATUS' | translate }}</label>
+  <span [hidden]="editMode" [ngSwitch]="weight.request_state">
+        <template ngSwitchWhen="OPEN"> {{ 'PROCESSING' | translate }} </template>
+        <template ngSwitchWhen="REVOKING"> {{ 'PROCESSING' | translate }} </template>
+        <template ngSwitchWhen="FINISHED"> {{ 'SENT' | translate }} </template>
+        <template ngSwitchWhen="REVOKED"> {{ 'REVOKED' | translate }} </template>
+    </span>
+</td>
+
+<!--ROW BUTTONS-->
+<td>
+  <div class="row">
+        <span
+          [hidden]="editMode || weight.request_state == 'OPEN' || weight.request_state == 'REVOKING' ||  weight.request_state == 'REVOKED'">
+            <div class="small-6 columns">
+                <button class="tiny primary button expanded" (click)="enableEditing()">{{ 'EDIT' | translate }}</button>
+            </div>
+            <div class="small-6 columns">
+                <button class="tiny alert button expanded"
+                        (click)="sendRevokeRequest()">{{ 'REVOKE' | translate }}</button>
+            </div>
+        </span>
+
+    <span [hidden]="!editMode">
+            <div class="small-6 columns">
+                <button class="tiny primary button expanded" (click)="sendChangeRequest()" [disabled]="isSending">
+                    <span *ngIf="!isSending">
+                        {{ 'SEND' | translate }}
+                    </span>
+                    <span *ngIf="isSending">
+                        <i class="fa fa-gear fa-spin fa-fw"></i>
+                    </span>
+                </button>
+            </div>
+            <div class="small-6 columns">
+                <button class="tiny alert button expanded" (click)="cancelEditing()" [disabled]="isSending">{{ 'CANCEL' | translate }}</button>
+            </div>
+        </span>
+
+    <span *ngIf="weight.request_state == 'REVOKED' && weight.revoke_date" class="revoke-date">
+            <div class="small-12 columns">
+                ({{ stringAsViewDateTime(weight.revoke_date) }})
+            </div>
+        </span>
+  </div>
+</td>

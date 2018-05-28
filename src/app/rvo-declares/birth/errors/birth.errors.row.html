@@ -1,0 +1,77 @@
+<!--LOG DATE-->
+<td>
+    <span [hidden]="editMode">
+        <label class="show-for-small-only">{{ 'DATE' | translate }}</label>
+        {{ stringAsViewDateTime(birth.log_date) }}
+    </span>
+
+  <span [hidden]="!editMode"> <i class="fa fa-pencil" aria-hidden="true"></i> </span>
+</td>
+
+<!--DATE OF BIRTH-->
+<td>
+  <label class="show-for-small-only">{{ 'DATE OF BIRTH' | translate }}</label>
+
+  <span [hidden]="editMode">{{ birth.date_of_birth }}</span>
+  <span class="datepicker-wrapper" [hidden]="!editMode" [ngFormModel]="form">
+        <datepicker [formCtrl]="form.controls['date_of_birth']" [initDate]="birth.date_of_birth"
+                    [viewFormat]="view_date_format" [modelFormat]="model_datetime_format"></datepicker>
+        <div *ngIf="form.controls['date_of_birth'].errors && form.controls['date_of_birth'].errors.invalidDateFormat"
+             class="input-error-msg text-center">{{ 'FILL IN THE DATE OF BIRTH' | translate }}</div>
+        <div
+          *ngIf="form.controls['date_of_birth'].errors && form.controls['date_of_birth'].errors.invalidDateItIsInTheFuture"
+          class="input-error-msg text-center">{{ 'DATE CAN NOT BE IN THE FUTURE' | translate }}</div>
+    </span>
+</td>
+
+<!--ULN MOTHER-->
+<td>
+  <label class="show-for-small-only">{{ 'ULN' | translate }} {{ 'MOTHER' | translate }}</label>
+  {{ birth.mother_uln_country_code}} {{ birth.mother_uln_number }}
+</td>
+
+<!--ULN FATHER-->
+<td>
+  <label class="show-for-small-only">{{ 'ULN' | translate }} {{ 'FATHER' | translate }}</label>
+  {{ birth?.father_uln_country_code}} {{ birth?.father_uln_number }}
+</td>
+
+<td>
+  <label class="show-for-small-only"> {{ 'LITTER' | translate }} </label>
+  <span *ngIf="birth.is_abortion"> {{ 'ABORTED' | translate }}</span>
+  <span *ngIf="birth.is_pseudo_pregnancy"> {{ 'PSEUDO PREGNANCY' | translate }}</span>
+  <ul *ngIf="birth.children">
+    <li *ngFor="let child of birth.children">{{ child.uln_country_code }} {{ child.uln_country_number }} <strong> {{
+      child.gender }} </strong></li>
+  </ul>
+  <span *ngIf="birth.stillborn_count > 0"> {{ birth.stillborn_count }} Dood geboren </span>
+</td>
+<!--ERROR CODE-->
+<td>
+  <label class="show-for-small-only">{{ 'ERROR CODE' | translate }}</label>
+  <span [hidden]="editMode">
+        <span [hidden]="editMode" id="error-{{ birth_index }}" data-tooltip aria-haspopup="true" class="has-tip top"
+              data-disable-hover="false" title="{{ birth.error_message }}">
+            {{ birth.error_code }}
+        </span>
+    </span>
+</td>
+
+<!--ROW BUTTONS-->
+<td>
+  <!--<span [hidden]="editMode">
+      <button class="tiny primary button" (click)="enableEditing()">{{ 'REVISE' | translate }}</button>
+      <button class="tiny alert button" (click)="sendRemoveErrorRequest()">{{ 'DONT SHOW' | translate }}</button>
+  </span>-->
+  <!--
+   <span [hidden]="birth.request_state == 'OPEN' || birth.request_state == 'REVOKING' || birth.request_state == 'REVOKED'">
+      <button class="tiny alert button" (click)="sendRevokeRequest()">{{ 'REVOKE' | translate }}</button>
+  </span>
+  -->
+  <button class="tiny alert button" (click)="sendRemoveErrorRequest()">{{ 'DONT SHOW' | translate }}</button>
+
+  <!--<span [hidden]="!editMode">
+      <button class="tiny primary button" (click)="sendChangeRequest()">{{ 'SEND' | translate }}</button>
+      <button class="tiny alert button" (click)="cancelEditing()">{{ 'CANCEL' | translate }}</button>
+  </span>-->
+</td>

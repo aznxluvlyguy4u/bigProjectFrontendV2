@@ -1,0 +1,95 @@
+<div class="reveal-overlay" [ngStyle]="{'display': modalDisplay}">
+  <div class="reveal" [ngClass]="size" [ngStyle]="{'display': modalDisplay}">
+
+    <div class="modal-header">
+      {{ title | translate }}
+      <button type="button" class="pull-right" aria-label="Close modal" (click)="closeModal()">
+        <i class="fa fa-times" aria-hidden="true"></i>
+      </button>
+    </div>
+
+    <div class="modal-body">
+      <div class="section-label" *ngIf="allowCustomSelection && sectionTitles.length > 0">
+        {{ sectionTitles[0] | translate }}
+      </div>
+      <div *ngIf="allowCustomSelection" [ngFormModel]="form" class="row custom-selection-container">
+        <div class="medium-4 columns">
+          <label>{{ 'ULN' | translate }}</label>
+          <div class="uid-input-group">
+            <select ngControl="uid_country_code">
+              <option *ngFor="let country_code of country_code_list" value="{{ country_code.code }}">{{
+                country_code.code }}
+              </option>
+            </select>
+            <input type="text" ngControl="uid_number">
+          </div>
+          <div [hidden]="form.controls['uid_number'].valid || isValidForm" class="input-error-msg pull-right">{{ 'FILL
+            IN THE ULN OR PEDIGREE' | translate }}
+          </div>
+        </div>
+
+        <div class="medium-3 columns">
+          <label>
+            <div class="row">&nbsp;</div>
+
+            <button class="small primary button pull-right" (click)="selectCustomItem()"> {{ 'SELECT' | translate }}
+            </button>
+          </label>
+        </div>
+      </div>
+
+      <div class="section-label" *ngIf="allowCustomSelection && sectionTitles.length > 1">
+        {{ sectionTitles[1] | translate }}
+      </div>
+      <div class="row">
+        <div class="medium-3 columns">
+                    <span>
+                        <input #searchValue type="text" (keyup)="0" placeholder="{{ 'SEARCH' | translate }}">
+                    </span>
+        </div>
+      </div>
+      <div *ngIf="isLoading" class="row">
+        <div class="medium-12 columns">
+          <div class="modal-body-loader-backgroundr">
+            <div class="spinner">
+            </div>
+          </div>
+        </div>
+      </div>
+      <table>
+        <thead>
+        <tr>
+          <td *ngFor="let column of columns">
+            {{ column | translate }}
+          </td>
+          <td></td>
+        </tr>
+        </thead>
+        <tbody>
+        <tr
+          *ngFor="let item of filteredList | selectorFilter:[searchValue.value, filter] | paginate: {itemsPerPage: 10, currentPage: page}">
+          <td>{{ item.uln }}</td>
+          <td *ngIf="columns.length > 1">
+                        <span *ngIf="item.pedigree">
+                            {{ item.pedigree }}
+                        </span>
+            <span *ngIf="!item.pedigree">
+                            --
+                        </span>
+          </td>
+          <td>
+            <span class="success label" *ngIf="item.suggested">{{ SUGGESTION_LABEL | translate }}</span>
+          </td>
+          <td>
+                        <span class="pull-right">
+                            <button class="tiny primary button"
+                                    (click)="selectItem(item)"> {{ 'SELECT' | translate }} </button>
+                        </span>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+      <pagination (pageChange)="page = $event"></pagination>
+    </div>
+  </div>
+</div>

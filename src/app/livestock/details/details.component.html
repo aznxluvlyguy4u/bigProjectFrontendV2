@@ -1,0 +1,582 @@
+<div class="detail-container">
+
+  <div class="row">
+    <div class="large-1 medium-1 small-3 columns">
+      <button type="button" (click)="goBack()" class="tiny primary button">{{ 'GO BACK' | translate }}</button>
+    </div>
+
+    <div class="show-for-small-only small-9 columns end">
+            <span class="pull-right">
+                <template [ngTemplateOutlet]="changeButton"></template>
+            </span>
+    </div>
+
+    <div class="large-6 medium-3 hide-for-small-only columns" style="color:transparent">
+      <span> - </span>
+    </div>
+
+    <div class="large-2 medium-3 small-6 columns">
+            <span class="pull-right">
+                <app-download-button
+                  *ngIf="!edit_mode"
+                  [extraDisabledCriteria]="!changeEnabled"
+                  [labelText]="'LINEAGE PROOF CSV'"
+                  [includeDownloadIcon]="true"
+                  [fontSize]="'10px'"
+                  (click)="generateLineageProof('CSV')"
+                ></app-download-button>
+            </span>
+    </div>
+
+    <div class="large-2 medium-3 small-6 columns">
+            <span class="pull-right">
+                <app-download-button
+                  *ngIf="!edit_mode"
+                  [extraDisabledCriteria]="!changeEnabled"
+                  [labelText]="'LINEAGE PROOF PDF'"
+                  [includeDownloadIcon]="true"
+                  [fontSize]="'10px'"
+                  (click)="generateLineageProof('PDF')"
+                ></app-download-button>
+            </span>
+    </div>
+
+    <div *ngIf="!edit_mode"
+         class="large-1 medium-2 small-6 hide-for-small-only columns">
+            <span class="pull-right">
+                <template [ngTemplateOutlet]="changeButton"></template>
+            </span>
+    </div>
+
+    <div *ngIf="edit_mode"
+         class="small-6 hide-for-small-only columns">
+            <span class="pull-right">
+                <template [ngTemplateOutlet]="changeButton"></template>
+            </span>
+    </div>
+
+  </div>
+
+  <label *ngIf="changed_animal_info" class="middle input-success-msg pull-right">{{ 'THE ANIMAL INFO HAS BEEN SAVED' |
+    translate }}</label>
+  <label *ngIf="changed_animal_info_error" class="middle input-error-msg pull-right">{{ error_message | translate }} {{
+    gender_change_error }}</label>
+  <label *ngIf="gender_changed_animal_info_error" class="middle input-error-msg pull-right">{{ gender_change_error
+    }}</label>
+
+  <div class="row" [ngFormModel]="form">
+    <div class="medium-6 columns">
+
+      <!-- ANIMAL DETAIL -->
+      <div class="info-container">
+        <div class="info-header">
+          {{ 'ANIMAL DETAIL' | translate }}
+        </div>
+        <div class="info-body">
+
+          <!-- ULN -->
+          <div class="row">
+            <div class="medium-6 columns">
+              <label class="middle">{{ 'ULN' | translate }}</label>
+            </div>
+            <div class="medium-6 columns">
+              <input type="text" [(ngModel)]="animal.uln" [disabled]="true">
+            </div>
+          </div>
+
+          <!-- PEDIGREE NUMBER -->
+          <div class="row">
+            <div class="medium-6 columns">
+              <label class="middle">{{ 'PEDIGREE NUMBER' | translate }}</label>
+            </div>
+            <div class="medium-6 columns">
+              <div class="uid-input-group">
+                <select [(ngModel)]="animal.pedigree_country_code" ngControl="pedigree_country_code" [disabled]="true">
+                  <option *ngFor="let country_code of country_code_list" value="{{ country_code.code }}">{{
+                    country_code.code }}
+                  </option>
+                </select>
+                <input type="text" [(ngModel)]="animal.pedigree_number" ngControl="pedigree_number" [disabled]="true">
+              </div>
+            </div>
+          </div>
+
+          <!-- WORK NUMBER -->
+          <div class="row">
+            <div class="medium-6 columns">
+              <label class="middle">{{ 'WORK NUMBER' | translate }}</label>
+            </div>
+            <div class="medium-6 columns">
+              <input type="text" [(ngModel)]="animal.work_number" [disabled]="true">
+            </div>
+          </div>
+
+          <!-- COLLAR NUMBER -->
+          <div class="row">
+            <div class="medium-6 columns">
+              <label class="middle">{{ 'COLLAR NUMBER' | translate }}</label>
+            </div>
+            <div class="medium-6 columns">
+              <div class="uid-input-group">
+                <select [(ngModel)]="animal.collar.color" [disabled]="!edit_mode">
+                  <option value=""></option>
+                  <option *ngFor="let collar of collar_color_list" value="{{ collar.name }}">{{ collar.name }}</option>
+                </select>
+                <input type="text" [(ngModel)]="animal.collar.number" [disabled]="!edit_mode" maxlength="4">
+              </div>
+            </div>
+          </div>
+
+          <!--&lt;!&ndash; NAME &ndash;&gt;-->
+          <!--<div class="row">-->
+          <!--<div class="medium-6 columns">-->
+          <!--<label>{{ 'NAME' | translate }}</label>-->
+          <!--</div>-->
+          <!--<div class="medium-6 columns">-->
+          <!--<input type="text" [(ngModel)]="animal.name" [disabled]="!edit_mode">-->
+          <!--</div>-->
+          <!--</div>-->
+
+          <!-- DATE OF BIRTH -->
+          <div class="row">
+            <div class="medium-6 columns">
+              <label class="middle">{{ 'DATE OF BIRTH' | translate }}</label>
+            </div>
+            <div class="medium-6 columns">
+              <datepicker [formCtrl]="form.controls['date_of_birth']" [editMode]="false"
+                          [initDate]="animal.date_of_birth" [viewFormat]="view_date_format"
+                          [modelFormat]="model_datetime_format"></datepicker>
+            </div>
+          </div>
+
+          <!-- GENDER -->
+          <div class="row">
+            <div class="medium-6 columns">
+              <label class="middle">{{ 'GENDER' | translate }}</label>
+            </div>
+            <div class="medium-6 columns">
+              <select [(ngModel)]="animal.gender" [disabled]="!gender_edit_mode">
+                <option *ngFor="let option of livestock_gender_options" value="{{ option }}">{{ option | translate }}
+                </option>
+              </select>
+            </div>
+            <button type="button" *ngIf="gender_edit_mode" (click)="toggleGenderEditMode()"
+                    class="tiny alert button pull-right">{{ 'CANCEL' | translate }}
+            </button>
+            <button type="button" *ngIf="gender_edit_mode" (click)="sendGenderChangeRequest()"
+                    class="tiny primary button pull-right">{{ 'SAVE' | translate }}
+            </button>
+            <button type="button" *ngIf="!gender_edit_mode" [disabled]="!changeEnabled" (click)="toggleGenderEditMode()"
+                    class="tiny primary button pull-right">
+                            <span *ngIf="!changeEnabled">
+                                <i class="fa fa-gear fa-spin fa-fw"></i>
+                            </span>
+              <span *ngIf="changeEnabled">
+                                {{ 'CHANGE' | translate }}
+                            </span>
+            </button>
+          </div>
+
+          <!-- LITTER SIZE -->
+          <div class="row">
+            <div class="medium-6 columns">
+              <label class="middle">{{ 'LITTER SIZE' | translate }}</label>
+            </div>
+            <div class="medium-6 columns">
+              <input type="number" [ngModel]="animal.litter_size" disabled>
+            </div>
+          </div>
+
+          <!--&lt;!&ndash; INBREEDING INDEX &ndash;&gt;-->
+          <!--<div class="row">-->
+          <!--<div class="medium-6 columns">-->
+          <!--<label class="middle">{{ 'INBREEDING INDEX' | translate }}</label>-->
+          <!--</div>-->
+          <!--<div class="medium-6 columns">-->
+          <!--<input type="text" [(ngModel)]="animal.inbreeding_index" [disabled]="true">-->
+          <!--</div>-->
+          <!--</div>-->
+
+          <!-- FATHER -->
+          <div class="row">
+            <div class="medium-6 columns">
+              <label class="middle">{{ 'FATHER' | translate }}</label>
+            </div>
+            <div class="medium-6 columns">
+              <input type="text" [disabled]="true" [(ngModel)]="animal.father">
+            </div>
+          </div>
+
+          <!-- MOTHER -->
+          <div class="row">
+            <div class="medium-6 columns">
+              <label class="middle">{{ 'MOTHER' | translate }}</label>
+            </div>
+            <div class="medium-6 columns">
+              <input type="text" [disabled]="true" [(ngModel)]="animal.mother">
+            </div>
+          </div>
+
+          <!--&lt;!&ndash; REARING &ndash;&gt;-->
+          <!--<div class="row">-->
+          <!--<div class="medium-6 columns">-->
+          <!--<label class="middle">{{ 'REARING' | translate }}</label>-->
+          <!--</div>-->
+          <!--<div class="medium-6 columns">-->
+          <!--<input type="text" [(ngModel)]="animal.rearing" [disabled]="true">-->
+          <!--</div>-->
+          <!--</div>-->
+
+          <!--&lt;!&ndash; SUCTION SIZE &ndash;&gt;-->
+          <!--<div class="row">-->
+          <!--<div class="medium-6 columns">-->
+          <!--<label class="middle">{{ 'SUCTION SIZE' | translate }}</label>-->
+          <!--</div>-->
+          <!--<div class="medium-6 columns">-->
+          <!--<input type="text" [(ngModel)]="animal.suction_size" [disabled]="true">-->
+          <!--</div>-->
+          <!--</div>-->
+
+          <!--&lt;!&ndash; BLIND FACTOR &ndash;&gt;-->
+          <!--<div class="row">-->
+          <!--<div class="medium-6 columns">-->
+          <!--<label class="middle">{{ 'BLIND FACTOR' | translate }}</label>-->
+          <!--</div>-->
+          <!--<div class="medium-6 columns">-->
+          <!--<input type="text" [(ngModel)]="animal.blind_factor" [disabled]="true">-->
+          <!--</div>-->
+          <!--</div>-->
+
+          <!-- SCRAPIE GENOTYPE -->
+          <div class="row">
+            <div class="medium-6 columns">
+              <label class="middle">{{ 'SCRAPIE GENOTYPE' | translate }}</label>
+            </div>
+            <div class="medium-6 columns">
+              <input type="text" [(ngModel)]="animal.scrapie_genotype" [disabled]="true">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- MEASUREMENTS -->
+      <div class="info-container">
+        <div class="info-header">
+          <div class="col12">
+            {{ 'MEASUREMENTS' | translate }}
+            <span class="hide-for-small-only">
+                            | {{ 'LAST UPDATED' | translate }}:
+                            <span *ngIf="animal.measurement.measurement_date"> {{ stringAsViewDateTime(animal.measurement.measurement_date) }} </span>
+                            <span *ngIf="!animal.measurement.measurement_date"> --/--/---- --:-- </span>
+                        </span>
+          </div>
+        </div>
+        <div class="info-body">
+
+          <!-- FAT COVER 1 -->
+          <div class="row">
+            <div class="medium-6 columns">
+              <label class="middle"> {{ 'FAT COVER' | translate }} 1 </label>
+            </div>
+            <div class="medium-6 columns">
+              <input type="text" [(ngModel)]="animal.measurement.fat_cover_one" [disabled]="true">
+            </div>
+          </div>
+
+          <!-- FAT COVER 2 -->
+          <div class="row">
+            <div class="medium-6 columns">
+              <label class="middle"> {{ 'FAT COVER' | translate }} 2 </label>
+            </div>
+            <div class="medium-6 columns">
+              <input type="text" [(ngModel)]="animal.measurement.fat_cover_two" [disabled]="true">
+            </div>
+          </div>
+
+          <!-- FAT COVER 3 -->
+          <div class="row">
+            <div class="medium-6 columns">
+              <label class="middle"> {{ 'FAT COVER' | translate }} 3 </label>
+            </div>
+            <div class="medium-6 columns">
+              <input type="text" [(ngModel)]="animal.measurement.fat_cover_three" [disabled]="true">
+            </div>
+          </div>
+
+          <!-- MUSCULAR THICKNESS -->
+          <div class="row">
+            <div class="medium-6 columns">
+              <label class="middle"> {{ 'MUSCULAR THICKNESS' | translate }} </label>
+            </div>
+            <div class="medium-6 columns">
+              <input type="text" [(ngModel)]="animal.measurement.muscular_thickness" [disabled]="true">
+            </div>
+          </div>
+
+          <!-- SCAN WEIGHT -->
+          <div class="row">
+            <div class="medium-6 columns">
+              <label class="middle"> {{ 'SCAN WEIGHT' | translate }} (kg)</label>
+            </div>
+            <div class="medium-6 columns">
+              <input type="text" [(ngModel)]="animal.measurement.scan_weight" [disabled]="true">
+            </div>
+          </div>
+
+          <!-- BIRTH WEIGHT -->
+          <div class="row">
+            <div class="medium-6 columns">
+              <label class="middle"> {{ 'BIRTH WEIGHT' | translate }} (kg)</label>
+            </div>
+            <div class="medium-6 columns">
+              <input type="text" [(ngModel)]="animal.measurement.birth_weight" [disabled]="true">
+            </div>
+          </div>
+
+          <!-- BIRTH PROGRESS -->
+          <!--<div class="row">-->
+          <!--<div class="medium-6 columns">-->
+          <!--<label class="middle"> {{ 'BIRTH PROGRESS' | translate }} </label>-->
+          <!--</div>-->
+          <!--<div class="medium-6 columns">-->
+          <!--<input type="text" [(ngModel)]="animal.measurement.birth_progress" [disabled]="true">-->
+          <!--</div>-->
+          <!--</div>-->
+
+          <!-- TAIL LENGTH -->
+          <div class="row">
+            <div class="medium-6 columns">
+              <label class="middle"> {{ 'TAIL LENGTH' | translate }} {{ '(CM)' | translate }} </label>
+            </div>
+            <div class="medium-6 columns">
+              <input type="text" [(ngModel)]="animal.measurement.tail_length" [disabled]="true">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="medium-6 columns">
+
+      <!-- NOTES -->
+      <!--<div class="info-container">-->
+      <!--<div class="info-header">-->
+      <!--{{ 'NOTES' | translate }}-->
+      <!--</div>-->
+      <!--<div class="info-body">-->
+      <!--<div class="row">-->
+      <!--<div class="textarea">-->
+      <!--<textarea rows="6" [(ngModel)]="animal.note" [disabled]="!edit_mode"></textarea>-->
+      <!--</div>-->
+      <!--</div>-->
+      <!--</div>-->
+      <!--</div>-->
+
+      <!-- EXTERIOR -->
+      <div class="info-container">
+        <app-exterior-component *ngIf="animal.uln != ''" (getAnimalDetails)="getAnimalDetails()" [uln]="animal.uln"
+                            [exteriors]="animal.exteriors"></app-exterior-component>
+
+        <!-- PREDICATES AND STATUSES -->
+        <div class="info-container">
+          <div class="info-header">
+            {{ 'PREDICATES AND STATUSES' | translate }}
+          </div>
+          <div class="info-body">
+
+            <!-- RACE -->
+            <div class="row">
+              <div class="medium-6 columns">
+                <label class="middle">{{ 'RACE CODE' | translate }}</label>
+              </div>
+              <div class="medium-6 columns">
+                <input type="text" [(ngModel)]="animal.breed" [disabled]="true">
+              </div>
+            </div>
+
+            <!-- PREDICATES -->
+            <!--<div class="row">-->
+            <!--<div class="medium-6 columns">-->
+            <!--<label class="middle">{{ 'PREDICATE' | translate }}</label>-->
+            <!--</div>-->
+            <!--<div class="medium-6 columns">-->
+            <!--<input type="text" [(ngModel)]="animal.predicate" [disabled]="true">-->
+            <!--</div>-->
+            <!--</div>-->
+
+            <!-- STATUS -->
+            <div class="row">
+              <div class="medium-6 columns">
+                <label class="middle">{{ 'STATUS' | translate }}</label>
+              </div>
+              <div class="medium-6 columns">
+                <select [(ngModel)]="animal.breed_status" [disabled]="true">
+                  <option *ngFor="let option of livestock_breed_options" value="{{ option }}">{{ option | translate }}
+                  </option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- BREEDER AND/OR CO-OWNER -->
+        <!--<div class="info-container">-->
+        <!--<div class="info-header">-->
+        <!--{{ 'BREEDER AND OR CO-OWNER' | translate }}-->
+        <!--</div>-->
+        <!--<div class="info-body">-->
+
+        <!--&lt;!&ndash; BREEDER &ndash;&gt;-->
+        <!--<div class="row">-->
+        <!--<div class="medium-6 columns">-->
+        <!--<label> {{ 'BREEDER' | translate }} </label>-->
+        <!--</div>-->
+        <!--<div class="medium-6 columns">-->
+        <!--<input type="text" [(ngModel)]="animal.breeder.breeder" [disabled]="!edit_mode">-->
+        <!--</div>-->
+        <!--</div>-->
+
+        <!--&lt;!&ndash; UBN BREEDER &ndash;&gt;-->
+        <!--<div class="row">-->
+        <!--<div class="medium-6 columns">-->
+        <!--<label> {{ 'UBN BREEDER' | translate }} </label>-->
+        <!--</div>-->
+        <!--<div class="medium-6 columns">-->
+        <!--<input type="text" [(ngModel)]="animal.breeder.ubn" [disabled]="!edit_mode">-->
+        <!--</div>-->
+        <!--</div>-->
+
+        <!--&lt;!&ndash; E-MAIL ADDRESS &ndash;&gt;-->
+        <!--<div class="row">-->
+        <!--<div class="medium-6 columns">-->
+        <!--<label> {{ 'E-MAIL ADDRESS' | translate }} </label>-->
+        <!--</div>-->
+        <!--<div class="medium-6 columns">-->
+        <!--<input type="text" [(ngModel)]="animal.breeder.email" [disabled]="!edit_mode">-->
+        <!--</div>-->
+        <!--</div>-->
+
+        <!--&lt;!&ndash; TELEPHONE &ndash;&gt;-->
+        <!--<div class="row">-->
+        <!--<div class="medium-6 columns">-->
+        <!--<label> {{ 'TELEPHONE' | translate }} </label>-->
+        <!--</div>-->
+        <!--<div class="medium-6 columns">-->
+        <!--<input type="text" [(ngModel)]="animal.breeder.telephone" [disabled]="!edit_mode">-->
+        <!--</div>-->
+        <!--</div>-->
+
+        <!--&lt;!&ndash; CO-OWNER &ndash;&gt;-->
+        <!--<div class="row">-->
+        <!--<div class="medium-6 columns">-->
+        <!--<label> {{ 'CO-OWNER' | translate }} </label>-->
+        <!--</div>-->
+        <!--<div class="medium-6 columns">-->
+        <!--<input type="text" [disabled]="!edit_mode">-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--</div>-->
+      </div>
+    </div>
+    <div class="row">
+      <div class="large-6 columns">
+        <canvas id="breedValueChart"></canvas>
+      </div>
+      <div class="large-6 columns">
+        <canvas id="weightChart"></canvas>
+      </div>
+    </div>
+    <div class="row">
+      <div class="large-12 columns">
+        <table class="animal-logs">
+          <thead>
+          <tr>
+            <td>{{ 'DATE' | translate }}</td>
+            <td>{{ 'EVENT DATE' | translate }}</td>
+            <td>{{ 'EVENT' | translate }}</td>
+            <td>{{ 'BY' | translate }}</td>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngIf="logs.length == 0">
+            <td colspan="4" class="text-center">{{ 'NO LOGS ARE AVAILABLE' | translate }}</td>
+          </tr>
+          <tr *ngFor="let log of logs">
+            <td>
+                            <span *ngIf="log.log_date">
+                                {{ stringAsViewDateTime(log.log_date) }}
+                            </span>
+              <span *ngIf="!log.log_date"> -- </span>
+            </td>
+            <td>
+                            <span *ngIf="log.start_date">
+                                {{ stringAsViewDate(log.start_date) }}
+                                <span *ngIf="log.end_date">{{ '- ' + stringAsViewDate(log.end_date) }}</span>
+                            </span>
+              <span *ngIf="!log.start_date"> -- </span>
+            </td>
+            <td>
+                            <span *ngIf="log.action == 'MATE'">
+                                {{ 'DECLARED MATE' | translate }}
+                            </span>
+              <span *ngIf="log.action == 'BIRTH'">
+                                {{ 'DECLARED BIRTH' | translate }}
+                            </span>
+              <span *ngIf="log.action == 'WEIGHT MEASUREMENT KG'">
+                                {{ 'DECLARED WEIGHT' | translate }}
+                                <span *ngIf="log.data"> ({{log.data}}kg)</span>
+                            </span>
+              <span *ngIf="log.action == 'ARRIVAL FROM UBN'">
+                                {{ 'DECLARED ARRIVAL' | translate }}
+                                <span *ngIf="log.data"> ({{'PREVIOUS OWNER' | translate}}: {{log.data}})</span>
+                            </span>
+              <span *ngIf="log.action == 'IMPORT FROM'">
+                                {{ 'DECLARED IMPORT' | translate }}
+                                <span *ngIf="log.data"> ({{'COUNTRY ORIGIN' | translate}}: {{log.data}})</span>
+                            </span>
+              <span *ngIf="log.action == 'DEPARTURE TO UBN'">
+                                {{ 'DECLARED DEPART' | translate }}
+                                <span *ngIf="log.data"> ({{'NEW OWNER' | translate }}: {{log.data}})</span>
+                            </span>
+              <span *ngIf="log.action == 'EXPORT'">
+                                {{ 'DECLARED EXPORT' | translate }}
+                            </span>
+              <span *ngIf="log.action == 'LOSS'">
+                                {{ 'DECLARED LOSS' | translate }}
+                            </span>
+              <span *ngIf="log.action == 'TAG REPLACE REPLACED ULN'">
+                                {{ 'DECLARED TAG REPLACE' | translate }}
+                                <span *ngIf="log.data"> ({{'OLD TAG' | translate }}: {{log.data}})</span>
+                            </span>
+            </td>
+            <td>
+              {{ log.first_name + ' ' + log.last_name }}
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<template #changeButton>
+
+  <button type="button" *ngIf="!edit_mode" [disabled]="!changeEnabled" (click)="toggleEditMode()"
+          class="tiny primary button">
+                    <span *ngIf="!changeEnabled">
+                        <i class="fa fa-gear fa-spin fa-fw"></i>
+                    </span>
+    <span *ngIf="changeEnabled">
+                        {{ 'CHANGE' | translate }}
+                    </span>
+  </button>
+
+  <button type="button" *ngIf="edit_mode" (click)="toggleEditMode()" class="tiny alert button pull-right">{{ 'CANCEL' |
+    translate }}
+  </button>
+  <button type="button" *ngIf="edit_mode" (click)="sendChangeRequest()" class="tiny primary button pull-right">{{ 'SAVE'
+    | translate }}
+  </button>
+
+</template>

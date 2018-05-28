@@ -1,0 +1,37 @@
+<input (keyup)="preventKeyPress($event)" (keydown)="preventKeyPress($event)" (keypress)="preventKeyPress($event)"
+       type="text"
+       class="ng-datepicker-input form-control"
+       size="10"
+       (focus)="openDatepicker()"
+       [value]="viewValue"
+       [hidden]="isStatic"
+       [ngFormControl]="formCtrl" [disabled]="!editMode">
+
+<div class="ng-datepicker" *ngIf="isStatic || isOpened" [ngClass]="{ static: isStatic }">
+  <div class="controls">
+    <div class="left">
+      <span (click)="prevYear()"><i class="fa fa-backward prev-year-btn"></i></span>
+      <span (click)="prevMonth()"><i class="fa fa-chevron-left prev-month-btn"></i></span>
+    </div>
+    <span class="date">
+            {{ dateValue }}
+        </span>
+    <div class="right">
+      <span (click)="nextMonth()"><i class="fa fa-chevron-right next-month-btn"></i></span>
+      <span (click)="nextYear()"><i class="fa fa-forward next-year-btn"></i></span>
+    </div>
+  </div>
+  <div class="day-names">
+        <span *ngFor="let dn of dayNames">
+            <span>{{ dn }}</span>
+        </span>
+  </div>
+  <div class="calendar">
+        <span *ngFor="let d of days;">
+            <span class="day" [ngClass]="{'disabled': !d.enabled, 'selected': isSelected(d)}"
+                  (click)="selectDate($event, d)">
+                {{ d.day }}
+            </span>
+        </span>
+  </div>
+</div>

@@ -1,0 +1,125 @@
+<div id="messages">
+
+  <!--BREADCRUMBS-->
+  <div class="row">
+    <ul class="breadcrumbs">
+      <li><a [routerLink]="['/main']">{{ 'DASHBOARD' | translate }}</a></li>
+      <li>{{ 'MESSAGES' | translate }}</li>
+    </ul>
+  </div>
+
+  <div class="row">
+    <table>
+      <thead>
+      <tr>
+        <td>{{ 'FROM' | translate }}</td>
+        <td>{{ 'SUBJECT' | translate }}</td>
+        <td width="220">{{ 'DATE' | translate }}</td>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngIf="messages.length == 0">
+        <td colspan="3" class="no-message text-center">{{ "THERE ARE NO MESSAGES IN THE INBOX" | translate }}</td>
+      </tr>
+      <tr *ngFor="let message of messages | paginate: {itemsPerPage: 50, currentPage: page}"
+          [ngClass]="{'unread': !message.is_read}">
+        <td>{{ message.sender }}</td>
+        <td><a (click)="openMessage(message)">{{ message.subject | translate }}</a></td>
+        <td>{{ stringAsViewDateTime(message.creation_date) }}</td>
+      </tr>
+      </tbody>
+    </table>
+
+    <pagination *ngIf="messages.length > 0" (pageChange)="page = $event"></pagination>
+
+
+    <!--MESSAGE DETAIL MODAL-->
+    <div class="reveal-overlay" *ngIf="selectedMessage" [ngStyle]="{'display': modalDisplay}">
+      <div class="tiny reveal" [ngStyle]="{'display': modalDisplay}">
+        <div class="modal-header">
+          {{ selectedMessage.subject | translate }}
+          <button type="button" class="pull-right" aria-label="Close modal" (click)="closeModal()">
+            <i class="fa fa-times" aria-hidden="true"></i>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="large-3 columns">
+              <label>{{'SENT BY' | translate}}:</label>
+            </div>
+            <div class="large-9 columns">
+              <span>{{ selectedMessage.sender }}</span>
+            </div>
+          </div>
+          <div class="row">
+            <div class="large-3 columns">
+              <label>{{'SUBJECT' | translate}}:</label>
+            </div>
+            <div class="large-9 columns">
+              <span>{{ selectedMessage.subject | translate }}</span>
+            </div>
+          </div>
+
+          <hr>
+
+          <span *ngIf="selectedMessage.type == 'DECLARE_ARRIVAL'">
+                <div class="row">
+                    <div class="large-12 columns">
+                        <p>
+                            {{ 'THE LOCATION XX OF COMPANY XX DECLARED THE ARRIVAL OF THE ANIMAL WITH ULN XX' | translate: {location: selectedMessage.sender_ubn, company: selectedMessage.sender_company, uln: selectedMessage.data} }}
+                            {{ 'ACCORDING TO THE DECLARATION THE ANIMAL CAME FROM YOUR LOCATION XX' | translate:{location: selectedMessage.receiver_ubn} }}
+                            {{ 'BECAUSE OF THIS NSFO HAS AUTOMATICALLY SENT A DEPART DECLARATION' | translate }}
+
+                            <span class="success-indicator" *ngIf="selectedMessage.success_indicator == 'J'">
+                                {{ 'THE PROCESSING OF THE DECLARATION HAS BEEN' | translate }} <span class='success'>{{ 'SUCCESSFUL' | translate}}</span>.
+                            </span>
+
+                            <span class="success-indicator" *ngIf="selectedMessage.success_indicator == 'N'">
+                                {{ 'THE PROCESSING OF THE DECLARATION HAS BEEN' | translate }} <span class='alert'>{{ 'UNSUCCESSFUL' | translate}}</span>. <br>
+                                {{ 'SOMETHING WENT WRONG WITH PROCESSING THE DECLARATION. TO SEE WHAT WENT WRONG, YOU CAN GO TO THE ERROR LOG.' | translate }}
+                            </span>
+                        </p>
+                    </div>
+                </div>
+            </span>
+          <span *ngIf="selectedMessage.type == 'NEW_INVOICE'">
+                {{ 'YOU HAVE RECEIVED A NEW INVOICE' | translate }}
+            </span>
+          <span *ngIf="selectedMessage.type == 'DECLARE_DEPART'">
+                {{ 'THE LOCATION XX OF COMPANY XX DECLARED THE ARRIVAL OF THE ANIMAL WITH ULN XX' | translate: {location: selectedMessage.sender_ubn, company: selectedMessage.sender_company, uln: selectedMessage.data } }}
+                {{ 'ACCORDING TO THE DECLARATION THE ANIMAL WILL ARRIVE ON YOUR LOCATION XX' | translate:{location: selectedMessage.receiver_ubn} }}
+                {{ 'BECAUSE OF THIS NSFO HAS AUTOMATICALLY SENT AN ARRIVAL DECLARATION' | translate }}
+
+                <span class="success-indicator" *ngIf="selectedMessage.success_indicator == 'J'">
+                    {{ 'THE PROCESSING OF THE DECLARATION HAS BEEN' | translate }} <span class='success'>{{ 'SUCCESSFUL' | translate}}</span>.
+                </span>
+
+                <span class="success-indicator" *ngIf="selectedMessage.success_indicator == 'N'">
+                    {{ 'THE PROCESSING OF THE DECLARATION HAS BEEN' | translate }} <span class='alert'>{{ 'UNSUCCESSFUL' | translate}}</span>. <br>
+                    {{ 'SOMETHING WENT WRONG WITH PROCESSING THE DECLARATION. TO SEE WHAT WENT WRONG, YOU CAN GO TO THE ERROR LOG.' | translate }}
+                </span>
+            </span>
+
+          <span *ngIf="selectedMessage.type == 'USER'">
+                {{ selectedMessage.message | translate }}
+            </span>
+        </div>
+        <div class="modal-footer">
+          <div class="row">
+            <div class="large-12 columns">
+                    <span class="pull-left">
+                        <button *ngIf="selectedMessage.type == 'DECLARE_DEPART'" (click)="navigateTo('/main/arrival')"
+                                class="tiny primary button">{{ 'GO TO ARRIVAL' | translate}}</button>
+                        <button *ngIf="selectedMessage.type == 'DECLARE_ARRIVAL'" (click)="navigateTo('/main/depart')"
+                                class="tiny primary button">{{ 'GO TO DEPART' | translate}}</button>
+                    </span>
+              <span class="pull-right">
+                        <button (click)="closeModal()" class="tiny primary button">{{ 'AGREED' | translate}}</button>
+                    </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

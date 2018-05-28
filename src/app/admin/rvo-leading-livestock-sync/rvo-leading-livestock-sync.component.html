@@ -1,0 +1,124 @@
+<div class="row">
+  <div class="large-12 columns">
+    <div class="info-container">
+      <div class="info-header">
+        {{ 'RVO LEADING LIVESTOCK SYNC' | translate }}
+      </div>
+
+      <ng-template *ngIf="loadingData || loadingLatestSyncData ">
+        <div>
+          <i class="fa fa-gear fa-spin fa-fw fa-5x"></i>
+        </div>
+      </ng-template>
+
+      <ng-template *ngIf="!loadingData && !loadingLatestSyncData">
+
+        <div class="info-body">
+
+          <ng-template *ngIf="latestSyncData">
+
+            <div class="row margin-spacing">
+              <div class="large-3 columns">
+                <label> {{ 'LAST SYNC DATE' | translate }} </label>
+              </div>
+              <div class="large-3 columns end">
+                <span class="username pull-left show-for-large">{{ getLogDate() }}</span>
+                <span class="username pull-left hide-for-large">{{ getLogDate() }}</span>
+              </div>
+            </div>
+
+            <div class="row margin-spacing">
+              <div class="large-3 columns">
+                <label> {{ 'LAST SYNC STATUS' | translate }}
+                  <i class="fa fa-info-circle" aria-hidden="true"
+                     title="De melding kan geannuleerd worden als de stallijst sync meldingen anti-chronologisch worden verwerkt. Dit kan bijvoorbeeld door een storing gebeuren. Probeer in dat geval de melding opnieuw te doen."></i>
+                </label>
+              </div>
+              <div class="large-3 columns end">
+                <span class="username pull-left show-for-large">{{ latestSyncData ? (latestSyncData.request_state | translate) : '' }}</span>
+                <span class="username pull-left hide-for-large">{{ latestSyncData ?  (latestSyncData.request_state | translate) : '' }}</span>
+              </div>
+            </div>
+
+            <div class="row margin-spacing">
+              <div class="large-3 columns">
+                <label> {{ 'ACTION BY' | translate }} </label>
+              </div>
+              <div class="large-3 columns end">
+                <span class="username pull-left show-for-large">{{ getLatestSyncDataActionByFullName() }}</span>
+                <span class="username pull-left hide-for-large">{{ getLatestSyncDataActionByFullName() }}</span>
+              </div>
+            </div>
+
+            <div class="row margin-spacing">
+              <div class="large-3 columns">
+                <label> {{ 'AMOUNT BEFORE SYNC' | translate }} </label>
+              </div>
+              <div class="large-3 columns end">
+                <span class="username pull-left show-for-large">{{ latestSyncData ? latestSyncData.current_animals_count : '' }}</span>
+                <span class="username pull-left hide-for-large">{{ latestSyncData ? latestSyncData.current_animals_count : '' }}</span>
+              </div>
+            </div>
+
+            <div class="row margin-spacing">
+              <div class="large-3 columns">
+                <label> {{ 'AMOUNT RETRIEVED FROM RVO' | translate }} </label>
+              </div>
+              <div class="large-3 columns end">
+                <span class="username pull-left show-for-large">{{ latestSyncData ? latestSyncData.retrieved_animals_count : '' }}</span>
+                <span class="username pull-left hide-for-large">{{ latestSyncData ? latestSyncData.retrieved_animals_count : '' }}</span>
+              </div>
+            </div>
+
+          </ng-template>
+
+          <!-- SYNC BUTTON -->
+          <div class="row margin-spacing">
+
+            <div class="large-3 columns">
+
+              <ng-template *ngIf="!requested_livestock_sync && isAtLeastSuperAdmin">
+
+                                <span
+                                  *ngIf="!showWarningMessage"
+                                  style="color:transparent"
+                                >-</span>
+
+                <span *ngIf="showWarningMessage" style="color:darkred; font-weight: bold">
+                                    {{ 'THERE IS STILL A SYNC OPEN' | translate }}
+                                </span>
+
+              </ng-template>
+
+              <span *ngIf="!isAtLeastSuperAdmin"> {{ 'THIS IS ONLY ALLOWED FOR SUPER ADMIN' | translate }} </span>
+              <span *ngIf="requested_livestock_sync"
+                    class="input-success-msg">{{ 'DECLARED NEW SYNC' | translate }}</span>
+            </div>
+
+            <div class="large-3 end pull-left">
+              <button type="button"
+                      (click)="doForcedRvoLeadingLivestockSyncRequest()"
+                      [disabled]="in_progress || requested_livestock_sync || !isAtLeastSuperAdmin"
+                      class="small primary button expanded"
+                      [class.success]="requested_livestock_sync"
+                      [class.danger]="!isAtLeastSuperAdmin"
+              >
+                                    <span *ngIf="!in_progress && !requested_livestock_sync">
+                                        {{ 'DECLARE NEW SYNC' | translate }}
+                                    </span>
+                <span *ngIf="!in_progress && requested_livestock_sync">
+                                        <i class="fa fa-check"></i>
+                                    </span>
+                <span *ngIf="in_progress">
+                                        <i class="fa fa-gear fa-spin fa-fw"></i>
+                                    </span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+      </ng-template>
+
+    </div>
+  </div>
+</div>

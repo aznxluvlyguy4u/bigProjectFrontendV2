@@ -1,0 +1,60 @@
+<!--TOP FORM-->
+<form [ngFormModel]="form" class="form-declare">
+
+  <!--LOSS DATE-->
+  <div class="medium-2 columns">
+    <label>
+      {{ 'DATE OF DEATH' | translate }}
+      <datepicker [formCtrl]="form.controls['loss_date']" [viewFormat]="view_date_format"
+                  [modelFormat]="view_date_format"></datepicker>
+      <div [hidden]="form.controls['loss_date'].valid || isValidForm" class="input-error-msg pull-right">{{ 'FILL IN THE LOSS DATE' | translate }}
+      </div>
+    </label>
+  </div>
+
+  <!--REASON OF LOSS-->
+  <div class="medium-2 columns">
+    <label>{{ 'REASON OF LOSS' | translate }} &nbsp;
+      <select ngControl="reason_loss">
+        <option *ngFor="let reason of options_reason_of_loss" value="{{ reason }}">{{ reason | translate }}</option>
+      </select>
+    </label>
+  </div>
+
+  <!--UBN PROCESSOR-->
+  <div class="medium-2 columns end">
+    <label>
+      {{ 'UBN PROCESSOR' | translate }}
+      <select ngControl="ubn_processor">
+        <option *ngFor="let ubn_processor of ubn_processors" value="{{ ubn_processor.ubn }}">{{ ubn_processor.ubn }} ({{
+          ubn_processor.name }})
+        </option>
+      </select>
+    </label>
+  </div>
+</form>
+
+<!--LIVESTOCK OVERVIEW-->
+<div class="row">
+  <div class="medium-12 columns">
+    <app-livestock-overview [items_per_page]="100" (selected)="declareLoss($event)"></app-livestock-overview>
+  </div>
+</div>
+
+<!--ERROR MODAL-->
+<div class="reveal-overlay" [ngStyle]="{'display': modalDisplay}">
+  <div class="tiny reveal" [ngStyle]="{'display': modalDisplay}">
+    <div class="modal-header">
+      {{ 'ERROR' | translate }}
+      <button type="button" class="pull-right" aria-label="Close modal" (click)="closeModal()">
+        <i class="fa fa-times" aria-hidden="true"></i>
+      </button>
+    </div>
+    <div class="modal-body">
+      {{ errorMessage | translate }}
+    </div>
+    <div class="modal-footer">
+      <button class="tiny primary button pull-right" (click)="closeModal()">{{ 'OK' | translate}}</button>
+    </div>
+  </div>
+</div>

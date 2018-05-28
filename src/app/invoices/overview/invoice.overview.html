@@ -1,0 +1,107 @@
+<div class="page-header">
+  <div class="page-title">{{ 'INVOICE OVERVIEW' | translate }}</div>
+</div>
+<div class="row">
+  <div class="row table-options-container">
+    <div class="large-2 columns">
+      <label>
+        {{ 'INVOICES' | translate }}
+        <select [(ngModel)]="status" (change)="page = 1">
+          <option value="ALL">{{ 'ALL' | translate }}</option>
+          <option value="UNPAID INVOICES">{{ 'UNPAID INVOICES' | translate }}</option>
+          <option value="PAID INVOICES">{{'PAID INVOICES' | translate}}</option>
+        </select>
+      </label>
+    </div>
+    <div class="large-2 columns">
+      <label>
+        {{ 'SEARCH' | translate }}
+        <input type="text" [(ngModel)]="filterSearch" (keydown)="page = 1" placeholder="{{ 'SEARCH' | translate }}"
+               maxlength="50">
+      </label>
+    </div>
+    <div class="large-2 columns end">
+      <label>
+        {{ 'DISPLAY AMOUNT' | translate }}
+        <select [(ngModel)]="filterAmount" (change)="page = 1">
+          <option value="10">10</option>
+          <option value="25">25</option>
+          <option value="50">50</option>
+        </select>
+      </label>
+    </div>
+  </div>
+  <table class="stack invoice-overview">
+    <thead>
+    <tr>
+      <td>
+        {{ 'INVOICE NUMBER' | translate }}
+      </td>
+      <td>
+        {{ 'INVOICE DATE' | translate }}
+      </td>
+      <td>
+        {{ 'STATUS' | translate }}
+      </td>
+      <td>
+        {{ 'ACTIONS' | translate }}
+      </td>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngIf="!isLoaded">
+      <td colspan="10">
+        <div class="spinner">
+          <div class="bounce1"></div>
+          <div class="bounce2"></div>
+          <div class="bounce3"></div>
+        </div>
+      </td>
+    </tr>
+    <tr
+      *ngFor="let invoice of invoices | invoiceFilter:[filterSearch, status] | paginate: {itemsPerPage: filterAmount, currentPage: page}">
+      <td>
+                <span *ngIf="invoice.invoice_number">
+                    {{ invoice.invoice_number }}
+                </span>
+        <span *ngIf="!invoice.invoice_number">
+                    --
+                </span>
+      </td>
+      <td>
+                <span class="primary label" *ngIf="invoice.invoice_date">
+                    {{ settings.convertToViewDate(invoice.invoice_date) }}
+                </span>
+      </td>
+      <td>
+                <span *ngIf="invoice.status == 'UNPAID'" class="alert label">
+                    {{ 'UNPAID' | translate }} ({{ calculateDays(invoice.invoice_date)}} {{ 'DAYS' | translate }})
+                </span>
+        <span *ngIf="invoice.status == 'CANCELLED'" class="alert label">
+                    {{ 'PAYMENT CANCELLED' | translate }} ({{ calculateDays(invoice.invoice_date)}} {{ 'DAYS' | translate }})
+                </span>
+        <span *ngIf="invoice.status == 'PAID'" class="success label">
+                    {{ 'PAID' | translate }}: {{ subStringPaidDate(invoice.paid_date) }}
+                </span>
+      </td>
+      <td>
+                <span class="pull-left">
+                    <button [disabled]="invoice.status == 'PAID'" type="button" class="small primary button"
+                            (click)="startInvoicePaymentProcedure(invoice.id, invoice.company_name)">
+                        {{'PAY INVOICE' | translate}}
+                    </button>
+                    <a [routerLink]="['/main/invoices/details', invoice.id]">
+                    <button type="button" class="small primary button">
+                        {{ 'VIEW' | translate }}
+                    </button>
+                    </a>
+                    <button (click)="downloadPdf(invoice)" type="button" class="small primary button">
+                        {{ "DOWNLOAD PDF"| translate }}
+                    </button>
+                </span>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+  <pagination (pageChange)="page = $event"></pagination>
+</div>

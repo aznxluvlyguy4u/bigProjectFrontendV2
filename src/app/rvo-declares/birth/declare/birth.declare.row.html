@@ -1,0 +1,94 @@
+<!--ULN-->
+<td [ngFormModel]="form">
+  <label class="show-for-small-only">{{ 'ULN' | translate }}</label>
+
+  <span *ngIf="animal.is_alive">
+        <input (keyup)="preventKeyPress($event)" (keydown)="preventKeyPress($event)"
+               (keypress)="preventKeyPress($event)" type="text" class='input-uln' [(ngModel)]="animal.uln"
+               [disabled]="isDisabled" (focus)="childSelector.openModal()" ngControl="uln_number">
+        <div [hidden]="form.controls['uln_number'].valid || form_valid" class="input-error-msg pull-right">{{ 'FILL IN THE ULN' | translate }}</div>
+    </span>
+  <span *ngIf="!animal.is_alive">
+        {{ 'STILLBORN' | translate }}
+    </span>
+</td>
+
+<!--GENDER-->
+<td [ngFormModel]="form">
+  <label class="show-for-small-only">{{ 'GENDER' | translate }}</label>
+  <select [(ngModel)]="animal.gender" ngControl="gender" [disabled]="isDisabled">
+    <option value="" selected="selected"> --</option>
+    <option value="{{ constants.MALE }}">{{ 'MALE_SHEEP' | translate }}</option>
+    <option value="{{ constants.FEMALE }}">{{ 'FEMALE_SHEEP' | translate }}</option>
+  </select>
+  <div [hidden]="form.controls['gender'].valid || form_valid" class="input-error-msg pull-right">{{ 'SELECT GENDER' |
+    translate }}
+  </div>
+</td>
+
+<!--BIRTH PROGRESS-->
+<td [ngFormModel]="form">
+  <label class="show-for-small-only">{{ 'BIRTH PROGRESS' | translate }}</label>
+
+  <select [(ngModel)]="animal.birth_progress" ngControl="birth_progress" [disabled]="isDisabled">
+    <option value=""> --</option>
+    <option *ngFor="let progress_type of birth_progress_types" value="{{ progress_type }}">{{ progress_type | translate
+      }}
+    </option>
+  </select>
+</td>
+
+<!--WEIGHT-->
+<td [ngFormModel]="form">
+  <label class="show-for-small-only">{{ 'BIRTH WEIGHT (KG)' | translate }}*</label>
+  <!--step="0.01" -->
+  <input type="number" [(ngModel)]="animal.birth_weight" [disabled]="isDisabled" ngControl="weight" min="0" max="9.9"
+         class="short">
+  <div *ngIf="form.controls['weight'].errors && form.controls['weight'].errors.invalidWeightGreaterThen9Point9"
+       class="input-error-msg pull-right">{{ 'WEIGHT CAN NOT BE GREATER THEN 9.9' | translate }}
+  </div>
+</td>
+
+<!--TAIL LENGTH-->
+<td [ngFormModel]="form">
+  <label class="show-for-small-only">{{ 'TAIL LENGTH (CM)' | translate }}* </label>
+  <input type="number" [(ngModel)]="animal.tail_length"
+         [disabled]="isDisabled || _selectedMother.breed_code != constants.CLUN_FOREST" ngControl="tail_length" min="0"
+         max="30" step="0.01" class="short">
+  <div
+    *ngIf="form.controls['tail_length'].errors && form.controls['tail_length'].errors.invalidTailLengthGreaterThen29point9"
+    class="input-error-msg pull-right">{{ 'TAIL LENGTH CAN NOT BE GREATER THEN 9.9' | translate }}
+  </div>
+</td>
+
+<!--LAMBAR/SURROGATE-->
+<td [ngFormModel]="form">
+  <label class="show-for-small-only">{{ 'LAMBAR/SURROGATE' | translate }}* </label>
+
+  <span *ngIf="animal.is_alive">
+        <select ngControl="lambar" [(ngModel)]="animal.nurture_type" [disabled]="isDisabled"
+                (change)="enableSurrogate($event)">
+            <option *ngFor="let option of options_lambar_surrogate"
+                    value="{{ option }}">{{ option | translate }}</option>
+        </select>
+    </span>
+  <span *ngIf="!animal.is_alive">
+        --
+    </span>
+</td>
+
+<!--ULN-->
+<td [ngFormModel]="form">
+  <input (keyup)="preventKeyPress($event)" (keydown)="preventKeyPress($event)" (keypress)="preventKeyPress($event)"
+         type="text" ngControl="uln_surrogate" (focus)="surrogateMotherSelector.openModal()"
+         [disabled]="(animal.nurture_type != 'SURROGATE') || isDisabled" class='input-uln'>
+  <div [hidden]="form.controls['uln_surrogate'].valid || isValidForm" class="input-error-msg pull-right">{{ 'FILL IN THE
+    ULN' | translate }}
+  </div>
+</td>
+
+<selector #childSelector [columns]="['UNASSIGNED TAGS']" [list]="tags" [initItem]="selectedTag"
+          (selection)="selectTag($event)"></selector>
+<selector #surrogateMotherSelector [columns]="['ULN', 'PEDIGREE NUMBER']" [list]="candidateSurrogates"
+          [filter]="'FEMALES'" [SUGGESTION_LABEL]="'POSSIBLE SURROGATE MOTHER'"
+          (selection)="selectSurrogate($event)"></selector>

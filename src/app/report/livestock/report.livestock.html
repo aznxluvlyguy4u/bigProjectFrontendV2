@@ -1,0 +1,23 @@
+<div [ngFormModel]='form' class='large-4 small-centered'>
+    <label>
+        {{ 'FORMAT' | translate }}
+        <select ngControl='format'>
+            <option value='PDF'> PDF </option>
+            <option value='EXCEL'> Excel </option>
+        </select>
+    </label>
+
+    <label>
+        {{ 'REPORT TYPE' | translate }}
+        <select ngControl='report_type'>
+            <option value='LIMITED'> {{ 'LIMITED' | translate }} </option>
+            <option value='EXTENSIVE'> {{ 'EXTENSIVE' | translate }} </option>
+        </select>
+    </label>
+
+    <div class='row'>
+        <div class='large-4 small-centered'>
+            <button class='tiny primary button expanded'>{{ 'DOWNLOAD' | translate }}</button>
+        </div>
+    </div>
+</div>

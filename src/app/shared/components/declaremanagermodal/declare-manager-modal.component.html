@@ -1,0 +1,71 @@
+<div class="reveal-overlay" [ngStyle]="{'display': modalDisplay}">
+  <div class="reveal large" [ngStyle]="{'display': modalDisplay}">
+
+    <!--<div class="modal-header" style="min-height: 2em; background: #48A770" >-->
+    <div class="modal-header-download">
+      {{ title | translate }}
+      <button type="button" class="pull-right" aria-label="Close modal" (click)="closeModal()">
+        <i class="fa fa-times" aria-hidden="true"></i>
+      </button>
+    </div>
+
+    <ng-template *ngIf="isModalEmpty()">
+      <div class="modal-body">
+        <p>{{ 'THERE ARE NO DECLARES SEND YET' | translate }}</p>
+      </div>
+    </ng-template>
+
+    <ng-template *ngIf="!isModalEmpty()">
+      <div class="modal-body">
+
+        <table>
+          <thead>
+          <tr>
+            <th>#</th>
+            <th>{{ 'TIME' | translate }}</th>
+            <th>{{ 'DECLARE TYPE' | translate }}</th>
+            <th>{{ 'EVENT DATE' | translate }}</th>
+            <th>{{ 'DESCRIPTION' | translate }}</th>
+            <th>{{ 'READY FOR SENDING TO RVO' | translate }}</th>
+          </tr>
+          </thead>
+          <tbody>
+
+          <tr *ngFor="let declare of declareItemsShownInModal">
+            <td>{{declare.id}}</td>
+            <td>{{declare.logDate | date:'HH:mm:ss' }}</td>
+            <td>{{declare.declareType | translate}}</td>
+            <td>{{getDeclareDateType(declare)}} {{getFormattedDate(declare.declareDate)}}</td>
+            <td>{{declare.description }}
+              <span *ngIf="declare.errorMessage != null"
+                    style="color: darkred">{{declare.errorMessage | translate}}</span>
+            </td>
+
+            <td *ngIf="!declare.isCompleted && !declare.isFailed">
+              <i class="fa fa-spinner fa-pulse fa-2x fa-fw"
+                 title="{{ 'YOUR FILE IS NOW BEING GENERATED' | translate }}"></i>
+            </td>
+            <td *ngIf="!declare.isFailed && declare.isCompleted">
+              <app-check-mark [boolVal]="!declare.isFailed"></app-check-mark>
+            </td>
+            <td *ngIf="declare.isFailed">
+              <app-check-mark [boolVal]="!declare.isFailed"></app-check-mark>
+            </td>
+
+          </tr>
+          </tbody>
+        </table>
+
+        <button *ngIf="hasCompletedAndHiddenDeclares()"
+                type="button"
+                class="button success pull-right"
+                aria-label="Clear list"
+                (click)="removeHiddenAndCompletedDeclares()">
+          {{ 'HIDE (VALID AND INVALID) VALIDATED DECLARES' | translate }}
+        </button>
+      </div>
+    </ng-template>
+
+
+  </div>
+</div>
