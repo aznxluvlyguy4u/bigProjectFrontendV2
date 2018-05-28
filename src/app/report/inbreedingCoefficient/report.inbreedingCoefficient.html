@@ -13,7 +13,7 @@
 
 <!--LIVESTOCK OVERVIEW-->
 <div class='large-10 columns'>
-    <livestock-overview
+    <app-livestock-overview
             [reportMode]='true'
             [items_per_page]='100'
             [onlyFemales]='true'
@@ -21,7 +21,7 @@
             [selectedFileType]='defaultFileType'
             (selected)='generateReport($event)'
             [maxSelectionCount]='inbreedingMaxSelectionCount'
-    ></livestock-overview>
+    ></app-livestock-overview>
 </div>
 
 <selector

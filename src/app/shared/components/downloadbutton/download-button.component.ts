@@ -3,8 +3,7 @@ import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 
 @Component({
   selector: 'app-download-button',
-  templateUrl: './download-button.component.html',
-  
+  templateUrl: './download-button.component.html'
 })
 export class DownloadButtonComponent implements OnInit {
   @Input() spinnerDurationSeconds = 0.5;

@@ -3,11 +3,11 @@ import {AfterViewInit, Component, EventEmitter, Input, Output, ViewContainerRef}
 import {FormControl} from '@angular/forms';
 
 @Component({
-  selector: 'datepicker',
-  templateUrl: './datepicker.component.html',
+  selector: 'app-datepicker',
+  templateUrl: './datepicker.component.html'
 })
 
-export class Datepicker implements AfterViewInit {
+export class DatepickerComponent implements AfterViewInit {
   public isOpened: boolean;
   public dateValue: string;
   public viewValue: string;

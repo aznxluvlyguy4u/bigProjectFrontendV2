@@ -3,8 +3,7 @@ import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 
 @Component({
   selector: 'app-file-type-dropdown',
-  templateUrl: './file-type-dropdown.component.html',
-  
+  templateUrl: './file-type-dropdown.component.html'
 })
 export class FileTypeDropdownComponent implements OnInit {
 

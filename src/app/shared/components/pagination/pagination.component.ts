@@ -13,9 +13,8 @@ export interface IPage {
 }
 
 @Component({
-  selector: 'pagination',
+  selector: 'app-pagination',
   templateUrl: './pagination.component.html',
-  
 })
 
 export class PaginationComponent implements OnInit, OnChanges, AfterViewInit, OnDestroy {

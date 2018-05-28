@@ -50,7 +50,7 @@ export class UBNValidator {
       let sum = 0;
 
       for (let i = 0; i < chars.length; i++) {
-        sum = sum + (parseInt(chars[i]) * calc_values[i]);
+        sum = sum + (parseInt(chars[i], null) * calc_values[i]);
       }
 
       if ((sum / 10) % 1 === 0) {

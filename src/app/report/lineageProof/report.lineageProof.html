@@ -1,6 +1,6 @@
 <!--LIVESTOCK OVERVIEW-->
 <div class='large-10 columns'>
-    <livestock-overview
+    <app-livestock-overview
             [load_historic_animals_in_non_view_mode]='true'
             [reportMode]='true'
             [items_per_page]='100'
@@ -8,5 +8,5 @@
             [selectedFileType]='defaultFileType'
             (selected)='generateReport($event)'
             [maxSelectionCount]='lineageProofMaxSelectionCount'
-    ></livestock-overview>
+    ></app-livestock-overview>
 </div>

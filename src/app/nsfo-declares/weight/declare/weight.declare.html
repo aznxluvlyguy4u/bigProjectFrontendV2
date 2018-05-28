@@ -5,8 +5,8 @@
   <div class="large-2 columns">
     <label>
       {{ 'WEIGHT DATE' | translate }}
-      <datepicker [formCtrl]="form.controls['weight_date']" [viewFormat]="view_date_format"
-                  [modelFormat]="view_date_format"></datepicker>
+      <app-datepicker [formCtrl]="form.controls['weight_date']" [viewFormat]="view_date_format"
+                  [modelFormat]="view_date_format"></app-datepicker>
       <div [hidden]="form.controls['weight_date'].valid" class="input-error-msg pull-right">{{ 'FILL IN THE WEIGHT DATE'
         | translate }}
       </div>
