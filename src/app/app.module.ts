@@ -20,7 +20,6 @@ import {AppRoutingModule} from './app-routing.module';
 import {lastFiveMessagesFilterPipe} from './shared/pipes/lastFiveMessagesFilter';
 import {localNumberFormat} from './shared/pipes/localNumberFormat';
 import {DatePipe, DecimalPipe} from '@angular/common';
-import {InvoiceFilterPipe} from './invoices/pipes/invoiceFilter.pipe';
 import {LivestockFilterPipe} from './shared/components/livestock/pipes/livestockFilter';
 import {LivestockOrderBy} from './shared/components/livestock/pipes/livestockSort';
 import {SelectorFilterPipe} from './shared/components/selector/pipes/selectorFilter';
@@ -45,7 +44,6 @@ import {InvoiceOverviewComponent} from './invoices/overview/invoice.overview';
 import {InvoiceComponent} from './invoices/invoice.component';
 import {LivestockOverviewComponent} from './shared/components/livestock/overview.component';
 import {LivestockDetailComponent} from './livestock/details/details.component';
-import {Datepicker} from './shared/components/datepicker/datepicker.component';
 import {ExteriorComponent} from './livestock/details/exterior/exterior.component';
 import {DownloadButtonComponent} from './shared/components/downloadbutton/download-button.component';
 import {LivestockComponent} from './livestock/livestock.component';
@@ -63,6 +61,9 @@ import {WeightHistoryComponent} from './nsfo-declares/weight/history/weight.hist
 import {WeightDeclareComponent} from './nsfo-declares/weight/declare/weight.declare';
 import {DownloadLandingPageComponent} from './redirect/download/download-landing-page.component';
 import {LoadingComponent} from './redirect/loading/loading.component';
+import {InvoiceFilterPipe} from './invoices/pipes/invoice-filter.pipe';
+import {DatepickerComponent} from './shared/components/datepicker/datepicker.component';
+import {DatepickerV2Component} from './shared/components/datepickerV2/datepicker-v2.component';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
@@ -84,7 +85,8 @@ export function HttpLoaderFactory(http: HttpClient) {
       InvoiceComponent,
       LivestockOverviewComponent,
       LivestockDetailComponent,
-      Datepicker,
+      DatepickerComponent,
+      DatepickerV2Component,
       ExteriorComponent,
       DownloadButtonComponent,
       ExteriorComponent,
