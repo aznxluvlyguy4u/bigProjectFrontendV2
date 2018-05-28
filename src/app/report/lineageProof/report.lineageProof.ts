@@ -9,7 +9,7 @@ import {AnimalsOverviewSelection} from '../../shared/components/livestock/animal
 
 @Component({
     directives: [LivestockOverview],
-    template: require('./report.lineageProof.html'),
+    templateUrl: './report.lineageProof.html',
 })
 
 export class ReportLineageProofComponent {

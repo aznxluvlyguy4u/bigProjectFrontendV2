@@ -15,7 +15,7 @@ import {Animal, LivestockAnimal} from '../../shared/models/animal.model';
 
 @Component({
     directives: [LivestockOverview, SelectorComponent],
-    template: require('./report.inbreedingCoefficient.html')
+    templateUrl: './report.inbreedingCoefficient.html',
 })
 
 export class ReportInbreedingCoefficientComponent {

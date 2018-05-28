@@ -8,7 +8,7 @@ import { BooleanSwitchComponent } from '../../shared/components/booleanswitch/bo
 
 @Component({
   selector: 'app-offspring-report',
-  template: require('./report.offspring.component.html'),
+  templateUrl: './report.offspring.component.html',
   directives: [LivestockOverview, BooleanSwitchComponent],
 
 })
