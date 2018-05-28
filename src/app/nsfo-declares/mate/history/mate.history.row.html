@@ -25,8 +25,8 @@
   <label class="show-for-small-only">{{ 'MATE DATE' | translate }}</label>
   <span [hidden]="editMode">{{ mate.start_date }}</span>
   <span [hidden]="!editMode" [ngFormModel]="form">
-        <datepicker [formCtrl]="form.controls['start_date']" [initDate]="mate.start_date"
-                    [viewFormat]="view_date_format" [modelFormat]="model_datetime_format"></datepicker>
+        <app-datepicker [formCtrl]="form.controls['start_date']" [initDate]="mate.start_date"
+                    [viewFormat]="view_date_format" [modelFormat]="model_datetime_format"></app-datepicker>
         <div [hidden]="form.controls['start_date'].valid || form_valid" class="input-error-msg text-center">{{ 'FILL IN THE MATE STARTDATE' | translate }}</div>
     </span>
 </td>
@@ -36,8 +36,8 @@
   <label class="show-for-small-only">{{ 'TILL' | translate }}</label>
   <span [hidden]="editMode">{{ mate.end_date }}</span>
   <span [hidden]="!editMode" [ngFormModel]="form">
-        <datepicker [formCtrl]="form.controls['end_date']" [initDate]="mate.end_date" [viewFormat]="view_date_format"
-                    [modelFormat]="model_datetime_format"></datepicker>
+        <app-datepicker [formCtrl]="form.controls['end_date']" [initDate]="mate.end_date" [viewFormat]="view_date_format"
+                    [modelFormat]="model_datetime_format"></app-datepicker>
         <div [hidden]="form.controls['end_date'].valid || form_valid" class="input-error-msg text-center">{{ 'FILL IN THE MATE ENDDATE' | translate }}</div>
     </span>
 </td>

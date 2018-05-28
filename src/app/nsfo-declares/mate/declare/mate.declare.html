@@ -4,8 +4,8 @@
   <div class="medium-2 columns">
     <label>
       {{ 'MATE PERIOD' | translate }} &nbsp;
-      <datepicker [formCtrl]="form.controls['mate_startdate']" [viewFormat]="view_date_format"
-                  [modelFormat]="model_datetime_format"></datepicker>
+      <app-datepicker [formCtrl]="form.controls['mate_startdate']" [viewFormat]="view_date_format"
+                  [modelFormat]="model_datetime_format"></app-datepicker>
       <div [hidden]="form.controls['mate_startdate'].valid || form_valid" class="input-error-msg pull-right">{{ 'FILL IN
         THE MATE PERIOD' | translate }}
       </div>
@@ -16,8 +16,8 @@
   <div class="medium-2 columns">
     <label>
       {{ 'TILL' | translate }} &nbsp;
-      <datepicker [formCtrl]="form.controls['mate_enddate']" [viewFormat]="view_date_format"
-                  [modelFormat]="model_datetime_format"></datepicker>
+      <app-datepicker [formCtrl]="form.controls['mate_enddate']" [viewFormat]="view_date_format"
+                  [modelFormat]="model_datetime_format"></app-datepicker>
       <div [hidden]="form.controls['mate_enddate'].valid || form_valid" class="input-error-msg pull-right">{{ 'FILL IN
         THE MATE PERIOD' | translate }}
       </div>

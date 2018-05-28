@@ -19,8 +19,8 @@
   <label class="show-for-small-only">{{ 'WEIGHT DATE' | translate }}</label>
   <span [hidden]="editMode">{{ weight.measurement_date }}</span>
   <span [hidden]="!editMode" [ngFormModel]="form">
-        <datepicker [formCtrl]="form.controls['measurement_date']" [initDate]="weight.measurement_date"
-                    [viewFormat]="view_date_format" [modelFormat]="model_datetime_format"></datepicker>
+        <app-datepicker [formCtrl]="form.controls['measurement_date']" [initDate]="weight.measurement_date"
+                    [viewFormat]="view_date_format" [modelFormat]="model_datetime_format"></app-datepicker>
         <div [hidden]="form.controls['measurement_date'].valid || form_valid" class="input-error-msg text-center">{{ 'FILL IN THE MEASUREMENT DATE' | translate }}</div>
     </span>
 </td>
