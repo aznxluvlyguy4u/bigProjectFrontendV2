@@ -53,7 +53,7 @@ export class ArrivalHistoryRowComponent implements OnInit {
     this.apiService
       .doGetRequest(API_URI_GET_COUNTRY_CODES)
       .subscribe(
-        res => this.country_code_list = _.sortBy(res.result, ['code'])
+        res => this.country_code_list = _.sortBy(res.json().result, ['code'])
       );
   }
 

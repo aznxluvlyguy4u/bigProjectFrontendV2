@@ -1,6 +1,6 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Location} from '@angular/common';
-import {Router} from '@angular/router/router';
+import {Router} from '@angular/router';
 
 import {API_URI_GET_LOSS_ERRORS} from '../../shared/services/nsfo-api/nsfo.settings';
 import {LossErrorResponse} from './loss.model';
@@ -36,7 +36,7 @@ export class LossComponent implements OnInit, OnDestroy {
       .doGetRequest(API_URI_GET_LOSS_ERRORS)
       .subscribe(res => {
           const errorList = [];
-          const losses = <LossErrorResponse[]> res.result;
+          const losses = <LossErrorResponse[]> res.json().result;
 
           for (const loss of losses) {
             if (!loss.is_removed_by_user) {

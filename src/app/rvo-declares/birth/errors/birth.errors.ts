@@ -26,7 +26,7 @@ export class BirthErrorsComponent implements OnInit {
     this.apiService
       .doGetRequest(API_URI_GET_BIRTHS_ERRORS)
       .subscribe(res => {
-          const births = <BirthErrorResponse[]> res.result;
+          const births = <BirthErrorResponse[]> res.json().result;
           births.forEach((birth) => {
             birth.date_of_birth = moment(birth.date_of_birth).format(this.settings.VIEW_DATE_FORMAT);
 

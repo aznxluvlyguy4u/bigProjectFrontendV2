@@ -94,7 +94,7 @@ export class ExteriorComponent implements OnInit, AfterViewInit, OnChanges {
       .doGetRequest(API_URI_MEASUREMENTS + '/' + this.uln + '/exteriors/kinds')
       .subscribe(
         res => {
-          this.kinds = res.result;
+          this.kinds = res.json().result;
         },
         error => {
           alert(this.apiService.getErrorMessage(error));
@@ -107,7 +107,7 @@ export class ExteriorComponent implements OnInit, AfterViewInit, OnChanges {
       .doGetRequest(API_URI_MEASUREMENTS + '/' + this.uln + '/exteriors/kinds/' + measurementDate)
       .subscribe(
         res => {
-          this.kinds = res.result;
+          this.kinds = res.json().result;
         },
         error => {
           alert(this.apiService.getErrorMessage(error));
@@ -120,7 +120,7 @@ export class ExteriorComponent implements OnInit, AfterViewInit, OnChanges {
       .doGetRequest(API_URI_MEASUREMENTS + '/' + this.uln + '/exteriors/inspectors')
       .subscribe(
         res => {
-          this.inspectors = res.result;
+          this.inspectors = res.json().result;
         },
         error => {
           alert(this.apiService.getErrorMessage(error));
@@ -230,7 +230,7 @@ export class ExteriorComponent implements OnInit, AfterViewInit, OnChanges {
           res => {
             this.isRequestingExterior = false;
             // this.getAnimalDetails.emit({});
-            this.selectedExterior = res.result;
+            this.selectedExterior = res.json().result;
             this.closeExteriorModal();
           },
           err => {

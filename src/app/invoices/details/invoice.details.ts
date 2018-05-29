@@ -28,8 +28,8 @@ export class InvoiceDetailsComponent implements OnInit {
       this.apiService.doGetRequest(API_URI_INVOICES + '/' + this.id)
         .subscribe(
           res => {
-            this.invoice = res.result;
-            this.senderDetails = res.result.sender_details;
+            this.invoice = res.json().result;
+            this.senderDetails = res.json().result.sender_details;
           },
           error => {
             alert(this.apiService.getErrorMessage(error));
@@ -47,7 +47,7 @@ export class InvoiceDetailsComponent implements OnInit {
     this.apiService.doPostRequest(API_URI_INVOICE_PAYMENT, this.invoice)
       .subscribe(
         res => {
-          window.location.href = res.result['links']['payment_url'];
+          window.location.href = res.json().result['links']['payment_url'];
         }
       );
   }

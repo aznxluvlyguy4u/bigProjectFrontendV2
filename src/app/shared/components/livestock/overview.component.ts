@@ -7,7 +7,7 @@ import {
     LIVESTOCK_SORT_OPTIONS,
 } from '../../models/animal.model';
 import {LivestockFilterPipe} from './pipes/livestockFilter';
-import {Router} from '@angular/router/router';
+import {Router} from '@angular/router';
 
 import {NSFOService} from '../../services/nsfo-api/nsfo.service';
 import {Settings} from '../../variables/settings';
@@ -211,7 +211,7 @@ export class LivestockOverviewComponent implements OnInit, OnDestroy {
             .subscribe(
                 res => {
                     //this.livestock_list = LivestockAnimal.apply(null, new Uint16Array(res));
-                    this.livestock_list = <LivestockAnimal[]> res;
+                    this.livestock_list = <LivestockAnimal[]> res.json().result;
                     for (const animal of this.livestock_list) {
                         animal.date_of_birth_sort = animal.date_of_birth;
                         animal.date_of_birth = moment(animal.date_of_birth).format(this.settings.VIEW_DATE_FORMAT);
@@ -253,7 +253,7 @@ export class LivestockOverviewComponent implements OnInit, OnDestroy {
             .doGetRequest(API_URI_GET_HISTORIC_ANIMALS)
             .subscribe(
                 res => {
-                    this.historic_livestock_list = <LivestockAnimal[]> res.result;
+                    this.historic_livestock_list = <LivestockAnimal[]> res.json().result;
                     for (const animal of this.historic_livestock_list) {
                         animal.date_of_birth_sort = animal.date_of_birth;
                         animal.date_of_birth = moment(animal.date_of_birth).format(this.settings.VIEW_DATE_FORMAT);

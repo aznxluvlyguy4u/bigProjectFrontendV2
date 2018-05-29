@@ -32,7 +32,7 @@ export class LossHistoryComponent implements OnInit {
     this.apiService
       .doGetRequest(API_URI_GET_LOSS_HISTORY)
       .subscribe(res => {
-          const losses = <LossChangeResponse[]> res.result;
+          const losses = <LossChangeResponse[]> res.json().result;
 
           for (const loss of losses) {
             loss.date_of_death = moment(loss.date_of_death).format(this.settings.VIEW_DATE_FORMAT);

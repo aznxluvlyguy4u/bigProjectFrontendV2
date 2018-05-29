@@ -32,7 +32,7 @@ export class BirthHistoryComponent implements OnInit {
     this.nsfo
       .doGetRequest(API_URI_GET_BIRTHS_HISTORY)
       .subscribe(res => {
-          this.litters = <Litter[]> res.result;
+          this.litters = <Litter[]> res.json().result;
           this.litters = _.orderBy(this.litters, ['log_date'], ['desc']);
         },
         error => {

@@ -31,7 +31,7 @@ export class TagReplacementErrorsComponent implements OnInit {
       .doGetRequest(API_URI_GET_TAG_REPLACEMENT_ERRORS)
       .subscribe(
         res => {
-          const tagReplacements = <TagReplacementErrorResponse[]> res.result;
+          const tagReplacements = <TagReplacementErrorResponse[]> res.json().result;
 
           for (const tagReplacement of tagReplacements) {
             tagReplacement.log_date = moment(tagReplacement.log_date).format(this.settings.getViewDateTimeFormat());

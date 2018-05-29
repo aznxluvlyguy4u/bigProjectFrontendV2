@@ -70,9 +70,9 @@ export class RvoLeadingLivestockSyncComponent implements OnInit, OnDestroy {
     this.apiService.doGetRequest(API_URI_SYNC_ANIMALS_RVO_LEADING)
       .subscribe(
         res => {
-          this.latestSyncData = res.result;
-          if (res.result) {
-            this.showWarningMessage = res.result.request_state === 'OPEN';
+          this.latestSyncData = res.json().result;
+          if (res.json().result) {
+            this.showWarningMessage = res.json().result.request_state === 'OPEN';
           } else {
             this.showWarningMessage = false;
           }

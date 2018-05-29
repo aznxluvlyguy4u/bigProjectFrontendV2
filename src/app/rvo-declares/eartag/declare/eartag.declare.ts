@@ -129,7 +129,7 @@ export class EartagDeclareComponent implements OnInit, OnDestroy {
       .doGetRequest(API_URI_GET_EARTAGS)
       .subscribe(
         res => {
-          const eartags = res.result;
+          const eartags = res.json().result;
           this.eartags_list = [];
 
           for (const eartag of eartags) {
@@ -171,7 +171,7 @@ export class EartagDeclareComponent implements OnInit, OnDestroy {
       .doGetRequest(API_URI_SYNC_EARTAGS + '-status')
       .subscribe(
         res => {
-          this.eartagStatusOverview = res.result;
+          this.eartagStatusOverview = res.json().result;
           this.birthDeclaresInProgress = this.eartagStatusOverview.births_in_progress;
           this.birthRevokesInProgress = this.eartagStatusOverview.birth_revokes_in_progress;
           this.areBirthsInProgress = this.birthDeclaresInProgress + this.birthRevokesInProgress > 0;

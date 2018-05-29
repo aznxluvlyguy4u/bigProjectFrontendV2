@@ -121,7 +121,7 @@ export class LivestockDetailComponent implements OnInit {
       .doGetRequest(API_URI_GET_COUNTRY_CODES)
       .subscribe(
         res => {
-          this.country_code_list = _.sortBy(res.result, ['code']);
+          this.country_code_list = _.sortBy(res.json().result, ['code']);
         },
         error => {
           alert(this.apiService.getErrorMessage(error));
@@ -134,7 +134,7 @@ export class LivestockDetailComponent implements OnInit {
       .doGetRequest(API_URI_GET_COLLAR_COLORS)
       .subscribe(
         res => {
-          this.collar_color_list = res.result;
+          this.collar_color_list = res.json().result;
         },
         error => {
           alert(this.apiService.getErrorMessage(error));
@@ -146,7 +146,7 @@ export class LivestockDetailComponent implements OnInit {
     this.apiService
       .doGetRequest(API_URI_GET_EARTAGS)
       .subscribe(res => {
-          this.tags = res.result;
+          this.tags = res.json().result;
           for (const tag of this.tags) {
             tag.uln = tag.uln_country_code + tag.uln_number;
             tag.ulnLastFive = tag.uln_number.substr(tag.uln_number.length - 5);
@@ -164,7 +164,7 @@ export class LivestockDetailComponent implements OnInit {
         this.apiService
           .doGetRequest(API_URI_GET_ANIMAL_DETAILS + '/' + params.uln)
           .subscribe(res => {
-              this.animal = res.result;
+              this.animal = res.json().result;
               this.animal.uln = this.animal.uln_country_code + this.animal.uln_number;
               this.animal.date_of_birth = moment(this.animal.date_of_birth).format(this.settings.getViewDateFormat());
               this.form.get('date_of_birth').setValue(this.animal.date_of_birth);

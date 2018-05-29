@@ -121,6 +121,7 @@ import {EartagErrorsComponent} from './rvo-declares/eartag/errors/eartag.errors'
 import {EartagHistoryComponent} from './rvo-declares/eartag/history/eartag.history';
 import {EartagHistoryRowComponent} from './rvo-declares/eartag/history/eartag.history.row';
 import {CheckMarkComponent} from './shared/components/checkmark/check-mark.component';
+import {FormsModule} from '@angular/forms';
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http);
@@ -225,12 +226,9 @@ export function HttpLoaderFactory(http: HttpClient) {
       CheckMarkComponent,
     lastFiveMessagesFilterPipe,
     localNumberFormat,
-    DecimalPipe,
     InvoiceFilterPipe,
-    TranslatePipe,
     LivestockFilterPipe,
     LivestockOrderBy,
-    DatePipe,
     SelectorFilterPipe,
     LivesearchFilterPipe,
     HiddenMessagesFilterPipe,
@@ -249,6 +247,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     AppRoutingModule,
     NgxPaginationModule,
     MomentModule,
+    FormsModule,
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,

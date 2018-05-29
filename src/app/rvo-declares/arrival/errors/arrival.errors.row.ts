@@ -63,7 +63,7 @@ export class ArrivalErrorRowComponent implements OnInit, AfterViewChecked {
       .doGetRequest(API_URI_GET_COUNTRY_CODES)
       .subscribe(
         res => {
-          this.country_code_list = _.sortBy(res.result, ['code']);
+          this.country_code_list = _.sortBy(res.json().result, ['code']);
         },
         error => {
           alert(this.apiService.getErrorMessage(error));

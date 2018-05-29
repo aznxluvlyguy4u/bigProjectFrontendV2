@@ -29,7 +29,7 @@ export class EartagErrorsComponent implements OnInit {
     this.apiService
       .doGetRequest(API_URI_GET_EARTAGS_ERRORS)
       .subscribe(res => {
-          this.eartagErrorList = _.orderBy(res.result, ['log_date'], ['desc']);
+          this.eartagErrorList = _.orderBy(res.json().result, ['log_date'], ['desc']);
           this.isLoading = false;
         },
         error => {

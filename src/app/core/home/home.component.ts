@@ -103,7 +103,7 @@ export class MainComponent implements OnInit, OnDestroy, AfterContentChecked {
       .doGetRequest(API_URI_GET_COUNTRY_CODES)
       .subscribe(
         res => {
-          const countryCodeList = _.sortBy(res.result, ['code']);
+          const countryCodeList = _.sortBy(res.json().result, ['code']);
           this.settings.setCountryList(countryCodeList);
         },
         error => {
@@ -119,7 +119,7 @@ export class MainComponent implements OnInit, OnDestroy, AfterContentChecked {
         res => {
           this.utils.setMenuMessages([]);
           this.menuMessages = [];
-          this.messages = res.result;
+          this.messages = res.json().result;
           this.messages = _.orderBy(this.messages, ['creation_date'], ['desc']);
 
           for (const message of this.messages) {

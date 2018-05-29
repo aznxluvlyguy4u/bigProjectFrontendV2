@@ -10,7 +10,7 @@
     <section class="login column row">
 
       <!--FORM-->
-      <form [ngFormModel]="form" *ngIf="!enable_forgot_pw" class="ng-animate">
+      <form #form="ngForm" *ngIf="!enable_forgot_pw" class="ng-animate">
 
         <!--INPUT FIELD: USERNAME-->
         <div class="input column row">
@@ -45,7 +45,7 @@
         </div>
       </form>
 
-      <form [ngFormModel]="form_forgot_pw" *ngIf="enable_forgot_pw" class="ng-animate forgot-pw">
+      <form #form_forgot_pw="ngForm" *ngIf="enable_forgot_pw" class="ng-animate forgot-pw">
         <h5>{{ 'FORGOT PASSWORD?' | translate }}</h5>
         <p>
           {{ 'ENTER YOUR EMAIL ADDRESS TO RESET YOUR PASSWORD.' | translate }}

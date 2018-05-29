@@ -46,7 +46,7 @@ export class InvoiceOverviewComponent implements OnInit, OnDestroy {
     this.apiService.doGetRequest(API_URI_INVOICES)
       .subscribe(
         res => {
-          this.invoices = <Invoice[]> res.result;
+          this.invoices = <Invoice[]> res.json().result;
           this.isLoaded = true;
         },
         error => {
@@ -84,7 +84,7 @@ export class InvoiceOverviewComponent implements OnInit, OnDestroy {
     this.apiService.doPostRequest(API_URI_INVOICE_PAYMENT, invoice)
       .subscribe(
         res => {
-          window.location.href = res.result['links']['payment_url'];
+          window.location.href = res.json().result['links']['payment_url'];
         }
       );
   }

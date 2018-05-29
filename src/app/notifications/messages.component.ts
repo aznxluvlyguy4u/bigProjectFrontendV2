@@ -2,7 +2,7 @@ import * as moment from 'moment';
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 
-import {Router} from '@angular/router/router';
+import {Router} from '@angular/router';
 import {NSFOService} from '../shared/services/nsfo-api/nsfo.service';
 import {UtilsService} from '../shared/services/utils/utils.services';
 import {SettingsService} from '../shared/services/settings/settings.service';

@@ -20,7 +20,7 @@
     <!--TABS SMALL SCREENS-->
     <div class="row show-for-small-only">
         <label> {{ 'TAB' | translate }}
-            <select [(ngModel)]="selectedRoute" (change)="selectRoute($event)">
+            <select (change)="selectRoute($event)">
                 <option value="/main/admin/rvo-leading-livestock-sync">{{ 'LIVESTOCK SYNC' | translate }}</option>
             </select>
         </label>

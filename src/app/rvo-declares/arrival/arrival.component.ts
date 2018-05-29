@@ -1,6 +1,6 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Location} from '@angular/common';
-import {Router} from '@angular/router/router';
+import {Router} from '@angular/router';
 
 import {API_URI_GET_ARRIVALS_ERRORS} from '../../shared/services/nsfo-api/nsfo.settings';
 import {ArrivalErrorResponse} from './arrival.model';
@@ -36,14 +36,14 @@ export class ArrivalComponent implements OnInit, OnDestroy {
       .subscribe(
         res => {
           const errorList = [];
-          const arrivals = <ArrivalErrorResponse[]> res.result.arrivals;
+          const arrivals = <ArrivalErrorResponse[]> res.json().result.arrivals;
           for (const arrival of arrivals) {
             if (!arrival.is_removed_by_user) {
               errorList.push(arrival);
             }
           }
 
-          const imports = <ArrivalErrorResponse[]> res.result.imports;
+          const imports = <ArrivalErrorResponse[]> res.json().result.imports;
           for (const arrival of imports) {
             if (!arrival.is_removed_by_user) {
               errorList.push(arrival);

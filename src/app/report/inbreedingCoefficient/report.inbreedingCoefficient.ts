@@ -36,7 +36,7 @@ export class ReportInbreedingCoefficientComponent {
             .doGetRequest(API_URI_GET_ANIMALS)
             .subscribe(
                 res => {
-                    this.livestock = <LivestockAnimal[]> res.result;
+                    this.livestock = <LivestockAnimal[]> res.json().result;
 
                     for (const animal of this.livestock) {
                         if (animal.uln_country_code && animal.uln_number) {

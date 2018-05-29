@@ -25,7 +25,7 @@ export class UtilsService {
     this.api.doGetRequest(API_URI_GET_USER_INFO)
       .subscribe(
         res => {
-          this.setUserInfo(res.result);
+          this.setUserInfo(res.json().result);
         },
         error => {
           alert(this.api.getErrorMessage(error));

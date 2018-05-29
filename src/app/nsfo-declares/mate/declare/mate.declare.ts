@@ -7,7 +7,7 @@ import {Constants} from '../../../shared/variables/constants';
 import {LIVESTOCK_TYPE_MATE} from '../../../shared/components/livestock/overview.component';
 import {SettingsService} from '../../../shared/services/settings/settings.service';
 import {API_URI_DECLARE_MATE, API_URI_GET_ANIMALS} from '../../../shared/services/nsfo-api/nsfo.settings';
-import {Router} from '@angular/router/router';
+import {Router} from '@angular/router';
 import {Settings} from '../../../shared/variables/settings';
 import {Subject} from 'rxjs';
 import {MateChangeResponse} from '../../../shared/models/nsfo-declare.model';
@@ -84,7 +84,7 @@ export class MateDeclareComponent implements OnInit, OnDestroy {
       .doGetRequest(API_URI_GET_ANIMALS)
       .subscribe(
         res => {
-          this.livestock = <LivestockAnimal[]> res.result;
+          this.livestock = <LivestockAnimal[]> res.json().result;
           for (const animal of this.livestock) {
             if (animal.uln_country_code && animal.uln_number) {
               animal.uln = animal.uln_country_code + animal.uln_number;
@@ -151,7 +151,7 @@ export class MateDeclareComponent implements OnInit, OnDestroy {
                 selectionList.splice(index, 1);
               }
 
-              this.updateLastMateAfterDeclare(res.result);
+              this.updateLastMateAfterDeclare(res.json().result);
 
               setTimeout(() => {
                 animal.successful = false;

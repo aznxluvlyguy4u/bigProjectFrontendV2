@@ -34,7 +34,7 @@ export class MateHistoryComponent implements OnInit {
       .doGetRequest(API_URI_GET_MATE_HISTORY)
       .subscribe(
         res => {
-          const mates = <MateChangeResponse[]> res.result;
+          const mates = <MateChangeResponse[]> res.json().result;
           for (const mate of mates) {
             mate.start_date = moment(mate.start_date).format(this.settings.getViewDateFormat());
             mate.end_date = moment(mate.end_date).format(this.settings.getViewDateFormat());
@@ -69,7 +69,7 @@ export class MateHistoryComponent implements OnInit {
           this.closeModal();
 
           this.selectedAnimal.request_state = 'REVOKED';
-          this.selectedAnimal.revoke_date = moment();
+          this.selectedAnimal.revoke_date = moment().toISOString();
 
           const index = _.findIndex(this.mateHistoryList, {message_id: this.selectedAnimal.message_id});
           this.mateHistoryList.splice(index, 1, this.selectedAnimal);

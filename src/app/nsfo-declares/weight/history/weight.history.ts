@@ -33,7 +33,7 @@ export class WeightHistoryComponent implements OnInit {
       .doGetRequest(API_URI_GET_WEIGHT_HISTORY)
       .subscribe(
         res => {
-          const weights = <WeightChangeResponse[]> res.result;
+          const weights = <WeightChangeResponse[]> res.json().result;
           for (const weight of weights) {
             weight.measurement_date = moment(weight.measurement_date).format(this.settings.getViewDateFormat());
           }
@@ -55,7 +55,7 @@ export class WeightHistoryComponent implements OnInit {
           this.closeModal();
 
           this.selectedWeight.request_state = 'REVOKED';
-          this.selectedWeight.revoke_date = moment();
+          this.selectedWeight.revoke_date = moment().toISOString();
 
           const index = _.findIndex(this.weightHistoryList, {message_id: this.selectedWeight.message_id});
           this.weightHistoryList.splice(index, 1, this.selectedWeight);

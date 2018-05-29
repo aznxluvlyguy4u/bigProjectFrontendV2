@@ -29,7 +29,7 @@ export class LossErrorsComponent implements OnInit {
     this.apiService
       .doGetRequest(API_URI_GET_LOSS_ERRORS)
       .subscribe(res => {
-          const losses = <LossErrorResponse[]> res.result;
+          const losses = <LossErrorResponse[]> res.json().result;
 
           for (const loss of losses) {
             loss.date_of_death = moment(loss.date_of_death).format(this.settings.getViewDateFormat());

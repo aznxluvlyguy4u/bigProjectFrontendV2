@@ -87,7 +87,6 @@
         </table>
       </div>
     </div>
-
     <div class="row invoice-table">
       <div class="large-12 columns">
         <table>
@@ -117,6 +116,7 @@
           </tr>
           </thead>
           <tbody *ngIf="invoice && invoice.invoice_rule_selections">
+
           <tr *ngFor="let invoice_rule_selection of invoice.invoice_rule_selections"
               *ngIf="invoice_rule_selection != null && invoice_rule_selection.invoice_rule != null">
             <td>

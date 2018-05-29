@@ -27,7 +27,7 @@ export class TagReplacementDeclareComponent {
       .doGetRequest(API_URI_GET_EARTAGS)
       .subscribe(
         res => {
-          this.tags = res.result;
+          this.tags = res.json().result;
 
           for (const tag of this.tags) {
             tag.uln = tag.uln_country_code + tag.uln_number;

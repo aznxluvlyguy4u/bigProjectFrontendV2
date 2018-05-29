@@ -62,8 +62,8 @@ export class ContactComponent implements OnInit, OnDestroy {
   private getContactInfo() {
     this.apiService.doGetRequest(API_URI_GET_CMS)
       .subscribe(res => {
-          if (res.result) {
-            this.contactInfo = res.result.contact_info;
+          if (res.json().result) {
+            this.contactInfo = res.json().result.contact_info;
           }
         },
         error => {

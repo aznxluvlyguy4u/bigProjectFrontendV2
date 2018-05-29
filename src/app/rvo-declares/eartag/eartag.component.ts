@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {Location} from '@angular/common';
-import {Router} from '@angular/router/router';
+import {Router} from '@angular/router';
 
 import {NSFOService} from '../../shared/services/nsfo-api/nsfo.service';
 
@@ -27,8 +27,8 @@ export class EartagComponent implements OnInit {
     // this.apiService
     //     .doGetRequest(API_URI_GET_ARRIVALS_ERRORS)
     //     .subscribe(res => {
-    //         let arrivals = <ArrivalErrorResponse[]> res.result.arrivals;
-    //         let imports = <ArrivalErrorResponse[]> res.result.imports;
+    //         let arrivals = <ArrivalErrorResponse[]> res.json().result.arrivals;
+    //         let imports = <ArrivalErrorResponse[]> res.json().result.imports;
     //         this.errorAmount = arrivals.length + imports.length;
     //     });
     // setTimeout(() => {this.getEartagErrorList()}, 10 * 1000);

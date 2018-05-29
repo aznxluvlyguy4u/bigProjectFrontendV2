@@ -62,7 +62,7 @@ export class ProfileCompanyComponent implements OnInit {
     this.apiService.doGetRequest(API_URI_GET_COMPANY_PROFILE)
       .subscribe(
         res => {
-          this.company = res.result;
+          this.company = res.json().result;
 
           this.updateIsRevealHistoricAnimalsValue();
         },
@@ -76,7 +76,7 @@ export class ProfileCompanyComponent implements OnInit {
     this.apiService.doGetRequest(API_URI_GET_STATE_CODES)
       .subscribe(
         res => {
-          this.stateList = _.sortBy(res.result, ['name']);
+          this.stateList = _.sortBy(res.json().result, ['name']);
         },
         error => {
           alert(this.apiService.getErrorMessage(error));

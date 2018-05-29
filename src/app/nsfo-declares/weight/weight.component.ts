@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {Location} from '@angular/common';
-import {Router} from '@angular/router/router';
+import {Router} from '@angular/router';
 
 
 @Component({

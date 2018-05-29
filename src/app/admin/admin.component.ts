@@ -6,7 +6,7 @@ import {Router} from '@angular/router';
 })
 
 export class AdminComponent {
-    private selectedRoute: string;
+    public selectedRoute: string;
 
     constructor(private router: Router) {
         this.selectedRoute = '/main/admin/rvo-leading-livestock-sync';
@@ -19,6 +19,7 @@ export class AdminComponent {
     }
 
     private selectRoute(event) {
+        this.selectedRoute = event.target.value;
         this.navigateTo(event.target.value);
     }
 

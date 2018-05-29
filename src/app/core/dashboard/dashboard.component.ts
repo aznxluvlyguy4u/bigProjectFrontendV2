@@ -1,6 +1,6 @@
 import * as moment from 'moment';
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {Router} from '@angular/router/router';
+import {Router} from '@angular/router';
 import {DashboardInfo} from './dashboard.model';
 import {NSFOService} from '../../shared/services/nsfo-api/nsfo.service';
 import {API_URI_GET_DASHBOARD_INFO, API_URI_SYNC_ANIMALS, API_URI_SYNC_EARTAGS} from '../../shared/services/nsfo-api/nsfo.settings';
@@ -33,7 +33,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this.apiService.doGetRequest(API_URI_GET_DASHBOARD_INFO)
       .subscribe(
         res => {
-          this.dashboard_info = res.result;
+          this.dashboard_info = res.json().result;
         },
         error => {
           this.loopGetDashboardInfo = false;

@@ -31,7 +31,7 @@ export class BirthHistoryRowComponent {
     this.nsfo.doGetRequest(API_URI_GET_BIRTH_DETAILS + '/' + this.litter.litter_id)
       .subscribe(
         res => {
-          this.litterDetails = res.result;
+          this.litterDetails = res.json().result;
           // for(let child of this.litterDetails.children) {
           //     child.error_message = 'test ' + child.uln_number;
           // }

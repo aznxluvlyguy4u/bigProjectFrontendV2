@@ -32,7 +32,7 @@ export class EartagHistoryComponent implements OnInit {
     this.apiService
       .doGetRequest(API_URI_GET_EARTAGS_HISTORY)
       .subscribe(res => {
-          const eartags = res.result;
+          const eartags = res.json().result;
 
           for (const eartag of eartags) {
             eartag.uln = eartag.uln_country_code + eartag.uln_number;

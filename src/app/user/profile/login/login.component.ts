@@ -37,7 +37,7 @@ export class ProfileLoginComponent implements OnInit {
     this.apiService.doGetRequest(API_URI_GET_COMPANY_LOGIN)
       .subscribe(
         res => {
-          this.login_nsfo = res.result.nsfo;
+          this.login_nsfo = res.json().result.nsfo;
           this.settings.setCurrentUser(this.login_nsfo.logged_in_user);
         },
         error => {

@@ -52,7 +52,7 @@ export class LossDeclareComponent implements OnInit {
     this.nsfo.doGetRequest(API_URI_GET_UBN_PROCESSORS)
       .subscribe(
         res => {
-          this.ubn_processors = res.result;
+          this.ubn_processors = res.json().result;
         },
         error => {
           alert(this.nsfo.getErrorMessage(error));

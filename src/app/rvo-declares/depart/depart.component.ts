@@ -1,6 +1,6 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Location} from '@angular/common';
-import {Router} from '@angular/router/router';
+import {Router} from '@angular/router';
 
 import {DepartErrorResponse} from './depart.model';
 import {API_URI_GET_DEPARTS_ERRORS} from '../../shared/services/nsfo-api/nsfo.settings';
@@ -37,14 +37,14 @@ export class DepartComponent implements OnInit, OnDestroy {
       .doGetRequest(API_URI_GET_DEPARTS_ERRORS)
       .subscribe(res => {
           const errorList = [];
-          const departs = <DepartErrorResponse[]> res.result.departs;
+          const departs = <DepartErrorResponse[]> res.json().result.departs;
           for (const depart of departs) {
             if (!depart.is_removed_by_user) {
               errorList.push(depart);
             }
           }
 
-          const exports = <DepartErrorResponse[]> res.result.exports;
+          const exports = <DepartErrorResponse[]> res.json().result.exports;
           for (const depart of exports) {
             if (!depart.is_removed_by_user) {
               errorList.push(depart);

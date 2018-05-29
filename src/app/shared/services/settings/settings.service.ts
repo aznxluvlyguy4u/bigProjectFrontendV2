@@ -29,7 +29,7 @@ export class SettingsService {
       this.apiService.doGetRequest(API_URI_GET_COMPANY_LOGIN)
         .subscribe(
           res => {
-            this.setCurrentUser(res.result.nsfo.logged_in_user);
+            this.setCurrentUser(res.json().result.nsfo.logged_in_user);
           },
           error => {
             alert(this.apiService.getErrorMessage(error));

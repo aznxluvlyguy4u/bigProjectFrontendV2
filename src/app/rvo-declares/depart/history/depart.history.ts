@@ -29,7 +29,7 @@ export class DepartHistoryComponent implements OnInit {
     this.apiService
       .doGetRequest(API_URI_GET_DEPARTS_HISTORY)
       .subscribe(res => {
-          const departs = <DepartChangeResponse[]> res.result.departs;
+          const departs = <DepartChangeResponse[]> res.json().result.departs;
 
           for (const depart of departs) {
             depart.depart_date = moment(depart.depart_date).format(this.settings.VIEW_DATE_FORMAT);
@@ -39,7 +39,7 @@ export class DepartHistoryComponent implements OnInit {
             this.departHistoryList.push(depart);
           }
 
-          const departs_exports = <DepartChangeResponse[]> res.result.exports;
+          const departs_exports = <DepartChangeResponse[]> res.json().result.exports;
 
           for (const depart of departs_exports) {
             depart.depart_date = moment(depart.depart_date).format(this.settings.VIEW_DATE_FORMAT);

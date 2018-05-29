@@ -35,7 +35,7 @@ export class ArrivalHistoryComponent implements OnInit {
     this.apiService
       .doGetRequest(API_URI_GET_ARRIVALS_HISTORY)
       .subscribe(res => {
-        const arrivals = <ArrivalChangeResponse[]> res.result.arrivals;
+        const arrivals = <ArrivalChangeResponse[]> res.json().result.arrivals;
         for (const arrival of arrivals) {
           arrival.arrival_date = moment(arrival.arrival_date).format(this.settings.VIEW_DATE_FORMAT);
           arrival.uln = arrival.uln_country_code + arrival.uln_number;
@@ -44,7 +44,7 @@ export class ArrivalHistoryComponent implements OnInit {
           this.arrivalHistoryList.push(arrival);
         }
 
-        const arrival_imports = <ArrivalChangeResponse[]> res.result.imports;
+        const arrival_imports = <ArrivalChangeResponse[]> res.json().result.imports;
         for (const arrival_import of arrival_imports) {
           arrival_import.arrival_date = moment(arrival_import.arrival_date).format(this.settings.VIEW_DATE_FORMAT);
           arrival_import.uln = arrival_import.uln_country_code + arrival_import.uln_number;

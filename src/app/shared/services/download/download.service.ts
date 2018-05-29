@@ -265,7 +265,7 @@ export class DownloadService {
     this.nsfo.doPostRequest(uri, request)
       .subscribe(
         res => {
-          download.url = res.result;
+          download.url = res.json().result;
           this.completeDownloadPreparation(download);
         },
         error => {
@@ -285,7 +285,7 @@ export class DownloadService {
     this.nsfo.doGetRequest(uri)
       .subscribe(
         res => {
-          download.url = res.result;
+          download.url = res.json().result;
           this.completeDownloadPreparation(download);
         },
         error => {

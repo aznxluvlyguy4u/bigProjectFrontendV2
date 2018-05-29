@@ -234,7 +234,7 @@ export class BirthDeclareComponent implements OnInit, OnDestroy {
         .toPromise()
         .then(
           res => {
-            const suggestedCandidateMothers = <LivestockAnimal[]> res.result.suggested_candidate_mothers;
+            const suggestedCandidateMothers = <LivestockAnimal[]> res.json().result.suggested_candidate_mothers;
 
             suggestedCandidateMothers.forEach(animal => {
               animal.suggested = true;
@@ -283,7 +283,7 @@ export class BirthDeclareComponent implements OnInit, OnDestroy {
       .doGetRequest(API_URI_GET_COUNTRY_CODES)
       .subscribe(
         res => {
-          this.country_code_list = <CountryCode[]> _.sortBy(res.result, ['code']);
+          this.country_code_list = <CountryCode[]> _.sortBy(res.json().result, ['code']);
         },
         error => {
           alert(this.apiService.getErrorMessage(error));
@@ -306,8 +306,8 @@ export class BirthDeclareComponent implements OnInit, OnDestroy {
       .subscribe(
         res => {
 
-          const suggestedCandidateFathers = <LivestockAnimal[]> res.result.suggested_candidate_fathers;
-          const otherCandidateFathers = <LivestockAnimal[]> res.result.other_candidate_fathers;
+          const suggestedCandidateFathers = <LivestockAnimal[]> res.json().result.suggested_candidate_fathers;
+          const otherCandidateFathers = <LivestockAnimal[]> res.json().result.other_candidate_fathers;
 
           for (const animal of suggestedCandidateFathers) {
             animal.suggested = true;
@@ -360,7 +360,7 @@ export class BirthDeclareComponent implements OnInit, OnDestroy {
     this.apiService.doPostRequest(uri, this.candidateSurrogatesRequest)
       .subscribe(
         res => {
-          const candidateSurrogates = <LivestockAnimal[]> res.result.suggested_candidate_surrogates;
+          const candidateSurrogates = <LivestockAnimal[]> res.json().result.suggested_candidate_surrogates;
 
           for (const animal of candidateSurrogates) {
             animal.suggested = true;
@@ -397,7 +397,7 @@ export class BirthDeclareComponent implements OnInit, OnDestroy {
       .doGetRequest(API_URI_GET_EARTAGS)
       .subscribe(
         res => {
-          this.tags = res.result;
+          this.tags = res.json().result;
           for (const tag of this.tags) {
             tag.uln = tag.uln_country_code + tag.uln_number;
             tag.ulnLastFive = tag.uln_number.substr(tag.uln_number.length - 5);

@@ -1,7 +1,6 @@
 import {Component} from '@angular/core';
 import {NSFOService} from '../../shared/services/nsfo-api/nsfo.service';
-import {ActivatedRoute} from '@angular/router';
-import {Router} from '@angular/router/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {ACCESS_TOKEN_NAMESPACE, GHOST_TOKEN_NAMESPACE} from '../../shared/services/nsfo-api/nsfo.settings';
 
 @Component({
