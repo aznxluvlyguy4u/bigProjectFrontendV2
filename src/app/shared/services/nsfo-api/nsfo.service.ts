@@ -8,8 +8,9 @@ import {
 import {TranslateService} from '@ngx-translate/core';
 import {Animal} from '../../models/animal.model';
 import {Router} from '@angular/router';
-import pick from 'lodash/pick';
-import {HttpClient, HttpHeaders, HttpResponse} from '@angular/common/http';
+import {pick} from 'lodash';
+import {HttpHeaders, HttpResponse} from '@angular/common/http';
+import {Http} from '@angular/http';
 import {environment} from '../../../../environments/environment';
 import {ResultModel} from './result.model';
 
@@ -24,7 +25,7 @@ export class NSFOService {
 
   apiUrl = environment.nsfoApiServerUrl;
 
-  constructor(private httpClient: HttpClient, private translate: TranslateService, private router: Router) {
+  constructor(private httpClient: Http, private translate: TranslateService, private router: Router) {
   }
 
   static cleanAnimalsInput(animals: Animal[], variables = ['uln_country_code', 'uln_number']): Animal[] {

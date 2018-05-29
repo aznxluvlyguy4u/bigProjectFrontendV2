@@ -11,15 +11,12 @@ import {
   API_URI_GET_MESSAGES
 } from '../../shared/services/nsfo-api/nsfo.settings';
 import {UtilsService} from '../../shared/services/utils/utils.services';
-import { DownloadModalComponent } from '../../shared/components/downloadmodal/download-modal.component';
 import { DownloadService } from '../../shared/services/download/download.service';
 import { DeclareManagerService } from '../../shared/services/declaremanager/declare-manager.service';
-import { DeclareManagerModalComponent } from '../../shared/components/declaremanagermodal/declare-manager-modal.component';
 import {Message} from '../../shared/models/message.model';
 import {User} from '../../shared/models/person.model';
 
 @Component({
-  directives: [DownloadModalComponent, DeclareManagerModalComponent],
   templateUrl: './home.component.html'
 })
 

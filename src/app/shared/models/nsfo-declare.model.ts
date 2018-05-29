@@ -8,7 +8,6 @@ abstract class DeclareNsfoBase {
   log_date: string;
   request_state: string;
   revoke_date: string;
-  request_state: string;
   is_hidden: boolean;
   is_overwritten: boolean;
   relation_number_keeper: string;

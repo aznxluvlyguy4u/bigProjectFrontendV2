@@ -51,6 +51,8 @@ export class Animal {
   public last_mate: Mate;
   public is_stillborn: boolean;
   public weights: Weight[] = [];
+  public weight: any;
+  public new_weight: any;
   public sending: boolean;
   public successful: boolean;
   public selected: boolean;
@@ -69,6 +71,8 @@ export class LivestockAnimal extends Animal {
   public pedigree: string;
   public current_weight: string;
   date_of_birth_sort: string;
+  public filtered: any;
+  public suggested: any;
 }
 
 export const LIVESTOCK_SORT_OPTIONS = [

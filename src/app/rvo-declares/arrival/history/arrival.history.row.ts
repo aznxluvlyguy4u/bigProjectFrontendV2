@@ -13,7 +13,6 @@ declare var $;
 @Component({
   selector: 'app-arrival-history-row',
   templateUrl: './arrival.history.row.html',
-
 })
 
 export class ArrivalHistoryRowComponent implements OnInit {

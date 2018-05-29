@@ -4,7 +4,6 @@ import * as _ from 'lodash';
 import {AfterViewChecked, Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {FormControl, FormGroup, FormBuilder, Validators} from '@angular/forms';
 
-import {Datepicker} from '../../../shared/components/datepicker/datepicker.component';
 import {ArrivalErrorResponse} from '../arrival.model';
 import {NSFOService} from '../../../shared/services/nsfo-api/nsfo.service';
 import {Settings} from '../../../shared/variables/settings';
@@ -15,7 +14,6 @@ declare var $;
 
 @Component({
   selector: 'app-arrival-errors-row',
-
   templateUrl: './arrival.errors.row.html',
 })
 

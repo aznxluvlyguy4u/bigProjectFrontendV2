@@ -6,7 +6,7 @@ import {Pipe, PipeTransform} from '@angular/core';
 
 export class InvoiceFilterPipe implements PipeTransform {
   transform(list: any, args: string[]): any {
-    const filterInput = args[0];
+    let filterInput = args[0];
     const statusFilter = args[1];
     let filtered = list;
 

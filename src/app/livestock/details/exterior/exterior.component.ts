@@ -7,7 +7,6 @@ import {FormGroup, FormBuilder, FormControl} from '@angular/forms';
 import {SettingsService} from '../../../shared/services/settings/settings.service';
 import {NSFOService} from '../../../shared/services/nsfo-api/nsfo.service';
 import {API_URI_MEASUREMENTS} from '../../../shared/services/nsfo-api/nsfo.settings';
-import {Datepicker} from '../../../shared/components/datepicker/datepicker.component';
 import {ExteriorMeasurementsValidator} from '../../../shared/validation/nsfo-validation';
 import {Exterior} from '../../../shared/models/measurement.model';
 import {User} from '../../../shared/models/person.model';

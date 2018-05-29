@@ -15,7 +15,6 @@ export class Message {
   public is_read: string;
   public creation_date: string;
   public is_hidden: string;
-  public is_read: string;
   public success_indicator: string;
   public sender: string;
 }

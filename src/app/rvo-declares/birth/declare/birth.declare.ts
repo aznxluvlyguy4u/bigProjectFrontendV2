@@ -13,14 +13,11 @@ import {
 } from '../birth.model';
 import {FormGroup, FormBuilder, Validators, FormControl} from '@angular/forms';
 
-import {BirthDeclareRowComponent} from './birth.declare.row';
-import {Datepicker} from '../../../shared/components/datepicker/datepicker.component';
 import {NSFOService} from '../../../shared/services/nsfo-api/nsfo.service';
 import {Constants} from '../../../shared/variables/constants';
 import {Settings} from '../../../shared/variables/settings';
 import {API_URI_DECLARE_BIRTH, API_URI_GET_COUNTRY_CODES, API_URI_GET_EARTAGS} from '../../../shared/services/nsfo-api/nsfo.settings';
 import {DateValidator, LitterValidator} from '../../../shared/validation/nsfo-validation';
-import {SelectorComponent} from '../../../shared/components/selector/selector.component';
 import {UtilsService} from '../../../shared/services/utils/utils.services';
 import {DeclareManagerService} from '../../../shared/services/declaremanager/declare-manager.service';
 import {Subscription} from 'rxjs';
@@ -30,7 +27,6 @@ import {EarTag} from '../../../shared/models/rvo-declare.model';
 import {User} from '../../../shared/models/person.model';
 
 @Component({
-
   templateUrl: './birth.declare.html',
 })
 

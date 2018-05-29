@@ -6,16 +6,14 @@ import {API_URI_GET_ANIMALS} from '../../shared/services/nsfo-api/nsfo.settings'
 import { CSV, PDF } from '../../shared/variables/file-type.enum';
 import { QueryParamsService } from '../../shared/services/utils/query-params.service';
 import { DownloadService } from '../../shared/services/download/download.service';
-
-import _ = require('lodash');
+import * as _ from 'lodash';
 import {AnimalsOverviewSelection} from '../../shared/components/livestock/animals-overview-selection.model';
 
 import {FormBuilder, FormControl, FormGroup} from '@angular/forms';
 import {Animal, LivestockAnimal} from '../../shared/models/animal.model';
 
 @Component({
-    template: require('./report.inbreedingCoefficient.html')
-
+    templateUrl: './report.inbreedingCoefficient.html',
 })
 
 export class ReportInbreedingCoefficientComponent {

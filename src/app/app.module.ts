@@ -84,7 +84,6 @@ import {BirthDeclareRowComponent} from './rvo-declares/birth/declare/birth.decla
 import {BirthDeclareComponent} from './rvo-declares/birth/declare/birth.declare';
 import {BirthErrorRowComponent} from './rvo-declares/birth/errors/birth.errors.row';
 import {BirthErrorsComponent} from './rvo-declares/birth/errors/birth.errors';
-import {BirthHistoryRowComponent} from './rvo-declares/birth/history/birth.history.row';
 import {BirthHistoryComponent} from './rvo-declares/birth/history/birth.history';
 import {BirthComponent} from './rvo-declares/birth/birth.component';
 import {DepartDeclareComponent} from './rvo-declares/depart/declare/depart.declare';
@@ -106,7 +105,22 @@ import {TagReplacementErrorsComponent} from './rvo-declares/tagReplacement/error
 import {TagReplacementHistoryRowComponent} from './rvo-declares/tagReplacement/history/tagReplacement.history.row';
 import {TagReplacementHistoryComponent} from './rvo-declares/tagReplacement/history/tagReplacement.history';
 import {TagReplacementComponent} from './rvo-declares/tagReplacement/tagReplacement.component';
-
+import {InvoiceFilterPipe} from './invoices/pipes/invoice-filter.pipe';
+import {DatepickerComponent} from './shared/components/datepicker/datepicker.component';
+import {BirthHistoryRowComponent} from './rvo-declares/birth/history/birth-history-row.component';
+import {MomentModule} from 'ngx-moment';
+import {ContactComponent} from './user/contact/contact.component';
+import {ProfileComponent} from './user/profile/profile.component';
+import {ProfileCompanyComponent} from './user/profile/company/company.component';
+import {ProfileEmailComponent} from './user/profile/email/email.component';
+import {ProfileLoginComponent} from './user/profile/login/login.component';
+import {DownloadModalComponent} from './shared/components/downloadmodal/download-modal.component';
+import {DeclareManagerModalComponent} from './shared/components/declaremanagermodal/declare-manager-modal.component';
+import {EartagDeclareComponent} from './rvo-declares/eartag/declare/eartag.declare';
+import {EartagErrorsComponent} from './rvo-declares/eartag/errors/eartag.errors';
+import {EartagHistoryComponent} from './rvo-declares/eartag/history/eartag.history';
+import {EartagHistoryRowComponent} from './rvo-declares/eartag/history/eartag.history.row';
+import {CheckMarkComponent} from './shared/components/checkmark/check-mark.component';
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http);
@@ -196,6 +210,19 @@ export function HttpLoaderFactory(http: HttpClient) {
       TagReplacementHistoryRowComponent,
       TagReplacementHistoryComponent,
       TagReplacementComponent,
+      ContactComponent,
+      ProfileComponent,
+      ProfileCompanyComponent,
+      ProfileEmailComponent,
+      ProfileLoginComponent,
+      DownloadModalComponent,
+      DeclareManagerModalComponent,
+      EartagDeclareComponent,
+      EartagErrorsComponent,
+      EartagHistoryComponent,
+      EartagHistoryRowComponent,
+      EartagHistoryFilterPipe,
+      CheckMarkComponent,
     lastFiveMessagesFilterPipe,
     localNumberFormat,
     DecimalPipe,

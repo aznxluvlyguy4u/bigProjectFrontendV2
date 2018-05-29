@@ -16,7 +16,6 @@ import {
 import {FormControl, FormGroup, FormBuilder, Validators} from '@angular/forms';
 import {DateValidator} from '../../shared/validation/nsfo-validation';
 import {SettingsService} from '../../shared/services/settings/settings.service';
-import {Datepicker} from '../../shared/components/datepicker/datepicker.component';
 import {DownloadService} from '../../shared/services/download/download.service';
 import {Animal} from '../../shared/models/animal.model';
 import {Exterior} from '../../shared/models/measurement.model';

@@ -4,7 +4,6 @@ import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {FormControl, FormGroup, FormBuilder, Validators} from '@angular/forms';
 
 import {DEPART_REASON_OF_DEPART, DepartChangeResponse} from '../depart.model';
-import {Datepicker} from '../../../shared/components/datepicker/datepicker.component';
 import {NSFOService} from '../../../shared/services/nsfo-api/nsfo.service';
 import {Constants} from '../../../shared/variables/constants';
 import {Settings} from '../../../shared/variables/settings';

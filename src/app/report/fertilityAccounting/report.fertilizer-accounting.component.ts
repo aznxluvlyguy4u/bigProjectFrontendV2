@@ -8,8 +8,7 @@ import { SettingsService } from '../../shared/services/settings/settings.service
 
 @Component({
   selector: 'app-fertilizer-accounting-report',
-  template: require('./report.fertilizer-accounting.component.html'),
-
+  templateUrl: './report.fertilizer-accounting.component.html',
 })
 export class ReportFertilizerAccountingComponent implements OnInit {
   selectedFileType: string;

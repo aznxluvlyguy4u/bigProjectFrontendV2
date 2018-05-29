@@ -1,8 +1,6 @@
 import * as _ from 'lodash';
 import {Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output} from '@angular/core';
 
-import {PaginationComponent} from '../pagination/pagination.component';
-
 import {FormControl, FormGroup, FormBuilder} from '@angular/forms';
 import {NSFOService} from '../../services/nsfo-api/nsfo.service';
 import {SettingsService} from '../../services/settings/settings.service';
@@ -12,7 +10,6 @@ import {NgxPaginationModule} from 'ngx-pagination';
 @Component({
   selector: 'selector',
   providers: [NgxPaginationModule],
-  directives: [PaginationComponent],
   templateUrl: './selector.component.html',
 })
 
@@ -20,9 +17,9 @@ export class SelectorComponent implements OnInit, OnChanges, OnDestroy {
   @Input() isLoading: any;
   @Input() size = 'tiny';
   @Input() title = 'SELECT';
-  @Input() sectionTitles: [] = [];
-  @Input() columns: [] = [];
-  @Input() list: [] = [];
+  @Input() sectionTitles: any = [];
+  @Input() columns: any = [];
+  @Input() list: any = [];
   @Input() filter = 'NONE';
   @Input() initItem = null;
   @Input() allowCustomSelection = false;
@@ -31,7 +28,7 @@ export class SelectorComponent implements OnInit, OnChanges, OnDestroy {
   @Input() SUGGESTION_LABEL: string;
   private countryCode$;
   private modalDisplay = 'none';
-  private filteredList: [];
+  private filteredList: any;
   private form: FormGroup;
   private country_code_list: any;
 

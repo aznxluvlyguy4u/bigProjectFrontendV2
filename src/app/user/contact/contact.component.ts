@@ -1,6 +1,6 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {FormControl, FormGroup, FormBuilder} from '@angular/forms';
-import {TranslatePipe, TranslateService} from '@ngx-translate/core';
+import {TranslateService} from '@ngx-translate/core';
 import {NSFOService} from '../../shared/services/nsfo-api/nsfo.service';
 import {API_URI_GET_CMS, API_URI_SEND_MESSAGE} from '../../shared/services/nsfo-api/nsfo.settings';
 import {SettingsService} from '../../shared/services/settings/settings.service';
@@ -8,7 +8,6 @@ import {UtilsService} from '../../shared/services/utils/utils.services';
 
 @Component({
   templateUrl: './contact.component.html',
-
 })
 
 export class ContactComponent implements OnInit, OnDestroy {

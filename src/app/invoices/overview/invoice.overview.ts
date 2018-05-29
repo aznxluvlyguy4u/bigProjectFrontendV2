@@ -1,7 +1,6 @@
 import * as moment from 'moment';
 import {Component, OnDestroy, OnInit} from '@angular/core';
 
-import {PaginationComponent} from '../../shared/components/pagination/pagination.component';
 import {Invoice} from '../../shared/models/invoice.model';
 import {NSFOService} from '../../shared/services/nsfo-api/nsfo.service';
 import {SettingsService} from '../../shared/services/settings/settings.service';
@@ -12,7 +11,6 @@ import {NgxPaginationModule} from 'ngx-pagination';
 
 @Component({
   providers: [NgxPaginationModule],
-  directives: [PaginationComponent],
   templateUrl: './invoice.overview.html',
 })
 

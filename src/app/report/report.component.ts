@@ -1,11 +1,11 @@
-import _ = require('lodash');
+import * as _ from 'lodash';
 import {Component, OnInit} from '@angular/core';
 import {Location} from '@angular/common';
 import {Router} from '@angular/router/router';
 import {REPORT_OPTIONS_LIST} from './report.model';
 
 @Component({
-    template: require('./report.component.html'),
+    templateUrl: './report.component.html',
 })
 
 export class ReportComponent implements OnInit {

@@ -6,7 +6,6 @@ import {TranslateService} from '@ngx-translate/core';
 
 import {EartagRequest, EartagStatusOverviewResponse, EartagTransfer} from '../eartag.model';
 import {NSFOService} from '../../../shared/services/nsfo-api/nsfo.service';
-import {PaginationComponent} from '../../../shared/components/pagination/pagination.component';
 import {UBNValidator} from '../../../shared/validation/nsfo-validation';
 import {
   API_URI_GET_EARTAGS,
@@ -21,7 +20,6 @@ declare var $;
 
 @Component({
   providers: [NgxPaginationModule],
-  directives: [PaginationComponent],
   templateUrl: './eartag.declare.html',
 })
 

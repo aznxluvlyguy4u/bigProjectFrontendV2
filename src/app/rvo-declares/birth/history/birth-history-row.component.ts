@@ -2,7 +2,6 @@ import * as moment from 'moment';
 
 import {Component, EventEmitter, Input, Output} from '@angular/core';
 
-import {Datepicker} from '../../../shared/components/datepicker/datepicker.component';
 import {Litter, LitterDetails} from '../birth.model';
 import {Settings} from '../../../shared/variables/settings';
 import {NSFOService} from '../../../shared/services/nsfo-api/nsfo.service';
@@ -12,10 +11,7 @@ declare var $;
 
 @Component({
   selector: 'tr',
-  providers: [FORM_PROVIDERS],
-  directives: [Datepicker],
-  templateUrl: './birth.history.row.html',
-
+  templateUrl: './birth-history-row.component.html',
 })
 
 export class BirthHistoryRowComponent {

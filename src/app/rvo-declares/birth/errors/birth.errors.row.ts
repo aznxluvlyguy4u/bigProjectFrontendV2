@@ -3,7 +3,6 @@ import * as _ from 'lodash';
 import {AfterViewChecked, Component, EventEmitter, Input, Output} from '@angular/core';
 import {FormGroup, FormBuilder, Validators, FormControl} from '@angular/forms';
 
-import {Datepicker} from '../../../shared/components/datepicker/datepicker.component';
 import {BirthErrorResponse} from '../birth.model';
 import {NSFOService} from '../../../shared/services/nsfo-api/nsfo.service';
 import {Constants} from '../../../shared/variables/constants';
@@ -16,7 +15,6 @@ declare var $;
 @Component({
   selector: 'app-birth-error-row',
   templateUrl: './birth.errors.row.html',
-
 })
 
 export class BirthErrorRowComponent implements AfterViewChecked {

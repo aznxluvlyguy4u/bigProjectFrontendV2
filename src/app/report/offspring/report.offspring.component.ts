@@ -8,9 +8,7 @@ import { Animal } from '../../shared/models/animal.model';
 
 @Component({
   selector: 'app-offspring-report',
-  template: require('./report.offspring.component.html'),
-
-
+  templateUrl: './report.offspring.component.html',
 })
 export class ReportOffspringComponent {
   defaultFileType = CSV;

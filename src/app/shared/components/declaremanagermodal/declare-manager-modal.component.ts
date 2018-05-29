@@ -1,16 +1,14 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {TranslatePipe, TranslateService} from '@ngx-translate/core';
+import {TranslateService} from '@ngx-translate/core';
 import {Subscription} from 'rxjs';
 import {DeclareManagerItem} from '../../services/declaremanager/declare-manager-item.model';
 import {DeclareManagerService} from '../../services/declaremanager/declare-manager.service';
-import {CheckMarkComponent} from '../checkmark/check-mark.component';
 import {SettingsService} from '../../services/settings/settings.service';
 import * as moment from 'moment';
 
 @Component({
   selector: 'app-declare-manager-modal',
   templateUrl: './declare-manager-modal.component.html',
-  directives: [CheckMarkComponent]
 })
 export class DeclareManagerModalComponent implements OnInit, OnDestroy {
   title = 'DECLARES';

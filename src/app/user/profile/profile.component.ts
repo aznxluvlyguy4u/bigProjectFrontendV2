@@ -4,7 +4,6 @@ import {Router} from '@angular/router/router';
 
 @Component({
   templateUrl: './profile.component.html',
-  
 })
 
 export class ProfileComponent {

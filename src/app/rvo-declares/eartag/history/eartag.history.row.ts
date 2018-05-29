@@ -13,7 +13,6 @@ declare var $;
 @Component({
   selector: 'app-eartag-history-row',
   templateUrl: './eartag.history.row.html',
-
 })
 
 export class EartagHistoryRowComponent {

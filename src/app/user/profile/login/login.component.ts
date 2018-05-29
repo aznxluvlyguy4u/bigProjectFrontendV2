@@ -9,7 +9,6 @@ import {LoginInfo} from '../../../shared/models/login-info.model';
 
 @Component({
   templateUrl: './login.component.html',
-
 })
 
 export class ProfileLoginComponent implements OnInit {

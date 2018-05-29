@@ -13,7 +13,6 @@ import {Company} from '../../../shared/models/company.model';
 
 @Component({
   templateUrl: './company.component.html',
-
 })
 
 export class ProfileCompanyComponent implements OnInit {

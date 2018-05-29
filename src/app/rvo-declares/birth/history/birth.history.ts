@@ -1,9 +1,6 @@
 import * as _ from 'lodash';
 import {Component, OnInit} from '@angular/core';
 
-
-import {BirthHistoryRowComponent} from './birth.history.row';
-
 import {Litter} from '../birth.model';
 import {NSFOService} from '../../../shared/services/nsfo-api/nsfo.service';
 import {

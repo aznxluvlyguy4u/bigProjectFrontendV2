@@ -8,9 +8,7 @@ import {LoginInfo} from '../../../shared/models/login-info.model';
 
 @Component({
   templateUrl: './email.component.html',
-  
 })
-
 export class ProfileEmailComponent implements OnInit {
   private login_nsfo = new LoginInfo();
   private form_nsfo: FormGroup;

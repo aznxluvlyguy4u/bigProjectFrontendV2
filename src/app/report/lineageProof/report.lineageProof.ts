@@ -8,8 +8,7 @@ import {TranslateService} from '@ngx-translate/core';
 import {AnimalsOverviewSelection} from '../../shared/components/livestock/animals-overview-selection.model';
 
 @Component({
-    template: require('./report.lineageProof.html'),
-
+    templateUrl: './report.lineageProof.html',
 })
 
 export class ReportLineageProofComponent {

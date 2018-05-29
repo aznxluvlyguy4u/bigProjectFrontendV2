@@ -1,21 +1,15 @@
 import * as _ from 'lodash';
 import {Component, OnInit} from '@angular/core';
-
-
-import {PaginationComponent} from '../../../shared/components/pagination/pagination.component';
 import {NSFOService} from '../../../shared/services/nsfo-api/nsfo.service';
 import {SettingsService} from '../../../shared/services/settings/settings.service';
 import {EartagErrorResponse} from '../eartag.model';
-import {EartagErrorRowComponent} from './eartag.errors.row';
 import {API_URI_GET_EARTAGS_ERRORS} from '../../../shared/services/nsfo-api/nsfo.settings';
 import {NgxPaginationModule} from 'ngx-pagination';
 
 @Component({
   providers: [NgxPaginationModule],
-  directives: [EartagErrorRowComponent, PaginationComponent],
   templateUrl: './eartag.errors.html',
 })
-
 export class EartagErrorsComponent implements OnInit {
   private eartagErrorList = <EartagErrorResponse[]>[];
   private error_modal_display = 'none';
