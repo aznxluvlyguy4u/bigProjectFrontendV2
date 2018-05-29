@@ -1,12 +1,15 @@
 import { Component, EventEmitter, OnInit } from '@angular/core';
 import { DownloadService } from '../../shared/services/download/download.service';
 import { CSV, PDF } from '../../shared/variables/file-type.enum';
+
+
 import { SettingsService } from '../../shared/services/settings/settings.service';
 
 
 @Component({
   selector: 'app-fertilizer-accounting-report',
   template: require('./report.fertilizer-accounting.component.html'),
+
 })
 export class ReportFertilizerAccountingComponent implements OnInit {
   selectedFileType: string;

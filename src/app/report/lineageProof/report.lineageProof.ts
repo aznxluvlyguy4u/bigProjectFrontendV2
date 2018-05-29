@@ -1,6 +1,7 @@
 import {Component} from '@angular/core';
 import { CSV, PDF } from '../../shared/variables/file-type.enum';
 import {NSFOService} from '../../shared/services/nsfo-api/nsfo.service';
+
 import { QueryParamsService } from '../../shared/services/utils/query-params.service';
 import { DownloadService } from '../../shared/services/download/download.service';
 import {TranslateService} from '@ngx-translate/core';
@@ -8,6 +9,7 @@ import {AnimalsOverviewSelection} from '../../shared/components/livestock/animal
 
 @Component({
     template: require('./report.lineageProof.html'),
+
 })
 
 export class ReportLineageProofComponent {

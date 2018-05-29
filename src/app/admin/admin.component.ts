@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import {Router} from '@angular/router';
 
 @Component({
-    template: require('./admin.component.html')
+    templateUrl: './admin.component.html',
 })
 
 export class AdminComponent {

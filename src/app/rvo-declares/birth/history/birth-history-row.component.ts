@@ -1,4 +1,4 @@
-import moment = require('moment');
+import * as moment from 'moment';
 
 import {Component, EventEmitter, Input, Output} from '@angular/core';
 

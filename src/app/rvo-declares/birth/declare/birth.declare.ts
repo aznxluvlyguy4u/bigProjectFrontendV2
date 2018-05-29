@@ -1,5 +1,5 @@
 import * as _ from 'lodash';
-import moment = require('moment');
+import * as moment from 'moment';
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {
   BIRTH_PROGRESS_TYPES,
@@ -30,6 +30,7 @@ import {EarTag} from '../../../shared/models/rvo-declare.model';
 import {User} from '../../../shared/models/person.model';
 
 @Component({
+
   templateUrl: './birth.declare.html',
 })
 

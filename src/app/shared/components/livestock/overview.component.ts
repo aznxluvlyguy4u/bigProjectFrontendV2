@@ -1,4 +1,4 @@
-import moment = require('moment');
+import * as moment from 'moment';
 import * as _ from 'lodash';
 import {Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
 

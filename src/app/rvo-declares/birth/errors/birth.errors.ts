@@ -1,4 +1,4 @@
-import moment = require('moment');
+import * as moment from 'moment';
 import {Component, OnInit} from '@angular/core';
 import {BirthErrorResponse} from '../birth.model';
 import {NSFOService} from '../../../shared/services/nsfo-api/nsfo.service';

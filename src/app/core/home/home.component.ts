@@ -1,5 +1,5 @@
 import * as _ from 'lodash';
-import moment = require('moment');
+import * as moment from 'moment';
 import {AfterContentChecked, Component, NgZone, OnDestroy, OnInit} from '@angular/core';
 import {Location} from '@angular/common';
 import {Router} from '@angular/router';

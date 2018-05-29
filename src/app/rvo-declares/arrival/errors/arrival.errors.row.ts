@@ -1,4 +1,4 @@
-import moment = require('moment');
+import * as moment from 'moment';
 
 import * as _ from 'lodash';
 import {AfterViewChecked, Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
@@ -15,6 +15,7 @@ declare var $;
 
 @Component({
   selector: 'app-arrival-errors-row',
+
   templateUrl: './arrival.errors.row.html',
 })
 

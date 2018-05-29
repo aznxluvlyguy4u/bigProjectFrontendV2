@@ -3,7 +3,7 @@ import {FormBuilder, FormControl, FormGroup} from '@angular/forms';
 
 
 @Component({
-  template: require('./report.livestock.html'),
+  templateUrl: './report.livestock.html',
 
 })
 

@@ -1,4 +1,4 @@
-import moment = require('moment');
+import * as moment from 'moment';
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Router} from '@angular/router/router';
 import {DashboardInfo} from './dashboard.model';

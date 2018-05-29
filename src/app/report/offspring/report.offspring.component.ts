@@ -4,9 +4,12 @@ import { CSV } from '../../shared/variables/file-type.enum';
 import { Animal } from '../../shared/models/animal.model';
 
 
+
+
 @Component({
   selector: 'app-offspring-report',
   template: require('./report.offspring.component.html'),
+
 
 })
 export class ReportOffspringComponent {

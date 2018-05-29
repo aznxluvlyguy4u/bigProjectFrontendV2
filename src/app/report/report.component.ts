@@ -7,6 +7,7 @@ import {REPORT_OPTIONS_LIST} from './report.model';
 @Component({
     template: require('./report.component.html'),
 })
+
 export class ReportComponent implements OnInit {
 
     private report_options_list = REPORT_OPTIONS_LIST;
@@ -15,7 +16,7 @@ export class ReportComponent implements OnInit {
 
     ngOnInit() {
         this.report_options_list = _.sortBy(this.report_options_list, ['nl_order']);
-        if(this.location.path() == '/main/report') {
+        if (this.location.path() === '/main/report') {
             this.router.navigate(['/main/report/lineage_proof']);
         }
     }
@@ -29,6 +30,6 @@ export class ReportComponent implements OnInit {
     }
 
     private isActiveRoute(route: string) {
-        return this.router.serializeUrl(this.router.urlTree) == this.router.serializeUrl((this.router.createUrlTree([route])));
+        return this.router.serializeUrl(this.router.createUrlTree([])) === this.router.serializeUrl((this.router.createUrlTree([route])));
     }
 }

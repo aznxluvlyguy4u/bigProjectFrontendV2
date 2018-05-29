@@ -1,4 +1,4 @@
-import moment = require('moment');
+import * as moment from 'moment';
 import * as _ from 'lodash';
 import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {FormControl, FormGroup, FormBuilder} from '@angular/forms';
@@ -13,7 +13,7 @@ declare var $;
 @Component({
   selector: 'app-eartag-history-row',
   templateUrl: './eartag.history.row.html',
-  
+
 })
 
 export class EartagHistoryRowComponent {
