@@ -9,6 +9,8 @@ import {API_URI_CHANGE_ARRIVAL, API_URI_GET_COUNTRY_CODES} from '../../../shared
 import {DateValidator, UBNValidator} from '../../../shared/validation/nsfo-validation';
 import {JsonResponseModel} from '../../../shared/models/json-response.model';
 
+import { sortBy, clone } from 'lodash';
+
 declare var $;
 
 @Component({
@@ -54,7 +56,7 @@ export class ArrivalHistoryRowComponent implements OnInit {
     this.apiService
       .doGetRequest(API_URI_GET_COUNTRY_CODES)
       .subscribe(
-          (res: JsonResponseModel) => this.country_code_list = _.sortBy(res.result, ['code'])
+          (res: JsonResponseModel) => this.country_code_list = sortBy(res.result, ['code'])
       );
   }
 
@@ -64,7 +66,7 @@ export class ArrivalHistoryRowComponent implements OnInit {
       this.editMode = false;
 
       let new_arrival: ArrivalChangeResponse;
-      new_arrival = _.clone(this.arrival);
+      new_arrival = clone(this.arrival);
 
       new_arrival.arrival_date = this.form.get('arrival_date').value;
 
@@ -95,7 +97,7 @@ export class ArrivalHistoryRowComponent implements OnInit {
       this.cancelEditing();
     }
     this.editMode = true;
-    this.temp_arrival = _.clone(this.arrival);
+    this.temp_arrival = clone(this.arrival);
   }
 
   private cancelEditing() {

@@ -10,6 +10,7 @@ import {UtilsService} from './shared/services/utils/utils.services';
 import {NSFOService} from './shared/services/nsfo-api/nsfo.service';
 import {API_URI_GET_COUNTRY_CODES, API_URI_GET_MESSAGES, UBN_TOKEN_NAMESPACE} from './shared/services/nsfo-api/nsfo.settings';
 import {JsonResponseModel} from './shared/models/json-response.model';
+import { sortBy, orderBy } from 'lodash';
 
 @Component({
   selector: 'app-root',
@@ -105,7 +106,7 @@ export class AppComponent implements OnInit, AfterContentChecked, OnDestroy {
       .doGetRequest(API_URI_GET_COUNTRY_CODES)
       .subscribe(
           (res: JsonResponseModel) => {
-          const countryCodeList = _.sortBy(res.result, ['code']);
+          const countryCodeList = sortBy(res.result, ['code']);
           this.settings.setCountryList(countryCodeList);
         },
         error => {
@@ -122,7 +123,7 @@ export class AppComponent implements OnInit, AfterContentChecked, OnDestroy {
           this.utils.setMenuMessages([]);
           this.menuMessages = [];
           this.messages = res.result;
-          this.messages = _.orderBy(this.messages, ['creation_date'], ['desc']);
+          this.messages = orderBy(this.messages, ['creation_date'], ['desc']);
 
           for (const message of this.messages) {
             if (message.type === 'DECLARE_ARRIVAL') {
