@@ -9,12 +9,12 @@
   </thead>
   <tbody>
   <app-mate-history-row *ngFor="let weight of weightHistoryList | paginate: {itemsPerPage: 10, currentPage: page}; let i = index"
-      (revokeWeight)="selectWeight($event)" (showError)="showError($event)" [weight-object]="weight"
-      [weight-index]="i"></app-mate-history-row>
+      (revokeWeight)="selectWeight($event)" (showError)="showError($event)" [mate-object]="weight"
+      [mate-index]="i"></app-mate-history-row>
   </tbody>
 </table>
 
-<pagination (pageChange)="page = $event"></pagination>
+<pagination-controls (pageChange)="page = $event"></pagination-controls>
 
 <!--REVOKE MODAL-->
 <div class="reveal-overlay" [ngStyle]="{'display': modalDisplay}">

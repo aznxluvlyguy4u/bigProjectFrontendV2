@@ -1,5 +1,6 @@
 <div class='row'>
-    <div [ngFormModel]='form' class='large-4 large-centered columns form-controls'>
+    <div class='large-4 large-centered columns form-controls'>
+        <form #form="ngForm">
         <div class='large-6 columns'>
             <label class='middle'>
                 {{ 'ULN (RAM)' | translate }}
@@ -8,6 +9,7 @@
         <div class='large-6 columns end'>
             <input type='text' ngControl='uln' (focus)='selector.openModal()'>
         </div>
+        </form>
     </div>
 </div>
 

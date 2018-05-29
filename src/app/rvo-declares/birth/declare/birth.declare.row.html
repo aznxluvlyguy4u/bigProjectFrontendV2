@@ -1,5 +1,6 @@
 <!--ULN-->
-<td [ngFormModel]="form">
+<td>
+  <form #form="ngForm">
   <label class="show-for-small-only">{{ 'ULN' | translate }}</label>
 
   <span *ngIf="animal.is_alive">
@@ -11,10 +12,12 @@
   <span *ngIf="!animal.is_alive">
         {{ 'STILLBORN' | translate }}
     </span>
+  </form>
 </td>
 
 <!--GENDER-->
-<td [ngFormModel]="form">
+<td>
+  <form #form="ngForm">
   <label class="show-for-small-only">{{ 'GENDER' | translate }}</label>
   <select [(ngModel)]="animal.gender" ngControl="gender" [disabled]="isDisabled">
     <option value="" selected="selected"> --</option>
@@ -24,10 +27,12 @@
   <div [hidden]="form.controls['gender'].valid || form_valid" class="input-error-msg pull-right">{{ 'SELECT GENDER' |
     translate }}
   </div>
+  </form>
 </td>
 
 <!--BIRTH PROGRESS-->
-<td [ngFormModel]="form">
+<td>
+  <form #form="ngForm">
   <label class="show-for-small-only">{{ 'BIRTH PROGRESS' | translate }}</label>
 
   <select [(ngModel)]="animal.birth_progress" ngControl="birth_progress" [disabled]="isDisabled">
@@ -36,10 +41,12 @@
       }}
     </option>
   </select>
+  </form>
 </td>
 
 <!--WEIGHT-->
-<td [ngFormModel]="form">
+<td>
+  <form #form="ngForm">
   <label class="show-for-small-only">{{ 'BIRTH WEIGHT (KG)' | translate }}*</label>
   <!--step="0.01" -->
   <input type="number" [(ngModel)]="animal.birth_weight" [disabled]="isDisabled" ngControl="weight" min="0" max="9.9"
@@ -47,10 +54,12 @@
   <div *ngIf="form.controls['weight'].errors && form.controls['weight'].errors.invalidWeightGreaterThen9Point9"
        class="input-error-msg pull-right">{{ 'WEIGHT CAN NOT BE GREATER THEN 9.9' | translate }}
   </div>
+  </form>
 </td>
 
 <!--TAIL LENGTH-->
-<td [ngFormModel]="form">
+<td>
+  <form #form="ngForm">
   <label class="show-for-small-only">{{ 'TAIL LENGTH (CM)' | translate }}* </label>
   <input type="number" [(ngModel)]="animal.tail_length"
          [disabled]="isDisabled || _selectedMother.breed_code != constants.CLUN_FOREST" ngControl="tail_length" min="0"
@@ -59,10 +68,12 @@
     *ngIf="form.controls['tail_length'].errors && form.controls['tail_length'].errors.invalidTailLengthGreaterThen29point9"
     class="input-error-msg pull-right">{{ 'TAIL LENGTH CAN NOT BE GREATER THEN 9.9' | translate }}
   </div>
+  </form>
 </td>
 
 <!--LAMBAR/SURROGATE-->
-<td [ngFormModel]="form">
+<td>
+  <form #form="ngForm">
   <label class="show-for-small-only">{{ 'LAMBAR/SURROGATE' | translate }}* </label>
 
   <span *ngIf="animal.is_alive">
@@ -75,16 +86,19 @@
   <span *ngIf="!animal.is_alive">
         --
     </span>
+  </form>
 </td>
 
 <!--ULN-->
-<td [ngFormModel]="form">
+<td>
+  <form #form="ngForm">
   <input (keyup)="preventKeyPress($event)" (keydown)="preventKeyPress($event)" (keypress)="preventKeyPress($event)"
          type="text" ngControl="uln_surrogate" (focus)="surrogateMotherSelector.openModal()"
          [disabled]="(animal.nurture_type != 'SURROGATE') || isDisabled" class='input-uln'>
   <div [hidden]="form.controls['uln_surrogate'].valid || isValidForm" class="input-error-msg pull-right">{{ 'FILL IN THE
     ULN' | translate }}
   </div>
+  </form>
 </td>
 
 <selector #childSelector [columns]="['UNASSIGNED TAGS']" [list]="tags" [initItem]="selectedTag"

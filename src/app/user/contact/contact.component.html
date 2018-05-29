@@ -15,7 +15,8 @@
 
         <div class="contact-info-container" [innerHtml]="contactInfo"></div>
       </div>
-      <div class="large-6 columns contact-form" [(ngFormModel)]="form">
+      <div class="large-6 columns contact-form">
+        <form #form="ngForm">
         <div class="large-4 columns">
           <label>{{ 'E-MAIL ADDRESS' | translate }}
             <input type="email" [(ngModel)]="userEmail" ngControl="email">
@@ -50,6 +51,7 @@
           </button>
           <div class="success-message"> {{ feedback | translate}}</div>
         </div>
+        </form>
       </div>
     </div>
   </div>

@@ -13,15 +13,17 @@
   <label class="show-for-small-only">{{ 'DATE OF BIRTH' | translate }}</label>
 
   <span [hidden]="editMode">{{ birth.date_of_birth }}</span>
-  <span class="datepicker-wrapper" [hidden]="!editMode" [ngFormModel]="form">
-        <datepicker [formCtrl]="form.controls['date_of_birth']" [initDate]="birth.date_of_birth"
-                    [viewFormat]="view_date_format" [modelFormat]="model_datetime_format"></datepicker>
+    <form #form="ngForm" [hidden]="!editMode">
+  <span class="datepicker-wrapper" [hidden]="!editMode">
+        <app-datepicker  [formCtrl]="form.controls['date_of_birth']" [initDate]="birth.date_of_birth"
+                    [viewFormat]="view_date_format" [modelFormat]="model_datetime_format"></app-datepicker>
         <div *ngIf="form.controls['date_of_birth'].errors && form.controls['date_of_birth'].errors.invalidDateFormat"
              class="input-error-msg text-center">{{ 'FILL IN THE DATE OF BIRTH' | translate }}</div>
         <div
           *ngIf="form.controls['date_of_birth'].errors && form.controls['date_of_birth'].errors.invalidDateItIsInTheFuture"
           class="input-error-msg text-center">{{ 'DATE CAN NOT BE IN THE FUTURE' | translate }}</div>
     </span>
+    </form>
 </td>
 
 <!--ULN MOTHER-->

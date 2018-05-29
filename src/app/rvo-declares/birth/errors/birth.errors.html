@@ -18,11 +18,11 @@
   <th></th>
   </thead>
   <tbody>
-  <app-birth-declare-row
+  <app-birth-error-row
     *ngFor="let birth of birthErrorList | hiddenMessagesFilter:[showHiddenMessages] | paginate: {itemsPerPage: 10, currentPage: page}; let i = index"
     [ngClass]="{'hidden-message': birth.is_removed_by_user}" (revokeLitter)="revokeLitter($event)"
-    (removeBirth)="removeBirth($event)" [birth]="birth" [birth_index]="i"></app-birth-declare-row>
+    (removeBirth)="removeBirth($event)" [birth]="birth" [birth_index]="i"></app-birth-error-row>
   </tbody>
 </table>
 
-<pagination (pageChange)="page = $event"></pagination>
+<pagination-controls (pageChange)="page = $event"></pagination-controls>

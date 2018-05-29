@@ -1,4 +1,4 @@
-<form [ngFormModel]="form" class="form-declare">
+<form #form="ngForm" class="form-declare">
 
   <!--IDENTIFICATION TYPE-->
   <div class="large-2 columns">
@@ -29,8 +29,8 @@
   <div class="large-2 columns">
     <label>
       {{ 'ARRIVAL DATE' | translate }} &nbsp;
-      <datepicker [formCtrl]="form.controls['arrival_date']" [viewFormat]="view_date_format"
-                  [modelFormat]="view_date_format"></datepicker>
+      <app-datepicker  [formCtrl]="form.controls['arrival_date']" [viewFormat]="view_date_format"
+                  [modelFormat]="view_date_format"></app-datepicker>
       <div [hidden]="form.controls['arrival_date'].valid || form_valid" class="input-error-msg pull-right">{{ 'FILL IN
         THE ARRIVAL DATE' | translate }}
       </div>

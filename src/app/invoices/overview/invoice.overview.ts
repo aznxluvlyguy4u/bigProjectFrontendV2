@@ -15,6 +15,7 @@ import {NgxPaginationModule} from 'ngx-pagination';
 })
 
 export class InvoiceOverviewComponent implements OnInit, OnDestroy {
+  public page = 1;
   areRecurrentApiCallsActivated: boolean;
   loopGetInvoicesList = true;
   private invoices: Invoice[] = [];

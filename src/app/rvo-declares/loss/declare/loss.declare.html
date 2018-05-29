@@ -1,12 +1,12 @@
 <!--TOP FORM-->
-<form [ngFormModel]="form" class="form-declare">
+<form #form="ngForm" class="form-declare">
 
   <!--LOSS DATE-->
   <div class="medium-2 columns">
     <label>
       {{ 'DATE OF DEATH' | translate }}
-      <datepicker [formCtrl]="form.controls['loss_date']" [viewFormat]="view_date_format"
-                  [modelFormat]="view_date_format"></datepicker>
+      <app-datepicker  [formCtrl]="form.controls['loss_date']" [viewFormat]="view_date_format"
+                  [modelFormat]="view_date_format"></app-datepicker>
       <div [hidden]="form.controls['loss_date'].valid || isValidForm" class="input-error-msg pull-right">{{ 'FILL IN THE LOSS DATE' | translate }}
       </div>
     </label>
