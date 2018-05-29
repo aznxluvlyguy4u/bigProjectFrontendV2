@@ -1,18 +1,13 @@
 import _ = require('lodash');
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Location} from '@angular/common';
-import {ROUTER_DIRECTIVES} from '@angular/router';
 import {Router} from '@angular/router/router';
-import {TranslatePipe} from 'ng2-translate/ng2-translate';
 import {REPORT_OPTIONS_LIST} from './report.model';
 
 @Component({
-    directives: [ROUTER_DIRECTIVES],
     template: require('./report.component.html'),
-    
 })
-
-export class ReportComponent {
+export class ReportComponent implements OnInit {
 
     private report_options_list = REPORT_OPTIONS_LIST;
 

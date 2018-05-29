@@ -18,7 +18,7 @@ declare var $;
 
 })
 
-export class BirthHistoryRow {
+export class BirthHistoryRowComponent {
   @Input('litter-object') litter: Litter;
   @Output() revokeLitter = new EventEmitter();
   private modalDisplay = 'none';

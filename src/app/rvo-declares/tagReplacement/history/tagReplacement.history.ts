@@ -13,7 +13,6 @@ import {NgxPaginationModule} from 'ngx-pagination';
 
 @Component({
   providers: [NgxPaginationModule],
-  directives: [TagReplacementHistoryRowComponent, PaginationComponent],
   templateUrl: './tagReplacement.history.html',
 })
 

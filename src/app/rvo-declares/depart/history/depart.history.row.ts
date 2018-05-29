@@ -10,16 +10,12 @@ import {Constants} from '../../../shared/variables/constants';
 import {Settings} from '../../../shared/variables/settings';
 import {API_URI_CHANGE_DEPART} from '../../../shared/services/nsfo-api/nsfo.settings';
 import {DateValidator, UBNValidator} from '../../../shared/validation/nsfo-validation';
-import {RevokeButtonComponent} from '../../../shared/components/revokebutton/revoke-button.component';
-import {HistoryErrorInfoComponent} from '../../../shared/components/historyerrorinfo/history-error-info.component';
 
 declare var $;
 
 @Component({
   selector: 'app-depart-history-row',
-  directives: [Datepicker, RevokeButtonComponent, HistoryErrorInfoComponent],
   templateUrl: './depart.history.row.html',
-  
 })
 
 export class DepartHistoryRowComponent {

@@ -63,6 +63,49 @@ import {WeightHistoryComponent} from './nsfo-declares/weight/history/weight.hist
 import {WeightDeclareComponent} from './nsfo-declares/weight/declare/weight.declare';
 import {DownloadLandingPageComponent} from './redirect/download/download-landing-page.component';
 import {LoadingComponent} from './redirect/loading/loading.component';
+import {DatepickerV2Component} from './shared/components/datepickerV2/datepicker-v2.component';
+import {FileTypeDropdownComponent} from './shared/components/filetypedropdown/file-type-dropdown.component';
+import {ReportFertilizerAccountingComponent} from './report/fertilityAccounting/report.fertilizer-accounting.component';
+import {ReportInbreedingCoefficientComponent} from './report/inbreedingCoefficient/report.inbreedingCoefficient';
+import {ReportLineageProofComponent} from './report/lineageProof/report.lineageProof';
+import {ReportLivestockComponent} from './report/livestock/report.livestock';
+import {ReportOffspringComponent} from './report/offspring/report.offspring.component';
+import {BooleanSwitchComponent} from './shared/components/booleanswitch/boolean-switch.component';
+import {ReportComponent} from './report/report.component';
+import {ArrivalDeclareComponent} from './rvo-declares/arrival/declare/arrival.declare';
+import {ArrivalErrorRowComponent} from './rvo-declares/arrival/errors/arrival.errors.row';
+import {ArrivalErrorsComponent} from './rvo-declares/arrival/errors/arrival.errors';
+import {ArrivalHistoryRowComponent} from './rvo-declares/arrival/history/arrival.history.row';
+import {RevokeButtonComponent} from './shared/components/revokebutton/revoke-button.component';
+import {HistoryErrorInfoComponent} from './shared/components/historyerrorinfo/history-error-info.component';
+import {ArrivalHistoryComponent} from './rvo-declares/arrival/history/arrival.history';
+import {ArrivalComponent} from './rvo-declares/arrival/arrival.component';
+import {BirthDeclareRowComponent} from './rvo-declares/birth/declare/birth.declare.row';
+import {BirthDeclareComponent} from './rvo-declares/birth/declare/birth.declare';
+import {BirthErrorRowComponent} from './rvo-declares/birth/errors/birth.errors.row';
+import {BirthErrorsComponent} from './rvo-declares/birth/errors/birth.errors';
+import {BirthHistoryRowComponent} from './rvo-declares/birth/history/birth.history.row';
+import {BirthHistoryComponent} from './rvo-declares/birth/history/birth.history';
+import {BirthComponent} from './rvo-declares/birth/birth.component';
+import {DepartDeclareComponent} from './rvo-declares/depart/declare/depart.declare';
+import {DepartErrorsComponent} from './rvo-declares/depart/errors/depart.errors';
+import {DepartErrorRowComponent} from './rvo-declares/depart/errors/depart.errors.row';
+import {DepartHistoryComponent} from './rvo-declares/depart/history/depart.history';
+import {DepartHistoryRowComponent} from './rvo-declares/depart/history/depart.history.row';
+import {DepartComponent} from './rvo-declares/depart/depart.component';
+import {EartagComponent} from './rvo-declares/eartag/eartag.component';
+import {LossDeclareComponent} from './rvo-declares/loss/declare/loss.declare';
+import {LossErrorRowComponent} from './rvo-declares/loss/errors/loss.errors.row';
+import {LossErrorsComponent} from './rvo-declares/loss/errors/loss.errors';
+import {LossHistoryRowComponent} from './rvo-declares/loss/history/loss.history.row';
+import {LossHistoryComponent} from './rvo-declares/loss/history/loss.history';
+import {LossComponent} from './rvo-declares/loss/loss.component';
+import {TagReplacementDeclareComponent} from './rvo-declares/tagReplacement/declare/tagReplacement.declare';
+import {TagReplacementErrorRowComponent} from './rvo-declares/tagReplacement/errors/tagReplacement.errors.row';
+import {TagReplacementErrorsComponent} from './rvo-declares/tagReplacement/errors/tagReplacement.errors';
+import {TagReplacementHistoryRowComponent} from './rvo-declares/tagReplacement/history/tagReplacement.history.row';
+import {TagReplacementHistoryComponent} from './rvo-declares/tagReplacement/history/tagReplacement.history';
+import {TagReplacementComponent} from './rvo-declares/tagReplacement/tagReplacement.component';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
@@ -104,6 +147,54 @@ export function HttpLoaderFactory(http: HttpClient) {
       WeightDeclareComponent,
       DownloadLandingPageComponent,
       LoadingComponent,
+      DatepickerV2Component,
+      FileTypeDropdownComponent,
+      ReportFertilizerAccountingComponent,
+      ReportInbreedingCoefficientComponent,
+      ReportLineageProofComponent,
+      ReportLivestockComponent,
+      ReportOffspringComponent,
+      BooleanSwitchComponent,
+      ReportComponent,
+      ReportOffspringComponent,
+      ArrivalDeclareComponent,
+      ArrivalErrorRowComponent,
+      ArrivalErrorsComponent,
+      ArrivalHistoryRowComponent,
+      RevokeButtonComponent,
+      HistoryErrorInfoComponent,
+      ArrivalHistoryComponent,
+      ArrivalHistoryFilterPipe,
+      ArrivalComponent,
+      BirthDeclareRowComponent,
+      BirthDeclareComponent,
+      BirthErrorRowComponent,
+      BirthErrorsComponent,
+      BirthHistoryRowComponent,
+      BirthHistoryComponent,
+      BirthHistoryPipe,
+      BirthComponent,
+      DepartDeclareComponent,
+      DepartErrorsComponent,
+      DepartErrorRowComponent,
+      DepartHistoryComponent,
+      DepartHistoryRowComponent,
+      DepartHistoryFilterPipe,
+      DepartComponent,
+      EartagComponent,
+      LossDeclareComponent,
+      LossErrorRowComponent,
+      LossErrorsComponent,
+      LossHistoryRowComponent,
+      LossHistoryComponent,
+      LossHistoryFilterPipe,
+      LossComponent,
+      TagReplacementDeclareComponent,
+      TagReplacementErrorRowComponent,
+      TagReplacementErrorsComponent,
+      TagReplacementHistoryRowComponent,
+      TagReplacementHistoryComponent,
+      TagReplacementComponent,
     lastFiveMessagesFilterPipe,
     localNumberFormat,
     DecimalPipe,

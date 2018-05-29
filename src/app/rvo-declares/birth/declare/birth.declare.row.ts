@@ -3,7 +3,6 @@ import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {BIRTH_PROGRESS_TYPES, LAMBAR_SURROGATE_OPTIONS, SurrogateMotherByUln} from '../birth.model';
 import {Constants} from '../../../shared/variables/constants';
 import {NSFOService} from '../../../shared/services/nsfo-api/nsfo.service';
-import {SelectorComponent} from '../../../shared/components/selector/selector.component';
 import {TailValidator, WeightValidator} from '../../../shared/validation/nsfo-validation';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {CountryCode} from '../../../shared/models/country.model';
@@ -12,9 +11,7 @@ import {Animal, LivestockAnimal} from '../../../shared/models/animal.model';
 
 @Component({
   selector: 'app-birth-declare-row',
-  directives: [SelectorComponent],
   templateUrl: './birth.declare.row.html',
-
 })
 
 export class BirthDeclareRowComponent implements OnInit {

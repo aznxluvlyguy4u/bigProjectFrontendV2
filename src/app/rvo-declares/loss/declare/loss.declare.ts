@@ -1,20 +1,16 @@
 import moment = require('moment');
 import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup, FormBuilder, Validators} from '@angular/forms';
-import {Datepicker} from '../../../shared/components/datepicker/datepicker.component';
-import {TranslatePipe, TranslateService} from '@ngx-translate/core';
+import {TranslateService} from '@ngx-translate/core';
 import {LOSS_REASON_OF_LOSS, LossRequest} from '../loss.model';
 import {Settings} from '../../../shared/variables/settings';
 import {NSFOService} from '../../../shared/services/nsfo-api/nsfo.service';
 import {DateValidator, UBNValidator} from '../../../shared/validation/nsfo-validation';
 import {API_URI_DECLARE_LOSS, API_URI_GET_UBN_PROCESSORS} from '../../../shared/services/nsfo-api/nsfo.settings';
-import {LivestockOverviewComponent} from '../../../shared/components/livestock/overview.component';
 import {AnimalsOverviewSelection} from '../../../shared/components/livestock/animals-overview-selection.model';
 
 @Component({
-  directives: [Datepicker, LivestockOverviewComponent],
   templateUrl: './loss.declare.html',
-
 })
 
 export class LossDeclareComponent implements OnInit {

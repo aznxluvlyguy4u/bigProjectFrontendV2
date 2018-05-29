@@ -1,8 +1,6 @@
 import {Component} from '@angular/core';
-import {LivestockOverview} from '../../shared/components/livestock';
 import {NSFOService} from '../../shared/services/nsfo-api/nsfo.service';
 import {API_URI_GET_ANIMALS} from '../../shared/services/nsfo-api/nsfo.settings';
-import {SelectorComponent} from '../../shared/components/selector/selector.component';
 import { CSV, PDF } from '../../shared/variables/file-type.enum';
 import { QueryParamsService } from '../../shared/services/utils/query-params.service';
 import { DownloadService } from '../../shared/services/download/download.service';
@@ -14,7 +12,6 @@ import {FormBuilder, FormControl, FormGroup} from '@angular/forms';
 import {Animal, LivestockAnimal} from '../../shared/models/animal.model';
 
 @Component({
-    directives: [LivestockOverview, SelectorComponent],
     template: require('./report.inbreedingCoefficient.html')
 })
 

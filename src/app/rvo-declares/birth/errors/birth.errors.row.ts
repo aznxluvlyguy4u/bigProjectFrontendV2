@@ -15,7 +15,6 @@ declare var $;
 
 @Component({
   selector: 'app-birth-error-row',
-  directives: [Datepicker],
   templateUrl: './birth.errors.row.html',
 
 })

@@ -2,7 +2,7 @@ import * as _ from 'lodash';
 import {Component, OnInit} from '@angular/core';
 
 
-import {BirthHistoryRow} from './birth.history.row';
+import {BirthHistoryRowComponent} from './birth.history.row';
 
 import {Litter} from '../birth.model';
 import {NSFOService} from '../../../shared/services/nsfo-api/nsfo.service';
@@ -11,12 +11,10 @@ import {
   API_URI_REVOKE_BIRTH,
 } from '../../../shared/services/nsfo-api/nsfo.settings';
 import {Settings} from '../../../shared/variables/settings';
-import {PaginationComponent} from '../../../shared/components/pagination/pagination.component';
 import {NgxPaginationModule} from 'ngx-pagination';
 
 @Component({
   providers: [NgxPaginationModule],
-  directives: [BirthHistoryRow, PaginationComponent],
   templateUrl: './birth.history.html',
 })
 

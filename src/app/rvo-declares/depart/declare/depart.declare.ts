@@ -2,20 +2,17 @@ import moment = require('moment');
 import {Component} from '@angular/core';
 import {FormControl, FormGroup, FormBuilder, Validators} from '@angular/forms';
 import {Datepicker} from '../../../shared/components/datepicker/datepicker.component';
-import {TranslatePipe, TranslateService} from '@ngx-translate/core';
+import {TranslateService} from '@ngx-translate/core';
 import {DEPART_REASON_OF_DEPART, DepartRequest} from '../depart.model';
 import {NSFOService} from '../../../shared/services/nsfo-api/nsfo.service';
 import {Constants} from '../../../shared/variables/constants';
 import {Settings} from '../../../shared/variables/settings';
 import {DateValidator, UBNValidator} from '../../../shared/validation/nsfo-validation';
-import {LivestockOverviewComponent} from '../../../shared/components/livestock/overview.component';
 import {API_URI_DECLARE_DEPART} from '../../../shared/services/nsfo-api/nsfo.settings';
 import {AnimalsOverviewSelection} from '../../../shared/components/livestock/animals-overview-selection.model';
 
 @Component({
-  directives: [Datepicker, LivestockOverviewComponent],
   templateUrl: './depart.declare.html',
-  
 })
 
 export class DepartDeclareComponent {

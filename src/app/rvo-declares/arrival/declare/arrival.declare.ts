@@ -4,7 +4,6 @@ import {FormControl, FormGroup, FormBuilder, Validators} from '@angular/forms';
 import {ArrivalRequest} from '../arrival.model';
 
 import {NSFOService} from '../../../shared/services/nsfo-api/nsfo.service';
-import {Datepicker} from '../../../shared/components/datepicker/datepicker.component';
 import {Constants} from '../../../shared/variables/constants';
 import {API_URI_DECLARE_ARRIVAL} from '../../../shared/services/nsfo-api/nsfo.settings';
 import {DateValidator, UBNValidator} from '../../../shared/validation/nsfo-validation';
@@ -13,7 +12,6 @@ import {SettingsService} from '../../../shared/services/settings/settings.servic
 declare var $;
 
 @Component({
-  directives: [Datepicker],
   templateUrl: './arrival.declare.html',
 
 })

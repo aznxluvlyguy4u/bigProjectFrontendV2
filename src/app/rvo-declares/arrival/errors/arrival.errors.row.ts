@@ -15,9 +15,7 @@ declare var $;
 
 @Component({
   selector: 'app-arrival-errors-row',
-  directives: [Datepicker],
   templateUrl: './arrival.errors.row.html',
-  
 })
 
 export class ArrivalErrorRowComponent implements OnInit, AfterViewChecked {

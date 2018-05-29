@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Location} from '@angular/common';
 import {Router} from '@angular/router/router';
 
@@ -6,10 +6,9 @@ import {NSFOService} from '../../shared/services/nsfo-api/nsfo.service';
 
 @Component({
   templateUrl: './eartag.component.html',
-  
 })
 
-export class EartagComponent {
+export class EartagComponent implements OnInit {
   private errorAmount = 0;
   private selectedRoute: string;
 

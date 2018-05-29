@@ -7,13 +7,10 @@ import {SettingsService} from '../../../shared/services/settings/settings.servic
 import {API_URI_GET_TAG_REPLACEMENT_ERRORS} from '../../../shared/services/nsfo-api/nsfo.settings';
 import {TagReplacementErrorResponse} from '../tagReplacement.model';
 
-import {TagReplacementErrorRowComponent} from './tagReplacement.errors.row';
-import {PaginationComponent} from '../../../shared/components/pagination/pagination.component';
 import {NgxPaginationModule} from 'ngx-pagination';
 
 @Component({
   providers: [NgxPaginationModule],
-  directives: [TagReplacementErrorRowComponent, PaginationComponent],
   templateUrl: './tagReplacement.errors.html',
 })
 

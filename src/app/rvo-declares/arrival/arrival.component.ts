@@ -8,9 +8,7 @@ import {NSFOService} from '../../shared/services/nsfo-api/nsfo.service';
 
 @Component({
   templateUrl: './arrival.component.html',
-  
 })
-
 export class ArrivalComponent implements OnInit, OnDestroy {
   private errorAmount = 0;
   private selectedRoute: string;

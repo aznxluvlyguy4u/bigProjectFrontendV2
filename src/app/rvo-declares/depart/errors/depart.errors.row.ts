@@ -3,7 +3,6 @@ import * as _ from 'lodash';
 
 import {AfterViewChecked, Component, EventEmitter, Input, Output} from '@angular/core';
 import {FormControl, FormGroup, FormBuilder, Validators} from '@angular/forms';
-import {Datepicker} from '../../../shared/components/datepicker/datepicker.component';
 import {DEPART_REASON_OF_DEPART, DepartErrorResponse} from '../depart.model';
 import {Constants} from '../../../shared/variables/constants';
 import {Settings} from '../../../shared/variables/settings';
@@ -15,7 +14,6 @@ declare var $;
 
 @Component({
   selector: 'app-depart-error-row',
-  directives: [Datepicker],
   templateUrl: './depart.errors.row.html',
 
 })

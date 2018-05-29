@@ -4,7 +4,6 @@ import {AfterViewChecked, Component, EventEmitter, Input, Output} from '@angular
 import {FormControl, FormGroup, FormBuilder, Validators} from '@angular/forms';
 
 import {LOSS_REASON_OF_LOSS, LossErrorResponse} from '../loss.model';
-import {Datepicker} from '../../../shared/components/datepicker/datepicker.component';
 import {NSFOService} from '../../../shared/services/nsfo-api/nsfo.service';
 import {Constants} from '../../../shared/variables/constants';
 import {DateValidator} from '../../../shared/validation/nsfo-validation';
@@ -15,9 +14,7 @@ declare var $;
 
 @Component({
   selector: 'app-loss-error-row',
-  directives: [Datepicker],
   templateUrl: './loss.errors.row.html',
-  
 })
 
 export class LossErrorRowComponent implements AfterViewChecked {

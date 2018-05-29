@@ -2,18 +2,13 @@ import moment = require('moment');
 import * as _ from 'lodash';
 import {Component, OnInit} from '@angular/core';
 import {ArrivalErrorResponse} from '../arrival.model';
-
-import {ArrivalErrorRowComponent} from './arrival.errors.row';
-
 import {NSFOService} from '../../../shared/services/nsfo-api/nsfo.service';
 import {API_URI_GET_ARRIVALS_ERRORS} from '../../../shared/services/nsfo-api/nsfo.settings';
 import {Settings} from '../../../shared/variables/settings';
-import {PaginationComponent} from '../../../shared/components/pagination/pagination.component';
 import {NgxPaginationModule} from 'ngx-pagination';
 
 @Component({
   providers: [NgxPaginationModule],
-  directives: [ArrivalErrorRowComponent, PaginationComponent],
   templateUrl: './arrival.errors.html',
 })
 

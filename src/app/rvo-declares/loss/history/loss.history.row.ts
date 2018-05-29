@@ -3,20 +3,16 @@ import * as _ from 'lodash';
 import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {FormControl, FormGroup, FormBuilder} from '@angular/forms';
 
-import {Datepicker} from '../../../shared/components/datepicker/datepicker.component';
 import {LOSS_REASON_OF_LOSS, LossChangeResponse} from '../loss.model';
 import {Settings} from '../../../shared/variables/settings';
 import {NSFOService} from '../../../shared/services/nsfo-api/nsfo.service';
 import {Constants} from '../../../shared/variables/constants';
 import {API_URI_CHANGE_LOSS} from '../../../shared/services/nsfo-api/nsfo.settings';
-import {RevokeButtonComponent} from '../../../shared/components/revokebutton/revoke-button.component';
-import {HistoryErrorInfoComponent} from '../../../shared/components/historyerrorinfo/history-error-info.component';
 
 declare var $;
 
 @Component({
   selector: 'app-loss-history-row',
-  directives: [Datepicker, RevokeButtonComponent, HistoryErrorInfoComponent],
   templateUrl: './loss.history.row.html',
 
 })

@@ -1,15 +1,12 @@
 import { Component, EventEmitter, OnInit } from '@angular/core';
 import { DownloadService } from '../../shared/services/download/download.service';
 import { CSV, PDF } from '../../shared/variables/file-type.enum';
-import { FileTypeDropdownComponent } from '../../shared/components/filetypedropdown/file-type-dropdown.component';
-import { DatepickerV2Component } from '../../shared/components/datepickerV2/datepicker-v2.component';
 import { SettingsService } from '../../shared/services/settings/settings.service';
 
 
 @Component({
   selector: 'app-fertilizer-accounting-report',
   template: require('./report.fertilizer-accounting.component.html'),
-  directives: [DatepickerV2Component, FileTypeDropdownComponent],
 })
 export class ReportFertilizerAccountingComponent implements OnInit {
   selectedFileType: string;

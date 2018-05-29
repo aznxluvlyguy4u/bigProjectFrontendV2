@@ -5,7 +5,6 @@ import {Router} from '@angular/router/router';
 
 @Component({
   templateUrl: './birth.component.html',
-  
 })
 
 export class BirthComponent implements OnInit {

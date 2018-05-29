@@ -5,7 +5,6 @@ import {Router} from '@angular/router/router';
 
 @Component({
   templateUrl: './tagReplacement.component.html',
-  
 })
 
 export class TagReplacementComponent implements OnInit {

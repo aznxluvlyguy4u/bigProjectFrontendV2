@@ -30,9 +30,7 @@ import {EarTag} from '../../../shared/models/rvo-declare.model';
 import {User} from '../../../shared/models/person.model';
 
 @Component({
-  directives: [Datepicker, BirthDeclareRowComponent, SelectorComponent],
   templateUrl: './birth.declare.html',
-  
 })
 
 export class BirthDeclareComponent implements OnInit, OnDestroy {

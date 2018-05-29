@@ -7,13 +7,10 @@ import {ArrivalChangeResponse} from '../arrival.model';
 import {NSFOService} from '../../../shared/services/nsfo-api/nsfo.service';
 import {API_URI_GET_ARRIVALS_HISTORY, API_URI_REVOKE_DECLARATION} from '../../../shared/services/nsfo-api/nsfo.settings';
 import {Settings} from '../../../shared/variables/settings';
-import {PaginationComponent} from '../../../shared/components/pagination/pagination.component';
 import {NgxPaginationModule} from 'ngx-pagination';
-import {ArrivalHistoryRowComponent} from './arrival.history.row';
 
 @Component({
   providers: [NgxPaginationModule],
-  directives: [ArrivalHistoryRowComponent, PaginationComponent],
   templateUrl: './arrival.history.html',
 })
 

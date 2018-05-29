@@ -3,18 +3,13 @@ import * as _ from 'lodash';
 import {Component, OnInit} from '@angular/core';
 import {LossErrorResponse} from '../loss.model';
 
-import {LossErrorRowComponent} from './loss.errors.row';
-
-
 import {NSFOService} from '../../../shared/services/nsfo-api/nsfo.service';
 import {API_URI_GET_LOSS_ERRORS} from '../../../shared/services/nsfo-api/nsfo.settings';
-import {PaginationComponent} from '../../../shared/components/pagination/pagination.component';
 import {SettingsService} from '../../../shared/services/settings/settings.service';
 import {NgxPaginationModule} from 'ngx-pagination';
 
 @Component({
   providers: [NgxPaginationModule],
-  directives: [LossErrorRowComponent, PaginationComponent],
   templateUrl: './loss.errors.html',
 })
 

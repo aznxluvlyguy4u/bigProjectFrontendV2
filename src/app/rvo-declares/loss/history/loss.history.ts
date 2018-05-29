@@ -8,13 +8,10 @@ import {LossChangeResponse} from '../loss.model';
 import {NSFOService} from '../../../shared/services/nsfo-api/nsfo.service';
 import {API_URI_GET_LOSS_HISTORY, API_URI_REVOKE_DECLARATION} from '../../../shared/services/nsfo-api/nsfo.settings';
 import {Settings} from '../../../shared/variables/settings';
-import {PaginationComponent} from '../../../shared/components/pagination/pagination.component';
 import {NgxPaginationModule} from 'ngx-pagination';
-import {LossHistoryRowComponent} from './loss.history.row';
 
 @Component({
   providers: [NgxPaginationModule],
-  directives: [LossHistoryRowComponent, PaginationComponent],
   templateUrl: './loss.history.html',
 })
 

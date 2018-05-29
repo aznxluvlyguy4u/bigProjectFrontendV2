@@ -2,20 +2,16 @@ import moment = require('moment');
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {FormControl, FormGroup, FormBuilder, Validators} from '@angular/forms';
 
-import {Datepicker} from '../../../shared/components/datepicker/datepicker.component';
 import {ArrivalChangeResponse} from '../arrival.model';
 import {NSFOService} from '../../../shared/services/nsfo-api/nsfo.service';
 import {Settings} from '../../../shared/variables/settings';
 import {API_URI_CHANGE_ARRIVAL, API_URI_GET_COUNTRY_CODES} from '../../../shared/services/nsfo-api/nsfo.settings';
 import {DateValidator, UBNValidator} from '../../../shared/validation/nsfo-validation';
-import {RevokeButtonComponent} from '../../../shared/components/revokebutton/revoke-button.component';
-import {HistoryErrorInfoComponent} from '../../../shared/components/historyerrorinfo/history-error-info.component';
 
 declare var $;
 
 @Component({
   selector: 'app-arrival-history-row',
-  directives: [Datepicker, RevokeButtonComponent, HistoryErrorInfoComponent],
   templateUrl: './arrival.history.row.html',
 
 })

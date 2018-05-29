@@ -8,9 +8,7 @@ import * as _ from 'lodash';
 import {Animal} from '../../../shared/models/animal.model';
 
 @Component({
-  directives: [LivestockOverviewComponent, SelectorComponent],
   templateUrl: './tagReplacement.declare.html',
-  
 })
 
 export class TagReplacementDeclareComponent {

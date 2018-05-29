@@ -14,7 +14,7 @@ export class BirthHistoryPipe implements PipeTransform {
     return value.filter((litter: Litter) => {
       const needle = term.toLowerCase();
 
-      let haystack =
+      const haystack =
         litter.mother_uln_country_code + litter.mother_uln_number +
         litter.father_uln_country_code + litter.father_uln_number
       ;

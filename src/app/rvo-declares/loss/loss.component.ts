@@ -8,7 +8,6 @@ import {NSFOService} from '../../shared/services/nsfo-api/nsfo.service';
 
 @Component({
   templateUrl: './loss.component.html',
-  
 })
 
 export class LossComponent implements OnInit, OnDestroy {
