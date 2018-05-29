@@ -217,7 +217,8 @@
 <!--[ngStyle]="{'display': displayExteriorModal}"-->
 <div id="measurement-modal" class="reveal-overlay" *ngIf="showExteriorModal" style="display:block">
   <!--[ngStyle]="{'display': displayExteriorModal}"-->
-  <div class="tiny reveal" [ngFormModel]="exteriorForm" style="display:block">
+  <div class="tiny reveal" style="display:block">
+    <form #exteriorForm="ngForm">
     <div class="modal-header">
             <span *ngIf="isAdmin">
                 <span *ngIf="!isExteriorEditMode"> {{ 'NEW EXTERIOR' | translate }} </span>
@@ -235,8 +236,8 @@
         </div>
         <div class="medium-6 columns">
           <!-- selectedDate -->
-          <datepicker [editMode]="true" [initDate]="initDate" [formCtrl]="exteriorForm.controls['measurement_date']"
-                      [viewFormat]="view_date_format" [modelFormat]="model_datetime_format"></datepicker>
+          <app-datepicker  [editMode]="true" [initDate]="initDate" [formCtrl]="exteriorForm.controls['measurement_date']"
+                      [viewFormat]="view_date_format" [modelFormat]="model_datetime_format"></app-datepicker>
           <div class="pull-right input-error-msg" [hidden]="!invalidMeasurementDate"> {{'AN EXTERIOR ALREADY EXISTS FOR
             THIS DATE' | translate}}
           </div>
@@ -470,5 +471,6 @@
             <button class="tiny alert button" (click)="closeExteriorModal()">{{ 'CLOSE' | translate }}</button>
             </span>
     </div>
+    </form>
   </div>
 </div>

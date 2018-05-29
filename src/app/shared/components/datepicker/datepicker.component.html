@@ -5,7 +5,7 @@
        (focus)="openDatepicker()"
        [value]="viewValue"
        [hidden]="isStatic"
-       [ngFormControl]="formCtrl" [disabled]="!editMode">
+       [ngModel]="formCtrl" [disabled]="!editMode">
 
 <div class="ng-datepicker" *ngIf="isStatic || isOpened" [ngClass]="{ static: isStatic }">
   <div class="controls">

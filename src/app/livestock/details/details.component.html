@@ -64,7 +64,7 @@
   <label *ngIf="gender_changed_animal_info_error" class="middle input-error-msg pull-right">{{ gender_change_error
     }}</label>
 
-  <div class="row" [ngFormModel]="form">
+  <div class="row">
     <div class="medium-6 columns">
 
       <!-- ANIMAL DETAIL -->
@@ -143,9 +143,9 @@
               <label class="middle">{{ 'DATE OF BIRTH' | translate }}</label>
             </div>
             <div class="medium-6 columns">
-              <datepicker [formCtrl]="form.controls['date_of_birth']" [editMode]="false"
+              <app-datepicker [formCtrl]="form.controls['date_of_birth']" [editMode]="false"
                           [initDate]="animal.date_of_birth" [viewFormat]="view_date_format"
-                          [modelFormat]="model_datetime_format"></datepicker>
+                          [modelFormat]="model_datetime_format"></app-datepicker>
             </div>
           </div>
 

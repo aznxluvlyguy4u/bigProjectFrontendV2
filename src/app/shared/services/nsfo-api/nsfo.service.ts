@@ -9,8 +9,8 @@ import {TranslateService} from '@ngx-translate/core';
 import {Animal} from '../../models/animal.model';
 import {Router} from '@angular/router';
 import {pick} from 'lodash';
-import {HttpHeaders, HttpResponse} from '@angular/common/http';
-import {Http} from '@angular/http';
+import {HttpClient, HttpHeaders, HttpResponse} from '@angular/common/http';
+import {Http, Response} from '@angular/http';
 import {environment} from '../../../../environments/environment';
 import {ResultModel} from './result.model';
 
@@ -25,9 +25,8 @@ export class NSFOService {
 
   apiUrl = environment.nsfoApiServerUrl;
 
-  constructor(private httpClient: Http, private translate: TranslateService, private router: Router) {
+  constructor(private httpClient: HttpClient, private translate: TranslateService, private router: Router) {
   }
-
   static cleanAnimalsInput(animals: Animal[], variables = ['uln_country_code', 'uln_number']): Animal[] {
     return animals.map(function (object: Animal) {
       return pick(object, variables);
@@ -103,7 +102,7 @@ export class NSFOService {
     this.navigateToLogin();
   }
 
-  public getErrorMessage(err: HttpResponse): string {
+  public getErrorMessage(err: Response): string {
     switch (err.status) {
       case 500:
         return this.translate.instant('SOMETHING WENT WRONG. TRY ANOTHER TIME.');
@@ -116,7 +115,7 @@ export class NSFOService {
 
       default:
 
-        const jsonBody: ResultModel = err.body;
+        const jsonBody: ResultModel = err.json();
 
         if (jsonBody && jsonBody.result) {
           const result = jsonBody.result;
@@ -136,7 +135,6 @@ export class NSFOService {
         return this.translate.instant('SOMETHING WENT WRONG. TRY ANOTHER TIME.');
     }
   }
-
   public getTranslatedMessage(message: string): string {
     return message !== null ? this.translate.instant(message) : '';
   }

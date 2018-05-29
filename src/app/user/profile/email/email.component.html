@@ -21,9 +21,11 @@
           <div class="large-2 columns">
             <label class="middle"> {{ 'NEW EMAIL' | translate }} </label>
           </div>
-          <div class="large-2 columns end" [(ngFormModel)]="form_nsfo">
+          <div class="large-2 columns end">
+            <form #form_nsfo="ngForm">
             <input type="text" ngControl="email_address"
                    [ngClass]="{'input-error-border': !form_nsfo.controls.email_address.valid && !form_nsfo_valid}">
+            </form>
           </div>
         </div>
 
@@ -32,9 +34,11 @@
           <div class="large-2 columns">
             <label class="middle"> {{ 'CURRENT PASSWORD' | translate }} </label>
           </div>
-          <div class="large-2 columns end" [(ngFormModel)]="form_nsfo">
+          <div class="large-2 columns end">
+            <form #form_nsfo="ngForm">
             <input type="password" ngControl="password"
                    [ngClass]="{'input-error-border': !form_nsfo.controls.password.valid && !form_nsfo_valid}">
+            </form>
           </div>
         </div>
 

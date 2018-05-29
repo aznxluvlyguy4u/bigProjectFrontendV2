@@ -1,5 +1,5 @@
 import {BrowserModule} from '@angular/platform-browser';
-import {NgModule} from '@angular/core';
+import {enableProdMode, NgModule} from '@angular/core';
 
 import {AppComponent} from './app.component';
 import {HttpClient, HttpClientModule} from '@angular/common/http';
@@ -122,11 +122,12 @@ import {EartagHistoryComponent} from './rvo-declares/eartag/history/eartag.histo
 import {EartagHistoryRowComponent} from './rvo-declares/eartag/history/eartag.history.row';
 import {CheckMarkComponent} from './shared/components/checkmark/check-mark.component';
 import {FormsModule} from '@angular/forms';
+import {EartagErrorRowComponent} from './rvo-declares/eartag/errors/eartag.errors.row';
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http);
 }
-
+enableProdMode();
 @NgModule({
   declarations: [
     AppComponent,
@@ -224,6 +225,9 @@ export function HttpLoaderFactory(http: HttpClient) {
       EartagHistoryRowComponent,
       EartagHistoryFilterPipe,
       CheckMarkComponent,
+      DatepickerComponent,
+      DatepickerV2Component,
+      EartagErrorRowComponent,
     lastFiveMessagesFilterPipe,
     localNumberFormat,
     InvoiceFilterPipe,

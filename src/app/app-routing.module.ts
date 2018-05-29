@@ -62,119 +62,119 @@ import {ReportOffspringComponent} from './report/offspring/report.offspring.comp
 // const appRoutes: Routes = [
 const appRoutes = [
   {
-    path: '/main',  component: MainComponent, index: true, canActivate: [NSFOAuthService],
+    path: 'main',  component: MainComponent, index: true, canActivate: [NSFOAuthService],
     children: [
-      {path: '/', component: DashboardComponent, index: true},
+      {path: '', component: DashboardComponent, index: true},
       {
-        path: '/admin',  component: AdminComponent, canActivate: [NSFOAdminAuthService],
+        path: 'admin',  component: AdminComponent, canActivate: [NSFOAdminAuthService],
         children: [
-          {path: '/rvo-leading-livestock-sync', component: RvoLeadingLivestockSyncComponent},
+          {path: 'rvo-leading-livestock-sync', component: RvoLeadingLivestockSyncComponent},
         ]
       },
       {
-        path: '/arrival', component: ArrivalComponent,
+        path: 'arrival', component: ArrivalComponent,
         children: [
-          {path: '/declare', component: ArrivalDeclareComponent},
-          {path: '/history', component: ArrivalHistoryComponent},
-          {path: '/errors', component: ArrivalErrorsComponent}
+          {path: 'declare', component: ArrivalDeclareComponent},
+          {path: 'history', component: ArrivalHistoryComponent},
+          {path: 'errors', component: ArrivalErrorsComponent}
         ]
       },
       {
-        path: '/depart', component: DepartComponent,
+        path: 'depart', component: DepartComponent,
         children: [
-          {path: '/declare', component: DepartDeclareComponent},
-          {path: '/history', component: DepartHistoryComponent},
-          {path: '/errors', component: DepartErrorsComponent}
+          {path: 'declare', component: DepartDeclareComponent},
+          {path: 'history', component: DepartHistoryComponent},
+          {path: 'errors', component: DepartErrorsComponent}
         ]
       },
       {
-        path: '/mate', component: MateComponent,
+        path: 'mate', component: MateComponent,
         children: [
-          {path: '/declare', component: MateDeclareComponent},
-          {path: '/history', component: MateHistoryComponent},
+          {path: 'declare', component: MateDeclareComponent},
+          {path: 'history', component: MateHistoryComponent},
         ]
       },
       {
-        path: '/birth', component: BirthComponent,
+        path: 'birth', component: BirthComponent,
         children: [
-          {path: '/declare', component: BirthDeclareComponent},
-          {path: '/history', component: BirthHistoryComponent},
-          {path: '/errors', component: BirthErrorsComponent}
+          {path: 'declare', component: BirthDeclareComponent},
+          {path: 'history', component: BirthHistoryComponent},
+          {path: 'errors', component: BirthErrorsComponent}
         ]
       },
       {
-        path: '/loss', component: LossComponent,
+        path: 'loss', component: LossComponent,
         children: [
-          {path: '/declare', component: LossDeclareComponent},
-          {path: '/history', component: LossHistoryComponent},
-          {path: '/errors', component: LossErrorsComponent}
+          {path: 'declare', component: LossDeclareComponent},
+          {path: 'history', component: LossHistoryComponent},
+          {path: 'errors', component: LossErrorsComponent}
         ]
       },
       {
-        path: '/weight', component: WeightComponent,
+        path: 'weight', component: WeightComponent,
         children: [
-          {path: '/declare', component: WeightDeclareComponent},
-          {path: '/history', component: WeightHistoryComponent},
+          {path: 'declare', component: WeightDeclareComponent},
+          {path: 'history', component: WeightHistoryComponent},
         ]
       },
       {
-        path: '/tag-replacement', component: TagReplacementComponent,
+        path: 'tag-replacement', component: TagReplacementComponent,
         children: [
-          {path: '/declare', component: TagReplacementDeclareComponent},
-          {path: '/history', component: TagReplacementHistoryComponent},
-          {path: '/errors', component: TagReplacementErrorsComponent}
+          {path: 'declare', component: TagReplacementDeclareComponent},
+          {path: 'history', component: TagReplacementHistoryComponent},
+          {path: 'errors', component: TagReplacementErrorsComponent}
         ]
       },
       {
-        path: '/livestock', component: LivestockComponent,
+        path: 'livestock', component: LivestockComponent,
         children: [
-          {path: '/overview', component: LivestockMainOverviewComponent},
-          {path: '/details/:uln', component: LivestockDetailComponent},
+          {path: 'overview', component: LivestockMainOverviewComponent},
+          {path: 'details/:uln', component: LivestockDetailComponent},
         ]
       },
       {
-        path: '/invoices', component: InvoiceComponent,
+        path: 'invoices', component: InvoiceComponent,
         children: [
-          {path: '/overview', component: InvoiceOverviewComponent},
-          {path: '/details/:id', component: InvoiceDetailsComponent}
+          {path: 'overview', component: InvoiceOverviewComponent},
+          {path: 'details/:id', component: InvoiceDetailsComponent}
         ]
       },
       {
-        path: '/report', component: ReportComponent,
+        path: 'report', component: ReportComponent,
         children: [
-          {path: '/lineage_proof', component: ReportLineageProofComponent},
-          {path: '/inbreeding', component: ReportInbreedingCoefficientComponent},
-          {path: '/livestock', component: ReportLivestockComponent},
-          {path: '/fertilizer_accounting', component: ReportFertilizerAccountingComponent},
-          {path: '/offspring', component: ReportOffspringComponent},
+          {path: 'lineage_proof', component: ReportLineageProofComponent},
+          {path: 'inbreeding', component: ReportInbreedingCoefficientComponent},
+          {path: 'livestock', component: ReportLivestockComponent},
+          {path: 'fertilizer_accounting', component: ReportFertilizerAccountingComponent},
+          {path: 'offspring', component: ReportOffspringComponent},
         ]
       },
       {
-        path: '/profile', component: ProfileComponent,
+        path: 'profile', component: ProfileComponent,
         children: [
-          {path: '/company', component: ProfileCompanyComponent},
-          {path: '/login', component: ProfileLoginComponent},
-          {path: '/email', component: ProfileEmailComponent},
+          {path: 'company', component: ProfileCompanyComponent},
+          {path: 'login', component: ProfileLoginComponent},
+          {path: 'email', component: ProfileEmailComponent},
 
         ]
       },
       {
-        path: '/eartag', component: EartagComponent,
+        path: 'eartag', component: EartagComponent,
         children: [
-          {path: '/declare', component: EartagDeclareComponent},
-          {path: '/history', component: EartagHistoryComponent},
-          {path: '/errors', component: EartagErrorsComponent}
+          {path: 'declare', component: EartagDeclareComponent},
+          {path: 'history', component: EartagHistoryComponent},
+          {path: 'errors', component: EartagErrorsComponent}
         ]
       },
-      {path: '/contact', component: ContactComponent},
-      {path: '/messages', component: MessagesComponent},
-      {path: '/messages/:id', component: MessagesComponent}
+      {path: 'contact', component: ContactComponent},
+      {path: 'messages', component: MessagesComponent},
+      {path: 'messages/:id', component: MessagesComponent}
     ]
   },
-  {path: '/login', component: LoginComponent},
-  {path: '/ghostlogin/:ghostToken/:accessToken', component: GhostLoginComponent},
-  {path: '/loading', component: LoadingComponent},
-  {path: '/downloaded', component: DownloadLandingPageComponent}
+  {path: 'login', component: LoginComponent},
+  {path: 'ghostlogin/:ghostToken/:accessToken', component: GhostLoginComponent},
+  {path: 'loading', component: LoadingComponent},
+  {path: 'downloaded', component: DownloadLandingPageComponent}
 ];
 
 @NgModule({

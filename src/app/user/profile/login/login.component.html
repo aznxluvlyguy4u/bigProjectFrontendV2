@@ -22,9 +22,11 @@
           <div class="large-2 columns">
             <label class="middle"> {{ 'CURRENT PASSWORD' | translate }} </label>
           </div>
-          <div class="large-2 columns end" [(ngFormModel)]="form_nsfo">
+          <div class="large-2 columns end">
+            <form #form_nsfo="ngForm">
             <input type="password" ngControl="current_password"
                    [ngClass]="{'input-error-border': !form_nsfo.controls.current_password.valid && !form_nsfo_valid}">
+            </form>
           </div>
         </div>
 
@@ -33,9 +35,11 @@
           <div class="large-2 columns">
             <label class="middle"> {{ 'NEW PASSWORD' | translate }} </label>
           </div>
-          <div class="large-2 columns end" [(ngFormModel)]="form_nsfo">
+          <div class="large-2 columns end">
+            <form #form_nsfo="ngForm">
             <input type="password" ngControl="password"
                    [ngClass]="{'input-error-border': !form_nsfo.controls.password.valid && !form_nsfo_valid}">
+            </form>
           </div>
         </div>
 
@@ -44,9 +48,11 @@
           <div class="large-2 columns">
             <label class="middle"> {{ 'REPEAT NEW PASSWORD' | translate }} </label>
           </div>
-          <div class="large-2 columns end" [(ngFormModel)]="form_nsfo">
+          <div class="large-2 columns end">
+            <form #form_nsfo="ngForm">
             <input type="password" ngControl="repeat_password"
                    [ngClass]="{'input-error-border': !form_nsfo.controls.repeat_password.valid && !form_nsfo_valid}">
+            </form>
           </div>
         </div>
 

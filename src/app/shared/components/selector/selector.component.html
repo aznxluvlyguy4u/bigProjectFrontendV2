@@ -12,7 +12,8 @@
       <div class="section-label" *ngIf="allowCustomSelection && sectionTitles.length > 0">
         {{ sectionTitles[0] | translate }}
       </div>
-      <div *ngIf="allowCustomSelection" [ngFormModel]="form" class="row custom-selection-container">
+      <div *ngIf="allowCustomSelection" class="row custom-selection-container">
+        <form #form="ngForm">
         <div class="medium-4 columns">
           <label>{{ 'ULN' | translate }}</label>
           <div class="uid-input-group">
@@ -36,6 +37,7 @@
             </button>
           </label>
         </div>
+        </form>
       </div>
 
       <div class="section-label" *ngIf="allowCustomSelection && sectionTitles.length > 1">
@@ -89,7 +91,7 @@
         </tr>
         </tbody>
       </table>
-      <pagination (pageChange)="page = $event"></pagination>
+      <pagination-controls (pageChange)="page = $event"></pagination-controls>
     </div>
   </div>
 </div>
