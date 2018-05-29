@@ -8,6 +8,7 @@ import {API_URI_GET_TAG_REPLACEMENT_ERRORS} from '../../../shared/services/nsfo-
 import {TagReplacementErrorResponse} from '../tagReplacement.model';
 
 import {NgxPaginationModule} from 'ngx-pagination';
+import {JsonResponseModel} from '../../../shared/models/json-response.model';
 
 @Component({
   providers: [NgxPaginationModule],
@@ -30,8 +31,8 @@ export class TagReplacementErrorsComponent implements OnInit {
     this.nsfo
       .doGetRequest(API_URI_GET_TAG_REPLACEMENT_ERRORS)
       .subscribe(
-        res => {
-          const tagReplacements = <TagReplacementErrorResponse[]> res.json().result;
+          (res: JsonResponseModel) => {
+          const tagReplacements = <TagReplacementErrorResponse[]> res.result;
 
           for (const tagReplacement of tagReplacements) {
             tagReplacement.log_date = moment(tagReplacement.log_date).format(this.settings.getViewDateTimeFormat());

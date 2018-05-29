@@ -8,6 +8,7 @@ import {NSFOService} from '../../../shared/services/nsfo-api/nsfo.service';
 import {SettingsService} from '../../../shared/services/settings/settings.service';
 import {UBNValidator} from '../../../shared/validation/nsfo-validation';
 import {API_URI_GET_COUNTRY_CODES, API_URI_HIDE_ERROR} from '../../../shared/services/nsfo-api/nsfo.settings';
+import {JsonResponseModel} from '../../../shared/models/json-response.model';
 
 declare var $;
 
@@ -53,8 +54,8 @@ export class EartagErrorRowComponent implements OnInit, AfterViewChecked {
     this.apiService
       .doGetRequest(API_URI_GET_COUNTRY_CODES)
       .subscribe(
-        res => {
-          this.country_code_list = _.sortBy(res.json().result, ['code']);
+          (res: JsonResponseModel) => {
+          this.country_code_list = _.sortBy(res.result, ['code']);
         },
         error => {
           alert(this.apiService.getErrorMessage(error));
@@ -77,7 +78,7 @@ export class EartagErrorRowComponent implements OnInit, AfterViewChecked {
       //     .subscribe(
       //         res => {},
       //         err => {
-      //             let error = err.json();
+      //             let error = err;
       //             this.showError.emit(error);
       //         });
       //

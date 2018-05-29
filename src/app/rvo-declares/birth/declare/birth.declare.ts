@@ -25,6 +25,7 @@ import {CountryCode} from '../../../shared/models/country.model';
 import {Animal, LivestockAnimal} from '../../../shared/models/animal.model';
 import {EarTag} from '../../../shared/models/rvo-declare.model';
 import {User} from '../../../shared/models/person.model';
+import {JsonResponseModel} from '../../../shared/models/json-response.model';
 
 @Component({
   templateUrl: './birth.declare.html',
@@ -233,8 +234,8 @@ export class BirthDeclareComponent implements OnInit, OnDestroy {
         .doPostRequest(API_URI_DECLARE_BIRTH + '/candidate-mothers', this.candidateMothersRequest)
         .toPromise()
         .then(
-          res => {
-            const suggestedCandidateMothers = <LivestockAnimal[]> res.json().result.suggested_candidate_mothers;
+            (res: JsonResponseModel) => {
+            const suggestedCandidateMothers = <LivestockAnimal[]> res.result.suggested_candidate_mothers;
 
             suggestedCandidateMothers.forEach(animal => {
               animal.suggested = true;
@@ -263,7 +264,7 @@ export class BirthDeclareComponent implements OnInit, OnDestroy {
             resolve();
           },
           err => {
-            // let error = err.json();
+            // let error = err;
             // this.errorMessage = error.result.message;
             // this.openModal();
             this.isLoadingCandidateMothers = false;
@@ -282,8 +283,8 @@ export class BirthDeclareComponent implements OnInit, OnDestroy {
     this.apiService
       .doGetRequest(API_URI_GET_COUNTRY_CODES)
       .subscribe(
-        res => {
-          this.country_code_list = <CountryCode[]> _.sortBy(res.json().result, ['code']);
+          (res: JsonResponseModel) => {
+          this.country_code_list = <CountryCode[]> _.sortBy(res.result, ['code']);
         },
         error => {
           alert(this.apiService.getErrorMessage(error));
@@ -304,10 +305,10 @@ export class BirthDeclareComponent implements OnInit, OnDestroy {
     this.apiService
       .doPostRequest(API_URI_DECLARE_BIRTH + '/' + this.selectedMother.uln + '/candidate-fathers', this.candidateFathersRequest)
       .subscribe(
-        res => {
+          (res: JsonResponseModel) => {
 
-          const suggestedCandidateFathers = <LivestockAnimal[]> res.json().result.suggested_candidate_fathers;
-          const otherCandidateFathers = <LivestockAnimal[]> res.json().result.other_candidate_fathers;
+          const suggestedCandidateFathers = <LivestockAnimal[]> res.result.suggested_candidate_fathers;
+          const otherCandidateFathers = <LivestockAnimal[]> res.result.other_candidate_fathers;
 
           for (const animal of suggestedCandidateFathers) {
             animal.suggested = true;
@@ -338,7 +339,7 @@ export class BirthDeclareComponent implements OnInit, OnDestroy {
           this.isLoadingCandidateFathers = false;
         },
         err => {
-          // let error = err.json();
+          // let error = err;
           // this.errorMessage = error.result.message;
           // this.openModal();
           this.isLoadingCandidateFathers = false;
@@ -359,8 +360,8 @@ export class BirthDeclareComponent implements OnInit, OnDestroy {
     const uri = API_URI_DECLARE_BIRTH + '/' + this.selectedMother.uln + '/candidate-surrogates';
     this.apiService.doPostRequest(uri, this.candidateSurrogatesRequest)
       .subscribe(
-        res => {
-          const candidateSurrogates = <LivestockAnimal[]> res.json().result.suggested_candidate_surrogates;
+          (res: JsonResponseModel) => {
+          const candidateSurrogates = <LivestockAnimal[]> res.result.suggested_candidate_surrogates;
 
           for (const animal of candidateSurrogates) {
             animal.suggested = true;
@@ -396,8 +397,8 @@ export class BirthDeclareComponent implements OnInit, OnDestroy {
     this.apiService
       .doGetRequest(API_URI_GET_EARTAGS)
       .subscribe(
-        res => {
-          this.tags = res.json().result;
+          (res: JsonResponseModel) => {
+          this.tags = res.result;
           for (const tag of this.tags) {
             tag.uln = tag.uln_country_code + tag.uln_number;
             tag.ulnLastFive = tag.uln_number.substr(tag.uln_number.length - 5);

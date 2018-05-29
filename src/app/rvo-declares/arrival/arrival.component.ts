@@ -5,6 +5,7 @@ import {Router} from '@angular/router';
 import {API_URI_GET_ARRIVALS_ERRORS} from '../../shared/services/nsfo-api/nsfo.settings';
 import {ArrivalErrorResponse} from './arrival.model';
 import {NSFOService} from '../../shared/services/nsfo-api/nsfo.service';
+import {JsonResponseModel} from '../../shared/models/json-response.model';
 
 @Component({
   templateUrl: './arrival.component.html',
@@ -34,16 +35,16 @@ export class ArrivalComponent implements OnInit, OnDestroy {
     this.apiService
       .doGetRequest(API_URI_GET_ARRIVALS_ERRORS)
       .subscribe(
-        res => {
+          (res: JsonResponseModel) => {
           const errorList = [];
-          const arrivals = <ArrivalErrorResponse[]> res.json().result.arrivals;
+          const arrivals = <ArrivalErrorResponse[]> res.result.arrivals;
           for (const arrival of arrivals) {
             if (!arrival.is_removed_by_user) {
               errorList.push(arrival);
             }
           }
 
-          const imports = <ArrivalErrorResponse[]> res.json().result.imports;
+          const imports = <ArrivalErrorResponse[]> res.result.imports;
           for (const arrival of imports) {
             if (!arrival.is_removed_by_user) {
               errorList.push(arrival);

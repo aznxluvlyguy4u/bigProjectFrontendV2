@@ -15,6 +15,7 @@ import { DownloadService } from '../../shared/services/download/download.service
 import { DeclareManagerService } from '../../shared/services/declaremanager/declare-manager.service';
 import {Message} from '../../shared/models/message.model';
 import {User} from '../../shared/models/person.model';
+import {JsonResponseModel} from '../../shared/models/json-response.model';
 
 @Component({
   templateUrl: './home.component.html'
@@ -102,8 +103,8 @@ export class MainComponent implements OnInit, OnDestroy, AfterContentChecked {
     this.apiService
       .doGetRequest(API_URI_GET_COUNTRY_CODES)
       .subscribe(
-        res => {
-          const countryCodeList = _.sortBy(res.json().result, ['code']);
+          (res: SettingsService) => {
+          const countryCodeList = _.sortBy(res, ['code']);
           this.settings.setCountryList(countryCodeList);
         },
         error => {
@@ -116,10 +117,10 @@ export class MainComponent implements OnInit, OnDestroy, AfterContentChecked {
     this.apiService
       .doGetRequest(API_URI_GET_MESSAGES)
       .subscribe(
-        res => {
+          (res: JsonResponseModel) => {
           this.utils.setMenuMessages([]);
           this.menuMessages = [];
-          this.messages = res.json().result;
+          this.messages = res.result;
           this.messages = _.orderBy(this.messages, ['creation_date'], ['desc']);
 
           for (const message of this.messages) {

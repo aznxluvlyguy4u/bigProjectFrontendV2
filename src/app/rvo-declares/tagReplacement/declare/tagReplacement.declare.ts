@@ -6,6 +6,7 @@ import {API_URI_DECLARE_TAG_REPLACEMENT, API_URI_GET_EARTAGS} from '../../../sha
 import {NSFOService} from '../../../shared/services/nsfo-api/nsfo.service';
 import * as _ from 'lodash';
 import {Animal} from '../../../shared/models/animal.model';
+import {JsonResponseModel} from '../../../shared/models/json-response.model';
 
 @Component({
   templateUrl: './tagReplacement.declare.html',
@@ -26,8 +27,8 @@ export class TagReplacementDeclareComponent {
     this.nsfo
       .doGetRequest(API_URI_GET_EARTAGS)
       .subscribe(
-        res => {
-          this.tags = res.json().result;
+          (res: JsonResponseModel) => {
+          this.tags = res.result;
 
           for (const tag of this.tags) {
             tag.uln = tag.uln_country_code + tag.uln_number;

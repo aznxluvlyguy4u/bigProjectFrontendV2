@@ -7,6 +7,7 @@ import {NSFOService} from '../../../shared/services/nsfo-api/nsfo.service';
 import {Settings} from '../../../shared/variables/settings';
 import {API_URI_CHANGE_ARRIVAL, API_URI_GET_COUNTRY_CODES} from '../../../shared/services/nsfo-api/nsfo.settings';
 import {DateValidator, UBNValidator} from '../../../shared/validation/nsfo-validation';
+import {JsonResponseModel} from '../../../shared/models/json-response.model';
 
 declare var $;
 
@@ -53,7 +54,7 @@ export class ArrivalHistoryRowComponent implements OnInit {
     this.apiService
       .doGetRequest(API_URI_GET_COUNTRY_CODES)
       .subscribe(
-        res => this.country_code_list = _.sortBy(res.json().result, ['code'])
+          (res: JsonResponseModel) => this.country_code_list = _.sortBy(res.result, ['code'])
       );
   }
 
@@ -73,7 +74,7 @@ export class ArrivalHistoryRowComponent implements OnInit {
           res => {
           },
           err => {
-            const error = err.json();
+            const error = err;
             this.showError.emit(error);
           }
         );

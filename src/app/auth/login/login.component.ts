@@ -9,15 +9,15 @@ import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 })
 
 export class LoginComponent {
-  private login_in_progress = false;
-  private form_valid = true;
-  private form: FormGroup;
+  public login_in_progress = false;
+  public form_valid = true;
+  public form: FormGroup;
 
-  private form_forgot_pw_valid = true;
-  private form_forgot_pw: FormGroup;
+  public form_forgot_pw_valid = true;
+  public form_forgot_pw: FormGroup;
 
-  private sent_email = false;
-  private enable_forgot_pw = false;
+  public sent_email = false;
+  public enable_forgot_pw = false;
 
   constructor(private apiService: NSFOService,
               private fb: FormBuilder,

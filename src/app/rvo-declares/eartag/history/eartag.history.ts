@@ -5,6 +5,7 @@ import {NSFOService} from '../../../shared/services/nsfo-api/nsfo.service';
 import {SettingsService} from '../../../shared/services/settings/settings.service';
 import {API_URI_GET_EARTAGS_HISTORY, API_URI_REVOKE_DECLARATION} from '../../../shared/services/nsfo-api/nsfo.settings';
 import {NgxPaginationModule} from 'ngx-pagination';
+import {JsonResponseModel} from '../../../shared/models/json-response.model';
 
 @Component({
   providers: [NgxPaginationModule],
@@ -31,8 +32,8 @@ export class EartagHistoryComponent implements OnInit {
   private getEartaglHistoryList() {
     this.apiService
       .doGetRequest(API_URI_GET_EARTAGS_HISTORY)
-      .subscribe(res => {
-          const eartags = res.json().result;
+      .subscribe((res: JsonResponseModel) => {
+          const eartags = res.result;
 
           for (const eartag of eartags) {
             eartag.uln = eartag.uln_country_code + eartag.uln_number;

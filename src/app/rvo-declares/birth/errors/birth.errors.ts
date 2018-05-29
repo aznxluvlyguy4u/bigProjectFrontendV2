@@ -5,6 +5,7 @@ import {NSFOService} from '../../../shared/services/nsfo-api/nsfo.service';
 import {API_URI_GET_BIRTHS_ERRORS, API_URI_REVOKE_BIRTH} from '../../../shared/services/nsfo-api/nsfo.settings';
 import {Settings} from '../../../shared/variables/settings';
 import {NgxPaginationModule} from 'ngx-pagination';
+import {JsonResponseModel} from '../../../shared/models/json-response.model';
 
 @Component({
   providers: [NgxPaginationModule],
@@ -25,8 +26,8 @@ export class BirthErrorsComponent implements OnInit {
   private getBirthErrorList() {
     this.apiService
       .doGetRequest(API_URI_GET_BIRTHS_ERRORS)
-      .subscribe(res => {
-          const births = <BirthErrorResponse[]> res.json().result;
+      .subscribe((res: JsonResponseModel) => {
+          const births = <BirthErrorResponse[]> res.result;
           births.forEach((birth) => {
             birth.date_of_birth = moment(birth.date_of_birth).format(this.settings.VIEW_DATE_FORMAT);
 

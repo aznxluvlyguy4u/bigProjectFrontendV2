@@ -98,7 +98,7 @@ export class WeightDeclareComponent {
           this.selectedAnimal.weight = this.selectedAnimal.new_weight;
         },
         err => {
-          const error = err.json();
+          const error = err;
           this.errorMessages = error.result;
           if (this.errorMessages.length === 0) {
             const errorMessage = {

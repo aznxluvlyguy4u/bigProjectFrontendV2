@@ -9,6 +9,7 @@ import {NSFOService} from '../../../shared/services/nsfo-api/nsfo.service';
 import {API_URI_GET_LOSS_HISTORY, API_URI_REVOKE_DECLARATION} from '../../../shared/services/nsfo-api/nsfo.settings';
 import {Settings} from '../../../shared/variables/settings';
 import {NgxPaginationModule} from 'ngx-pagination';
+import {JsonResponseModel} from '../../../shared/models/json-response.model';
 
 @Component({
   providers: [NgxPaginationModule],
@@ -31,8 +32,8 @@ export class LossHistoryComponent implements OnInit {
   private getLossHistoryList() {
     this.apiService
       .doGetRequest(API_URI_GET_LOSS_HISTORY)
-      .subscribe(res => {
-          const losses = <LossChangeResponse[]> res.json().result;
+      .subscribe((res: JsonResponseModel) => {
+          const losses = <LossChangeResponse[]> res.result;
 
           for (const loss of losses) {
             loss.date_of_death = moment(loss.date_of_death).format(this.settings.VIEW_DATE_FORMAT);

@@ -6,6 +6,7 @@ import {NSFOService} from '../../../shared/services/nsfo-api/nsfo.service';
 import {API_URI_GET_DEPARTS_HISTORY, API_URI_REVOKE_DECLARATION} from '../../../shared/services/nsfo-api/nsfo.settings';
 import {Settings} from '../../../shared/variables/settings';
 import {NgxPaginationModule} from 'ngx-pagination';
+import {JsonResponseModel} from '../../../shared/models/json-response.model';
 
 @Component({
   providers: [NgxPaginationModule],
@@ -28,8 +29,8 @@ export class DepartHistoryComponent implements OnInit {
   private getDepartHistoryList() {
     this.apiService
       .doGetRequest(API_URI_GET_DEPARTS_HISTORY)
-      .subscribe(res => {
-          const departs = <DepartChangeResponse[]> res.json().result.departs;
+      .subscribe((res: JsonResponseModel) => {
+          const departs = <DepartChangeResponse[]> res.result.departs;
 
           for (const depart of departs) {
             depart.depart_date = moment(depart.depart_date).format(this.settings.VIEW_DATE_FORMAT);
@@ -39,7 +40,7 @@ export class DepartHistoryComponent implements OnInit {
             this.departHistoryList.push(depart);
           }
 
-          const departs_exports = <DepartChangeResponse[]> res.json().result.exports;
+          const departs_exports = <DepartChangeResponse[]> res.result.exports;
 
           for (const depart of departs_exports) {
             depart.depart_date = moment(depart.depart_date).format(this.settings.VIEW_DATE_FORMAT);

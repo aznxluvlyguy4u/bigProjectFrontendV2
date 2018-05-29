@@ -5,6 +5,7 @@ import {Router} from '@angular/router';
 import {DepartErrorResponse} from './depart.model';
 import {API_URI_GET_DEPARTS_ERRORS} from '../../shared/services/nsfo-api/nsfo.settings';
 import {NSFOService} from '../../shared/services/nsfo-api/nsfo.service';
+import {JsonResponseModel} from '../../shared/models/json-response.model';
 
 @Component({
   templateUrl: './depart.component.html',
@@ -35,16 +36,16 @@ export class DepartComponent implements OnInit, OnDestroy {
   private getDepartErrorList() {
     this.apiService
       .doGetRequest(API_URI_GET_DEPARTS_ERRORS)
-      .subscribe(res => {
+      .subscribe((res: JsonResponseModel) => {
           const errorList = [];
-          const departs = <DepartErrorResponse[]> res.json().result.departs;
+          const departs = <DepartErrorResponse[]> res.result.departs;
           for (const depart of departs) {
             if (!depart.is_removed_by_user) {
               errorList.push(depart);
             }
           }
 
-          const exports = <DepartErrorResponse[]> res.json().result.exports;
+          const exports = <DepartErrorResponse[]> res.result.exports;
           for (const depart of exports) {
             if (!depart.is_removed_by_user) {
               errorList.push(depart);

@@ -10,6 +10,7 @@ import {TagReplacementHistoryChangeResponse} from '../tagReplacement.model';
 import {API_URI_GET_TAG_REPLACEMENT_HISTORY, API_URI_REVOKE_DECLARATION} from '../../../shared/services/nsfo-api/nsfo.settings';
 import {TagReplacementHistoryRowComponent} from './tagReplacement.history.row';
 import {NgxPaginationModule} from 'ngx-pagination';
+import {JsonResponseModel} from '../../../shared/models/json-response.model';
 
 @Component({
   providers: [NgxPaginationModule],
@@ -33,8 +34,8 @@ export class TagReplacementHistoryComponent implements OnInit {
     this.nsfo
       .doGetRequest(API_URI_GET_TAG_REPLACEMENT_HISTORY)
       .subscribe(
-        res => {
-          const tagReplacements = <TagReplacementHistoryChangeResponse[]> res.json().result;
+          (res: JsonResponseModel) => {
+          const tagReplacements = <TagReplacementHistoryChangeResponse[]> res.result;
 
           for (const tagReplacement of tagReplacements) {
             tagReplacement.log_date = moment(tagReplacement.log_date).format(this.settings.getViewDateTimeFormat());

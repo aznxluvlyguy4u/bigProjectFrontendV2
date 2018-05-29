@@ -6,6 +6,7 @@ import {Litter, LitterDetails} from '../birth.model';
 import {Settings} from '../../../shared/variables/settings';
 import {NSFOService} from '../../../shared/services/nsfo-api/nsfo.service';
 import {API_URI_GET_BIRTH_DETAILS} from '../../../shared/services/nsfo-api/nsfo.settings';
+import {JsonResponseModel} from '../../../shared/models/json-response.model';
 
 declare var $;
 
@@ -30,8 +31,8 @@ export class BirthHistoryRowComponent {
   private getLitterDetails() {
     this.nsfo.doGetRequest(API_URI_GET_BIRTH_DETAILS + '/' + this.litter.litter_id)
       .subscribe(
-        res => {
-          this.litterDetails = res.json().result;
+          (res: JsonResponseModel) => {
+          this.litterDetails = res.result;
           // for(let child of this.litterDetails.children) {
           //     child.error_message = 'test ' + child.uln_number;
           // }

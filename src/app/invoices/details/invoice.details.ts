@@ -6,6 +6,7 @@ import {Invoice} from '../../shared/models/invoice.model';
 import {SettingsService} from '../../shared/services/settings/settings.service';
 import {DownloadService} from '../../shared/services/download/download.service';
 import {InvoiceSenderDetails} from '../../shared/models/invoice-sender-details.model';
+import {JsonResponseModel} from '../../shared/models/json-response.model';
 
 @Component({
   selector: 'app-invoice-details',
@@ -27,9 +28,9 @@ export class InvoiceDetailsComponent implements OnInit {
       this.id = params['id'];
       this.apiService.doGetRequest(API_URI_INVOICES + '/' + this.id)
         .subscribe(
-          res => {
-            this.invoice = res.json().result;
-            this.senderDetails = res.json().result.sender_details;
+            (res: JsonResponseModel) => {
+            this.invoice = res.result;
+            this.senderDetails = res.result.sender_details;
           },
           error => {
             alert(this.apiService.getErrorMessage(error));
@@ -46,8 +47,8 @@ export class InvoiceDetailsComponent implements OnInit {
   private startInvoicePaymentProcedure() {
     this.apiService.doPostRequest(API_URI_INVOICE_PAYMENT, this.invoice)
       .subscribe(
-        res => {
-          window.location.href = res.json().result['links']['payment_url'];
+          (res: JsonResponseModel) => {
+          window.location.href = res.result['links']['payment_url'];
         }
       );
   }

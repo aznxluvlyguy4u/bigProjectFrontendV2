@@ -8,6 +8,7 @@ import {NSFOService} from '../../../shared/services/nsfo-api/nsfo.service';
 import {Settings} from '../../../shared/variables/settings';
 import {API_URI_GET_DEPARTS_ERRORS} from '../../../shared/services/nsfo-api/nsfo.settings';
 import {NgxPaginationModule} from 'ngx-pagination';
+import {JsonResponseModel} from '../../../shared/models/json-response.model';
 
 @Component({
   providers: [NgxPaginationModule],
@@ -29,14 +30,14 @@ export class DepartErrorsComponent implements OnInit {
   private getDepartErrorList() {
     this.apiService
       .doGetRequest(API_URI_GET_DEPARTS_ERRORS)
-      .subscribe(res => {
-          const departs = <DepartErrorResponse[]> res.json().result.departs;
+      .subscribe((res: JsonResponseModel) => {
+          const departs = <DepartErrorResponse[]> res.result.departs;
           for (const depart of departs) {
             depart.depart_date = moment(depart.depart_date).format(this.settings.VIEW_DATE_FORMAT);
             this.departErrorList.push(depart);
           }
 
-          const departs_exports = <DepartErrorResponse[]> res.json().result.exports;
+          const departs_exports = <DepartErrorResponse[]> res.result.exports;
           for (const depart_export of departs_exports) {
             depart_export.depart_date = moment(depart_export.depart_date).format(this.settings.VIEW_DATE_FORMAT);
             this.departErrorList.push(depart_export);

@@ -5,6 +5,7 @@ import {NSFOService} from '../../shared/services/nsfo-api/nsfo.service';
 import {API_URI_GET_CMS, API_URI_SEND_MESSAGE} from '../../shared/services/nsfo-api/nsfo.settings';
 import {SettingsService} from '../../shared/services/settings/settings.service';
 import {UtilsService} from '../../shared/services/utils/utils.services';
+import {JsonResponseModel} from '../../shared/models/json-response.model';
 
 @Component({
   templateUrl: './contact.component.html',
@@ -61,9 +62,9 @@ export class ContactComponent implements OnInit, OnDestroy {
 
   private getContactInfo() {
     this.apiService.doGetRequest(API_URI_GET_CMS)
-      .subscribe(res => {
-          if (res.json().result) {
-            this.contactInfo = res.json().result.contact_info;
+      .subscribe((res: JsonResponseModel) => {
+          if (res.result) {
+            this.contactInfo = res.result.contact_info;
           }
         },
         error => {

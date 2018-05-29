@@ -5,6 +5,7 @@ import {NSFOService} from '../../../shared/services/nsfo-api/nsfo.service';
 import {API_URI_CHANGE_EMAIL, API_URI_GET_COMPANY_LOGIN} from '../../../shared/services/nsfo-api/nsfo.settings';
 import {SettingsService} from '../../../shared/services/settings/settings.service';
 import {LoginInfo} from '../../../shared/models/login-info.model';
+import {JsonResponseModel} from '../../../shared/models/json-response.model';
 
 @Component({
   templateUrl: './email.component.html',
@@ -32,8 +33,8 @@ export class ProfileEmailComponent implements OnInit {
   private getCompanyInfo() {
     this.apiService.doGetRequest(API_URI_GET_COMPANY_LOGIN)
       .subscribe(
-        res => {
-          this.login_nsfo = res.json().result.nsfo;
+          (res: JsonResponseModel) => {
+          this.login_nsfo = res.result.nsfo;
           this.settings.setCurrentUser(this.login_nsfo.logged_in_user);
         },
         error => {

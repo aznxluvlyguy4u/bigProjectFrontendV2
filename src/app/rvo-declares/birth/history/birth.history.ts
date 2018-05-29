@@ -9,6 +9,7 @@ import {
 } from '../../../shared/services/nsfo-api/nsfo.settings';
 import {Settings} from '../../../shared/variables/settings';
 import {NgxPaginationModule} from 'ngx-pagination';
+import {JsonResponseModel} from '../../../shared/models/json-response.model';
 
 @Component({
   providers: [NgxPaginationModule],
@@ -31,8 +32,8 @@ export class BirthHistoryComponent implements OnInit {
   private getBirthHistoryList() {
     this.nsfo
       .doGetRequest(API_URI_GET_BIRTHS_HISTORY)
-      .subscribe(res => {
-          this.litters = <Litter[]> res.json().result;
+      .subscribe((res: JsonResponseModel) => {
+          this.litters = <Litter[]> res.result;
           this.litters = _.orderBy(this.litters, ['log_date'], ['desc']);
         },
         error => {

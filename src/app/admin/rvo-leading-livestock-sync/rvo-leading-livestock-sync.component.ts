@@ -8,6 +8,7 @@ import {SettingsService} from '../../shared/services/settings/settings.service';
 import {User} from '../../shared/models/person.model';
 import {RetrieveAnimals} from '../../shared/models/rvo-declare.model';
 import {Subscription} from 'rxjs';
+import {JsonResponseModel} from '../../shared/models/json-response.model';
 
 @Component({
   templateUrl: './rvo-leading-livestock-sync.component.html'
@@ -69,10 +70,10 @@ export class RvoLeadingLivestockSyncComponent implements OnInit, OnDestroy {
   private getLatestSyncData() {
     this.apiService.doGetRequest(API_URI_SYNC_ANIMALS_RVO_LEADING)
       .subscribe(
-        res => {
-          this.latestSyncData = res.json().result;
-          if (res.json().result) {
-            this.showWarningMessage = res.json().result.request_state === 'OPEN';
+          (res: JsonResponseModel) => {
+          this.latestSyncData = res.result;
+          if (res.result) {
+            this.showWarningMessage = res.result.request_state === 'OPEN';
           } else {
             this.showWarningMessage = false;
           }

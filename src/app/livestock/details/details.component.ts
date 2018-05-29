@@ -21,6 +21,7 @@ import {Animal} from '../../shared/models/animal.model';
 import {Exterior} from '../../shared/models/measurement.model';
 import {Inspector, User} from '../../shared/models/person.model';
 import {DeclareLog} from './declare-log.model';
+import {JsonResponseModel} from '../../shared/models/json-response.model';
 
 @Component({
   templateUrl: './details.component.html',
@@ -120,8 +121,8 @@ export class LivestockDetailComponent implements OnInit {
     this.apiService
       .doGetRequest(API_URI_GET_COUNTRY_CODES)
       .subscribe(
-        res => {
-          this.country_code_list = _.sortBy(res.json().result, ['code']);
+          (res: JsonResponseModel) => {
+          this.country_code_list = _.sortBy(res.result, ['code']);
         },
         error => {
           alert(this.apiService.getErrorMessage(error));
@@ -133,8 +134,8 @@ export class LivestockDetailComponent implements OnInit {
     this.apiService
       .doGetRequest(API_URI_GET_COLLAR_COLORS)
       .subscribe(
-        res => {
-          this.collar_color_list = res.json().result;
+          (res: JsonResponseModel) => {
+          this.collar_color_list = res.result;
         },
         error => {
           alert(this.apiService.getErrorMessage(error));
@@ -145,8 +146,8 @@ export class LivestockDetailComponent implements OnInit {
   private getEartagsList() {
     this.apiService
       .doGetRequest(API_URI_GET_EARTAGS)
-      .subscribe(res => {
-          this.tags = res.json().result;
+      .subscribe((res: JsonResponseModel) => {
+          this.tags = res.result;
           for (const tag of this.tags) {
             tag.uln = tag.uln_country_code + tag.uln_number;
             tag.ulnLastFive = tag.uln_number.substr(tag.uln_number.length - 5);
@@ -163,8 +164,8 @@ export class LivestockDetailComponent implements OnInit {
       .subscribe(params => {
         this.apiService
           .doGetRequest(API_URI_GET_ANIMAL_DETAILS + '/' + params.uln)
-          .subscribe(res => {
-              this.animal = res.json().result;
+          .subscribe((res: JsonResponseModel) => {
+              this.animal = res.result;
               this.animal.uln = this.animal.uln_country_code + this.animal.uln_number;
               this.animal.date_of_birth = moment(this.animal.date_of_birth).format(this.settings.getViewDateFormat());
               this.form.get('date_of_birth').setValue(this.animal.date_of_birth);

@@ -92,7 +92,7 @@ export class DepartDeclareComponent {
               }
             },
             err => {
-              const error = err.json();
+              const error = err;
               this.errorMessage = error.message;
 
               if (!this.errorMessage) {

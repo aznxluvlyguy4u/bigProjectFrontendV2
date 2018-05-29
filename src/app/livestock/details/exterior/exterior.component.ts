@@ -10,6 +10,7 @@ import {API_URI_MEASUREMENTS} from '../../../shared/services/nsfo-api/nsfo.setti
 import {ExteriorMeasurementsValidator} from '../../../shared/validation/nsfo-validation';
 import {Exterior} from '../../../shared/models/measurement.model';
 import {User} from '../../../shared/models/person.model';
+import {JsonResponseModel} from '../../../shared/models/json-response.model';
 
 
 @Component({
@@ -93,8 +94,8 @@ export class ExteriorComponent implements OnInit, AfterViewInit, OnChanges {
     this.apiService
       .doGetRequest(API_URI_MEASUREMENTS + '/' + this.uln + '/exteriors/kinds')
       .subscribe(
-        res => {
-          this.kinds = res.json().result;
+          (res: JsonResponseModel) => {
+          this.kinds = res.result;
         },
         error => {
           alert(this.apiService.getErrorMessage(error));
@@ -106,8 +107,8 @@ export class ExteriorComponent implements OnInit, AfterViewInit, OnChanges {
     this.apiService
       .doGetRequest(API_URI_MEASUREMENTS + '/' + this.uln + '/exteriors/kinds/' + measurementDate)
       .subscribe(
-        res => {
-          this.kinds = res.json().result;
+          (res: JsonResponseModel) => {
+          this.kinds = res.result;
         },
         error => {
           alert(this.apiService.getErrorMessage(error));
@@ -119,8 +120,8 @@ export class ExteriorComponent implements OnInit, AfterViewInit, OnChanges {
     this.apiService
       .doGetRequest(API_URI_MEASUREMENTS + '/' + this.uln + '/exteriors/inspectors')
       .subscribe(
-        res => {
-          this.inspectors = res.json().result;
+          (res: JsonResponseModel) => {
+          this.inspectors = res.result;
         },
         error => {
           alert(this.apiService.getErrorMessage(error));
@@ -227,10 +228,10 @@ export class ExteriorComponent implements OnInit, AfterViewInit, OnChanges {
 
       this.apiService.doPutRequest(API_URI_MEASUREMENTS + '/' + this.uln + '/exteriors/' + date, body)
         .subscribe(
-          res => {
+            (res: JsonResponseModel) => {
             this.isRequestingExterior = false;
             // this.getAnimalDetails.emit({});
-            this.selectedExterior = res.json().result;
+            this.selectedExterior = res.result;
             this.closeExteriorModal();
           },
           err => {

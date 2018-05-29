@@ -5,6 +5,7 @@ import {API_URI_GET_COMPANY_LOGIN, GHOST_TOKEN_NAMESPACE} from '../nsfo-api/nsfo
 import {DEVELOPER, SUPER_ADMIN} from '../../variables/access-levels';
 import {NSFOService} from '../nsfo-api/nsfo.service';
 import {User} from '../../models/person.model';
+import {JsonResponseModel} from '../../models/json-response.model';
 
 @Injectable()
 export class SettingsService {
@@ -28,8 +29,8 @@ export class SettingsService {
     if (this.currentUser === null) {
       this.apiService.doGetRequest(API_URI_GET_COMPANY_LOGIN)
         .subscribe(
-          res => {
-            this.setCurrentUser(res.json().result.nsfo.logged_in_user);
+            (res: JsonResponseModel) => {
+            this.setCurrentUser(res.result.nsfo.logged_in_user);
           },
           error => {
             alert(this.apiService.getErrorMessage(error));

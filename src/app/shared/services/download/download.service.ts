@@ -21,6 +21,7 @@ import {CSV, PDF} from '../../variables/file-type.enum';
 import * as _ from 'lodash';
 import {Animal, LivestockAnimal} from '../../models/animal.model';
 import {Invoice} from '../../models/invoice.model';
+import {JsonResponseModel} from '../../models/json-response.model';
 
 export const INBREEDING_COEFFICIENT_REPORT = 'INBREEDING_COEFFICIENT_REPORT';
 export const LINEAGE_PROOF_REPORT = 'LINEAGE_PROOF_REPORT';
@@ -264,8 +265,8 @@ export class DownloadService {
 
     this.nsfo.doPostRequest(uri, request)
       .subscribe(
-        res => {
-          download.url = res.json().result;
+          (res: JsonResponseModel) => {
+          download.url = res.result;
           this.completeDownloadPreparation(download);
         },
         error => {
@@ -284,8 +285,8 @@ export class DownloadService {
 
     this.nsfo.doGetRequest(uri)
       .subscribe(
-        res => {
-          download.url = res.json().result;
+          (res: JsonResponseModel) => {
+          download.url = res.result;
           this.completeDownloadPreparation(download);
         },
         error => {

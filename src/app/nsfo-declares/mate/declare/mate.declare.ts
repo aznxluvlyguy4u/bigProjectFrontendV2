@@ -15,6 +15,7 @@ import {LivestockAnimal} from '../../../shared/models/animal.model';
 import {MateAnimalWithStatus} from './mate-animal-with-status.model';
 import {AnimalsOverviewSelection} from '../../../shared/components/livestock/animals-overview-selection.model';
 import {ErrorMessage} from '../../../shared/models/error-message.model';
+import {JsonResponseModel} from '../../../shared/models/json-response.model';
 
 @Component({
   providers: [NSFOService, Constants],
@@ -83,8 +84,8 @@ export class MateDeclareComponent implements OnInit, OnDestroy {
     this.nsfo
       .doGetRequest(API_URI_GET_ANIMALS)
       .subscribe(
-        res => {
-          this.livestock = <LivestockAnimal[]> res.json().result;
+          (res: JsonResponseModel) => {
+          this.livestock = <LivestockAnimal[]> res.result;
           for (const animal of this.livestock) {
             if (animal.uln_country_code && animal.uln_number) {
               animal.uln = animal.uln_country_code + animal.uln_number;
@@ -142,7 +143,7 @@ export class MateDeclareComponent implements OnInit, OnDestroy {
         };
         this.nsfo.doPostRequest(API_URI_DECLARE_MATE, request)
           .subscribe(
-            res => {
+              (res: JsonResponseModel) => {
 
               animal.successful = true;
               animal.selected = false;
@@ -151,7 +152,7 @@ export class MateDeclareComponent implements OnInit, OnDestroy {
                 selectionList.splice(index, 1);
               }
 
-              this.updateLastMateAfterDeclare(res.json().result);
+              this.updateLastMateAfterDeclare(res.result);
 
               setTimeout(() => {
                 animal.successful = false;
@@ -164,7 +165,7 @@ export class MateDeclareComponent implements OnInit, OnDestroy {
               }, this.successDurationSeconds * 1000);
             },
             err => {
-              const error = err.json();
+              const error = err;
 
               if (error.result.length === 0) {
                 const errorMessage = {

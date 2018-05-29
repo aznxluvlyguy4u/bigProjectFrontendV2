@@ -15,6 +15,7 @@ import {
 import {SettingsService} from '../../../shared/services/settings/settings.service';
 import {NgxPaginationModule} from 'ngx-pagination';
 import {User} from '../../../shared/models/person.model';
+import {JsonResponseModel} from '../../../shared/models/json-response.model';
 
 declare var $;
 
@@ -128,8 +129,8 @@ export class EartagDeclareComponent implements OnInit, OnDestroy {
     this.apiService
       .doGetRequest(API_URI_GET_EARTAGS)
       .subscribe(
-        res => {
-          const eartags = res.json().result;
+          (res: JsonResponseModel) => {
+          const eartags = res.result;
           this.eartags_list = [];
 
           for (const eartag of eartags) {
@@ -170,8 +171,8 @@ export class EartagDeclareComponent implements OnInit, OnDestroy {
     this.apiService
       .doGetRequest(API_URI_SYNC_EARTAGS + '-status')
       .subscribe(
-        res => {
-          this.eartagStatusOverview = res.json().result;
+          (res: JsonResponseModel) => {
+          this.eartagStatusOverview = res.result;
           this.birthDeclaresInProgress = this.eartagStatusOverview.births_in_progress;
           this.birthRevokesInProgress = this.eartagStatusOverview.birth_revokes_in_progress;
           this.areBirthsInProgress = this.birthDeclaresInProgress + this.birthRevokesInProgress > 0;
@@ -257,7 +258,7 @@ export class EartagDeclareComponent implements OnInit, OnDestroy {
             this.closeModal();
           },
           err => {
-            const error = err.json();
+            const error = err;
             this.error_message = error.message;
             this.eartag_in_progress = false;
           }
@@ -301,7 +302,7 @@ export class EartagDeclareComponent implements OnInit, OnDestroy {
             this.closeModalAll();
           },
           err => {
-            const error = err.json();
+            const error = err;
             this.error_message = error.message;
             this.all_eartags_in_progress = false;
           }

@@ -10,6 +10,7 @@ import {FormControl, FormGroup, FormBuilder, Validators} from '@angular/forms';
 import {UtilsService} from '../../../shared/services/utils/utils.services';
 import * as _ from 'lodash';
 import {Company} from '../../../shared/models/company.model';
+import {JsonResponseModel} from '../../../shared/models/json-response.model';
 
 @Component({
   templateUrl: './company.component.html',
@@ -61,8 +62,8 @@ export class ProfileCompanyComponent implements OnInit {
   private getCompanyInfo() {
     this.apiService.doGetRequest(API_URI_GET_COMPANY_PROFILE)
       .subscribe(
-        res => {
-          this.company = res.json().result;
+          (res: JsonResponseModel) => {
+          this.company = res.result;
 
           this.updateIsRevealHistoricAnimalsValue();
         },
@@ -75,8 +76,8 @@ export class ProfileCompanyComponent implements OnInit {
   private getStateList() {
     this.apiService.doGetRequest(API_URI_GET_STATE_CODES)
       .subscribe(
-        res => {
-          this.stateList = _.sortBy(res.json().result, ['name']);
+          (res: JsonResponseModel) => {
+          this.stateList = _.sortBy(res.result, ['name']);
         },
         error => {
           alert(this.apiService.getErrorMessage(error));

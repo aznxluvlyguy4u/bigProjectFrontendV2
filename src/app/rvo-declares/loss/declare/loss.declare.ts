@@ -8,6 +8,7 @@ import {NSFOService} from '../../../shared/services/nsfo-api/nsfo.service';
 import {DateValidator, UBNValidator} from '../../../shared/validation/nsfo-validation';
 import {API_URI_DECLARE_LOSS, API_URI_GET_UBN_PROCESSORS} from '../../../shared/services/nsfo-api/nsfo.settings';
 import {AnimalsOverviewSelection} from '../../../shared/components/livestock/animals-overview-selection.model';
+import {JsonResponseModel} from '../../../shared/models/json-response.model';
 
 @Component({
   templateUrl: './loss.declare.html',
@@ -51,8 +52,8 @@ export class LossDeclareComponent implements OnInit {
   private getUBNProcessors() {
     this.nsfo.doGetRequest(API_URI_GET_UBN_PROCESSORS)
       .subscribe(
-        res => {
-          this.ubn_processors = res.json().result;
+          (res: JsonResponseModel) => {
+          this.ubn_processors = res.result;
         },
         error => {
           alert(this.nsfo.getErrorMessage(error));
@@ -92,7 +93,7 @@ export class LossDeclareComponent implements OnInit {
               }
             },
             err => {
-              const error = err.json();
+              const error = err;
               this.errorMessage = error.message;
 
               if (!this.errorMessage) {

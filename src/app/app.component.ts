@@ -9,6 +9,7 @@ import {DeclareManagerService} from './shared/services/declaremanager/declare-ma
 import {UtilsService} from './shared/services/utils/utils.services';
 import {NSFOService} from './shared/services/nsfo-api/nsfo.service';
 import {API_URI_GET_COUNTRY_CODES, API_URI_GET_MESSAGES, UBN_TOKEN_NAMESPACE} from './shared/services/nsfo-api/nsfo.settings';
+import {JsonResponseModel} from './shared/models/json-response.model';
 
 @Component({
   selector: 'app-root',
@@ -103,7 +104,7 @@ export class AppComponent implements OnInit, AfterContentChecked, OnDestroy {
     this.apiService
       .doGetRequest(API_URI_GET_COUNTRY_CODES)
       .subscribe(
-        res => {
+          (res: JsonResponseModel) => {
           const countryCodeList = _.sortBy(res.result, ['code']);
           this.settings.setCountryList(countryCodeList);
         },
@@ -117,7 +118,7 @@ export class AppComponent implements OnInit, AfterContentChecked, OnDestroy {
     this.apiService
       .doGetRequest(API_URI_GET_MESSAGES)
       .subscribe(
-        res => {
+          (res: JsonResponseModel) => {
           this.utils.setMenuMessages([]);
           this.menuMessages = [];
           this.messages = res.result;

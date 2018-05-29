@@ -124,6 +124,7 @@ import {CheckMarkComponent} from './shared/components/checkmark/check-mark.compo
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {EartagErrorRowComponent} from './rvo-declares/eartag/errors/eartag.errors.row';
 import {HttpModule} from '@angular/http';
+import {LiveSearchComponent} from './shared/components/livesearch/livesearch.component';
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http);
@@ -132,6 +133,7 @@ enableProdMode();
 @NgModule({
   declarations: [
     AppComponent,
+      LiveSearchComponent,
       RvoLeadingLivestockSyncComponent,
       AdminComponent,
       GhostLoginComponent,

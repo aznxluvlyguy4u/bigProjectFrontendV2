@@ -5,6 +5,7 @@ import {SettingsService} from '../../../shared/services/settings/settings.servic
 import {EartagErrorResponse} from '../eartag.model';
 import {API_URI_GET_EARTAGS_ERRORS} from '../../../shared/services/nsfo-api/nsfo.settings';
 import {NgxPaginationModule} from 'ngx-pagination';
+import {JsonResponseModel} from '../../../shared/models/json-response.model';
 
 @Component({
   providers: [NgxPaginationModule],
@@ -28,8 +29,8 @@ export class EartagErrorsComponent implements OnInit {
   private getEartagErrorList() {
     this.apiService
       .doGetRequest(API_URI_GET_EARTAGS_ERRORS)
-      .subscribe(res => {
-          this.eartagErrorList = _.orderBy(res.json().result, ['log_date'], ['desc']);
+      .subscribe((res: JsonResponseModel) => {
+          this.eartagErrorList = _.orderBy(res.result, ['log_date'], ['desc']);
           this.isLoading = false;
         },
         error => {

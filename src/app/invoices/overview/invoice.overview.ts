@@ -8,6 +8,7 @@ import {Router} from '@angular/router';
 import {API_URI_INVOICE_PAYMENT, API_URI_INVOICES} from '../../shared/services/nsfo-api/nsfo.settings';
 import {DownloadService} from '../../shared/services/download/download.service';
 import {NgxPaginationModule} from 'ngx-pagination';
+import {JsonResponseModel} from '../../shared/models/json-response.model';
 
 @Component({
   providers: [NgxPaginationModule],
@@ -46,8 +47,8 @@ export class InvoiceOverviewComponent implements OnInit, OnDestroy {
   private getInvoicesList() {
     this.apiService.doGetRequest(API_URI_INVOICES)
       .subscribe(
-        res => {
-          this.invoices = <Invoice[]> res.json().result;
+          (res: JsonResponseModel) => {
+          this.invoices = <Invoice[]> res.result;
           this.isLoaded = true;
         },
         error => {
@@ -84,8 +85,8 @@ export class InvoiceOverviewComponent implements OnInit, OnDestroy {
     invoice.company_name = company_name;
     this.apiService.doPostRequest(API_URI_INVOICE_PAYMENT, invoice)
       .subscribe(
-        res => {
-          window.location.href = res.json().result['links']['payment_url'];
+          (res: JsonResponseModel) => {
+          window.location.href = res.result['links']['payment_url'];
         }
       );
   }

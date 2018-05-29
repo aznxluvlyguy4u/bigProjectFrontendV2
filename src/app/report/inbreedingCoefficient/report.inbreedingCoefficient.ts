@@ -11,6 +11,7 @@ import {AnimalsOverviewSelection} from '../../shared/components/livestock/animal
 
 import {FormBuilder, FormControl, FormGroup} from '@angular/forms';
 import {Animal, LivestockAnimal} from '../../shared/models/animal.model';
+import {JsonResponseModel} from '../../shared/models/json-response.model';
 
 @Component({
     templateUrl: './report.inbreedingCoefficient.html',
@@ -35,8 +36,8 @@ export class ReportInbreedingCoefficientComponent {
         this.nsfo
             .doGetRequest(API_URI_GET_ANIMALS)
             .subscribe(
-                res => {
-                    this.livestock = <LivestockAnimal[]> res.json().result;
+                (res: JsonResponseModel) => {
+                    this.livestock = <LivestockAnimal[]> res.result;
 
                     for (const animal of this.livestock) {
                         if (animal.uln_country_code && animal.uln_number) {

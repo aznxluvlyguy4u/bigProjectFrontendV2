@@ -7,6 +7,7 @@ import {SettingsService} from '../../../shared/services/settings/settings.servic
 import {NgxPaginationModule} from 'ngx-pagination';
 import {MateChangeResponse} from '../../../shared/models/nsfo-declare.model';
 import {ErrorMessage} from '../../../shared/models/error-message.model';
+import {JsonResponseModel} from '../../../shared/models/json-response.model';
 
 @Component({
   providers: [NgxPaginationModule],
@@ -33,8 +34,8 @@ export class MateHistoryComponent implements OnInit {
     this.apiService
       .doGetRequest(API_URI_GET_MATE_HISTORY)
       .subscribe(
-        res => {
-          const mates = <MateChangeResponse[]> res.json().result;
+          (res: JsonResponseModel) => {
+          const mates = <MateChangeResponse[]> res.result;
           for (const mate of mates) {
             mate.start_date = moment(mate.start_date).format(this.settings.getViewDateFormat());
             mate.end_date = moment(mate.end_date).format(this.settings.getViewDateFormat());

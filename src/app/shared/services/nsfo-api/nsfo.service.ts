@@ -10,9 +10,9 @@ import {Animal} from '../../models/animal.model';
 import {Router} from '@angular/router';
 import {pick} from 'lodash';
 import {HttpClient, HttpHeaders, HttpResponse} from '@angular/common/http';
-import {Http, Response} from '@angular/http';
 import {environment} from '../../../../environments/environment';
 import {ResultModel} from './result.model';
+import {ResponseContentType} from '@angular/http';
 
 @Injectable()
 export class NSFOService {
@@ -49,7 +49,7 @@ export class NSFOService {
     return {
       headers: this.getDefaultHeaders(),
       observe: 'body', // returning full response, default = body
-      responseType: 'json', // response will be treated as this, default = json
+      responseType: ResponseContentType.Json, // response will be treated as this, default = json
     };
   }
 
@@ -58,7 +58,7 @@ export class NSFOService {
     headers.append(this.content_type, 'application/json');
     headers.append(this.authorization, 'Basic ' + btoa(username + ':' + password));
 
-    return this.httpClient.get<any>(this.apiUrl + '/v1/auth/authorize',
+    return this.httpClient.get(this.apiUrl + '/v1/auth/authorize',
         {
           headers: headers,
           observe: 'body', // returning full response, default = body
@@ -76,7 +76,7 @@ export class NSFOService {
       'env': 'ADMIN'
     };
 
-    return this.httpClient.put<any>(this.apiUrl + API_URI_VERIFY_GHOST_TOKEN, JSON.stringify(request),
+    return this.httpClient.put(this.apiUrl + API_URI_VERIFY_GHOST_TOKEN, JSON.stringify(request),
         {
           headers: headers,
           observe: 'body', // returning full response, default = body
@@ -85,15 +85,27 @@ export class NSFOService {
   }
 
   doPostRequest(uri: string, data) {
-    return this.httpClient.post<any>(this.apiUrl + uri, JSON.stringify(data), this.getDefaultOptions());
+    return this.httpClient.post(this.apiUrl + uri, JSON.stringify(data),
+        {
+        observe: 'body', // returning full response, default = body
+        responseType: 'json', // response will be treated as this, default = json
+    });
   }
 
   doGetRequest(uri: string) {
-    return this.httpClient.get(this.apiUrl + uri, this.getDefaultOptions());
+    return this.httpClient.get(this.apiUrl + uri,
+        {
+        observe: 'body', // returning full response, default = body
+        responseType: 'json', // response will be treated as this, default = json
+    });
   }
 
   doPutRequest(uri: string, data) {
-    return this.httpClient.put(this.apiUrl + uri, JSON.stringify(data), this.getDefaultOptions());
+    return this.httpClient.put(this.apiUrl + uri, JSON.stringify(data),
+        {
+            observe: 'body', // returning full response, default = body
+            responseType: 'json', // response will be treated as this, default = json
+        });
   }
 
   public logout() {
@@ -102,7 +114,7 @@ export class NSFOService {
     this.navigateToLogin();
   }
 
-  public getErrorMessage(err: Response): string {
+  public getErrorMessage(err: HttpResponse<any>): string {
     switch (err.status) {
       case 500:
         return this.translate.instant('SOMETHING WENT WRONG. TRY ANOTHER TIME.');
@@ -114,8 +126,7 @@ export class NSFOService {
         return this.translate.instant('YOU ARE UNAUTHORIZED');
 
       default:
-
-        const jsonBody: ResultModel = err.json();
+        const jsonBody: ResultModel = err.body;
 
         if (jsonBody && jsonBody.result) {
           const result = jsonBody.result;

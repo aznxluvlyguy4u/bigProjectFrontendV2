@@ -19,6 +19,7 @@ import {Subject} from 'rxjs';
 import {NgxPaginationModule} from 'ngx-pagination';
 import {Mate, MateChangeResponse} from '../../models/nsfo-declare.model';
 import {Animal, LivestockAnimal} from '../../models/animal.model';
+import {JsonResponseModel} from '../../models/json-response.model';
 
 const fileTypeDropdownMinCount = 2;
 
@@ -209,9 +210,9 @@ export class LivestockOverviewComponent implements OnInit, OnDestroy {
         this.apiService
             .doGetRequest(API_URI_GET_ANIMALS + queryParam)
             .subscribe(
-                res => {
+                (res: JsonResponseModel) => {
                     //this.livestock_list = LivestockAnimal.apply(null, new Uint16Array(res));
-                    this.livestock_list = <LivestockAnimal[]> res.json().result;
+                    this.livestock_list = <LivestockAnimal[]> res.result;
                     for (const animal of this.livestock_list) {
                         animal.date_of_birth_sort = animal.date_of_birth;
                         animal.date_of_birth = moment(animal.date_of_birth).format(this.settings.VIEW_DATE_FORMAT);
@@ -252,8 +253,8 @@ export class LivestockOverviewComponent implements OnInit, OnDestroy {
         this.apiService
             .doGetRequest(API_URI_GET_HISTORIC_ANIMALS)
             .subscribe(
-                res => {
-                    this.historic_livestock_list = <LivestockAnimal[]> res.json().result;
+                (res: JsonResponseModel) => {
+                    this.historic_livestock_list = <LivestockAnimal[]> res.result;
                     for (const animal of this.historic_livestock_list) {
                         animal.date_of_birth_sort = animal.date_of_birth;
                         animal.date_of_birth = moment(animal.date_of_birth).format(this.settings.VIEW_DATE_FORMAT);

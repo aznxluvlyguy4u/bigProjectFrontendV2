@@ -69,7 +69,7 @@ export class MateHistoryRowComponent {
             this.isSending = false;
           },
           err => {
-            const error = err.json();
+            const error = err;
             this.showError.emit(error);
             this.editMode = false;
             this.isSending = false;

@@ -5,6 +5,7 @@ import {API_URI_GET_USER_INFO, UBN_TOKEN_NAMESPACE} from '../nsfo-api/nsfo.setti
 import {ScalarObservable} from 'rxjs/observable';
 import {TranslateService} from '@ngx-translate/core';
 import {Message} from '../../models/message.model';
+import {JsonResponseModel} from '../../models/json-response.model';
 
 @Injectable()
 export class UtilsService {
@@ -24,8 +25,8 @@ export class UtilsService {
   public initUserInfo() {
     this.api.doGetRequest(API_URI_GET_USER_INFO)
       .subscribe(
-        res => {
-          this.setUserInfo(res.json().result);
+          (res: JsonResponseModel) => {
+          this.setUserInfo(res.result);
         },
         error => {
           alert(this.api.getErrorMessage(error));

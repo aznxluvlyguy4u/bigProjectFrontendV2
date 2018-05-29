@@ -6,6 +6,7 @@ import {NSFOService} from '../../../shared/services/nsfo-api/nsfo.service';
 import {API_URI_GET_ARRIVALS_ERRORS} from '../../../shared/services/nsfo-api/nsfo.settings';
 import {Settings} from '../../../shared/variables/settings';
 import {NgxPaginationModule} from 'ngx-pagination';
+import {JsonResponseModel} from '../../../shared/models/json-response.model';
 
 @Component({
   providers: [NgxPaginationModule],
@@ -30,8 +31,8 @@ export class ArrivalErrorsComponent implements OnInit {
   private getArrivalErrorList() {
     this.apiService
       .doGetRequest(API_URI_GET_ARRIVALS_ERRORS)
-      .subscribe(res => {
-          const arrivals = <ArrivalErrorResponse[]> res.json().result.arrivals;
+      .subscribe((res: JsonResponseModel) => {
+          const arrivals = <ArrivalErrorResponse[]> res.result.arrivals;
           for (const arrival of arrivals) {
             arrival.arrival_date = moment(arrival.arrival_date).format(this.settings.VIEW_DATE_FORMAT);
             arrival.uln = arrival.uln_country_code + arrival.uln_number;
@@ -40,7 +41,7 @@ export class ArrivalErrorsComponent implements OnInit {
             this.arrivalErrorList.push(arrival);
           }
 
-          const arrival_imports = <ArrivalErrorResponse[]> res.json().result.imports;
+          const arrival_imports = <ArrivalErrorResponse[]> res.result.imports;
           for (const arrival_import of arrival_imports) {
             arrival_import.arrival_date = moment(arrival_import.arrival_date).format(this.settings.VIEW_DATE_FORMAT);
             arrival_import.uln = arrival_import.uln_country_code + arrival_import.uln_number;

@@ -5,6 +5,7 @@ import {DashboardInfo} from './dashboard.model';
 import {NSFOService} from '../../shared/services/nsfo-api/nsfo.service';
 import {API_URI_GET_DASHBOARD_INFO, API_URI_SYNC_ANIMALS, API_URI_SYNC_EARTAGS} from '../../shared/services/nsfo-api/nsfo.settings';
 import {SettingsService} from '../../shared/services/settings/settings.service';
+import {JsonResponseModel} from '../../shared/models/json-response.model';
 
 @Component({
   templateUrl: './dashboard.component.html'
@@ -32,8 +33,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
   private getDashboardInfo() {
     this.apiService.doGetRequest(API_URI_GET_DASHBOARD_INFO)
       .subscribe(
-        res => {
-          this.dashboard_info = res.json().result;
+          (res: JsonResponseModel) => {
+          this.dashboard_info = res.result;
         },
         error => {
           this.loopGetDashboardInfo = false;
