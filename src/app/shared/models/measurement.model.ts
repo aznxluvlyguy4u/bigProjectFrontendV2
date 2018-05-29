@@ -15,7 +15,6 @@ export class MeasurementOutput {
 }
 
 abstract class MeasurementBase {
-  public animal: Animal = new Animal();
   public measurement_date: string;
   public inspector: Inspector = new Inspector();
 }
