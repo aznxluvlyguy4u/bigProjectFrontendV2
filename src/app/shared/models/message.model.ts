@@ -12,7 +12,7 @@ export class Message {
   public type: string;
   public message: string;
   public data: string;
-  public is_read: string;
+  public is_read: boolean;
   public creation_date: string;
   public is_hidden: string;
   public success_indicator: string;

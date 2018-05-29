@@ -23,8 +23,8 @@ export class SelectorComponent implements OnInit, OnChanges, OnDestroy {
   @Input() filter = 'NONE';
   @Input() initItem = null;
   @Input() allowCustomSelection = false;
-  @Output() selection: EventEmitter = new EventEmitter();
-  @Output() modalState: EventEmitter = new EventEmitter();
+  @Output() selection: EventEmitter<any> = new EventEmitter<any>();
+  @Output() modalState: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Input() SUGGESTION_LABEL: string;
   private countryCode$;
   private modalDisplay = 'none';

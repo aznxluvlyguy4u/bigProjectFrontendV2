@@ -359,7 +359,8 @@ export class LivestockOverviewComponent implements OnInit, OnDestroy {
     }
 
     private selectAnimal(event: Event, animal: LivestockAnimal): boolean {
-        if (event.target.checked) {
+      const target = event.target as HTMLInputElement;
+        if (target.checked) {
 
             if (this.maxSelectionCount !== null && this.maxSelectionCount !== 0) {
                 if (this.selectionList.length + 1 > this.maxSelectionCount) {
@@ -372,7 +373,7 @@ export class LivestockOverviewComponent implements OnInit, OnDestroy {
             this.selectionList.push(animal);
         }
 
-        if (!event.target.checked) {
+        if (!target.checked) {
             animal.selected = false;
             const index = this.selectionList.indexOf(animal);
             this.selectionList.splice(index, 1);
@@ -382,7 +383,8 @@ export class LivestockOverviewComponent implements OnInit, OnDestroy {
     }
 
     private selectAllAnimals(event: Event) {
-        if (event.target.checked) {
+      const target = event.target as HTMLInputElement;
+        if (target.checked) {
 
             if (this.maxSelectionCount !== null && this.maxSelectionCount !== 0) {
                 if (this.selectionList.length + 1 > this.maxSelectionCount) {
@@ -401,7 +403,7 @@ export class LivestockOverviewComponent implements OnInit, OnDestroy {
             }
         }
 
-        if (!event.target.checked) {
+        if (!target.checked) {
             for (const animal of this.livestock_list) {
                 this.selectAnimal(event, animal);
             }

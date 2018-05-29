@@ -39,11 +39,8 @@ export class MessagesComponent implements OnInit {
             .subscribe(res => {
               this.messages = res;
               this.initMessageNumber = params['id'];
-              const message = this.messages.find(
-                  function (o) {
-                    return o.message_id = this.initMessageNumber;
-                  }
-                );
+              const here = this;
+              const message = this.messages.find(k => k.message_id === this.initMessageNumber);
               if (message) {
                 if (!message.is_read) {
                   this.openMessage(message);

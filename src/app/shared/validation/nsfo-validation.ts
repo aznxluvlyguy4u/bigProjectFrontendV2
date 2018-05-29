@@ -69,7 +69,7 @@ export class UBNValidator {
 export class DateValidator {
   static validateDateFormat(control: FormControl): ValidationResult {
     const date = moment(control.value, 'DD-MM-YYYY');
-    if (date._d !== 'Invalid Date') {
+    if (date.isValid()) {
       return null;
     }
     return {'invalidDateFormat': true};

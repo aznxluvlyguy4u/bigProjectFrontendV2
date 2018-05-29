@@ -12,7 +12,7 @@ export class SettingsService {
   public currentUserChanged = new Subject<User>();
   private currentUser: User;
   private locale = 'nl';
-  private countryList: ReplaySubject<> = new ReplaySubject();
+  private countryList: ReplaySubject<any> = new ReplaySubject<any>();
   private viewDateFormat = 'DD-MM-YYYY';
   private viewDateTimeFormat = 'DD-MM-YYYY HH:mm';
   private modelDateTimeFormat = 'YYYY-MM-DDThh:mm:ssZ';

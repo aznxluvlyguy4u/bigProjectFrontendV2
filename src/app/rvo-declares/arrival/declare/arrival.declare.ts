@@ -93,8 +93,8 @@ export class ArrivalDeclareComponent implements OnInit, OnDestroy, AfterViewInit
       this.form_valid = true;
 
       const arrival = new ArrivalRequest();
-      arrival.arrival_date = moment(this.form.get('arrival_date').value, this.settings.getViewDateFormat());
-      arrival.arrival_date = arrival.arrival_date.format(this.settings.getModelDateTimeFormat());
+      const arrival_date_string = moment(this.form.get('arrival_date').value, this.settings.getViewDateFormat());
+      arrival.arrival_date = arrival_date_string.format(this.settings.getModelDateTimeFormat());
 
       if (this.import_animal.controls['import_flag'].value === this.constants.YES) {
         arrival.is_import_animal = true;

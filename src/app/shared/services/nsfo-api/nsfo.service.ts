@@ -27,7 +27,7 @@ export class NSFOService {
 
   constructor(private httpClient: HttpClient, private translate: TranslateService, private router: Router) {
   }
-  static cleanAnimalsInput(animals: Animal[], variables = ['uln_country_code', 'uln_number']): Animal[] {
+  static cleanAnimalsInput(animals: Animal[], variables = ['uln_country_code', 'uln_number']): any[] {
     return animals.map(function (object: Animal) {
       return pick(object, variables);
     });

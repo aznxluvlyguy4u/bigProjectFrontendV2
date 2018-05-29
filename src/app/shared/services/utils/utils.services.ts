@@ -1,11 +1,11 @@
 import {Injectable} from '@angular/core';
-import {ReplaySubject} from 'rxjs';
+import {ReplaySubject, Observable} from 'rxjs';
 import {NSFOService} from '../nsfo-api/nsfo.service';
 import {API_URI_GET_USER_INFO, UBN_TOKEN_NAMESPACE} from '../nsfo-api/nsfo.settings';
-import {ScalarObservable} from 'rxjs/observable';
 import {TranslateService} from '@ngx-translate/core';
 import {Message} from '../../models/message.model';
 import {JsonResponseModel} from '../../models/json-response.model';
+import {ScalarObservable} from 'rxjs-compat/observable/ScalarObservable';
 
 @Injectable()
 export class UtilsService {
@@ -76,7 +76,7 @@ export class UtilsService {
   }
 
   public showAlertPopup(alertText: string, number ?: number) {
-    const translatedText = (<ScalarObservable>this.translate.get(alertText)).value;
+    const translatedText = (<ScalarObservable<string>>this.translate.get(alertText)).valueOf();
 
     let suffix = '';
     if (number !== null) {

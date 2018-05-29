@@ -105,12 +105,12 @@ export class BirthDeclareRowComponent implements OnInit {
 
   private enableSurrogate(event: Event) {
     const target = event.target;
-    if (target.value === 'SURROGATE') {
+    if (target.valueOf() === 'SURROGATE') {
       this.form.get('uln_surrogate').validator = Validators.required;
       this.form.get('uln_surrogate').setValue('');
     }
 
-    if (target.value !== 'SURROGATE') {
+    if (target.valueOf() !== 'SURROGATE') {
       this.form.get('uln_surrogate').validator = null;
       this.form.get('uln_surrogate').setValue('');
     }

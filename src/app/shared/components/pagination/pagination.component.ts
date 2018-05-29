@@ -3,7 +3,7 @@ import {
   ViewChild
 } from '@angular/core';
 import {Subscription} from 'rxjs';
-import {NgxPaginationModule, PaginationInstance} from 'ngx-pagination';
+import {PaginationInstance, PaginationService} from 'ngx-pagination';
 
 export interface IPage {
   label: string;
@@ -24,7 +24,7 @@ export class PaginationComponent implements OnInit, OnChanges, AfterViewInit, On
   private hasTemplate = false;
   private changeSub: Subscription;
 
-  constructor(private service: NgxPaginationModule) {
+  constructor(private service: PaginationService) {
     this.changeSub = this.service.change
       .subscribe(id => {
         if (this.id === id) {
@@ -57,7 +57,7 @@ export class PaginationComponent implements OnInit, OnChanges, AfterViewInit, On
 
   ngOnInit() {
     if (this.id === undefined) {
-      this.id = this.service;
+      this.id = this.service.defaultId();
     }
   }
 
