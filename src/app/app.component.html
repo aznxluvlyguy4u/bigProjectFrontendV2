@@ -1,20 +1,149 @@
-<!--The content below is only a placeholder and can be replaced.-->
-<div style="text-align:center">
-  <h1>
-    Welcome to {{ title }}!
-  </h1>
-  <img width="300" alt="Angular Logo"
-       src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTAgMjUwIj4KICAgIDxwYXRoIGZpbGw9IiNERDAwMzEiIGQ9Ik0xMjUgMzBMMzEuOSA2My4ybDE0LjIgMTIzLjFMMTI1IDIzMGw3OC45LTQzLjcgMTQuMi0xMjMuMXoiIC8+CiAgICA8cGF0aCBmaWxsPSIjQzMwMDJGIiBkPSJNMTI1IDMwdjIyLjItLjFWMjMwbDc4LjktNDMuNyAxNC4yLTEyMy4xTDEyNSAzMHoiIC8+CiAgICA8cGF0aCAgZmlsbD0iI0ZGRkZGRiIgZD0iTTEyNSA1Mi4xTDY2LjggMTgyLjZoMjEuN2wxMS43LTI5LjJoNDkuNGwxMS43IDI5LjJIMTgzTDEyNSA1Mi4xem0xNyA4My4zaC0zNGwxNy00MC45IDE3IDQwLjl6IiAvPgogIDwvc3ZnPg==">
-</div>
-<h2>Here are some links to help you start: </h2>
-<ul>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://angular.io/tutorial">Tour of Heroes</a></h2>
-  </li>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://github.com/angular/angular-cli/wiki">CLI Documentation</a></h2>
-  </li>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://blog.angular.io/">Angular blog</a></h2>
-  </li>
-</ul>
+<span [hidden]="!is_logged_in">
+
+    <!--TOP NAVIGATION BAR-->
+    <nav [class.is_admin]="isAdmin">
+        <button type="button" (click)="isActiveSideMenu = !isActiveSideMenu; isActiveUserMenu = false; isActiveMessageMenu = false;" [class.active]="isActiveSideMenu" class="menu-toggle">
+            <i class="fa fa-bars"></i>
+        </button>
+        <div (click)="navigateTo('/main')" class="brand-name"> NSFO <span>Online</span></div>
+        <span class="ubn-description"> ({{'UBN_SHORT' | translate}}: </span>
+        <div class="ubn-container">
+             <select [(ngModel)]="currentUBNValue" (change)="selectUBN(); reloadApp()">
+                <option *ngFor="let ubn of ubnList" value="{{ ubn }}"> {{ ubn }}</option>
+            </select>
+        </div>
+        <span class="ubn-description-postfix"> ) </span>
+        <div class="empty-block"></div>
+        <button type="button" (click)="toggleActiveMessageMenu()" [class.active]="isActiveMessageMenu" class="message-toggle">
+            <i class="fa fa-envelope-o"><span *ngIf="menuMessages.length > 0"> {{ menuMessages.length }}</span></i>
+        </button>
+
+        <ng-template *ngIf="!isDownloadModalEmpty()">
+            <button type="button" (click)="toggleDownloadModal()" [class.active]="isActiveDownloadModal" class="download-toggle">
+                <i class="fa fa-download"><span *ngIf="downloadCount() > 0"> {{ downloadCount() }}</span></i>
+            </button>
+        </ng-template>
+
+        <ng-template *ngIf="!isDeclareModalEmpty()">
+            <button type="button" (click)="toggleDeclareItemsModal()" [class.active]="isActiveDeclareItemsModal" class="declare-modal-toggle">
+                <i class="fa fa-list"><span *ngIf="declareItemsCount() > 0"> {{ declareItemsCount() }}</span></i>
+            </button>
+        </ng-template>
+
+        <button type="button" (click)="toggleActiveUserMenu()" [class.active]="isActiveUserMenu" class="profile-toggle">
+            <i class="fa fa-user"><span class="show-for-large">{{ currentUser.first_name }} {{ currentUser.last_name }} </span></i>
+        </button>
+    </nav>
+
+  <!--SIDE MENU-->
+    <div class="side-menu" [class.enabled]="isActiveSideMenu">
+        <ul>
+            <li (click)="navigateTo('/main'); isActiveSideMenu = false" [class.active]="isActiveRoute('/main')"  class="link">
+                <i class="fa fa-tachometer fa-fw" aria-hidden="true"></i>
+                {{ 'DASHBOARD' | translate }}
+            </li>
+            <li (click)="navigateTo('/main/livestock'); isActiveSideMenu = false" [class.active]="isActiveRoute('/main/livestock/overview')" class="link">
+                <i class="fa fa-list fa-fw" aria-hidden="true"></i>
+                {{ 'LIVESTOCK' | translate }}
+            </li>
+            <li (click)="navigateTo('/main/report'); isActiveSideMenu = false" [class.active]="isActiveRoute('/main/report')" class="link">
+                <i class="fa fa-bar-chart fa-fw" aria-hidden="true"></i>
+                {{ 'REPORTS' | translate }}
+            </li>
+            <li (click)="navigateTo('/main/messages'); isActiveSideMenu = false" [class.active]="isActiveRoute('/main/messages/overview')" class="link">
+                <i class="fa fa-inbox fa-fw" aria-hidden="true"></i>
+                {{ 'MESSAGES' | translate }}
+            </li>
+            <li (click)="navigateTo('/main/contact'); isActiveSideMenu = false" [class.active]="isActiveRoute('/main/contact')" class="link">
+                <i class="fa fa-phone fa-fw" aria-hidden="true"></i>
+                {{ 'CONTACT NSFO' | translate }}
+            </li>
+            <li class="category">{{ 'DECLARE' | translate }}</li>
+            <li (click)="navigateTo('/main/arrival'); isActiveSideMenu = false" [class.active]="isActiveRoute('/main/arrival/declare') || isActiveRoute('/main/arrival/history') || isActiveRoute('/main/arrival/errors')" class="item link">
+                {{ 'ARRIVAL' | translate }}
+            </li>
+            <li (click)="navigateTo('/main/depart'); isActiveSideMenu = false" [class.active]="isActiveRoute('/main/depart/declare') || isActiveRoute('/main/depart/history') || isActiveRoute('/main/depart/errors')" class="item link">
+                {{ 'DEPART' | translate }}
+            </li>
+            <li (click)="navigateTo('/main/mate'); isActiveSideMenu = false" [class.active]="isActiveRoute('/main/mate/declare') || isActiveRoute('/main/mate/history') || isActiveRoute('/main/mate/errors')" class="item link">
+                {{ 'MATE' | translate }}
+            </li>
+            <li (click)="navigateTo('/main/birth'); isActiveSideMenu = false" [class.active]="isActiveRoute('/main/birth/declare') || isActiveRoute('/main/birth/history') || isActiveRoute('/main/birth/errors')" class="item link">
+                {{ 'BIRTH' | translate }}
+            </li>
+            <li (click)="navigateTo('/main/loss'); isActiveSideMenu = false" [class.active]="isActiveRoute('/main/loss/declare') || isActiveRoute('/main/loss/history') || isActiveRoute('/main/loss/errors')" class="item link">
+                {{ 'LOSS' | translate }}
+            </li>
+            <li (click)="navigateTo('/main/weight'); isActiveSideMenu = false" [class.active]="isActiveRoute('/main/weight/declare')" class="item link">
+                {{ 'WEIGHT' | translate }}
+            </li>
+            <li class="category">{{ 'MANAGE' | translate }}</li>
+            <li (click)="navigateTo('/main/eartag'); isActiveSideMenu = false" [class.active]="isActiveRoute('/main/eartag')" class="item link">
+                {{ 'EARTAGS' | translate }}
+            </li>
+            <li (click)="navigateTo('/main/tag-replacement'); isActiveSideMenu = false" [class.active]="isActiveRoute('/main/tag-replacement')" class="item link">
+                {{ 'REPLACE EARTAG' | translate }}
+            </li>
+            <li (click)="navigateTo('/main/profile'); isActiveSideMenu = false" [class.active]="isActiveRoute('/main/profile/company') || isActiveRoute('/main/profile/login')" class="item link">
+                {{ 'PROFILE' | translate }}
+            </li>
+            <li (click)="navigateTo('/main/invoices'); isActiveSideMenu = false" [class.active]="isActiveRoute('/main/invoices/overview')" class="item link">
+                {{'INVOICES' | translate}}
+            </li>
+
+
+            <li *ngIf="isAdmin" (click)="navigateTo('/main/admin'); isActiveSideMenu = false"
+                [class.active]="isActiveRoute('/main/admin/rvo-leading-livestock-sync')"
+                class="item link">
+                {{ 'ADMIN OPTIONS' | translate }}
+            </li>
+        </ul>
+    </div>
+
+  <!--MESSAGE MENU-->
+    <div class="message-menu" [class.enabled]="isActiveMessageMenu">
+        <div class="no-messages" *ngIf="menuMessages.length == 0">{{ 'THERE ARE NO UNREAD MESSAGES' | translate }}</div>
+        <div *ngIf="menuMessages.length > 0">
+            <div class="message-menu-header">{{ 'UNREAD MESSAGES' | translate }}</div>
+            <div class="message" (click)="removeMenuMessage(message); navigateTo('/main/messages/' + message.message_id)" *ngFor="let message of menuMessages">
+                <div class="sender">
+                    {{ message.sender }}
+                    <span class="creation-date pull-right"> {{ stringAsViewDateTime(message.creation_date) }} </span>
+                </div>
+                <div class="subject">{{ message.subject | translate }}</div>
+            </div>
+        </div>
+
+        <button (click)="navigateTo('/main/messages'); isActiveMessageMenu = false" class="tiny button expanded"> {{ 'GO TO MESSAGES' | translate }} </button>
+    </div>
+
+  <!--USER MENU-->
+    <div class="user-menu" [class.enabled]="isActiveUserMenu">
+        <div class="item">
+            <div (click)="navigateTo('/main/profile'); isActiveUserMenu = false">
+                {{ 'PROFILE' | translate }}
+                <i class="fa fa-cogs fa-fw" aria-hidden="true"></i>
+            </div>
+        </div>
+        <div class="item">
+             <div (click)="navigateTo('/main/contact'); isActiveUserMenu = false">
+                {{ 'CONTACT NSFO' | translate }}
+                <i class="fa fa-envelope-o fa-fw" aria-hidden="true"></i>
+             </div>
+        </div>
+        <div class="item">
+            <div (click)="logout()">
+                {{ 'LOGOUT' | translate }}
+                <i class="fa fa-sign-out fa-fw" aria-hidden="true"></i>
+            </div>
+        </div>
+    </div>
+
+  <!-- CONTENT CONTAINER -->
+    <div class="content-container">
+        <router-outlet></router-outlet>
+    </div>
+</span>
+
+<app-download-modal></app-download-modal>
+<app-declare-manager-modal></app-declare-manager-modal>

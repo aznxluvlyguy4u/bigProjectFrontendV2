@@ -13,13 +13,13 @@ import {DeclareManagerService} from './shared/services/declaremanager/declare-ma
 import {SettingsService} from './shared/services/settings/settings.service';
 import {Settings} from './shared/variables/settings';
 import {Constants} from './shared/variables/constants';
-import {TranslateLoader, TranslateModule, TranslatePipe} from '@ngx-translate/core';
+import {TranslateLoader, TranslateModule} from '@ngx-translate/core';
 import {TranslateHttpLoader} from '@ngx-translate/http-loader';
 import {NgxPaginationModule} from 'ngx-pagination';
 import {AppRoutingModule} from './app-routing.module';
 import {lastFiveMessagesFilterPipe} from './shared/pipes/lastFiveMessagesFilter';
 import {localNumberFormat} from './shared/pipes/localNumberFormat';
-import {DatePipe, DecimalPipe} from '@angular/common';
+
 
 import {LivestockFilterPipe} from './shared/components/livestock/pipes/livestockFilter';
 import {LivestockOrderBy} from './shared/components/livestock/pipes/livestockSort';
@@ -121,8 +121,9 @@ import {EartagErrorsComponent} from './rvo-declares/eartag/errors/eartag.errors'
 import {EartagHistoryComponent} from './rvo-declares/eartag/history/eartag.history';
 import {EartagHistoryRowComponent} from './rvo-declares/eartag/history/eartag.history.row';
 import {CheckMarkComponent} from './shared/components/checkmark/check-mark.component';
-import {FormsModule} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {EartagErrorRowComponent} from './rvo-declares/eartag/errors/eartag.errors.row';
+import {HttpModule} from '@angular/http';
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http);
@@ -247,11 +248,13 @@ enableProdMode();
   ],
   imports: [
     BrowserModule,
+    HttpModule,
     HttpClientModule,
     AppRoutingModule,
     NgxPaginationModule,
     MomentModule,
     FormsModule,
+    ReactiveFormsModule,
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
@@ -270,7 +273,7 @@ enableProdMode();
     DeclareManagerService,
     SettingsService,
     Settings,
-    Constants,
+    Constants
   ],
   bootstrap: [AppComponent]
 })
