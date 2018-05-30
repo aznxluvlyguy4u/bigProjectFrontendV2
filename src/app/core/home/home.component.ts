@@ -8,7 +8,7 @@ import {SettingsService} from '../../shared/services/settings/settings.service';
 import {
   UBN_TOKEN_NAMESPACE,
   API_URI_GET_COUNTRY_CODES,
-  API_URI_GET_MESSAGES
+  API_URI_GET_MESSAGES, ACCESS_TOKEN_NAMESPACE, GHOST_TOKEN_NAMESPACE
 } from '../../shared/services/nsfo-api/nsfo.settings';
 import {UtilsService} from '../../shared/services/utils/utils.services';
 import { DownloadService } from '../../shared/services/download/download.service';
@@ -21,7 +21,7 @@ import {JsonResponseModel} from '../../shared/models/json-response.model';
   templateUrl: './home.component.html'
 })
 
-export class MainComponent implements OnInit, OnDestroy, AfterContentChecked {
+export class HomeComponent implements OnInit, OnDestroy, AfterContentChecked {
   private isActiveSideMenu = false;
   private isActiveMessageMenu = false;
   private isActiveDownloadModal = false;
@@ -46,12 +46,31 @@ export class MainComponent implements OnInit, OnDestroy, AfterContentChecked {
   ) {}
 
   ngOnInit() {
-    this.validateToken();
-    this.getUserInfo();
-    this.getCountryCodeList();
-    this.utils.initUserInfo();
-    this.getMessages();
-    this.isAdmin = this.settings.isAdmin();
+    console.error('ON INIT!!!');
+
+    const request = {
+      'env': 'USER'
+    };
+
+    console.error('AccessToken' + localStorage[ACCESS_TOKEN_NAMESPACE]);
+    console.error('SessionToken' + sessionStorage[GHOST_TOKEN_NAMESPACE]);
+
+    this.apiService.doPostRequest('/v1/auth/validate-token', request)
+      .subscribe(
+        res => {
+          this.is_logged_in = true;
+
+          this.getUserInfo();
+          this.getCountryCodeList();
+          this.utils.initUserInfo();
+          this.getMessages();
+          this.isAdmin = this.settings.isAdmin();
+          },
+        err => {
+          this.is_logged_in = false;
+          // this.navigateTo('/login');
+        }
+      );
   }
 
   ngAfterContentChecked() {
@@ -61,18 +80,6 @@ export class MainComponent implements OnInit, OnDestroy, AfterContentChecked {
   ngOnDestroy() {
     this.userInfo$.unsubscribe();
     this.recheckMessages = false;
-  }
-
-  private validateToken() {
-    const request = {
-      'env': 'USER'
-    };
-
-    this.apiService.doPostRequest('/v1/auth/validate-token', request)
-      .subscribe(
-        res => {this.is_logged_in = true; },
-        err => {this.is_logged_in = false; this.navigateTo('/login'); }
-      );
   }
 
   private getUserInfo() {

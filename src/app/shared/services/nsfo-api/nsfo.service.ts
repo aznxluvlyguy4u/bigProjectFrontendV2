@@ -33,79 +33,75 @@ export class NSFOService {
     });
   }
 
-  private getDefaultHeaders(): HttpHeaders {
-    const headers = new HttpHeaders();
-    headers.append(this.content_type, 'application/json');
-    headers.append(this.access_token, localStorage[ACCESS_TOKEN_NAMESPACE]);
-    headers.append(this.ubn, localStorage[UBN_TOKEN_NAMESPACE]);
+  getDefaultHeaders(): HttpHeaders {
+    let headers = new HttpHeaders();
+    headers = headers.set(this.content_type, 'application/json');
+    headers = headers.set(this.access_token, localStorage[ACCESS_TOKEN_NAMESPACE]);
+    headers = headers.set(this.ubn, sessionStorage[UBN_TOKEN_NAMESPACE]);
 
     if (sessionStorage.getItem(GHOST_TOKEN_NAMESPACE)) {
-      headers.append(this.ghost_token, sessionStorage[GHOST_TOKEN_NAMESPACE]);
+      headers = headers.set('GhostToken', sessionStorage[GHOST_TOKEN_NAMESPACE]);
     }
+
     return headers;
   }
 
-  private getDefaultOptions(): any {
-    return {
-      headers: this.getDefaultHeaders(),
-      observe: 'body', // returning full response, default = body
-      responseType: ResponseContentType.Json, // response will be treated as this, default = json
-    };
-  }
-
   doLoginRequest(username: string, password: string) {
-    const headers = new HttpHeaders();
-    headers.append(this.content_type, 'application/json');
-    headers.append(this.authorization, 'Basic ' + btoa(username + ':' + password));
+    let headers = new HttpHeaders();
+    headers = headers.set(this.content_type, 'application/json');
+    headers = headers.set(this.authorization, 'Basic ' + btoa(username + ':' + password));
 
     return this.httpClient.get(this.apiUrl + '/v1/auth/authorize',
-        {
-          headers: headers,
-          observe: 'body', // returning full response, default = body
-          responseType: 'json', // response will be treated as this, default = json
-        });
+      {
+        headers: headers,
+        observe: 'body', // returning full response, default = body
+        responseType: 'json', // response will be treated as this, default = json
+      });
   }
 
   doGhostLoginVerification() {
-    const headers = new HttpHeaders();
-    headers.append(this.content_type, 'application/json');
-    headers.append(this.access_token, localStorage[ACCESS_TOKEN_NAMESPACE]);
-    headers.append(this.ghost_token, sessionStorage[GHOST_TOKEN_NAMESPACE]);
+    let headers = new HttpHeaders();
+    headers = headers.set(this.content_type, 'application/json');
+    headers = headers.set(this.access_token, localStorage[ACCESS_TOKEN_NAMESPACE]);
+    headers = headers.set(this.ghost_token, sessionStorage[GHOST_TOKEN_NAMESPACE]);
 
     const request = {
       'env': 'ADMIN'
     };
 
     return this.httpClient.put(this.apiUrl + API_URI_VERIFY_GHOST_TOKEN, JSON.stringify(request),
-        {
-          headers: headers,
-          observe: 'body', // returning full response, default = body
-          responseType: 'json', // response will be treated as this, default = json
-        });
+      {
+        headers: headers,
+        observe: 'body', // returning full response, default = body
+        responseType: 'json', // response will be treated as this, default = json
+      });
   }
 
   doPostRequest(uri: string, data) {
     return this.httpClient.post(this.apiUrl + uri, JSON.stringify(data),
-        {
+      {
+        headers: this.getDefaultHeaders(),
         observe: 'body', // returning full response, default = body
         responseType: 'json', // response will be treated as this, default = json
-    });
+      });
   }
 
   doGetRequest(uri: string) {
     return this.httpClient.get(this.apiUrl + uri,
-        {
+      {
+        headers: this.getDefaultHeaders(),
         observe: 'body', // returning full response, default = body
         responseType: 'json', // response will be treated as this, default = json
-    });
+      });
   }
 
   doPutRequest(uri: string, data) {
     return this.httpClient.put(this.apiUrl + uri, JSON.stringify(data),
-        {
-            observe: 'body', // returning full response, default = body
-            responseType: 'json', // response will be treated as this, default = json
-        });
+      {
+        headers: this.getDefaultHeaders(),
+        observe: 'body', // returning full response, default = body
+        responseType: 'json', // response will be treated as this, default = json
+      });
   }
 
   public logout() {

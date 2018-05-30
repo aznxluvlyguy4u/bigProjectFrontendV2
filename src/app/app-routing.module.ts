@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
-import {MainComponent} from './core/home/home.component';
+import {HomeComponent} from './core/home/home.component';
 import {NSFOAuthService} from './shared/services/nsfo-api/nsfo.auth';
 import {DashboardComponent} from './core/dashboard/dashboard.component';
 import {NSFOAdminAuthService} from './shared/services/nsfo-api/nsfo-admin.auth';
@@ -62,9 +62,9 @@ import {ReportOffspringComponent} from './report/offspring/report.offspring.comp
 // const appRoutes: Routes = [
 const appRoutes = [
   {
-    path: 'main',  component: MainComponent, index: true, canActivate: [NSFOAuthService],
+    path: 'main',  component: HomeComponent, index: true, canActivate: [NSFOAuthService],
     children: [
-      {path: '', component: DashboardComponent, index: true},
+      {path: 's', component: DashboardComponent, index: true},
       {
         path: 'admin',  component: AdminComponent, canActivate: [NSFOAdminAuthService],
         children: [

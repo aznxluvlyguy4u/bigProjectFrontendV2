@@ -39,7 +39,7 @@ import {AdminComponent} from './admin/admin.component';
 import {GhostLoginComponent} from './auth/ghostlogin/ghostlogin.component';
 import {LoginComponent} from './auth/login/login.component';
 import {DashboardComponent} from './core/dashboard/dashboard.component';
-import {MainComponent} from './core/home/home.component';
+import {HomeComponent} from './core/home/home.component';
 import {InvoiceDetailsComponent} from './invoices/details/invoice.details';
 import {InvoiceOverviewComponent} from './invoices/overview/invoice.overview';
 import {InvoiceComponent} from './invoices/invoice.component';
@@ -139,7 +139,7 @@ enableProdMode();
       GhostLoginComponent,
       LoginComponent,
       DashboardComponent,
-      MainComponent,
+      HomeComponent,
       InvoiceDetailsComponent,
       InvoiceOverviewComponent,
       InvoiceFilterPipe,
