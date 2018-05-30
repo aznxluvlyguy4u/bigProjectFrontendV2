@@ -1,11 +1,12 @@
 import {Injectable} from '@angular/core';
-import {ReplaySubject, Observable} from 'rxjs';
+import {ReplaySubject} from 'rxjs';
 import {NSFOService} from '../nsfo-api/nsfo.service';
-import {API_URI_GET_USER_INFO, UBN_TOKEN_NAMESPACE} from '../nsfo-api/nsfo.settings';
+import {API_URI_GET_USER_INFO} from '../nsfo-api/nsfo.settings';
 import {TranslateService} from '@ngx-translate/core';
 import {Message} from '../../models/message.model';
 import {JsonResponseModel} from '../../models/json-response.model';
 import {ScalarObservable} from 'rxjs-compat/observable/ScalarObservable';
+import {CacheService} from '../settings/cache.service';
 
 @Injectable()
 export class UtilsService {
@@ -14,7 +15,8 @@ export class UtilsService {
   private messages: ReplaySubject<any> = new ReplaySubject();
   private menuMessages: Message[] = [];
 
-  constructor(private api: NSFOService, private translate: TranslateService) {
+  constructor(private api: NSFOService, private translate: TranslateService,
+              private cache: CacheService) {
     this.initUserInfo();
   }
 
@@ -42,7 +44,7 @@ export class UtilsService {
   }
 
   public setCurrentUBN(currentUBN) {
-    localStorage.setItem(UBN_TOKEN_NAMESPACE, currentUBN);
+    this.cache.setUbn(currentUBN);
     this.currentUBN.next(currentUBN);
   }
 

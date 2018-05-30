@@ -1,20 +1,20 @@
 import {Component} from '@angular/core';
 import {NSFOService} from '../../shared/services/nsfo-api/nsfo.service';
 import {ActivatedRoute, Router} from '@angular/router';
-import {ACCESS_TOKEN_NAMESPACE, GHOST_TOKEN_NAMESPACE} from '../../shared/services/nsfo-api/nsfo.settings';
+import {CacheService} from '../../shared/services/settings/cache.service';
 
 @Component({
   template: '',
 })
 export class GhostLoginComponent {
 
-  constructor(private apiService: NSFOService, private router: Router, private route: ActivatedRoute) {
+  constructor(private apiService: NSFOService, private router: Router, private route: ActivatedRoute, private cache: CacheService) {
     this.route.params
       .subscribe(params => {
         const ghostToken = params.ghostToken;
         const accessToken = params.accessToken;
-        localStorage.setItem(ACCESS_TOKEN_NAMESPACE, accessToken);
-        sessionStorage.setItem(GHOST_TOKEN_NAMESPACE, ghostToken);
+        this.cache.setAccessToken(accessToken);
+        this.cache.setGhostToken(ghostToken);
 
         this.apiService
           .doGhostLoginVerification()

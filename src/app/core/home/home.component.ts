@@ -6,9 +6,8 @@ import {Router} from '@angular/router';
 import {NSFOService} from '../../shared/services/nsfo-api/nsfo.service';
 import {SettingsService} from '../../shared/services/settings/settings.service';
 import {
-  UBN_TOKEN_NAMESPACE,
   API_URI_GET_COUNTRY_CODES,
-  API_URI_GET_MESSAGES, ACCESS_TOKEN_NAMESPACE, GHOST_TOKEN_NAMESPACE
+  API_URI_GET_MESSAGES,
 } from '../../shared/services/nsfo-api/nsfo.settings';
 import {UtilsService} from '../../shared/services/utils/utils.services';
 import { DownloadService } from '../../shared/services/download/download.service';
@@ -16,31 +15,33 @@ import { DeclareManagerService } from '../../shared/services/declaremanager/decl
 import {Message} from '../../shared/models/message.model';
 import {User} from '../../shared/models/person.model';
 import {JsonResponseModel} from '../../shared/models/json-response.model';
+import {CacheService} from '../../shared/services/settings/cache.service';
 
 @Component({
   templateUrl: './home.component.html'
 })
 
 export class HomeComponent implements OnInit, OnDestroy, AfterContentChecked {
-  private isActiveSideMenu = false;
-  private isActiveMessageMenu = false;
-  private isActiveDownloadModal = false;
-  private isActiveDeclareItemsModal = false;
-  private isActiveUserMenu = false;
-  private messageList = <Message[]> [];
-  private menuMessages = <Message[]> [];
-  private messages = <Message[]> [];
-  private is_logged_in = false;
-  private ubnList: string[] = [];
-  private currentUser: User = new User();
-  private currentUBNValue: string;
-  private userInfo$;
-  private currentUBN$;
-  private isAdmin = false;
-  private recheckMessages = true;
+  public isActiveSideMenu = false;
+  public isActiveMessageMenu = false;
+  public isActiveDownloadModal = false;
+  public isActiveDeclareItemsModal = false;
+  public isActiveUserMenu = false;
+  public messageList = <Message[]> [];
+  public menuMessages = <Message[]> [];
+  public messages = <Message[]> [];
+  public is_logged_in = false;
+  public ubnList: string[] = [];
+  public currentUser: User = new User();
+  public currentUBNValue: string;
+  public userInfo$;
+  public currentUBN$;
+  public isAdmin = false;
+  public recheckMessages = true;
 
   constructor(private router: Router, private location: Location, private apiService: NSFOService,
-              private settings: SettingsService, private utils: UtilsService, private zone: NgZone,
+              private cache: CacheService, private settings: SettingsService,
+              private utils: UtilsService, private zone: NgZone,
               private downloadService: DownloadService,
               private declareManagerService: DeclareManagerService
   ) {}
@@ -52,25 +53,25 @@ export class HomeComponent implements OnInit, OnDestroy, AfterContentChecked {
       'env': 'USER'
     };
 
-    console.error('AccessToken' + localStorage[ACCESS_TOKEN_NAMESPACE]);
-    console.error('SessionToken' + sessionStorage[GHOST_TOKEN_NAMESPACE]);
+    console.error('AccessToken' + this.cache.getAccessToken());
+    console.error('GhostToken' + this.cache.getGhostToken());
 
-    this.apiService.doPostRequest('/v1/auth/validate-token', request)
-      .subscribe(
-        res => {
-          this.is_logged_in = true;
-
-          this.getUserInfo();
-          this.getCountryCodeList();
-          this.utils.initUserInfo();
-          this.getMessages();
-          this.isAdmin = this.settings.isAdmin();
-          },
-        err => {
-          this.is_logged_in = false;
-          // this.navigateTo('/login');
-        }
-      );
+    // this.apiService.doPostRequest('/v1/auth/validate-token', request)
+    //   .subscribe(
+    //     res => {
+    //       this.is_logged_in = true;
+    //
+    //       this.getUserInfo();
+    //       this.getCountryCodeList();
+    //       this.utils.initUserInfo();
+    //       this.getMessages();
+    //       this.isAdmin = this.settings.isAdmin();
+    //       },
+    //     err => {
+    //       this.is_logged_in = false;
+    //       this.navigateTo('/login');
+    //     }
+    //   );
   }
 
   ngAfterContentChecked() {
@@ -91,9 +92,9 @@ export class HomeComponent implements OnInit, OnDestroy, AfterContentChecked {
           this.currentUser.last_name = res.last_name;
 
           this.ubnList = res.ubns;
-          if (!!localStorage.getItem(UBN_TOKEN_NAMESPACE)) {
+          if (!!this.cache.getUbn()) {
             this.currentUBNValue = this.ubnList[0];
-            const savedUBN = localStorage.getItem(UBN_TOKEN_NAMESPACE);
+            const savedUBN = this.cache.getUbn();
 
             for (const ubn of this.ubnList) {
               if (ubn === savedUBN) {
@@ -198,8 +199,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterContentChecked {
   }
 
   private logout() {
-    localStorage.removeItem('access_token');
-    sessionStorage.removeItem('ghost_token');
+    this.cache.deleteTokens();
     this.navigateTo('/login');
   }
 

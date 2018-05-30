@@ -3,6 +3,7 @@ import {Router} from '@angular/router';
 import {NSFOService} from '../../shared/services/nsfo-api/nsfo.service';
 import {ACCESS_TOKEN_NAMESPACE, API_URI_RESET_PASSWORD} from '../../shared/services/nsfo-api/nsfo.settings';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import {CacheService} from '../../shared/services/settings/cache.service';
 
 @Component({
   templateUrl: './login.component.html'
@@ -21,7 +22,8 @@ export class LoginComponent {
 
   constructor(private apiService: NSFOService,
               private fb: FormBuilder,
-              private router: Router) {
+              private router: Router,
+              private cache: CacheService) {
     this.form = this.fb.group({
       username: new FormControl( '', Validators.required),
       password: new FormControl('', Validators.required)
@@ -57,7 +59,7 @@ export class LoginComponent {
         .subscribe(
           res => {
             if (res[ACCESS_TOKEN_NAMESPACE]) {
-              localStorage.setItem(ACCESS_TOKEN_NAMESPACE, res[ACCESS_TOKEN_NAMESPACE]);
+              this.cache.setAccessToken(res[ACCESS_TOKEN_NAMESPACE]);
               this.router.navigate(['/main']);
             } else {
               this.form_valid = false;

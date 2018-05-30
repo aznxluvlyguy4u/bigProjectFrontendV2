@@ -10,17 +10,17 @@
     <section class="login column row">
 
       <!--FORM-->
-      <form #form="ngForm" *ngIf="!enable_forgot_pw" class="ng-animate">
+      <form [formGroup]="form" *ngIf="!enable_forgot_pw" class="ng-animate">
 
         <!--INPUT FIELD: USERNAME-->
         <div class="input column row">
-          <input type="text" placeholder="{{ 'USERNAME' | translate }}" ngControl="username"/>
+          <input type="text" placeholder="{{ 'USERNAME' | translate }}" formControlName="username"/>
           <i class="fa fa-user fa-fw"></i>
         </div>
 
         <!--INPUT FIELD: PASSWORD-->
         <div class="input column row">
-          <input type="password" ngControl="password" (keyup.enter)="doLogin()"
+          <input type="password" formControlName="password" (keyup.enter)="doLogin()"
                  placeholder="{{ 'PASSWORD' | translate }}"/>
           <i class="fa fa-lock fa-fw"></i>
         </div>
@@ -53,7 +53,7 @@
 
         <!--EMAIL ADDRESS-->
         <div class="input column row">
-          <input type="text" ngControl="email_address" (keyup.enter)="requestNewPassword()"
+          <input type="text" formControlName="email_address" (keyup.enter)="requestNewPassword()"
                  placeholder="{{ 'E-MAIL ADDRESS' | translate }}"/>
           <i class="fa fa-envelope fa-fw"></i>
         </div>

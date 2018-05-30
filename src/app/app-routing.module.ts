@@ -64,7 +64,7 @@ const appRoutes = [
   {
     path: 'main',  component: HomeComponent, index: true, canActivate: [NSFOAuthService],
     children: [
-      {path: 's', component: DashboardComponent, index: true},
+      {path: '', component: DashboardComponent, index: true},
       {
         path: 'admin',  component: AdminComponent, canActivate: [NSFOAdminAuthService],
         children: [

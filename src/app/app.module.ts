@@ -125,6 +125,7 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {EartagErrorRowComponent} from './rvo-declares/eartag/errors/eartag.errors.row';
 import {HttpModule} from '@angular/http';
 import {LiveSearchComponent} from './shared/components/livesearch/livesearch.component';
+import {CacheService} from './shared/services/settings/cache.service';
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http);
@@ -273,6 +274,7 @@ enableProdMode();
     NSFOAdminAuthService,
     DownloadService,
     DeclareManagerService,
+    CacheService,
     SettingsService,
     Settings,
     Constants
