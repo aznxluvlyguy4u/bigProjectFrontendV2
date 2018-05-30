@@ -17,7 +17,7 @@ export class UtilsService {
 
   constructor(private api: NSFOService, private translate: TranslateService,
               private cache: CacheService) {
-    this.initUserInfo();
+     //this.initUserInfo();
   }
 
   public static getBooleanAsString(bool: boolean) {

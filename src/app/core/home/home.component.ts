@@ -6,8 +6,8 @@ import {Router} from '@angular/router';
 import {NSFOService} from '../../shared/services/nsfo-api/nsfo.service';
 import {SettingsService} from '../../shared/services/settings/settings.service';
 import {
-  API_URI_GET_COUNTRY_CODES,
-  API_URI_GET_MESSAGES,
+    API_URI_GET_COUNTRY_CODES,
+    API_URI_GET_MESSAGES, API_URI_GET_USER_INFO,
 } from '../../shared/services/nsfo-api/nsfo.settings';
 import {UtilsService} from '../../shared/services/utils/utils.services';
 import { DownloadService } from '../../shared/services/download/download.service';
@@ -55,23 +55,22 @@ export class HomeComponent implements OnInit, OnDestroy, AfterContentChecked {
 
     console.error('AccessToken' + this.cache.getAccessToken());
     console.error('GhostToken' + this.cache.getGhostToken());
+    this.apiService.doPostRequest('/v1/auth/validate-token', request)
+      .subscribe(
+        res => {
+          this.is_logged_in = true;
 
-    // this.apiService.doPostRequest('/v1/auth/validate-token', request)
-    //   .subscribe(
-    //     res => {
-    //       this.is_logged_in = true;
-    //
-    //       this.getUserInfo();
-    //       this.getCountryCodeList();
-    //       this.utils.initUserInfo();
-    //       this.getMessages();
-    //       this.isAdmin = this.settings.isAdmin();
-    //       },
-    //     err => {
-    //       this.is_logged_in = false;
-    //       this.navigateTo('/login');
-    //     }
-    //   );
+          this.getUserInfo();
+          this.getCountryCodeList();
+          this.utils.initUserInfo();
+          this.getMessages();
+          this.isAdmin = this.settings.isAdmin();
+          },
+        err => {
+          this.is_logged_in = false;
+          this.navigateTo('/login');
+        }
+      );
   }
 
   ngAfterContentChecked() {
@@ -79,7 +78,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterContentChecked {
   }
 
   ngOnDestroy() {
-    this.userInfo$.unsubscribe();
+    //this.userInfo$.unsubscribe();
     this.recheckMessages = false;
   }
 

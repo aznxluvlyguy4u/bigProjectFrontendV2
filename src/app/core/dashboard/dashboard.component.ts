@@ -13,17 +13,17 @@ import {JsonResponseModel} from '../../shared/models/json-response.model';
 
 export class DashboardComponent implements OnInit, OnDestroy {
   public showUsedEartagsCount = false;
-  private dashboard_info: DashboardInfo = new DashboardInfo;
-  private cleanUpComponent = false;
-  private loopGetDashboardInfo = true;
+  public dashboard_info: DashboardInfo = new DashboardInfo;
+  public cleanUpComponent = false;
+  public loopGetDashboardInfo = true;
 
   constructor(private apiService: NSFOService, private settings: SettingsService, private router: Router) {
   }
 
   ngOnInit() {
-    this.getDashboardInfo();
-    this.syncLivestock();
-    this.syncEartags();
+    // this.getDashboardInfo();
+    // this.syncLivestock();
+    // this.syncEartags();
   }
 
   ngOnDestroy() {
