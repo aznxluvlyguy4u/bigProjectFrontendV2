@@ -27,8 +27,8 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.sass",
-              "node_modules/foundation-sites/dist/foundation.min.css"
+              "node_modules/foundation-sites/dist/foundation.min.css",
+              "src/styles.sass"
             ],
             "scripts": []
           },
@@ -97,8 +97,8 @@
             "tsConfig": "src/tsconfig.spec.json",
             "karmaConfig": "src/karma.conf.js",
             "styles": [
-              "src/styles.sass",
-              "node_modules/foundation-sites/dist/foundation.min.css"
+              "node_modules/foundation-sites/dist/foundation.min.css",
+              "src/styles.sass"
             ],
             "scripts": [],
             "assets": [
