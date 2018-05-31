@@ -117,6 +117,10 @@ export class ExteriorComponent implements OnInit, AfterViewInit, OnChanges {
   }
 
   private getInspectors() {
+    if (!this.settings.isAdmin()) {
+        return;
+    }
+
     this.apiService
       .doGetRequest(API_URI_MEASUREMENTS + '/' + this.uln + '/exteriors/inspectors')
       .subscribe(
