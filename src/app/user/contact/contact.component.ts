@@ -21,6 +21,7 @@ export class ContactComponent implements OnInit, OnDestroy {
   private mood = '';
   private contactInfo = '';
   private userInfo$;
+  private message = '';
 
   constructor(private apiService: NSFOService, private fb: FormBuilder, private settings: SettingsService,
               private utils: UtilsService, private translate: TranslateService) {
@@ -84,7 +85,7 @@ export class ContactComponent implements OnInit, OnDestroy {
       email: this.userEmail,
       category: this.category,
       mood: this.mood,
-      message: this.form.get('message').value
+      message: this.message
     };
 
     this.apiService

@@ -16,15 +16,14 @@
         <div class="contact-info-container" [innerHtml]="contactInfo"></div>
       </div>
       <div class="large-6 columns contact-form">
-        <form #form="ngForm">
         <div class="large-4 columns">
           <label>{{ 'E-MAIL ADDRESS' | translate }}
-            <input type="email" [(ngModel)]="userEmail" ngControl="email">
+            <input type="email" [(ngModel)]="userEmail">
           </label>
         </div>
         <div class="large-4 columns">
           <label>{{ 'CATEGORY' | translate }}
-            <select [(ngModel)]="category" ngControl="category">
+            <select [(ngModel)]="category">
               <option value="{{ 'GENERAL' | translate}}"> {{ 'GENERAL' | translate}}</option>
               <option value="{{ 'PAYMENT' | translate}}"> {{ 'PAYMENT' | translate}}</option>
               <option value="{{ 'I&R DECLARATION' | translate}}"> {{ 'I&R DECLARATION' | translate}}</option>
@@ -35,7 +34,7 @@
         </div>
         <div class="large-4 columns">
           <label>{{ 'I AM ...' | translate }}
-            <select [(ngModel)]="mood" ngControl="mood">
+            <select [(ngModel)]="mood">
               <option value="{{ 'HAPPY' | translate}}"> {{ 'HAPPY' | translate}}</option>
               <option value="{{ 'SATISFIED' | translate}}"> {{ 'SATISFIED' | translate}}</option>
               <option value="{{ 'DISAPPOINTED' | translate}}"> {{ 'DISAPPOINTED' | translate}}</option>
@@ -45,13 +44,12 @@
         </div>
         <div class="large-12 columns">
           <label>{{ 'MESSAGE' | translate }}</label>
-          <textarea ngControl="message"></textarea>
+          <textarea [(ngModel)]="message"></textarea>
           <button type="button" (click)="sendMessage()" class="small primary button pull-right">{{ 'SEND' | translate
             }}
           </button>
           <div class="success-message"> {{ feedback | translate}}</div>
         </div>
-        </form>
       </div>
     </div>
   </div>

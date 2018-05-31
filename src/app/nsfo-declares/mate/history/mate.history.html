@@ -6,6 +6,7 @@
 
 <table class="stack confirmation">
   <thead>
+  <tr>
   <th>{{ 'DATE' | translate }}</th>
   <th>{{ 'ULN (RAM)' | translate }}</th>
   <th>{{ 'ULN (EWE)' | translate }}</th>
@@ -15,11 +16,12 @@
   <th>{{ 'KI' | translate }}</th>
   <th>{{ 'STATUS' | translate }}</th>
   <th></th>
+  </tr>
   </thead>
   <tbody>
-  <app-mate-history-row
+  <tr app-mate-history-row
     *ngFor="let mate of mateHistoryList | mateHistoryFilter: searchValue | paginate: {itemsPerPage: 10, currentPage: page}; let i = index"
-    (revokeMate)="selectMate($event)" (showError)="showError($event)" [mate-object]="mate" [mate-index]="i"></app-mate-history-row>
+    (revokeMate)="selectMate($event)" (showError)="showError($event)" [mate]="mate" [mate_index]="i"></tr>
   </tbody>
 </table>
 

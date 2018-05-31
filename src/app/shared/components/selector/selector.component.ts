@@ -26,11 +26,11 @@ export class SelectorComponent implements OnInit, OnChanges, OnDestroy {
   @Output() selection: EventEmitter<any> = new EventEmitter<any>();
   @Output() modalState: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Input() SUGGESTION_LABEL: string;
-  private countryCode$;
-  private modalDisplay = 'none';
-  private filteredList: any;
-  private form: FormGroup;
-  private country_code_list: any;
+  public countryCode$;
+  public modalDisplay = 'none';
+  public filteredList: any;
+  public form: FormGroup;
+  public country_code_list: any;
 
   constructor(private fb: FormBuilder, private nsfo: NSFOService,
               private settings: SettingsService, private constants: Constants) {

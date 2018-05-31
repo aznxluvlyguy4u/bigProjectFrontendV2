@@ -13,19 +13,18 @@
         {{ sectionTitles[0] | translate }}
       </div>
       <div *ngIf="allowCustomSelection" class="row custom-selection-container">
-        <form #form="ngForm">
+        <form [formGroup]="form">
         <div class="medium-4 columns">
           <label>{{ 'ULN' | translate }}</label>
           <div class="uid-input-group">
-            <select ngControl="uid_country_code">
+            <select formControlName="uid_country_code">
               <option *ngFor="let country_code of country_code_list" value="{{ country_code.code }}">{{
                 country_code.code }}
               </option>
             </select>
-            <input type="text" ngControl="uid_number">
+            <input type="text" formControlName="uid_number">
           </div>
-          <div [hidden]="form.controls['uid_number'].valid || isValidForm" class="input-error-msg pull-right">{{ 'FILL
-            IN THE ULN OR PEDIGREE' | translate }}
+          <div [hidden]="form.controls['uid_number'].valid || isValidForm" class="input-error-msg pull-right">{{ 'FILL IN THE ULN OR PEDIGREE' | translate }}
           </div>
         </div>
 

@@ -1,4 +1,4 @@
-<form #form="ngForm" class="form-declare">
+<form [formGroup]="form" class="form-declare">
 
   <!--MATE BEGIN DATE-->
   <div class="medium-2 columns">
@@ -6,8 +6,7 @@
       {{ 'MATE PERIOD' | translate }} &nbsp;
       <app-datepicker [formCtrl]="form.controls['mate_startdate']" [viewFormat]="view_date_format"
                   [modelFormat]="model_datetime_format"></app-datepicker>
-      <div [hidden]="form.controls['mate_startdate'].valid || form_valid" class="input-error-msg pull-right">{{ 'FILL IN
-        THE MATE PERIOD' | translate }}
+      <div [hidden]="form.controls['mate_startdate'].valid || form_valid" class="input-error-msg pull-right">{{ 'FILL INTHE MATE PERIOD' | translate }}
       </div>
     </label>
   </div>
@@ -18,8 +17,7 @@
       {{ 'TILL' | translate }} &nbsp;
       <app-datepicker [formCtrl]="form.controls['mate_enddate']" [viewFormat]="view_date_format"
                   [modelFormat]="model_datetime_format"></app-datepicker>
-      <div [hidden]="form.controls['mate_enddate'].valid || form_valid" class="input-error-msg pull-right">{{ 'FILL IN
-        THE MATE PERIOD' | translate }}
+      <div [hidden]="form.controls['mate_enddate'].valid || form_valid" class="input-error-msg pull-right">{{ 'FILL INTHE MATE PERIOD' | translate }}
       </div>
     </label>
   </div>
@@ -28,14 +26,14 @@
   <div class="medium-3 columns">
     <label>
       {{ 'ULN' | translate }} ({{ 'MATE RAM' | translate }})
-      <input type="text" ngControl="uln" (focus)="RamSelector.openModal()">
+      <input type="text" formControlName="uln" (focus)="RamSelector.openModal()">
     </label>
   </div>
 
   <!--PMSG FLAG-->
   <div class="medium-2 columns">
     <label>{{ 'PMSG' | translate }} &nbsp;
-      <select ngControl="pmsg">
+      <select formControlName="pmsg">
         <option value="YES">{{ 'YES' | translate }}</option>
         <option value="NO">{{ 'NO' | translate }}</option>
       </select>
@@ -45,7 +43,7 @@
   <!--KI FLAG-->
   <div class="medium-1 columns">
     <label>{{ 'KI' | translate }} &nbsp;
-      <select ngControl="ki">
+      <select formControlName="ki">
         <option value="YES">{{ 'YES' | translate }}</option>
         <option value="NO">{{ 'NO' | translate }}</option>
       </select>

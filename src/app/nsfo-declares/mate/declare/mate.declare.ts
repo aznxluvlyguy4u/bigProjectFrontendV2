@@ -35,7 +35,13 @@ export class MateDeclareComponent implements OnInit, OnDestroy {
   private errorMessages: ErrorMessage[] = [];
   private view_date_format;
   private model_datetime_format;
-  private form: FormGroup;
+  private form: FormGroup = new FormGroup({
+        uln: new FormControl(''),
+        pmsg: new FormControl('NO'),
+        ki: new FormControl('NO'),
+        mate_startdate: new FormControl(),
+        mate_enddate: new FormControl()
+    });
   private uidPattern = '[0-9]';
   private successDurationSeconds = 3;
 
@@ -49,13 +55,6 @@ export class MateDeclareComponent implements OnInit, OnDestroy {
     this.view_date_format = settingsService.getViewDateFormat();
     this.model_datetime_format = settingsService.getModelDateTimeFormat();
 
-    this.form = fb.group({
-      uln: new FormControl(''),
-      pmsg: new FormControl('NO'),
-      ki: new FormControl('NO'),
-      mate_startdate: new FormControl(),
-      mate_enddate: new FormControl()
-    });
   }
 
   ngOnInit() {

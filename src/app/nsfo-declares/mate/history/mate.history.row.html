@@ -1,4 +1,5 @@
 <!--LOG DATE-->
+
 <td>
     <span [hidden]="editMode">
         <label class="show-for-small-only">{{ 'DATE' | translate }}</label>
@@ -24,12 +25,10 @@
 <td>
   <label class="show-for-small-only">{{ 'MATE DATE' | translate }}</label>
   <span [hidden]="editMode">{{ mate.start_date }}</span>
-  <template [hidden]="!editMode">
-      <form #form="ngForm">
+  <template [hidden]="!editMode" [formGroup]="form">
         <app-datepicker [formCtrl]="form.controls['start_date']" [initDate]="mate.start_date"
                     [viewFormat]="view_date_format" [modelFormat]="model_datetime_format"></app-datepicker>
         <div [hidden]="form.controls['start_date'].valid || form_valid" class="input-error-msg text-center">{{ 'FILL IN THE MATE STARTDATE' | translate }}</div>
-      </form>
   </template>
 </td>
 
@@ -37,12 +36,10 @@
 <td>
   <label class="show-for-small-only">{{ 'TILL' | translate }}</label>
   <span [hidden]="editMode">{{ mate.end_date }}</span>
-  <template [hidden]="!editMode" >
-      <form #form="ngForm">
+  <template [hidden]="!editMode" [formGroup]="form">
         <app-datepicker [formCtrl]="form.controls['end_date']" [initDate]="mate.end_date" [viewFormat]="view_date_format"
                     [modelFormat]="model_datetime_format"></app-datepicker>
         <div [hidden]="form.controls['end_date'].valid || form_valid" class="input-error-msg text-center">{{ 'FILL IN THE MATE ENDDATE' | translate }}</div>
-      </form>
   </template>
 </td>
 
@@ -50,13 +47,11 @@
 <td>
   <label class="show-for-small-only">{{ 'PMSG' | translate }}</label>
   <span [hidden]="editMode">{{ mate.pmsg | translate }}</span>
-  <template [hidden]="!editMode">
-    <form #form="ngForm">
-        <select ngControl="pmsg">
+  <template [hidden]="!editMode" [formGroup]="form">
+        <select formControlName="pmsg">
             <option value="YES"> {{ 'YES' | translate }}</option>
             <option value="NO"> {{ 'NO' | translate }}</option>
         </select>
-    </form>
     </template>
 </td>
 
@@ -64,13 +59,11 @@
 <td>
   <label class="show-for-small-only">{{ 'PMSG' | translate }}</label>
   <span [hidden]="editMode">{{ mate.ki | translate }}</span>
-  <template [hidden]="!editMode">
-            <form #form="ngForm">
-        <select ngControl="ki">
+  <template [hidden]="!editMode" [formGroup]="form">
+        <select formControlName="ki">
             <option value="YES"> {{ 'YES' | translate }}</option>
             <option value="NO"> {{ 'NO' | translate }}</option>
         </select>
-            </form>
     </template>
 </td>
 
@@ -124,3 +117,4 @@
         </span>
   </div>
 </td>
+

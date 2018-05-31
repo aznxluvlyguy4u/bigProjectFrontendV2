@@ -9,20 +9,20 @@ import {SettingsService} from '../../../shared/services/settings/settings.servic
 import {MateChangeResponse} from '../../../shared/models/nsfo-declare.model';
 
 @Component({
-  selector: 'app-mate-history-row',
+  selector: '[app-mate-history-row]',
   templateUrl: './mate.history.row.html',
 
 })
 
 export class MateHistoryRowComponent {
-  @Input('mate-object') mate: MateChangeResponse;
-  @Input('mate-index') mate_index: any;
+  @Input() mate: MateChangeResponse;
+  @Input() mate_index: any;
   @Output() revokeMate = new EventEmitter();
   @Output() showError = new EventEmitter();
-  private editMode = false;
-  private temp_mate: MateChangeResponse;
-  private isSending = false;
-  private form: FormGroup;
+  public editMode = false;
+  public temp_mate: MateChangeResponse;
+  public isSending = false;
+  public form: FormGroup;
 
   constructor(private fb: FormBuilder,
               private nsfo: NSFOService,

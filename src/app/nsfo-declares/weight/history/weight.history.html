@@ -8,9 +8,9 @@
   <th></th>
   </thead>
   <tbody>
-  <app-mate-history-row *ngFor="let weight of weightHistoryList | paginate: {itemsPerPage: 10, currentPage: page}; let i = index"
-      (revokeWeight)="selectWeight($event)" (showError)="showError($event)" [mate-object]="weight"
-      [mate-index]="i"></app-mate-history-row>
+  <tr app-mate-history-row *ngFor="let weight of weightHistoryList | paginate: {itemsPerPage: 10, currentPage: page}; let i = index"
+      (revokeWeight)="selectWeight($event)" (showError)="showError($event)" [mate]="weight"
+      [mate_index]="i"></tr>
   </tbody>
 </table>
 
