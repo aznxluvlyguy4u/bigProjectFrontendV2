@@ -26,9 +26,9 @@
   <th></th>
   </thead>
   <tbody>
-  <tr
+  <app-birth-history-row
     *ngFor="let litter of litters | birthHistoryFilter: searchValue | paginate: {itemsPerPage: 10, currentPage: page}; let i = index"
-    (revokeLitter)="selectLitter($event)" [litter-object]="litter"></tr>
+    (revokeLitter)="selectLitter($event)" [litter-object]="litter"></app-birth-history-row>
   </tbody>
 </table>
 

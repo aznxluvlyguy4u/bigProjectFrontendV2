@@ -21,10 +21,10 @@
   <th></th>
   </thead>
   <tbody>
-  <app-arrival-errors-row
+  <tr app-arrival-errors-row
     *ngFor="let arrival of arrivalErrorList | hiddenMessagesFilter:[showHiddenMessages] | paginate: {itemsPerPage: 10, currentPage: page}; let i = index"
     (removeArrival)="removeArrival($event)" (showError)="showError($event)" [arrival]="arrival"
-    [arrival_index]="i"></app-arrival-errors-row>
+    [arrival_index]="i"></tr>
   </tbody>
 </table>
 

@@ -18,10 +18,10 @@
 <td>
   <label class="show-for-small-only">{{ 'UBN NEW OWNER' | translate }}</label>
   <span [hidden]="editMode">{{ eartag.ubn_new_owner }}</span>
-  <form [hidden]="!editMode" #form="ngForm">
+  <span [hidden]="!editMode">
         <input type="text" [(ngModel)]="eartag.ubn_new_owner" ngControl="ubn_new_owner">
         <div [hidden]="form.controls['ubn_new_owner'].valid || form_valid" class="input-error-msg text-center">{{ 'UBN IS INVALID' | translate }}</div>
-    </form>
+    </span>
 </td>
 
 <!--ERROR CODE-->

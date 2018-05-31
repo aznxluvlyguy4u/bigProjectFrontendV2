@@ -10,10 +10,8 @@ import {NSFOService} from '../../../shared/services/nsfo-api/nsfo.service';
 import {DateValidator, UBNValidator} from '../../../shared/validation/nsfo-validation';
 import {API_URI_CHANGE_DEPART, API_URI_HIDE_ERROR} from '../../../shared/services/nsfo-api/nsfo.settings';
 
-declare var $;
-
 @Component({
-  selector: 'app-depart-error-row',
+  selector: '[app-depart-error-row]',
   templateUrl: './depart.errors.row.html',
 
 })
@@ -22,15 +20,15 @@ export class DepartErrorRowComponent implements AfterViewChecked {
   @Input() depart: DepartErrorResponse;
   @Input() depart_index: number;
   @Output() removeDepart = new EventEmitter();
-  private editMode = false;
-  private popupIsLoaded = false;
-  private temp_depart: DepartErrorResponse;
-  private form_valid = true;
-  private options_reason_of_depart = DEPART_REASON_OF_DEPART;
-  private view_date_format;
-  private view_datetime_format;
-  private model_datetime_format;
-  private form: FormGroup;
+  public editMode = false;
+  public popupIsLoaded = false;
+  public temp_depart: DepartErrorResponse;
+  public form_valid = true;
+  public options_reason_of_depart = DEPART_REASON_OF_DEPART;
+  public view_date_format;
+  public view_datetime_format;
+  public model_datetime_format;
+  public form: FormGroup;
 
   constructor(private fb: FormBuilder,
               private apiService: NSFOService,
@@ -40,7 +38,7 @@ export class DepartErrorRowComponent implements AfterViewChecked {
     this.view_datetime_format = settings.VIEW_DATETIME_FORMAT;
     this.model_datetime_format = settings.MODEL_DATETIME_FORMAT;
 
-    this.form = fb.group({
+    this.form = new FormGroup({
       depart_date: new FormControl('', Validators.compose([Validators.required, DateValidator.validateDateFormat])),
       ubn_new_owner: new FormControl('', UBNValidator.validateWithSevenTest),
       reason_of_depart: new FormControl(''),
@@ -50,7 +48,7 @@ export class DepartErrorRowComponent implements AfterViewChecked {
 
   ngAfterViewChecked() {
     if (!this.popupIsLoaded) {
-      $('#error-' + this.depart_index).foundation();
+      // $('#error-' + this.depart_index).foundation();
       this.popupIsLoaded = true;
     }
   }

@@ -13,7 +13,7 @@ import {DateValidator, UBNValidator} from '../../../shared/validation/nsfo-valid
 declare var $;
 
 @Component({
-  selector: 'app-depart-history-row',
+  selector: '[app-depart-history-row]',
   templateUrl: './depart.history.row.html',
 })
 

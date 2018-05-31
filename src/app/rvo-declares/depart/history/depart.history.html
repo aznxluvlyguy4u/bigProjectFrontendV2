@@ -8,6 +8,7 @@
 <!--TABLE HEADER-->
 <table class="stack history">
   <thead>
+  <tr>
   <th>{{ 'DATE' | translate }}</th>
   <th>{{ 'ULN' | translate }}</th>
   <th>{{ 'PEDIGREE NUMBER' | translate }}</th>
@@ -17,11 +18,12 @@
   <th *ngIf="false">{{ 'CERTIFICATE NUMBER' | translate }}</th>
   <th>{{ 'STATUS' | translate }}</th>
   <th></th>
+  </tr>
   </thead>
   <tbody>
-  <app-depart-history-row
+  <tr app-depart-history-row
     *ngFor="let depart of departHistoryList | departHistoryFilter:[searchValue] | paginate: {itemsPerPage: 10, currentPage: page}; let i = index"
-    (revokeDepart)="selectDepart($event)" [depart]="depart" [depart_index]="i"></app-depart-history-row>
+    (revokeDepart)="selectDepart($event)" [depart]="depart" [depart_index]="i"></tr>
   </tbody>
 </table>
 

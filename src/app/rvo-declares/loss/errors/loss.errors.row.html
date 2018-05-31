@@ -40,11 +40,11 @@
 <td>
   <label class="show-for-small-only">{{ 'REASON OF LOSS' | translate }}</label>
   <span [hidden]="editMode">{{ loss.reason_of_loss | translate }}</span>
-  <form [hidden]="!editMode" #form="ngForm">
+  <span [hidden]="!editMode">
         <select [(ngModel)]="loss.reason_of_loss" ngControl="reason_death">
             <option *ngFor="let reason of options_reason_of_loss" value="{{reason}}">{{reason | translate}}</option>
         </select>
-    </form>
+    </span>
 </td>
 
 <!--ERROR CODE-->

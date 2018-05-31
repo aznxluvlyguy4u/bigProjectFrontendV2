@@ -15,18 +15,18 @@ import {AnimalsOverviewSelection} from '../../../shared/components/livestock/ani
 })
 
 export class DepartDeclareComponent {
-  private options_reason_of_depart = DEPART_REASON_OF_DEPART;
-  private isSendingDeclare = false;
-  private isValidForm = true;
+  public options_reason_of_depart = DEPART_REASON_OF_DEPART;
+  public isSendingDeclare = false;
+  public isValidForm = true;
 
-  private modalDisplay = 'none';
-  private errorMessage = '';
+  public modalDisplay = 'none';
+  public errorMessage = '';
 
-  private view_date_format;
-  private model_datetime_format;
+  public view_date_format;
+  public model_datetime_format;
 
-  private form: FormGroup;
-  private export_animal: FormGroup;
+  public form: FormGroup;
+  public export_animal: FormGroup;
 
   constructor(private fb: FormBuilder,
               private nsfo: NSFOService,

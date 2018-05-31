@@ -1,10 +1,11 @@
-<form #form="ngForm" class="form-declare">
+<div class="form-declare">
+<form [formGroup]="form">
 
   <!--IDENTIFICATION TYPE-->
   <div class="large-2 columns">
     <label>
       {{ 'IDENTIFICATION TYPE' | translate }}
-      <select ngControl="uid_type">
+      <select formControlName="uid_type">
         <option value="{{ constants.ULN }}">{{ constants.ULN | translate }}</option>
         <option value="{{ constants.PEDIGREE }}">{{ constants.PEDIGREE | translate }}</option>
       </select>
@@ -15,11 +16,11 @@
   <div class="large-3 columns">
     <label>{{ 'IDENTIFICATION NUMBER' | translate }}</label>
     <div class="uid-input-group">
-      <select ngControl="uid_country_code">
+      <select formControlName="uid_country_code">
         <option *ngFor="let country_code of country_code_list" value="{{ country_code.code }}">{{ country_code.code }}
         </option>
       </select>
-      <input type="text" maxlength="12" ngControl="uid_number">
+      <input type="text" maxlength="12" formControlName="uid_number">
     </div>
     <div [hidden]="form.controls['uid_number'].valid || form_valid" class="input-error-msg pull-right">{{ 'FILL IN THE ULN OR PEDIGREE' | translate }}
     </div>
@@ -31,16 +32,18 @@
       {{ 'ARRIVAL DATE' | translate }} &nbsp;
       <app-datepicker  [formCtrl]="form.controls['arrival_date']" [viewFormat]="view_date_format"
                   [modelFormat]="view_date_format"></app-datepicker>
-      <div [hidden]="form.controls['arrival_date'].valid || form_valid" class="input-error-msg pull-right">{{ 'FILL IN
-        THE ARRIVAL DATE' | translate }}
+      <div [hidden]="form.controls['arrival_date'].valid || form_valid" class="input-error-msg pull-right">{{ 'FILL INTHE ARRIVAL DATE' | translate }}
       </div>
     </label>
   </div>
+</form>
 
+
+<form [formGroup]="import_animal">
   <!--IMPORT ANIMAL FLAG-->
-  <div ngControlGroup="import_animal" class="large-1 columns">
+  <div class="large-1 columns">
     <label>{{ 'IMPORT' | translate }} &nbsp;
-      <select ngControl="import_flag" (change)="clearUBNValue(); clearCertificateValue();">
+      <select formControlName="import_flag" (change)="clearUBNValue(); clearCertificateValue();">
         <option value="{{ constants.YES }}">{{ constants.YES | translate }}</option>
         <option value="{{ constants.NO }}">{{ constants.NO | translate }}</option>
       </select>
@@ -48,11 +51,11 @@
   </div>
 
   <!--UBN PREVIOUS OWNER-->
-  <div ngControlGroup="import_animal" *ngIf="import_animal.controls['import_flag'].value == constants.NO"
+  <div *ngIf="import_animal.controls['import_flag'].value == constants.NO"
        class="large-2 columns">
     <label>
       {{ 'UBN PREVIOUS OWNER' | translate }}
-      <input type="text" ngControl="ubn_previous_owner">
+      <input type="text" formControlName="ubn_previous_owner">
       <div [hidden]="import_animal.valid || form_valid" class="input-error-msg pull-right">
         {{ 'UBN IS INVALID' | translate }}
       </div>
@@ -60,12 +63,13 @@
   </div>
 
   <!--CERTIFICATE NUMBER-->
-  <div ngControlGroup="import_animal" *ngIf="false" class="large-2 columns">
+  <div *ngIf="false" class="large-2 columns">
     <label>
       {{ 'CERTIFICATE NUMBER' | translate }}
-      <input type="text" ngControl="certificate_number">
+      <input type="text" formControlName="certificate_number">
     </label>
   </div>
+  </form>
   <!--<div ngControlGroup="import_animal" *ngIf="import_animal.controls['import_flag'].value == constants.YES" class="large-2 columns">-->
   <!--<label>-->
   <!--{{ 'CERTIFICATE NUMBER' | translate }}-->
@@ -79,8 +83,7 @@
       translate }}
     </button>
   </div>
-</form>
-
+</div>
 <!--TABLE OVERVIEW-->
 <div *ngIf="arrival_list.length > 0">
   <table class="stack">

@@ -11,10 +11,8 @@ import {API_URI_CHANGE_ARRIVAL, API_URI_GET_COUNTRY_CODES, API_URI_HIDE_ERROR} f
 import {DateValidator, UBNValidator} from '../../../shared/validation/nsfo-validation';
 import {JsonResponseModel} from '../../../shared/models/json-response.model';
 
-declare var $;
-
 @Component({
-  selector: 'app-arrival-errors-row',
+  selector: '[app-arrival-errors-row]',
   templateUrl: './arrival.errors.row.html',
 })
 
@@ -23,16 +21,16 @@ export class ArrivalErrorRowComponent implements OnInit, AfterViewChecked {
   @Input() arrival_index: number;
   @Output() removeArrival = new EventEmitter();
   @Output() showError = new EventEmitter();
-  private editMode = false;
-  private popupIsLoaded = false;
-  private temp_arrival: ArrivalErrorResponse;
-  private country_code_list = [];
-  private form_valid = true;
-  private uid_type_changed;
-  private view_date_format;
-  private view_datetime_format;
-  private model_datetime_format;
-  private form: FormGroup;
+  public editMode = false;
+  public popupIsLoaded = false;
+  public temp_arrival: ArrivalErrorResponse;
+  public country_code_list = [];
+  public form_valid = true;
+  public uid_type_changed;
+  public view_date_format;
+  public view_datetime_format;
+  public model_datetime_format;
+  public form: FormGroup;
 
   constructor(private fb: FormBuilder,
               private apiService: NSFOService,
@@ -53,10 +51,10 @@ export class ArrivalErrorRowComponent implements OnInit, AfterViewChecked {
   }
 
   ngAfterViewChecked() {
-    if (!this.popupIsLoaded) {
-      $('#error-' + this.arrival_index).foundation();
-      this.popupIsLoaded = true;
-    }
+    // if (!this.popupIsLoaded) {
+    //   $('#error-' + this.arrival_index).foundation();
+    //   this.popupIsLoaded = true;
+    // }
   }
 
   private getCountryCodeList() {

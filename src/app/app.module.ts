@@ -13,7 +13,7 @@ import {DeclareManagerService} from './shared/services/declaremanager/declare-ma
 import {SettingsService} from './shared/services/settings/settings.service';
 import {Settings} from './shared/variables/settings';
 import {Constants} from './shared/variables/constants';
-import {TranslateLoader, TranslateModule} from '@ngx-translate/core';
+import {TranslateLoader, TranslateModule, TranslateService} from '@ngx-translate/core';
 import {TranslateHttpLoader} from '@ngx-translate/http-loader';
 import {NgxPaginationModule} from 'ngx-pagination';
 import {AppRoutingModule} from './app-routing.module';
@@ -127,10 +127,10 @@ import {HttpModule} from '@angular/http';
 import {LiveSearchComponent} from './shared/components/livesearch/livesearch.component';
 import {CacheService} from './shared/services/settings/cache.service';
 // AoT requires an exported function for factories
-export function HttpLoaderFactory(http: HttpClient) {
-  return new TranslateHttpLoader(http);
+export function CreateTranslateLoader(http: HttpClient) {
+    return new TranslateHttpLoader(http, '../assets/i18n/', '.json');
 }
-enableProdMode();
+// enableProdMode();
 @NgModule({
   declarations: [
     AppComponent,
@@ -261,7 +261,7 @@ enableProdMode();
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
-        useFactory: HttpLoaderFactory,
+        useFactory: (CreateTranslateLoader),
         deps: [HttpClient]
       }
     })

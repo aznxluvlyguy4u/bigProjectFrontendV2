@@ -9,34 +9,43 @@ import {API_URI_DECLARE_ARRIVAL} from '../../../shared/services/nsfo-api/nsfo.se
 import {DateValidator, UBNValidator} from '../../../shared/validation/nsfo-validation';
 import {SettingsService} from '../../../shared/services/settings/settings.service';
 
-declare var $;
-
 @Component({
   templateUrl: './arrival.declare.html',
 
 })
 
 export class ArrivalDeclareComponent implements OnInit, OnDestroy, AfterViewInit {
-  private arrival_list = [];
-  private country_code_list = [];
-  private arrival = new ArrivalRequest();
+  public arrival_list = [];
+    public country_code_list = [];
+    public arrival = new ArrivalRequest();
 
-  private form_valid = true;
-  private in_progress = false;
-  private error_message = 'SOMETHING WENT WRONG! TRY AGAIN AT LATER TIME!';
-  private error_number = '';
+    public form_valid = true;
+    public in_progress = false;
+    public error_message = 'SOMETHING WENT WRONG! TRY AGAIN AT LATER TIME!';
+    public error_number = '';
 
-  private modal_display = 'none';
+    public modal_display = 'none';
 
-  private view_date_format;
-  private model_datetime_format;
+    public view_date_format;
+    public model_datetime_format;
 
-  private form: FormGroup;
-  private import_animal: FormGroup;
+    public import_animal: FormGroup = new FormGroup({
+        import_flag: new FormControl(this.constants.NO),
+        ubn_previous_owner: new FormControl('', UBNValidator.validateWithSevenTest),
+        certificate_number: new FormControl(''),
+    });
 
-  private countryCodeObs;
+    public form: FormGroup = new FormGroup({
+        uid_type: new FormControl(this.constants.ULN),
+        uid_country_code: new FormControl('NL'),
+        uid_number: new FormControl('', Validators.required),
+        arrival_date: new FormControl('', Validators.compose([Validators.required, DateValidator.validateDateFormat])),
+        import_animal: this.import_animal
+    });
 
-  constructor(private constants: Constants,
+    public countryCodeObs;
+
+  constructor(public constants: Constants,
               private fb: FormBuilder,
               private apiService: NSFOService,
               private settings: SettingsService) {
@@ -65,7 +74,7 @@ export class ArrivalDeclareComponent implements OnInit, OnDestroy, AfterViewInit
   }
 
   ngAfterViewInit() {
-    $('#error-message').foundation();
+    // $('#error-message').foundation();
   }
 
   ngOnDestroy() {

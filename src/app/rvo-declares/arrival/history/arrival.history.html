@@ -8,21 +8,23 @@
 <!--TABLE HEADER-->
 <table class="stack">
   <thead>
-  <th>{{ 'DATE' | translate }}</th>
-  <th>{{ 'ULN' | translate }}</th>
-  <th>{{ 'PEDIGREE NUMBER' | translate }}</th>
-  <th>{{ 'ARRIVAL DATE' | translate }}</th>
-  <th>{{ 'IMPORT' | translate }}</th>
-  <th>{{ 'UBN PREVIOUS OWNER' | translate }}</th>
-  <th *ngIf="false">{{ 'CERTIFICATE NUMBER' | translate }}</th>
-  <th>{{ 'STATUS' | translate }}</th>
-  <th></th>
+  <tr>
+    <th>{{ 'DATE' | translate }}</th>
+    <th>{{ 'ULN' | translate }}</th>
+    <th>{{ 'PEDIGREE NUMBER' | translate }}</th>
+    <th>{{ 'ARRIVAL DATE' | translate }}</th>
+    <th>{{ 'IMPORT' | translate }}</th>
+    <th>{{ 'UBN PREVIOUS OWNER' | translate }}</th>
+    <th *ngIf="false">{{ 'CERTIFICATE NUMBER' | translate }}</th>
+    <th>{{ 'STATUS' | translate }}</th>
+    <th></th>
+  </tr>
   </thead>
   <tbody>
-  <app-arrival-history-row
+  <tr app-arrival-history-row
     *ngFor="let arrival of arrivalHistoryList | arrivalHistoryFilter:[searchValue] | paginate: {itemsPerPage: 10, currentPage: page}; let i = index"
     (revokeArrival)="selectArrival($event)" (showError)="showError($event)" [arrival]="arrival"
-    [arrival_index]="i"></app-arrival-history-row>
+    [arrival_index]="i"></tr>
   </tbody>
 </table>
 

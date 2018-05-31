@@ -29,11 +29,11 @@
 <td>
   <label class="show-for-small-only">{{ 'DEPART DATE' | translate }}</label>
   <span [hidden]="editMode">{{ depart.depart_date }}</span>
-  <form [hidden]="!editMode" #form="ngForm">
+  <span [hidden]="!editMode">
         <app-datepicker  [formCtrl]="form.controls['depart_date']" [initDate]="depart.depart_date"
                     [viewFormat]="view_date_format" [modelFormat]="model_datetime_format"></app-datepicker>
         <div [hidden]="form.controls['depart_date'].valid || form_valid" class="input-error-msg text-center">{{ 'FILL IN THE DEPART DATE' | translate }}</div>
-    </form>
+    </span>
 </td>
 
 
@@ -41,11 +41,11 @@
 <td>
   <label class="show-for-small-only">{{ 'REASON OF DEPART' | translate }}</label>
   <span [hidden]="editMode">{{ depart.reason_of_depart | translate }}</span>
-  <form [hidden]="!editMode" #form="ngForm">
+  <span [hidden]="!editMode">
         <select *ngIf="!depart.is_export_animal" [(ngModel)]="depart.reason_of_depart" ngControl="reason_of_depart">
             <option *ngFor="let reason of options_reason_of_depart" value="{{reason}}">{{reason | translate}}</option>
         </select>
-    </form>
+    </span>
 </td>
 
 <!--UBN NEW OWNER-->
@@ -59,11 +59,11 @@
             --
         </span>
     </span>
-  <form [hidden]="!editMode" #form="ngForm">
+  <span [hidden]="!editMode">
         <input type="text" *ngIf="!depart.is_export_animal" [(ngModel)]="depart.ubn_new_owner"
                ngControl="ubn_new_owner">
         <div [hidden]="form.controls['ubn_new_owner'].valid || form_valid" class="input-error-msg text-center">{{ 'UBN IS INVALID' | translate }}</div>
-    </form>
+    </span>
 </td>
 
 <!--CERTIFICATE NUMBER-->

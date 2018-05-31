@@ -14,12 +14,12 @@ import {JsonResponseModel} from '../../../shared/models/json-response.model';
 })
 
 export class ArrivalErrorsComponent implements OnInit {
-  private arrivalErrorList = <ArrivalErrorResponse[]>[];
-  private error_modal_display = 'none';
-  private error_message = '';
-  private error_number = '';
-  private isLoading = true;
-  private showHiddenMessages = false;
+  public arrivalErrorList = <ArrivalErrorResponse[]>[];
+  public error_modal_display = 'none';
+  public error_message = '';
+  public error_number = '';
+  public isLoading = true;
+  public showHiddenMessages = false;
 
   constructor(private apiService: NSFOService, private settings: Settings) {
   }

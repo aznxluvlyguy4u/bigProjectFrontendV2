@@ -17,13 +17,16 @@ export class DashboardComponent implements OnInit, OnDestroy {
   public cleanUpComponent = false;
   public loopGetDashboardInfo = true;
 
-  constructor(private apiService: NSFOService, private settings: SettingsService, private router: Router) {
+  constructor(
+      private apiService: NSFOService,
+      private settings: SettingsService,
+      private router: Router) {
   }
 
   ngOnInit() {
-    // this.getDashboardInfo();
-    // this.syncLivestock();
-    // this.syncEartags();
+     this.getDashboardInfo();
+     this.syncLivestock();
+     this.syncEartags();
   }
 
   ngOnDestroy() {

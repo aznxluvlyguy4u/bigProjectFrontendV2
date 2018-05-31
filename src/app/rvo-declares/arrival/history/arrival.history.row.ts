@@ -14,7 +14,7 @@ import { sortBy, clone } from 'lodash';
 declare var $;
 
 @Component({
-  selector: 'app-arrival-history-row',
+  selector: '[app-arrival-history-row]',
   templateUrl: './arrival.history.row.html',
 })
 
@@ -23,15 +23,20 @@ export class ArrivalHistoryRowComponent implements OnInit {
   @Input() arrival_index: number;
   @Output() revokeArrival = new EventEmitter();
   @Output() showError = new EventEmitter();
-  private editMode = false;
-  private temp_arrival: ArrivalChangeResponse;
-  private country_code_list = [];
-  private form_valid = true;
-  private uid_type_changed;
-  private view_datetime_format;
-  private view_date_format;
-  private model_datetime_format;
-  private form: FormGroup;
+  public editMode = false;
+  public temp_arrival: ArrivalChangeResponse;
+  public country_code_list = [];
+  public form_valid = true;
+  public uid_type_changed;
+  public view_datetime_format;
+  public view_date_format;
+  public model_datetime_format;
+  public form: FormGroup = new FormGroup({
+      arrival_date: new FormControl('', Validators.compose([Validators.required, DateValidator.validateDateFormat])),
+      country_origin: new FormControl(''),
+      ubn_previous_owner: new FormControl('', UBNValidator.validateWithSevenTest),
+      certificate_number: new FormControl('')
+  });
 
   constructor(private fb: FormBuilder,
               private apiService: NSFOService,
@@ -39,13 +44,6 @@ export class ArrivalHistoryRowComponent implements OnInit {
     this.view_datetime_format = settings.VIEW_DATETIME_FORMAT;
     this.view_date_format = settings.VIEW_DATE_FORMAT;
     this.model_datetime_format = settings.MODEL_DATETIME_FORMAT;
-
-    this.form = fb.group({
-      arrival_date: new FormControl('', Validators.compose([Validators.required, DateValidator.validateDateFormat])),
-      country_origin: new FormControl(''),
-      ubn_previous_owner: new FormControl('', UBNValidator.validateWithSevenTest),
-      certificate_number: new FormControl('')
-    });
   }
 
   ngOnInit() {

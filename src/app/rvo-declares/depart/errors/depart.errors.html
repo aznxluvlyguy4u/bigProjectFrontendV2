@@ -10,6 +10,7 @@
 <!--TABLE HEADER-->
 <table class="stack errors">
   <thead>
+  <tr>
   <th>{{ 'DATE' | translate }}</th>
   <th>{{ 'ULN' | translate }}</th>
   <th>{{ 'PEDIGREE NUMBER' | translate }}</th>
@@ -19,11 +20,12 @@
   <th *ngIf="false">{{ 'CERTIFICATE NUMBER' | translate }}</th>
   <th>{{ 'ERROR CODE' | translate }}</th>
   <th></th>
+  </tr>
   </thead>
   <tbody>
-  <app-depart-error-row
+  <tr app-depart-error-row
     *ngFor="let depart of departErrorList | hiddenMessagesFilter:[showHiddenMessages] | paginate: {itemsPerPage: 10, currentPage: page}; let i = index"
-    (removeDepart)="removeDepart($event)" [depart]="depart" [depart_index]="i"></app-depart-error-row>
+    (removeDepart)="removeDepart($event)" [depart]="depart" [depart_index]="i"></tr>
   </tbody>
 </table>
 

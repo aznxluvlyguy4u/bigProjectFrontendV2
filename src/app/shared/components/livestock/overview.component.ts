@@ -32,7 +32,7 @@ export const LIVESTOCK_TYPE_MATE = 'LIVE_STOCK_TYPE_MATE';
 })
 export class LivestockOverviewComponent implements OnInit, OnDestroy {
     @Input() selectedFileType: string;
-    @Input() file_types_list: string[];
+    @Input() file_types_list: string[] = [];
     @Input() view_mode = false;
     @Input() load_historic_animals_in_non_view_mode = false;
     @Input() weightMode = false;
@@ -47,30 +47,30 @@ export class LivestockOverviewComponent implements OnInit, OnDestroy {
     mateMode = false;
     updateLastMateSubscription: Subscription;
     @Input() lastMateChanged: Subject<MateChangeResponse>;
-    private livestock_list_initial = <LivestockAnimal[]>[];
-    private livestock_list = <LivestockAnimal[]>[];
-    private filtered_list = <LivestockAnimal[]>[];
-    private historic_livestock_list = <LivestockAnimal[]>[];
-    private view_date_format;
-    private model_datetime_format;
-    private selection_column_one = LIVESTOCK_SORT_OPTIONS[0];
-    private order_column_one = this.selection_column_one;
-    private selection_column_two = LIVESTOCK_SORT_OPTIONS[1];
-    private order_column_two = this.selection_column_two;
-    private gender_filter_options = LIVESTOCK_GENDER_FILTER_OPTIONS;
-    private genderFilterValue = 'ALL';
-    private searchFieldFilter = '';
-    @Input() private startDateFieldFilter = '';
-    @Input() private endDateFieldFilter = '';
-    private sort_options = LIVESTOCK_SORT_OPTIONS;
-    private order_column_uln_asc = true;
-    private order_column_one_asc = true;
-    private order_column_two_asc = true;
-    private order_column_uln = 'uln';
-    private selectionCount = 0;
-    private selectionList = <LivestockAnimal[]>[];
+    public livestock_list_initial = <LivestockAnimal[]>[];
+    public livestock_list = <LivestockAnimal[]>[];
+    public filtered_list = <LivestockAnimal[]>[];
+    public historic_livestock_list = <LivestockAnimal[]>[];
+    public view_date_format;
+    public model_datetime_format;
+    public selection_column_one = LIVESTOCK_SORT_OPTIONS[0];
+    public order_column_one = this.selection_column_one;
+    public selection_column_two = LIVESTOCK_SORT_OPTIONS[1];
+    public order_column_two = this.selection_column_two;
+    public gender_filter_options = LIVESTOCK_GENDER_FILTER_OPTIONS;
+    public genderFilterValue = 'ALL';
+    public searchFieldFilter = '';
+    @Input() public startDateFieldFilter = '';
+    @Input() public endDateFieldFilter = '';
+    public sort_options = LIVESTOCK_SORT_OPTIONS;
+    public order_column_uln_asc = true;
+    public order_column_one_asc = true;
+    public order_column_two_asc = true;
+    public order_column_uln = 'uln';
+    public selectionCount = 0;
+    public selectionList = <LivestockAnimal[]>[];
     // Report options
-    private concatBreedValueAndAccuracyColumns = 'YES';
+    public concatBreedValueAndAccuracyColumns = 'YES';
 
     constructor(private apiService: NSFOService,
                 private router: Router,
@@ -211,7 +211,7 @@ export class LivestockOverviewComponent implements OnInit, OnDestroy {
             .doGetRequest(API_URI_GET_ANIMALS + queryParam)
             .subscribe(
                 (res: JsonResponseModel) => {
-                    //this.livestock_list = LivestockAnimal.apply(null, new Uint16Array(res));
+                    // this.livestock_list = LivestockAnimal.apply(null, new Uint16Array(res));
                     this.livestock_list = <LivestockAnimal[]> res.result;
                     for (const animal of this.livestock_list) {
                         animal.date_of_birth_sort = animal.date_of_birth;
