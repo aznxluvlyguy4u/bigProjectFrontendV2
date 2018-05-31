@@ -2,34 +2,55 @@
 
     <!--TOP NAVIGATION BAR-->
     <nav [class.is_admin]="isAdmin">
-        <button style="float: left;" type="button" (click)="isActiveSideMenu = !isActiveSideMenu; isActiveUserMenu = false; isActiveMessageMenu = false;" [class.active]="isActiveSideMenu" class="menu-toggle">
-            <i class="fa fa-bars"></i>
-        </button>
-        <div style="float: left; margin-top: 5px;" (click)="navigateTo('/main')" class="brand-name"> NSFO <span>Online</span></div>
-        <div style="float: left; margin-left: 10px" class="ubn-container">
-             <select [(ngModel)]="currentUBNValue" (change)="selectUBN(); reloadApp()">
+        <ul class="navbar-ul-container">
+          <li style="float: left;">
+            <button style="float: left;" type="button" (click)="isActiveSideMenu = !isActiveSideMenu; isActiveUserMenu = false; isActiveMessageMenu = false;" [class.active]="isActiveSideMenu" class="menu-toggle">
+              <i class="fa fa-bars"></i>
+            </button>
+          </li>
+
+          <li class="li-left">
+            <div class="brand-name" (click)="navigateTo('/main')"> NSFO <span>Online</span></div>
+          </li>
+
+          <li class="li-left">
+            <div class="ubn-container">
+              <select [(ngModel)]="currentUBNValue" (change)="selectUBN(); reloadApp()">
                 <option *ngFor="let ubn of ubnList" value="{{ ubn }}"> ({{'UBN_SHORT' | translate}}:{{ ubn }})</option>
-            </select>
-        </div>
-        <button style="float: right;" type="button" (click)="toggleActiveMessageMenu()" [class.active]="isActiveMessageMenu" class="message-toggle">
-            <i class="fa fa-envelope"><span *ngIf="menuMessages.length > 0"> {{ menuMessages.length }}</span></i>
-        </button>
+              </select>
+            </div>
+          </li>
 
-        <ng-template *ngIf="!isDownloadModalEmpty()">
-            <button style="float: right;" type="button" (click)="toggleDownloadModal()" [class.active]="isActiveDownloadModal" class="download-toggle">
+          <li class="li-right">
+            <div>
+              <button type="button" (click)="toggleActiveUserMenu()" [class.active]="isActiveUserMenu" class="profile-toggle">
+                <i class="fa fa-user"><span class="show-for-large">{{ currentUser.first_name }} {{ currentUser.last_name }} </span></i>
+              </button>
+            </div>
+          </li>
+
+          <li class="li-right">
+            <button type="button" (click)="toggleActiveMessageMenu()" [class.active]="isActiveMessageMenu" class="message-toggle">
+              <i class="fa fa-envelope"><span *ngIf="menuMessages.length > 0"> {{ menuMessages.length }}</span></i>
+            </button>
+          </li>
+
+          <li class="li-right">
+            <ng-template *ngIf="!isDownloadModalEmpty()">
+              <button type="button" (click)="toggleDownloadModal()" [class.active]="isActiveDownloadModal" class="download-toggle">
                 <i class="fa fa-download"><span *ngIf="downloadCount() > 0"> {{ downloadCount() }}</span></i>
-            </button>
-        </ng-template>
+              </button>
+            </ng-template>
+          </li>
 
-        <ng-template *ngIf="!isDeclareModalEmpty()">
-            <button style="float: right;" type="button" (click)="toggleDeclareItemsModal()" [class.active]="isActiveDeclareItemsModal" class="declare-modal-toggle">
+          <li class="li-right">
+            <ng-template *ngIf="!isDeclareModalEmpty()">
+              <button type="button" (click)="toggleDeclareItemsModal()" [class.active]="isActiveDeclareItemsModal" class="declare-modal-toggle">
                 <i class="fa fa-list"><span *ngIf="declareItemsCount() > 0"> {{ declareItemsCount() }}</span></i>
-            </button>
-        </ng-template>
-
-        <button style="float: right;" type="button" (click)="toggleActiveUserMenu()" [class.active]="isActiveUserMenu" class="profile-toggle">
-            <i class="fa fa-user"><span class="show-for-large">{{ currentUser.first_name }} {{ currentUser.last_name }} </span></i>
-        </button>
+              </button>
+            </ng-template>
+          </li>
+        </ul>
     </nav>
 
   <!--SIDE MENU-->
