@@ -29,9 +29,11 @@
 <td>
   <label class="show-for-small-only">{{ 'ARRIVAL DATE' | translate }}</label>
   <span [hidden]="editMode">{{ arrival.arrival_date }}</span>
+    <template [hidden]="!editMode">
         <app-datepicker  [formCtrl]="form.controls['arrival_date']" [initDate]="arrival.arrival_date"
                     [viewFormat]="view_date_format" [modelFormat]="model_datetime_format"></app-datepicker>
         <div [hidden]="form.controls['arrival_date'].valid || form_valid" class="input-error-msg text-center">{{ 'FILL IN THE ARRIVAL DATE' | translate }}</div>
+    </template>
 </td>
 
 <!--IMPORT ANIMAL FLAG-->
@@ -45,9 +47,11 @@
 <td>
   <label class="show-for-small-only">{{ 'UBN PREVIOUS OWNER' | translate }}</label>
   <span [hidden]="editMode">{{ arrival.ubn_previous_owner }}</span>
-        <input type="text" *ngIf="!arrival.is_import_animal" [(ngModel)]="arrival.ubn_previous_owner"
+    <template [hidden]="!editMode">
+    <input type="text" *ngIf="!arrival.is_import_animal" [(ngModel)]="arrival.ubn_previous_owner"
                ngControl="ubn_previous_owner">
         <div [hidden]="form.controls['ubn_previous_owner'].valid || form_valid" class="input-error-msg text-center">{{ 'UBN IS INVALID' | translate }}</div>
+    </template>
 </td>
 
 <!--CERTIFICATE NUMBER-->
