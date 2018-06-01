@@ -91,18 +91,13 @@
 
 <!--ULN-->
 <td>
-  <form #form="ngForm">
+  <form [formGroup]="form">
   <input (keyup)="preventKeyPress($event)" (keydown)="preventKeyPress($event)" (keypress)="preventKeyPress($event)"
-         type="text" ngControl="uln_surrogate" (focus)="surrogateMotherSelector.openModal()"
+         type="text" formControlName="uln_surrogate" (focus)="surrogateMotherSelector.openModal()"
          [disabled]="(animal.nurture_type != 'SURROGATE') || isDisabled" class='input-uln'>
-  <div [hidden]="form.controls['uln_surrogate'].valid || isValidForm" class="input-error-msg pull-right">{{ 'FILL IN THE
-    ULN' | translate }}
+  <div [hidden]="form.controls['uln_surrogate'].valid || isValidForm" class="input-error-msg pull-right">{{ 'FILL IN THE ULN' | translate }}
   </div>
   </form>
 </td>
 
-<selector #childSelector [columns]="['UNASSIGNED TAGS']" [list]="tags" [initItem]="selectedTag"
-          (selection)="selectTag($event)"></selector>
-<selector #surrogateMotherSelector [columns]="['ULN', 'PEDIGREE NUMBER']" [list]="candidateSurrogates"
-          [filter]="'FEMALES'" [SUGGESTION_LABEL]="'POSSIBLE SURROGATE MOTHER'"
-          (selection)="selectSurrogate($event)"></selector>
+

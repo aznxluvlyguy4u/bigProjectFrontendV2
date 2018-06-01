@@ -14,9 +14,9 @@
   <th></th>
   </thead>
   <tbody>
-  <app-tag-replacement-history-row
+  <tr app-tag-replacement-history-row
     *ngFor="let tagReplacement of tagReplacementHistoryList | tagReplacementHistoryFilter:[searchValue] | paginate: {itemsPerPage: 10, currentPage: page}; let i = index"
-    (revokeTagReplacement)="selectTagReplacement($event)" [tagReplacement]="tagReplacement" [tagReplacementIndex]="i"></app-tag-replacement-history-row>
+    (revokeTagReplacement)="selectTagReplacement($event)" [tagReplacement]="tagReplacement" [tagReplacementIndex]="i"></tr>
   </tbody>
 </table>
 

@@ -14,6 +14,7 @@
 <!--TABLE HEADER-->
 <table class="stack">
   <thead>
+  <tr>
   <th>{{ 'DATE' | translate }}</th>
   <th>{{ 'DATE OF BIRTH' | translate }}</th>
   <th>{{ 'ULN (MOTHER)' | translate }}</th>
@@ -24,11 +25,12 @@
   <th class="text-center">{{ 'PSEUDOPREGNANCY' | translate }}</th>
   <th>{{ 'STATUS' | translate }}</th>
   <th></th>
+  </tr>
   </thead>
   <tbody>
-  <app-birth-history-row
+  <tr app-birth-history-row
     *ngFor="let litter of litters | birthHistoryFilter: searchValue | paginate: {itemsPerPage: 10, currentPage: page}; let i = index"
-    (revokeLitter)="selectLitter($event)" [litter-object]="litter"></app-birth-history-row>
+    (revokeLitter)="selectLitter($event)" [litter-object]="litter"></tr>
   </tbody>
 </table>
 

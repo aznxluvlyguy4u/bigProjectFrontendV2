@@ -19,9 +19,9 @@
   <th></th>
   </thead>
   <tbody>
-  <app-loss-error-row
+  <tr app-loss-error-row
     *ngFor="let loss of lossErrorList | hiddenMessagesFilter:[showHiddenMessages] | paginate: {itemsPerPage: 10, currentPage: page}; let i = index"
-    (removeLoss)="removeLoss($event)" [loss]="loss" [loss_index]="i"></app-loss-error-row>
+    (removeLoss)="removeLoss($event)" [loss]="loss" [loss_index]="i"></tr>
   </tbody>
 </table>
 

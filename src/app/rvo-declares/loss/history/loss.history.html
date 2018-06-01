@@ -8,6 +8,7 @@
 <!--TABLE HEADER-->
 <table class="stack errors">
   <thead>
+  <tr>
   <th>{{ 'DATE' | translate }}</th>
   <th>{{ 'ULN' | translate }}</th>
   <th>{{ 'PEDIGREE NUMBER' | translate }}</th>
@@ -15,11 +16,12 @@
   <th>{{ 'REASON OF LOSS' | translate }}</th>
   <th>{{ 'STATUS' | translate }}</th>
   <th></th>
+  </tr>
   </thead>
   <tbody>
-  <app-loss-history-row
+  <tr app-loss-history-row
     *ngFor="let loss of lossHistoryList | lossHistoryFilter:[searchValue] | paginate: {itemsPerPage: 10, currentPage: page}; let i = index"
-    (revokeLoss)="selectLoss($event)" [loss]="loss" [loss_index]="i"></app-loss-history-row>
+    (revokeLoss)="selectLoss($event)" [loss]="loss" [loss_index]="i"></tr>
   </tbody>
 </table>
 

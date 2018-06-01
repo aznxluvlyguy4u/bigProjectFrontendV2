@@ -121,12 +121,12 @@
         </button>
       </div>
       <div class="modal-body">
-        <form #form="ngForm">
+        <form [formGroup]="form">
           <label> {{ 'UBN NEW OWNER' | translate }}
             <span class="input">
                             <div [hidden]="form.controls['ubn_new_owner'].valid || form_valid"
                                  class="input-error-msg pull-right">{{ 'UBN IS INVALID' | translate }}</div>
-                            <input type="text" ngControl="ubn_new_owner">
+                            <input type="text" formControlName="ubn_new_owner">
                         </span>
           </label>
         </form>
@@ -155,12 +155,12 @@
         </button>
       </div>
       <div class="modal-body">
-        <form #form_single_tag="ngForm">
+        <form [formGroup]="form_single_tag">
           <label> {{ 'UBN NEW OWNER' | translate }}
             <span class="input">
                             <div [hidden]="form_single_tag.controls['ubn_new_owner'].valid || form_single_valid"
                                  class="input-error-msg pull-right">{{ 'UBN IS INVALID' | translate }}</div>
-                            <input type="text" ngControl="ubn_new_owner">
+                            <input type="text" formControlName="ubn_new_owner">
                         </span>
           </label>
         </form>

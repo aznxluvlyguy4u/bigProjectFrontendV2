@@ -29,7 +29,7 @@
 <td>
   <label class="show-for-small-only">{{ 'DATE OF LOSS' | translate }}</label>
   <span [hidden]="editMode">{{ loss.date_of_death }}</span>
-  <form [hidden]="!editMode" #form="ngForm">
+  <form [hidden]="!editMode" [formGroup]="form">
         <app-datepicker  [formCtrl]="form.controls['date_of_death']" [initDate]="loss.date_of_death"
                     [viewFormat]="view_date_format" [modelFormat]="model_datetime_format"></app-datepicker>
         <div [hidden]="form.controls['date_of_death'].valid || form_valid" class="input-error-msg text-center">{{ 'FILL IN THE DATE OF LOSS' | translate }}</div>
@@ -41,7 +41,7 @@
   <label class="show-for-small-only">{{ 'REASON OF LOSS' | translate }}</label>
   <span [hidden]="editMode">{{ loss.reason_of_loss | translate }}</span>
   <span [hidden]="!editMode">
-        <select [(ngModel)]="loss.reason_of_loss" ngControl="reason_death">
+        <select [(ngModel)]="loss.reason_of_loss">
             <option *ngFor="let reason of options_reason_of_loss" value="{{reason}}">{{reason | translate}}</option>
         </select>
     </span>

@@ -22,7 +22,7 @@ export class ProfileLoginComponent implements OnInit {
   private changed_nsfo_password = false;
 
   constructor(private apiService: NSFOService, private fb: FormBuilder, private settings: SettingsService) {
-    this.form_nsfo = fb.group({
+    this.form_nsfo = new FormGroup({
       current_password: new FormControl('', Validators.required),
       password: new FormControl('', Validators.compose([Validators.required, Validators.minLength(6)])),
       repeat_password: new FormControl('', Validators.compose([Validators.required, Validators.minLength(6)]))

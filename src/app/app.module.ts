@@ -126,6 +126,7 @@ import {EartagErrorRowComponent} from './rvo-declares/eartag/errors/eartag.error
 import {HttpModule} from '@angular/http';
 import {LiveSearchComponent} from './shared/components/livesearch/livesearch.component';
 import {CacheService} from './shared/services/settings/cache.service';
+import {Ng2GoogleChartsModule} from 'ng2-google-charts';
 // AoT requires an exported function for factories
 export function CreateTranslateLoader(http: HttpClient) {
     return new TranslateHttpLoader(http, '../assets/i18n/', '.json');
@@ -250,6 +251,7 @@ export function CreateTranslateLoader(http: HttpClient) {
     MateHistoryPipe,
   ],
   imports: [
+      Ng2GoogleChartsModule,
     BrowserModule,
     HttpModule,
     HttpClientModule,

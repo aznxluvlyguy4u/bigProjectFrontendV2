@@ -10,16 +10,18 @@
 <!--TABLE HEADER-->
 <table class="stack errors">
   <thead>
+  <tr>
   <th>{{ 'DATE' | translate }}</th>
   <th>{{ 'ANIMAL' | translate }}</th>
   <th>{{ 'NEW EARTAG' | translate }}</th>
   <th>{{ 'ERROR CODE' | translate }}</th>
   <th></th>
+  </tr>
   </thead>
   <tbody>
-  <app-tag-replacement-row
+  <tr app-tag-replacement-row
     *ngFor="let tagReplacement of tagReplacementErrorList  | hiddenMessagesFilter:[showHiddenMessages] | paginate: {itemsPerPage: 10, currentPage: page}; let i = index"
-    (revokeTagReplacement)="revokeTagReplacement($event)" [tagReplacement]="tagReplacement" [tagReplacement_index]="i"></app-tag-replacement-row>
+    (revokeTagReplacement)="revokeTagReplacement($event)" [tagReplacement]="tagReplacement" [tagReplacement_index]="i"></tr>
   </tbody>
 </table>
 

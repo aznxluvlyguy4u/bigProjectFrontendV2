@@ -17,8 +17,6 @@ import {NgxPaginationModule} from 'ngx-pagination';
 import {User} from '../../../shared/models/person.model';
 import {JsonResponseModel} from '../../../shared/models/json-response.model';
 
-declare var $;
-
 @Component({
   providers: [NgxPaginationModule],
   templateUrl: './eartag.declare.html',

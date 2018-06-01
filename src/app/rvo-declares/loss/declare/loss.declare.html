@@ -1,5 +1,5 @@
 <!--TOP FORM-->
-<form #form="ngForm" class="form-declare">
+<form [formGroup]="form" class="form-declare">
 
   <!--LOSS DATE-->
   <div class="medium-2 columns">
@@ -15,7 +15,7 @@
   <!--REASON OF LOSS-->
   <div class="medium-2 columns">
     <label>{{ 'REASON OF LOSS' | translate }} &nbsp;
-      <select ngControl="reason_loss">
+      <select formControlName="reason_loss">
         <option *ngFor="let reason of options_reason_of_loss" value="{{ reason }}">{{ reason | translate }}</option>
       </select>
     </label>
@@ -25,7 +25,7 @@
   <div class="medium-2 columns end">
     <label>
       {{ 'UBN PROCESSOR' | translate }}
-      <select ngControl="ubn_processor">
+      <select formControlName="ubn_processor">
         <option *ngFor="let ubn_processor of ubn_processors" value="{{ ubn_processor.ubn }}">{{ ubn_processor.ubn }} ({{
           ubn_processor.name }})
         </option>

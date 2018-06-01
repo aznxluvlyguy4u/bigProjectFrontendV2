@@ -78,6 +78,10 @@ export class BirthDeclareComponent implements OnInit, OnDestroy {
 
   private declareBirthResultSubscription: Subscription;
 
+  public litterSizeInput: any = 0;
+  public PseudoPregnancySelect: any = undefined;
+  public abortedSelect: any = undefined;
+
   constructor(private fb: FormBuilder,
               private constants: Constants,
               private apiService: NSFOService,
@@ -95,22 +99,64 @@ export class BirthDeclareComponent implements OnInit, OnDestroy {
     this.litter.validator = Validators.compose([Validators.required, LitterValidator.validateLitterSizeNotGreaterThenAlive]);
 
 
-    this.form = fb.group({
+    this.form = new FormGroup({
       uid_type_mother: new FormControl(constants.ULN),
       // uid_country_code_mother: new FormControl('NL', Validators.compose([Validators.required])),
       uid_number_mother: new FormControl('', Validators.compose([Validators.required])),
       // uid_type_father: new FormControl(constants.ULN),
       // uid_country_code_father: new FormControl('NL'),
-      uid_number_father: new FormControl(''),
+      uid_number_father: new FormControl({disabled: this.isChildListOn || !this.selectedMother}),
       date_of_birth: new FormControl('', Validators.compose([DateValidator.validateDateFormat, DateValidator.validateDateIsNotInTheFuture])),
-      aborted: new FormControl(constants.NO),
-      pseudopregnancy: new FormControl(constants.NO),
-      litter: this.litter
+      aborted: new FormControl({value: constants.NO, disabled: this.disableAbortedInput()}),
+      pseudopregnancy: new FormControl({value: constants.NO, disabled: this.disablePseudoPregnancy()}),
+      litter: this.litter,
+        test: new FormGroup({
+            litter_size: new FormControl({disabled: this.disableLitter()}, Validators.required),
+            litter_alive: new FormControl('', Validators.required)
+        }, Validators.compose([Validators.required, LitterValidator.validateLitterSizeNotGreaterThenAlive]))
     });
 
     this.formChildren = fb.group({});
+  }
 
+  disableAbortedInput() {
+    if (this.litterSizeInput && this.litterSizeInput.valueOf() > 0) {
+        return true;
+    }
+    if (this.PseudoPregnancySelect && this.PseudoPregnancySelect.valueOf() === 'YES') {
+      return true;
+    }
+    if (this.isChildListOn) {
+        return true;
+    }
 
+    return false;
+  }
+
+  disablePseudoPregnancy() {
+      if (this.litterSizeInput && this.litterSizeInput.valueOf() > 0) {
+          return true;
+      }
+      if (this.abortedSelect && this.abortedSelect.valueOf() > 0) {
+          return true;
+      }
+      if (this.isChildListOn) {
+          return true;
+      }
+      return false;
+  }
+
+  disableLitter() {
+      if (this.abortedSelect && this.abortedSelect.valueOf() > 0) {
+          return true;
+      }
+      if (this.PseudoPregnancySelect && this.PseudoPregnancySelect.valueOf() > 0) {
+          return true;
+      }
+      if (this.isChildListOn) {
+          return true;
+      }
+      return false;
   }
 
   ngOnInit() {

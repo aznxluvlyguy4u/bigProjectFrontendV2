@@ -3,7 +3,7 @@ import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {TagReplacementHistoryChangeResponse} from '../tagReplacement.model';
 
 @Component({
-  selector: 'app-tag-replacement-history-row',
+  selector: '[app-tag-replacement-history-row]',
   templateUrl: './tagReplacement.history.row.html',
 })
 

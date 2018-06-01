@@ -11,7 +11,7 @@ import {JsonResponseModel} from '../../../shared/models/json-response.model';
 declare var $;
 
 @Component({
-  selector: 'app-birth-history-row',
+  selector: '[app-birth-history-row]',
   templateUrl: './birth-history-row.component.html',
 })
 

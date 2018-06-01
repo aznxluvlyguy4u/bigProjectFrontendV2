@@ -8,13 +8,13 @@ import {FormBuilder, FormControl, FormGroup} from '@angular/forms';
 import {WeightChangeResponse} from '../../../shared/models/nsfo-declare.model';
 
 @Component({
-  selector: 'app-weight-history-row',
+  selector: '[app-weight-history-row]',
   templateUrl: './weight.history.row.html',
 })
 
 export class WeightHistoryRowComponent {
-  @Input('weight-object') weight: WeightChangeResponse;
-  @Input('weight-index') weight_index: any;
+  @Input() weight: WeightChangeResponse;
+  @Input() weight_index: any;
   @Output() revokeWeight = new EventEmitter();
   @Output() showError = new EventEmitter();
   private editMode = false;

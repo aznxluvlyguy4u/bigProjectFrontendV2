@@ -10,7 +10,7 @@ import {EarTag} from '../../../shared/models/rvo-declare.model';
 import {Animal, LivestockAnimal} from '../../../shared/models/animal.model';
 
 @Component({
-  selector: 'app-birth-declare-row',
+  selector: '[app-birth-declare-row]',
   templateUrl: './birth.declare.row.html',
 })
 

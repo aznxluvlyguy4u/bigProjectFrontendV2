@@ -10,10 +10,8 @@ import {DateValidator} from '../../../shared/validation/nsfo-validation';
 import {Settings} from '../../../shared/variables/settings';
 import {API_URI_CHANGE_LOSS, API_URI_HIDE_ERROR} from '../../../shared/services/nsfo-api/nsfo.settings';
 
-declare var $;
-
 @Component({
-  selector: 'app-loss-error-row',
+  selector: '[app-loss-error-row]',
   templateUrl: './loss.errors.row.html',
 })
 
@@ -39,7 +37,7 @@ export class LossErrorRowComponent implements AfterViewChecked {
     this.view_datetime_format = settings.VIEW_DATETIME_FORMAT;
     this.model_datetime_format = settings.MODEL_DATETIME_FORMAT;
 
-    this.form = fb.group({
+    this.form = new FormGroup({
       date_of_death: new FormControl('', Validators.compose([Validators.required, DateValidator.validateDateFormat])),
       reason_death: new FormControl('')
     });
@@ -47,7 +45,7 @@ export class LossErrorRowComponent implements AfterViewChecked {
 
   ngAfterViewChecked() {
     if (!this.popupIsLoaded) {
-      $('#error-' + this.loss_index).foundation();
+      // $('#error-' + this.loss_index).foundation();
       this.popupIsLoaded = true;
     }
   }

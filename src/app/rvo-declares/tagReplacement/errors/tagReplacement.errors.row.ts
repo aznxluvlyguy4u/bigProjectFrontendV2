@@ -5,7 +5,7 @@ import {API_URI_HIDE_ERROR} from '../../../shared/services/nsfo-api/nsfo.setting
 import {NSFOService} from '../../../shared/services/nsfo-api/nsfo.service';
 
 @Component({
-  selector: 'app-tag-replacement-row',
+  selector: '[app-tag-replacement-row]',
   templateUrl: './tagReplacement.errors.row.html',
 
 })

@@ -1,4 +1,5 @@
-<form #form="ngForm" class="form-declare">
+<div class="form-declare">
+<form [formGroup]="form">
 
   <!--LITTER-->
   <div class="row">
@@ -28,8 +29,7 @@
     <div class="medium-2 columns">
       <label>
         {{ 'ABORTED' | translate }} &nbsp;
-        <select #abortedSelect ngControl="aborted"
-                [disabled]="litterSizeInput.value > 0 || PseudoPregnancySelect.value == 'YES' || isChildListOn">
+        <select #abortedSelect formControlName="aborted">
           <option value="{{ constants.YES }}">{{ constants.YES | translate }}</option>
           <option value="{{ constants.NO }}">{{ constants.NO | translate }}</option>
         </select>
@@ -40,8 +40,7 @@
     <div class="medium-2 columns end">
       <label>
         {{ 'PSEUDOPREGNANCY' | translate }} &nbsp;
-        <select #PseudoPregnancySelect ngControl="pseudopregnancy"
-                [disabled]="litterSizeInput.value > 0 || abortedSelect.value == 'YES' || isChildListOn">
+        <select #PseudoPregnancySelect formControlName="pseudopregnancy">
           <option value="{{ constants.YES }}">{{ constants.YES | translate }}</option>
           <option value="{{ constants.NO }}">{{ constants.NO | translate }}</option>
         </select>
@@ -70,13 +69,12 @@
       </div>
     </div>
 
+    <div [formGroup]="litter">
     <!--LITTER SIZE-->
-    <div ngControlGroup="litter" class="medium-2 columns">
+    <div class="medium-2 columns">
       <label>
         {{ 'LITTER SIZE' | translate }} &nbsp;
-        <input #litterSizeInput ngControl="litter_size" type="number" min='0'
-               [disabled]="abortedSelect.value == 'YES' || PseudoPregnancySelect.value == 'YES' || isChildListOn"
-               class="form-control">
+        <input #litterSizeInput formControlName="litter_size" type="number" min='0' class="form-control">
         <div *ngIf="litter.errors && litter.errors.invalidLitterSizeGreaterThenSeven"
              class="input-error-msg pull-right">{{ 'CAN NOT BE GREATER THEN 7' | translate }}
         </div>
@@ -88,12 +86,10 @@
     </div>
 
     <!--AMOUNT ALIVE-->
-    <div ngControlGroup="litter" class="medium-2 columns end">
+    <div class="medium-2 columns end">
       <label>
         {{ 'AMOUNT ALIVE' | translate }} &nbsp;
-        <input #amountAliveInput ngControl="litter_alive" type="number" min='0'
-               [disabled]="abortedSelect.value == 'YES' || PseudoPregnancySelect.value == 'YES' || isChildListOn"
-               class="form-control">
+        <input #amountAliveInput formControlName="litter_alive" type="number" min='0' class="form-control">
         <div *ngIf="litter.errors && litter.errors.invalidLitterSizeGreaterThenAlive"
              class="input-error-msg pull-right">{{ 'ALIVE AMOUNT MUST BE EQUAL OR LESS THAN LITTER SIZE' | translate }}
         </div>
@@ -102,6 +98,7 @@
           class="input-error-msg pull-right">{{ 'FILL IN A VALUE' | translate }}
         </div>
       </label>
+    </div>
     </div>
   </div>
 
@@ -119,8 +116,8 @@
       <label>
         {{ 'ULN' | translate }}
         <input (keyup)="preventKeyPress($event)" (keydown)="preventKeyPress($event)"
-               (keypress)="preventKeyPress($event)" type="text" ngControl="uid_number_father"
-               (focus)="fatherSelector.openModal()" [disabled]="isChildListOn || !selectedMother">
+               (keypress)="preventKeyPress($event)" type="text" formControlName="uid_number_father"
+               (focus)="fatherSelector.openModal()">
       </label>
       <div [hidden]="form.controls['uid_number_father'].valid || isValidForm" class="input-error-msg pull-right">{{
         'FILL IN THE ULN' | translate }}
@@ -171,10 +168,12 @@
     </div>
   </div>
 </form>
+</div>
 
 <div *ngIf="birth_list.length > 0">
   <table class="stack">
     <thead>
+    <tr>
     <th>
       {{ 'ULN' | translate }}*
     </th>
@@ -196,13 +195,14 @@
     <th>
       {{ 'ULN' | translate }} ({{ 'SURROGATE' | translate }})
     </th>
+    </tr>
     </thead>
     <tbody>
-    <app-birth-declare-row *ngFor="let child of birth_list; let i = index" [country_code_list]="country_code_list"
+    <tr app-birth-declare-row *ngFor="let child of birth_list; let i = index" [country_code_list]="country_code_list"
         [candidateSurrogates]="candidateSurrogates" [animal]="child" [index]="i" [parent_form]="formChildren"
         [isDisabled]="isSending" [form_valid]="isValidFormChildren" [tags]="filteredTags"
         (selectedTag)="addToSelection($event)" (birthRowEvent)="getChildData($event)"
-        [selectedMother]="selectedMother"></app-birth-declare-row>
+        [selectedMother]="selectedMother"></tr>
     </tbody>
   </table>
   <button type="button" [disabled]="isSending" (click)="declareBirth()" class="small primary button pull-right">

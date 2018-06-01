@@ -12,7 +12,7 @@ import {API_URI_CHANGE_LOSS} from '../../../shared/services/nsfo-api/nsfo.settin
 declare var $;
 
 @Component({
-  selector: 'app-loss-history-row',
+  selector: '[app-loss-history-row]',
   templateUrl: './loss.history.row.html',
 
 })
@@ -38,7 +38,7 @@ export class LossHistoryRowComponent {
     this.view_date_format = settings.VIEW_DATE_FORMAT;
     this.model_datetime_format = settings.MODEL_DATETIME_FORMAT;
 
-    this.form = fb.group({
+    this.form = new FormGroup({
       date_of_death: new FormControl(''),
       reason_death: new FormControl('')
     });
