@@ -124,7 +124,13 @@ export class LivestockDetailComponent implements OnInit {
           bar: {
                   groupWidth: '75%'
               },
-          legend: {position: 'none'}
+          legend: {position: 'none'},
+          hAxis: {
+              viewWindow: {
+                  min: 60,
+                  max: 140
+              },
+          }
       });
       this.weightConfig = new GoogleChartConfigModel({
           title: 'Gewichten',
@@ -252,10 +258,7 @@ export class LivestockDetailComponent implements OnInit {
               this.animal.breed_values.forEach((breedValue) => {
                   if (breedValue.has_data) {
                       this.breedValues.push(breedValue);
-                      let value = breedValue.normalized_value;
-                      if (value > 50) {
-                          value = 0.5;
-                      }
+                      const value = breedValue.normalized_value;
                       this.breedValueData.push(
                           [
                               '',
