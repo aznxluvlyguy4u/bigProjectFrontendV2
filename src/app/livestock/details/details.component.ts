@@ -125,7 +125,7 @@ export class LivestockDetailComponent implements OnInit {
                   groupWidth: '75%'
               },
           legend: {position: 'none'},
-          hAxis: {
+          vAxis: {
               viewWindow: {
                   min: 60,
                   max: 140
