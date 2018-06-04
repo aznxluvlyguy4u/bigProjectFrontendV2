@@ -2,6 +2,7 @@ import {Litter} from './litter.model';
 import {Exterior, MeasurementOutput, Weight} from './measurement.model';
 import {Breeder} from './breeder.model';
 import {Mate} from './nsfo-declare.model';
+import {BreedValues} from './breedvalues.model';
 
 export class Animal {
   public uln_country_code: string;
@@ -56,6 +57,7 @@ export class Animal {
   public sending: boolean;
   public successful: boolean;
   public selected: boolean;
+  public breed_values: BreedValues[] = [];
 }
 
 export class Collar {

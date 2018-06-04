@@ -22,6 +22,8 @@ import {Exterior} from '../../shared/models/measurement.model';
 import {Inspector, User} from '../../shared/models/person.model';
 import {DeclareLog} from './declare-log.model';
 import {JsonResponseModel} from '../../shared/models/json-response.model';
+import {GoogleChartConfigModel} from '../../shared/models/google.chart.config.model';
+import {BreedValues} from '../../shared/models/breedvalues.model';
 
 @Component({
   templateUrl: './details.component.html',
@@ -29,6 +31,13 @@ import {JsonResponseModel} from '../../shared/models/json-response.model';
 
 export class LivestockDetailComponent implements OnInit {
 
+    private breedValueData: any[];
+    private breedValueConfig: GoogleChartConfigModel;
+    private breedValueElementId: string;
+
+    private weightData: any[];
+    private weightConfig: GoogleChartConfigModel;
+    private weightElementId: string;
 
   // ANIMAL DETAILS
   private form: FormGroup;
@@ -54,7 +63,7 @@ export class LivestockDetailComponent implements OnInit {
   private measurementDates: string[] = [];
   private measurementWeights: number[] = [];
   private logs: DeclareLog[] = [];
-
+  private breedValues: BreedValues[] = [];
   // EXTERIOR MEASUREMENTS
   private exteriorForm: FormGroup;
   private isValidExteriorForm = true;
@@ -101,10 +110,25 @@ export class LivestockDetailComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.breedValueElementId = 'breed-value';
+    this.weightElementId = 'weight-chart';
     this.getCountryCodeList();
     this.getCollarColorList();
     this.getEartagsList();
     this.getAnimalDetails();
+
+      this.breedValueConfig = new GoogleChartConfigModel({ title: 'Fokwaarden',
+          animation: {
+          duration: 1000,
+          easing: 'out'},
+          bar: {
+                  groupWidth: '75%'
+              },
+          legend: {position: 'none'}
+      });
+      this.weightConfig = new GoogleChartConfigModel({
+          title: 'Gewichten',
+      });
   }
 
   private genderType(gender: string): string {
@@ -220,6 +244,34 @@ export class LivestockDetailComponent implements OnInit {
 
               // this.getExteriorKinds();
               // this.getInspectors();
+
+              this.breedValueData = [
+                  ['Year', 'Fokwaarde',  {role: 'annotation'}, {role: 'tooltip'}, {role: 'style'}],
+              ];
+
+              this.animal.breed_values.forEach((breedValue) => {
+                  if (breedValue.has_data) {
+                      this.breedValues.push(breedValue);
+                      let value = breedValue.normalized_value;
+                      if (value > 50) {
+                          value = 0.5;
+                      }
+                      this.breedValueData.push(
+                          [
+                              '',
+                              value,
+                              value.toString(),
+                              breedValue.chart_label + ' ' + breedValue.value.toString() + ' / ' + breedValue.accuracy.toString() + '%',
+                              'color: ' + breedValue.chart_color + ';'
+                          ]
+                      );
+                  }
+              });
+              this.weightData = [['Year', 'Weight']];
+              this.animal.weights.forEach((weight) => {
+                  const date = moment(weight.measurement_date).format('DD-MM-YYYY');
+                 this.weightData.push([date, weight.weight]);
+              });
             },
             error => {
               alert(this.apiService.getErrorMessage(error));

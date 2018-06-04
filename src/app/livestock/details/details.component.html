@@ -479,11 +479,22 @@
       </div>
     </div>
     <div class="row">
-      <div class="large-6 columns">
-        <canvas id="breedValueChart"></canvas>
+      <div class="large-10 columns">
+        <app-bar-component [data]="breedValueData" [config]="breedValueConfig" [elementId]="breedValueElementId"></app-bar-component>
       </div>
-      <div class="large-6 columns">
-        <canvas id="weightChart"></canvas>
+        <div class="large-2 columns">
+            <table class="breed-value-table">
+                <tbody>
+                <tr *ngFor="let breedValue of breedValues">
+                    <td>{{ breedValue.chart_label}} {{ breedValue.normalized_value}} / {{ breedValue.accuracy}}%</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="row">
+      <div class="large-12 columns">
+        <app-line-component [data]="weightData" [config]="weightConfig" [elementId]="weightElementId"></app-line-component>
       </div>
     </div>
     <div class="row">
