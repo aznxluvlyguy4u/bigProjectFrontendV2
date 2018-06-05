@@ -629,6 +629,8 @@
   "EMAIL INFO": "E-mail Wijzigen",
   "NEW EMAIL": "Nieuw e-mail adres",
   "YOUR NSFO EMAIL HAS CHANGED": "Er is een bevestiging verstuurd naar het nieuwe e-mail adres.",
-  "YOU ARE UNAUTHORIZED": "U bent niet geauthoriseerd"
+  "YOU ARE UNAUTHORIZED": "U bent niet geauthoriseerd",
+  "BREED_VALUE_ABBREVIATION": "FW",
+  "ACCURACY_ABBREVIATION": "NKH"
 }
 

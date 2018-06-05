@@ -479,14 +479,21 @@
       </div>
     </div>
     <div class="row">
-      <div class="large-10 columns">
+      <div class="large-8 columns">
         <app-bar-component [data]="breedValueData" [config]="breedValueConfig" [elementId]="breedValueElementId"></app-bar-component>
       </div>
-        <div class="large-2 columns">
+        <div class="large-2 columns end">
             <table class="breed-value-table">
                 <tbody>
+                <tr>
+                  <th></th>
+                  <th></th>
+                  <th>{{ 'BREED_VALUE_ABBREVIATION'|translate }} / {{ 'ACCURACY_ABBREVIATION'|translate }}</th>
+                </tr>
                 <tr *ngFor="let breedValue of breedValues">
-                    <td>{{ breedValue.chart_label}} {{ breedValue.normalized_value}} / {{ breedValue.accuracy}}%</td>
+                  <td><div class="ordinal-box" [ngStyle]="{'background': breedValue.chart_color}">{{ breedValue.ordinal}}</div></td>
+                  <td>{{ breedValue.chart_label}}</td>
+                  <td>{{ breedValue.normalized_value}} / {{ breedValue.accuracy}}%</td>
                 </tr>
                 </tbody>
             </table>

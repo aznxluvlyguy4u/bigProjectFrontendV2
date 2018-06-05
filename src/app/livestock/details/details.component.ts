@@ -24,6 +24,7 @@ import {DeclareLog} from './declare-log.model';
 import {JsonResponseModel} from '../../shared/models/json-response.model';
 import {GoogleChartConfigModel} from '../../shared/models/google.chart.config.model';
 import {BreedValues} from '../../shared/models/breedvalues.model';
+import {TranslateService} from '@ngx-translate/core';
 
 @Component({
   templateUrl: './details.component.html',
@@ -87,6 +88,7 @@ export class LivestockDetailComponent implements OnInit {
               private apiService: NSFOService,
               private settings: SettingsService,
               private fb: FormBuilder,
+              private translate: TranslateService,
               private downloadService: DownloadService) {
     this.isAdmin = settings.isAdmin();
     this.view_date_format = settings.getViewDateFormat();
@@ -125,7 +127,13 @@ export class LivestockDetailComponent implements OnInit {
                   groupWidth: '75%'
               },
           legend: {position: 'none'},
+          chartArea: {
+            width: '90%',
+            height: '90%',
+          },
           vAxis: {
+              baseline: 100,
+              ticks: [60, 80, 100, 120, 140],
               viewWindow: {
                   min: 60,
                   max: 140
@@ -134,6 +142,8 @@ export class LivestockDetailComponent implements OnInit {
       });
       this.weightConfig = new GoogleChartConfigModel({
           title: 'Gewichten',
+          pointSize: 10,
+          legend: {position: 'none'},
       });
   }
 
@@ -234,7 +244,6 @@ export class LivestockDetailComponent implements OnInit {
                 this.measurementWeights.push(null);
               }
 
-              // TODO BREED VALUES CHART DATA
 
               // LOGS
               if (this.animal.declare_log.length > 0) {
@@ -244,9 +253,6 @@ export class LivestockDetailComponent implements OnInit {
 
               this.changeEnabled = true;
               this.temp_animal = _.clone(this.animal);
-
-              this.initBreedingValueChart();
-              this.initWeightChart();
 
               // this.getExteriorKinds();
               // this.getInspectors();
@@ -263,14 +269,17 @@ export class LivestockDetailComponent implements OnInit {
                           [
                               '',
                               value,
-                              value.toString(),
+                              breedValue.ordinal.toString(),
                               breedValue.chart_label + ' ' + breedValue.value.toString() + ' / ' + breedValue.accuracy.toString() + '%',
                               'color: ' + breedValue.chart_color + ';'
                           ]
                       );
                   }
               });
-              this.weightData = [['Year', 'Weight']];
+              this.weightData = [[
+                this.translate.instant('YEAR'),
+                this.translate.instant('WEIGHT')
+              ]];
               this.animal.weights.forEach((weight) => {
                   const date = moment(weight.measurement_date).format('DD-MM-YYYY');
                  this.weightData.push([date, weight.weight]);
@@ -357,14 +366,6 @@ export class LivestockDetailComponent implements OnInit {
     this.animal.uln_country_code = tag.uln_country_code;
     this.animal.uln_number = tag.uln_number;
     this.animal.work_number = tag.ulnLastFive;
-  }
-
-  private initBreedingValueChart() {
-    // TODO replace with new google chart version
-  }
-
-  private initWeightChart() {
-    // TODO replace with new google chart version
   }
 
 
