@@ -81,8 +81,6 @@ export class NSFOService {
     }
 
     doPostRequest(uri: string, data) {
-        console.log('POST: ', this.apiUrl + uri, data);
-
         return this.httpClient.post(this.apiUrl + uri, JSON.stringify(data),
             {
                 headers: this.getDefaultHeaders(),
@@ -92,7 +90,6 @@ export class NSFOService {
     }
 
     doGetRequest(uri: string) {
-        console.log('GET: ', this.apiUrl + uri);
         return this.httpClient.get(this.apiUrl + uri,
             {
                 headers: this.getDefaultHeaders(),
@@ -102,7 +99,6 @@ export class NSFOService {
     }
 
     doPutRequest(uri: string, data) {
-        console.log('PUT: ', this.apiUrl + uri, data);
         return this.httpClient.put(this.apiUrl + uri, JSON.stringify(data),
             {
                 headers: this.getDefaultHeaders(),
@@ -118,7 +114,6 @@ export class NSFOService {
     }
 
     public getErrorMessage(err: HttpResponse<any>): string {
-        console.log(err.body);
         switch (err.status) {
             case 500:
                 return this.translate.instant('SOMETHING WENT WRONG. TRY ANOTHER TIME.');

@@ -47,14 +47,9 @@ export class HomeComponent implements OnInit, OnDestroy, AfterContentChecked {
   ) {}
 
   ngOnInit() {
-    console.error('ON INIT!!!');
-
     const request = {
       'env': 'USER'
     };
-
-    console.error('AccessToken' + this.cache.getAccessToken());
-    console.error('GhostToken' + this.cache.getGhostToken());
     this.apiService.doPostRequest('/v1/auth/validate-token', request)
       .subscribe(
         res => {
