@@ -174,7 +174,8 @@ const appRoutes = [
   {path: 'login', component: LoginComponent},
   {path: 'ghostlogin/:ghostToken/:accessToken', component: GhostLoginComponent},
   {path: 'loading', component: LoadingComponent},
-  {path: 'downloaded', component: DownloadLandingPageComponent}
+  {path: 'downloaded', component: DownloadLandingPageComponent},
+  {path: '', redirectTo: '/main', pathMatch: 'full'}
 ];
 
 @NgModule({
