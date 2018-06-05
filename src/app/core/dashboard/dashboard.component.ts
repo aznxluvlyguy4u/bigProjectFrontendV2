@@ -6,6 +6,7 @@ import {NSFOService} from '../../shared/services/nsfo-api/nsfo.service';
 import {API_URI_GET_DASHBOARD_INFO, API_URI_SYNC_ANIMALS, API_URI_SYNC_EARTAGS} from '../../shared/services/nsfo-api/nsfo.settings';
 import {SettingsService} from '../../shared/services/settings/settings.service';
 import {JsonResponseModel} from '../../shared/models/json-response.model';
+import {CacheService} from '../../shared/services/settings/cache.service';
 
 @Component({
   templateUrl: './dashboard.component.html'
@@ -19,6 +20,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   constructor(
       private apiService: NSFOService,
+      private cache: CacheService,
       private settings: SettingsService,
       private router: Router) {
   }
@@ -34,6 +36,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   }
 
   private getDashboardInfo() {
+    if (this.cache.getAccessToken() === undefined) { return; }
     this.apiService.doGetRequest(API_URI_GET_DASHBOARD_INFO)
       .subscribe(
           (res: JsonResponseModel) => {
@@ -53,12 +56,14 @@ export class DashboardComponent implements OnInit, OnDestroy {
   }
 
   private syncLivestock() {
+    if (this.cache.getAccessToken() === undefined) { return; }
     this.apiService.doPostRequest(API_URI_SYNC_ANIMALS, {})
       .subscribe(() => {
       });
   }
 
   private syncEartags() {
+    if (this.cache.getAccessToken() === undefined) { return; }
     this.apiService
       .doPostRequest(API_URI_SYNC_EARTAGS, {})
       .subscribe(() => {
