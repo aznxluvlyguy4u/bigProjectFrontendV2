@@ -18,6 +18,7 @@ export class AnimalDetailsCardComponent implements OnInit {
 
   redirectToAnimal(isEdit: boolean = false) {
     if (!this.ulnIsEmpty()) {
+      // TODO validate if route is accessible for user first before navigating to it.
       this.router.navigate(['/main/livestock/details/' + this.inputAnimal.uln]);
     }
   }

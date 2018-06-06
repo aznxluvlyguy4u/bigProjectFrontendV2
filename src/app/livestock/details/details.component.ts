@@ -113,7 +113,10 @@ export class LivestockDetailComponent implements OnInit {
       collar_number: new FormControl('')
     });
 
-
+    // Recreate component if the route is navigated to again. Usually with for a different animal
+    route.params.subscribe(value => {
+      this.ngOnInit();
+    });
   }
 
   startLoading() {
