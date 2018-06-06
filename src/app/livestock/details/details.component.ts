@@ -137,7 +137,8 @@ export class LivestockDetailComponent implements OnInit {
     this.getCollarColorList();
     this.getAnimalDetails();
 
-      this.breedValueConfig = new GoogleChartConfigModel({ title: 'Fokwaarden',
+      this.breedValueConfig = new GoogleChartConfigModel({
+          // title: this.translate.instant('BREED VALUES'),
           animation: {
           duration: 1000,
           easing: 'out'},
@@ -297,7 +298,7 @@ export class LivestockDetailComponent implements OnInit {
                 child.litter_size = child.n_ling ? child.n_ling.toString() : undefined;
               }
 
-              window.scrollTo(0, 0);
+              // window.scrollTo(0, 0);
               this.isLoadingAnimalDetails = false;
               this.updateLoadingStatus();
             },

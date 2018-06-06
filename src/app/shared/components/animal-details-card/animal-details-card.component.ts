@@ -16,6 +16,8 @@ export class AnimalDetailsCardComponent implements OnInit {
   @Input() inputAnimal: Animal;
   @Input() mainAnimalGender: string = null;
 
+  dateOfBirth = '';
+
   redirectToAnimal(isEdit: boolean = false) {
     if (!this.ulnIsEmpty()) {
       // TODO validate if route is accessible for user first before navigating to it.
@@ -24,11 +26,13 @@ export class AnimalDetailsCardComponent implements OnInit {
   }
 
   ngOnInit() {
-    if (this.isStringEmpty(this.inputAnimal.date_of_birth)) {
-      this.inputAnimal.date_of_birth = this.inputAnimal.dd_mm_yyyy_date_of_birth;
-    } else {
-      this.inputAnimal.date_of_birth = moment(this.inputAnimal.date_of_birth).format(this.settings.VIEW_DATE_FORMAT);
+
+    if (!this.isStringEmpty(this.inputAnimal.date_of_birth)) {
+      this.dateOfBirth = moment(this.inputAnimal.date_of_birth).format(this.settings.VIEW_DATE_FORMAT);
+    } else if (!this.isStringEmpty(this.inputAnimal.dd_mm_yyyy_date_of_birth)) {
+      this.dateOfBirth = this.inputAnimal.dd_mm_yyyy_date_of_birth;
     }
+
     this.inputAnimal.uln = this.getUln(this.inputAnimal);
   }
 

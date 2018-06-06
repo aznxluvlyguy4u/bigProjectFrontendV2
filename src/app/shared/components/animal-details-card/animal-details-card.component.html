@@ -26,7 +26,7 @@
       <label class="middle">{{ 'DATE OF BIRTH' | translate }}</label>
     </div>
     <div class="medium-6 columns">
-      <input type="text" disabled value="{{ inputAnimal.date_of_birth ? inputAnimal.date_of_birth : '' }}">
+      <input [(ngModel)]="dateOfBirth" type="text" disabled>
     </div>
   </div>
 

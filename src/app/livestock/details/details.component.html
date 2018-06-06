@@ -499,12 +499,24 @@
       </div>
     </div>
 
-    <div class="row" *ngIf="hasBreedValues()">
-      <div class="large-8 columns">
-        <app-bar-component [data]="breedValueData" [config]="breedValueConfig" [elementId]="breedValueElementId"></app-bar-component>
-      </div>
-        <div class="large-2 columns end">
-            <table class="breed-value-table">
+
+    <div class="large-12 columns">
+
+      <div class="info-container">
+        <div class="info-header">
+          <label>
+            {{ 'BREED VALUES' | translate }}
+          </label>
+        </div>
+
+        <div class="info-body">
+
+          <div class="row" *ngIf="hasBreedValues()">
+            <div class="large-8 columns">
+              <app-bar-component [data]="breedValueData" [config]="breedValueConfig" [elementId]="breedValueElementId"></app-bar-component>
+            </div>
+            <div class="large-2 columns end">
+              <table class="breed-value-table">
                 <tbody>
                 <tr>
                   <th></th>
@@ -517,25 +529,48 @@
                   <td>{{ breedValue.normalized_value}} / {{ breedValue.accuracy}}%</td>
                 </tr>
                 </tbody>
-            </table>
+              </table>
+            </div>
+          </div>
+
+          <div class="row" *ngIf="!hasBreedValues()">
+            <div class="large-12 columns align-center">
+              <p>{{'THIS ANIMAL HAS NO BREED VALUES' | translate }}</p>
+            </div>
+          </div>
+
         </div>
-    </div>
-    <div class="row" *ngIf="!hasBreedValues()">
-      <div class="large-12 columns align-center">
-        <p>{{'THIS ANIMAL HAS NO BREED VALUES' | translate }}</p>
       </div>
+
     </div>
 
-    <div class="row" *ngIf="hasWeights()">
-      <div class="large-12 columns">
-        <app-line-component [data]="weightData" [config]="weightConfig" [elementId]="weightElementId"></app-line-component>
+
+    <div class="large-12 columns">
+
+      <div class="info-container">
+        <div class="info-header">
+          <label>
+            {{ 'WEIGHTS' | translate }}
+          </label>
+        </div>
+
+        <div class="info-body">
+          <div class="row" *ngIf="hasWeights()">
+            <div class="large-12 columns">
+              <app-line-component [data]="weightData" [config]="weightConfig" [elementId]="weightElementId"></app-line-component>
+            </div>
+          </div>
+
+          <div class="row" *ngIf="!hasWeights()">
+            <div class="large-12 columns align-center">
+              <p>{{'THIS ANIMAL HAS NO WEIGHT MEASUREMENTS' | translate }}</p>
+            </div>
+          </div>
+        </div>
       </div>
+
     </div>
-    <div class="row" *ngIf="!hasWeights()">
-      <div class="large-12 columns align-center">
-        <p>{{'THIS ANIMAL HAS NO WEIGHT MEASUREMENTS' | translate }}</p>
-      </div>
-    </div>
+
 
     <div class="large-12 columns">
       <div class="info-container">
@@ -556,6 +591,9 @@
         </div>
       </div>
     </div>
+
+
+
 
     <div class="row">
       <div class="large-12 columns">
