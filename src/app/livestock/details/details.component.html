@@ -7,7 +7,7 @@
 
     <div class="show-for-small-only small-9 columns end">
             <span class="pull-right">
-                <template [ngTemplateOutlet]="changeButton"></template>
+                <ng-template #changeButton></ng-template>
             </span>
     </div>
 
@@ -44,14 +44,14 @@
     <div *ngIf="!edit_mode"
          class="large-1 medium-2 small-6 hide-for-small-only columns">
             <span class="pull-right">
-                <template [ngTemplateOutlet]="changeButton"></template>
+                <ng-template #changeButton></ng-template>
             </span>
     </div>
 
     <div *ngIf="edit_mode"
          class="small-6 hide-for-small-only columns">
             <span class="pull-right">
-                <template [ngTemplateOutlet]="changeButton"></template>
+                <ng-template #changeButton></ng-template>
             </span>
     </div>
 
@@ -64,7 +64,13 @@
   <label *ngIf="gender_changed_animal_info_error" class="middle input-error-msg pull-right">{{ gender_change_error
     }}</label>
 
-  <div class="row">
+  <div class="row" *ngIf="isLoading">
+    <div class="medium-12 columns align-center">
+      <!--TODO <span><i class="fa fa-gear fa-spin fa-fw"></i></span>-->
+    </div>
+  </div>
+
+  <div class="row" *ngIf="!isLoading">
     <div class="medium-6 columns">
 
       <!-- ANIMAL DETAIL -->
@@ -92,9 +98,7 @@
             <div class="medium-6 columns">
               <div class="uid-input-group">
                 <select [(ngModel)]="animal.pedigree_country_code" ngControl="pedigree_country_code" [disabled]="true">
-                  <option *ngFor="let country_code of country_code_list" value="{{ country_code.code }}">{{
-                    country_code.code }}
-                  </option>
+                  <option value="{{ animal.pedigree_country_code }}">{{ animal.pedigree_country_code }}</option>
                 </select>
                 <input type="text" [(ngModel)]="animal.pedigree_number" ngControl="pedigree_number" [disabled]="true">
               </div>
@@ -127,25 +131,13 @@
             </div>
           </div>
 
-          <!--&lt;!&ndash; NAME &ndash;&gt;-->
-          <!--<div class="row">-->
-          <!--<div class="medium-6 columns">-->
-          <!--<label>{{ 'NAME' | translate }}</label>-->
-          <!--</div>-->
-          <!--<div class="medium-6 columns">-->
-          <!--<input type="text" [(ngModel)]="animal.name" [disabled]="!edit_mode">-->
-          <!--</div>-->
-          <!--</div>-->
-
           <!-- DATE OF BIRTH -->
           <div class="row">
             <div class="medium-6 columns">
               <label class="middle">{{ 'DATE OF BIRTH' | translate }}</label>
             </div>
             <div class="medium-6 columns">
-              <app-datepicker [formCtrl]="form.controls['date_of_birth']" [editMode]="false"
-                          [initDate]="animal.date_of_birth" [viewFormat]="view_date_format"
-                          [modelFormat]="model_datetime_format"></app-datepicker>
+              <input type="text" [(ngModel)]="animal.date_of_birth" [disabled]="true">
             </div>
           </div>
 
@@ -528,10 +520,20 @@
             </table>
         </div>
     </div>
+    <div class="row" *ngIf="!hasBreedValues()">
+      <div class="large-12 columns align-center">
+        <p>{{'THIS ANIMAL HAS NO BREED VALUES' | translate }}</p>
+      </div>
+    </div>
 
     <div class="row" *ngIf="hasWeights()">
       <div class="large-12 columns">
         <app-line-component [data]="weightData" [config]="weightConfig" [elementId]="weightElementId"></app-line-component>
+      </div>
+    </div>
+    <div class="row" *ngIf="!hasWeights()">
+      <div class="large-12 columns align-center">
+        <p>{{'THIS ANIMAL HAS NO WEIGHT MEASUREMENTS' | translate }}</p>
       </div>
     </div>
 

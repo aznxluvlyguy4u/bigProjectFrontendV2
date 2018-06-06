@@ -17,13 +17,38 @@ export class AnimalDetailsCardComponent implements OnInit {
   @Input() mainAnimalGender: string = null;
 
   redirectToAnimal(isEdit: boolean = false) {
-    this.router.navigate(['/main/livestock/details/' + this.inputAnimal.uln]);
+    if (!this.ulnIsEmpty()) {
+      this.router.navigate(['/main/livestock/details/' + this.inputAnimal.uln]);
+    }
   }
 
   ngOnInit() {
-    this.inputAnimal.date_of_birth = moment(this.inputAnimal.date_of_birth).format(this.settings.VIEW_DATE_FORMAT);
-    this.inputAnimal.uln = this.inputAnimal.uln === typeof 'undefined' || this.inputAnimal.uln !== '' ?
-      this.inputAnimal.uln_country_code + this.inputAnimal.uln_number : null;
+    if (this.isStringEmpty(this.inputAnimal.date_of_birth)) {
+      this.inputAnimal.date_of_birth = this.inputAnimal.dd_mm_yyyy_date_of_birth;
+    } else {
+      this.inputAnimal.date_of_birth = moment(this.inputAnimal.date_of_birth).format(this.settings.VIEW_DATE_FORMAT);
+    }
+    this.inputAnimal.uln = this.getUln(this.inputAnimal);
+  }
+
+  getUln(animal: Animal) {
+    if (!this.isStringEmpty(animal.uln)) {
+      return animal.uln;
+    }
+
+    if (!this.isStringEmpty(animal.uln_country_code) && !this.isStringEmpty(animal.uln_number)) {
+      return animal.uln_country_code + animal.uln_number;
+    }
+
+    return '';
+  }
+
+  ulnIsEmpty(): boolean {
+    return this.isStringEmpty(this.inputAnimal.uln);
+  }
+
+  private isStringEmpty(string: string): boolean {
+    return string === undefined || string === null || string === '';
   }
 
 }

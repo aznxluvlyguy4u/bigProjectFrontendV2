@@ -17,6 +17,7 @@ export class Animal {
   public collar_number: number;
   public name: string;
   public date_of_birth: string;
+  public dd_mm_yyyy_date_of_birth: string;
   public birth_progress: string;
   public litter_size: string;
   public n_ling: number;

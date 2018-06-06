@@ -4,7 +4,7 @@
       <label class="middle">{{ 'ULN' | translate }}</label>
     </div>
     <div class="medium-6 columns">
-      <input type="text" disabled value="{{ inputAnimal.uln ? inputAnimal.uln : (inputAnimal.uln_country_code ? inputAnimal.uln_country_code + (inputAnimal.uln_number ? inputAnimal.uln_number : '') : '' )}}">
+      <input type="text" disabled value="{{ getUln(inputAnimal) }}">
     </div>
   </div>
 
@@ -62,7 +62,7 @@
         <label class="middle">{{"ULN" | translate}}</label>
       </div>
       <div class="medium-6 columns">
-        <input type="text" disabled value="{{ inputAnimal.father && inputAnimal.father != '' ? inputAnimal.father : inputAnimal.parent_father ? inputAnimal.parent_father.uln : '' }}">
+        <input type="text" disabled value="{{ inputAnimal.father && inputAnimal.father != '' ? inputAnimal.father : inputAnimal.parent_father ? getUln(inputAnimal.parent_father) : '' }}">
       </div>
     </div>
     <div class="row">
@@ -86,7 +86,7 @@
         <label class="middle">{{"ULN" | translate}}</label>
       </div>
       <div class="medium-6 columns">
-        <input type="text" disabled value="{{ inputAnimal.mother && inputAnimal.mother != '' ? inputAnimal.mother : inputAnimal.parent_mother ? inputAnimal.parent_mother.uln : '' }}">
+        <input type="text" disabled value="{{ inputAnimal.mother && inputAnimal.mother != '' ? inputAnimal.mother : inputAnimal.parent_mother ? getUln(inputAnimal.parent_mother) : '' }}">
       </div>
     </div>
     <div class="row">
@@ -100,7 +100,7 @@
   </div>
   <div class="row">
     <div class="large-12 columns">
-      <button (click)="redirectToAnimal()" class="button small primary">
+      <button (click)="redirectToAnimal()" class="button small primary" [disabled]="ulnIsEmpty()">
         {{ "SHOW ANIMAL CARD" | translate }}
       </button>
     </div>

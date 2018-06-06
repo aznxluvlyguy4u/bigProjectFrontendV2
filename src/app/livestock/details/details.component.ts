@@ -47,9 +47,7 @@ export class LivestockDetailComponent implements OnInit {
   private fatherAnimal: Animal = new Animal();
   private motherAnimal: Animal = new Animal();
   private children: Animal[] = [];
-  private country_code_list = [];
   private collar_color_list = [];
-  private tags = [];
   private view_date_format: string;
   private model_datetime_format: string;
   private livestock_gender_options = LIVESTOCK_GENDER_OPTIONS;
@@ -86,6 +84,10 @@ export class LivestockDetailComponent implements OnInit {
   private invalidMeasurementDate = false;
   private model_date_format: string;
 
+  private isLoadingAnimalDetails: boolean;
+  private isLoadingCollarColorList: boolean;
+  isLoading: boolean;
+
   constructor(private route: ActivatedRoute,
               private router: Router,
               private apiService: NSFOService,
@@ -114,12 +116,22 @@ export class LivestockDetailComponent implements OnInit {
 
   }
 
+  startLoading() {
+    this.isLoading = true;
+    this.isLoadingAnimalDetails = true;
+    this.isLoadingCollarColorList = true;
+  }
+
+  updateLoadingStatus() {
+    this.isLoading = this.isLoadingAnimalDetails || this.isLoadingCollarColorList;
+  }
+
   ngOnInit() {
+    this.startLoading();
+
     this.breedValueElementId = 'breed-value';
     this.weightElementId = 'weight-chart';
-    this.getCountryCodeList();
     this.getCollarColorList();
-    this.getEartagsList();
     this.getAnimalDetails();
 
       this.breedValueConfig = new GoogleChartConfigModel({ title: 'Fokwaarden',
@@ -160,46 +172,21 @@ export class LivestockDetailComponent implements OnInit {
     return gender_type[gender];
   }
 
-  private getCountryCodeList() {
-    this.apiService
-      .doGetRequest(API_URI_GET_COUNTRY_CODES)
-      .subscribe(
-          (res: JsonResponseModel) => {
-          this.country_code_list = _.sortBy(res.result, ['code']);
-        },
-        error => {
-          alert(this.apiService.getErrorMessage(error));
-        }
-      );
-  }
-
   private getCollarColorList() {
     this.apiService
       .doGetRequest(API_URI_GET_COLLAR_COLORS)
       .subscribe(
           (res: JsonResponseModel) => {
-          this.collar_color_list = res.result;
+            this.collar_color_list = res.result;
+            this.isLoadingCollarColorList = false;
+            this.updateLoadingStatus();
         },
         error => {
           alert(this.apiService.getErrorMessage(error));
+          this.isLoadingCollarColorList = false;
+          this.updateLoadingStatus();
         }
       );
-  }
-
-  private getEartagsList() {
-    this.apiService
-      .doGetRequest(API_URI_GET_EARTAGS)
-      .subscribe((res: JsonResponseModel) => {
-          this.tags = res.result;
-          for (const tag of this.tags) {
-            tag.uln = tag.uln_country_code + tag.uln_number;
-            tag.ulnLastFive = tag.uln_number.substr(tag.uln_number.length - 5);
-          }
-          this.tags = _.orderBy(this.tags, ['ulnLastFive']);
-        },
-        error => {
-          alert(this.apiService.getErrorMessage(error));
-        });
   }
 
   private getAnimalDetails() {
@@ -281,6 +268,7 @@ export class LivestockDetailComponent implements OnInit {
                   }
               });
 
+              this.weightData = [];
               this.weightData = [[
                 this.translate.instant('YEAR'),
                 this.translate.instant('WEIGHT')
@@ -291,26 +279,29 @@ export class LivestockDetailComponent implements OnInit {
                  this.weightData.push([date, weight.weight]);
               });
 
-              this.fatherAnimal = res.result.parentFather;
-              this.fatherAnimal.pedigree = res.result.parentFather.stn;
-              this.fatherAnimal.date_of_birth = res.result.parentFather.dd_mm_yyyy_date_of_birth;
+              this.fatherAnimal = res.result.parent_father;
+              this.fatherAnimal.pedigree = res.result.parent_father.stn;
+              this.fatherAnimal.dd_mm_yyyy_date_of_birth = res.result.parent_father.dd_mm_yyyy_date_of_birth;
               this.fatherAnimal.gender = 'MALE';
-              this.fatherAnimal.litter_size = res.result.parentFather.n_ling;
-              this.motherAnimal = res.result.parentMother;
-              this.motherAnimal.pedigree = res.result.parentMother.stn;
-              this.motherAnimal.date_of_birth = res.result.parentMother.dd_mm_yyyy_date_of_birth;
+              this.fatherAnimal.litter_size = res.result.parent_father.n_ling;
+              this.motherAnimal = res.result.parent_mother;
+              this.motherAnimal.pedigree = res.result.parent_mother.stn;
+              this.motherAnimal.dd_mm_yyyy_date_of_birth = res.result.parent_mother.dd_mm_yyyy_date_of_birth;
               this.motherAnimal.gender = 'FEMALE';
-              this.motherAnimal.litter_size = res.result.parentMother.n_ling;
+              this.motherAnimal.litter_size = res.result.parent_mother.n_ling;
               this.children = res.result.children;
               for (const child of this.children) {
-                child.litter_size = child.n_ling.toString();
+                child.litter_size = child.n_ling ? child.n_ling.toString() : undefined;
               }
 
               window.scrollTo(0, 0);
-
+              this.isLoadingAnimalDetails = false;
+              this.updateLoadingStatus();
             },
             error => {
               alert(this.apiService.getErrorMessage(error));
+              this.isLoadingAnimalDetails = false;
+              this.updateLoadingStatus();
             }
           );
       });
