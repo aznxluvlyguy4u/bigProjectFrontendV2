@@ -1,0 +1,109 @@
+<div id="animal-details-card-component" class="details-card-wrapper">
+  <div class="row">
+    <div class="medium-6 columns">
+      <label class="middle">{{ 'ULN' | translate }}</label>
+    </div>
+    <div class="medium-6 columns">
+      <input type="text" disabled value="{{ inputAnimal.uln ? inputAnimal.uln : (inputAnimal.uln_country_code ? inputAnimal.uln_country_code + (inputAnimal.uln_number ? inputAnimal.uln_number : '') : '' )}}">
+    </div>
+  </div>
+
+  <!-- PEDIGREE NUMBER -->
+  <div class="row">
+    <div class="medium-6 columns">
+      <label class="middle">{{ 'PEDIGREE NUMBER' | translate }}</label>
+    </div>
+    <div class="medium-6 columns">
+      <div class="uid-input-group">
+        <input type="text" disabled value="{{ inputAnimal.pedigree ? inputAnimal.pedigree : (inputAnimal.pedigree_country_code ? inputAnimal.pedigree_country_code + (inputAnimal.pedigree_number ? inputAnimal.pedigree_number : '') : '') }}">
+      </div>
+    </div>
+  </div>
+
+  <!-- DATE OF BIRTH -->
+  <div class="row">
+    <div class="medium-6 columns">
+      <label class="middle">{{ 'DATE OF BIRTH' | translate }}</label>
+    </div>
+    <div class="medium-6 columns">
+      <input type="text" disabled value="{{ inputAnimal.date_of_birth ? inputAnimal.date_of_birth : '' }}">
+    </div>
+  </div>
+
+  <!-- GENDER -->
+  <div class="row">
+    <div class="medium-6 columns">
+      <label class="middle">{{ 'GENDER' | translate }}</label>
+    </div>
+    <div class="medium-6 columns">
+      <input type="text" disabled value="{{ inputAnimal.gender ? (inputAnimal.gender | translate) : '' }}">
+    </div>
+  </div>
+
+  <!-- LITTER SIZE -->
+  <div class="row">
+    <div class="medium-6 columns">
+      <label class="middle">{{ 'LITTER SIZE' | translate }}</label>
+    </div>
+    <div class="medium-6 columns">
+      <input type="text" disabled value="{{ inputAnimal.litter_size ? inputAnimal.litter_size : '' }}">
+    </div>
+  </div>
+
+  <!-- FATHER -->
+  <div *ngIf="mainAnimalGender == 'FEMALE' || mainAnimalGender == null">
+    <div class="row">
+      <div class="medium-12 columns">
+        <label class="middle"><b>{{ 'FATHER' | translate }}</b></label>
+      </div>
+    </div>
+    <div class="row">
+      <div class="medium-6 columns">
+        <label class="middle">{{"ULN" | translate}}</label>
+      </div>
+      <div class="medium-6 columns">
+        <input type="text" disabled value="{{ inputAnimal.father && inputAnimal.father != '' ? inputAnimal.father : inputAnimal.parent_father ? inputAnimal.parent_father.uln : '' }}">
+      </div>
+    </div>
+    <div class="row">
+      <div class="medium-6 columns">
+        <label class="middle">{{"PEDIGREE NUMBER" | translate}}</label>
+      </div>
+      <div class="medium-6 columns">
+        <input type="text" disabled value="{{ inputAnimal.father && inputAnimal.father != '' ? inputAnimal.father : inputAnimal.parent_father ? inputAnimal.parent_father.stn : '' }}">
+      </div>
+    </div>
+  </div>
+  <!-- MOTHER -->
+  <div *ngIf="mainAnimalGender == 'MALE' || mainAnimalGender == null">
+    <div class="row">
+      <div class="medium-12 columns">
+        <label class="middle"><b>{{ 'MOTHER' | translate }}</b></label>
+      </div>
+    </div>
+    <div class="row">
+      <div class="medium-6 columns">
+        <label class="middle">{{"ULN" | translate}}</label>
+      </div>
+      <div class="medium-6 columns">
+        <input type="text" disabled value="{{ inputAnimal.mother && inputAnimal.mother != '' ? inputAnimal.mother : inputAnimal.parent_mother ? inputAnimal.parent_mother.uln : '' }}">
+      </div>
+    </div>
+    <div class="row">
+      <div class="medium-6 columns">
+        <label class="middle">{{"PEDIGREE NUMBER" | translate}}</label>
+      </div>
+      <div class="medium-6 columns">
+        <input type="text" disabled value="{{ inputAnimal.mother && inputAnimal.mother != '' ? inputAnimal.mother : inputAnimal.parent_mother ? inputAnimal.parent_mother.stn : '' }}">
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="large-12 columns">
+      <button (click)="redirectToAnimal()" class="button small primary">
+        {{ "SHOW ANIMAL CARD" | translate }}
+      </button>
+    </div>
+  </div>
+
+</div>

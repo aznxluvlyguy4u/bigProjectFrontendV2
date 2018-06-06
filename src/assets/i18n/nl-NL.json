@@ -631,6 +631,10 @@
   "YOUR NSFO EMAIL HAS CHANGED": "Er is een bevestiging verstuurd naar het nieuwe e-mail adres.",
   "YOU ARE UNAUTHORIZED": "U bent niet geauthoriseerd",
   "BREED_VALUE_ABBREVIATION": "FW",
-  "ACCURACY_ABBREVIATION": "NKH"
+  "ACCURACY_ABBREVIATION": "NKH",
+  "PARENTS": "Ouders",
+  "CHILDREN": "Nakomelingen",
+  "PRODUCTION": "Productie",
+  "SHOW ANIMAL CARD": "Toon dierkaart"
 }
 

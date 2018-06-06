@@ -132,6 +132,7 @@ import {GoogleChartsBaseService} from './shared/services/google/googlechartsbase
 import {GoogleColumnChartService} from './shared/services/google/googlecolumnchart.service';
 import {LineComponent} from './shared/components/googlechart/line.component';
 import {GoogleLineChartService} from './shared/services/google/googlelinechart.service';
+import {AnimalDetailsCardComponent} from './shared/components/animal-details-card/animal-details-card.component';
 // AoT requires an exported function for factories
 export function CreateTranslateLoader(http: HttpClient) {
     return new TranslateHttpLoader(http, '../assets/i18n/', '.json');
@@ -153,6 +154,7 @@ export function CreateTranslateLoader(http: HttpClient) {
       InvoiceComponent,
       LivestockOverviewComponent,
       LivestockDetailComponent,
+      AnimalDetailsCardComponent,
       DatepickerComponent,
       DatepickerV2Component,
       ExteriorComponent,

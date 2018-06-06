@@ -44,6 +44,9 @@ export class LivestockDetailComponent implements OnInit {
   private form: FormGroup;
   private animal: Animal = new Animal();
   private temp_animal: Animal;
+  private fatherAnimal: Animal = new Animal();
+  private motherAnimal: Animal = new Animal();
+  private children: Animal[] = [];
   private country_code_list = [];
   private collar_color_list = [];
   private tags = [];
@@ -260,6 +263,7 @@ export class LivestockDetailComponent implements OnInit {
               this.breedValueData = [
                   ['Year', 'Fokwaarde',  {role: 'annotation'}, {role: 'tooltip'}, {role: 'style'}],
               ];
+              this.breedValues = [];
 
               this.animal.breed_values.forEach((breedValue) => {
                   if (breedValue.has_data) {
@@ -276,20 +280,48 @@ export class LivestockDetailComponent implements OnInit {
                       );
                   }
               });
+
               this.weightData = [[
                 this.translate.instant('YEAR'),
                 this.translate.instant('WEIGHT')
               ]];
+
               this.animal.weights.forEach((weight) => {
                   const date = moment(weight.measurement_date).format('DD-MM-YYYY');
                  this.weightData.push([date, weight.weight]);
               });
+
+              this.fatherAnimal = res.result.parentFather;
+              this.fatherAnimal.pedigree = res.result.parentFather.stn;
+              this.fatherAnimal.date_of_birth = res.result.parentFather.dd_mm_yyyy_date_of_birth;
+              this.fatherAnimal.gender = 'MALE';
+              this.fatherAnimal.litter_size = res.result.parentFather.n_ling;
+              this.motherAnimal = res.result.parentMother;
+              this.motherAnimal.pedigree = res.result.parentMother.stn;
+              this.motherAnimal.date_of_birth = res.result.parentMother.dd_mm_yyyy_date_of_birth;
+              this.motherAnimal.gender = 'FEMALE';
+              this.motherAnimal.litter_size = res.result.parentMother.n_ling;
+              this.children = res.result.children;
+              for (const child of this.children) {
+                child.litter_size = child.n_ling.toString();
+              }
+
+              window.scrollTo(0, 0);
+
             },
             error => {
               alert(this.apiService.getErrorMessage(error));
             }
           );
       });
+  }
+
+  hasWeights(): boolean {
+    return this.animal.weights.length > 0;
+  }
+
+  hasBreedValues(): boolean {
+    return this.animal.breed_values.length > 0;
   }
 
   private sendGenderChangeRequest() {

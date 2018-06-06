@@ -478,7 +478,36 @@
         <!--</div>-->
       </div>
     </div>
-    <div class="row">
+
+    <div class="large-12 columns">
+      <div class="info-container">
+        <div class="info-header">
+          <label>
+            {{ "PARENTS" | translate }}
+          </label>
+        </div>
+        <div class="row">
+          <div class="large-12 columns">
+            <div class="large-6 columns info-body">
+              <app-animal-details-card
+                [inputAnimal]="fatherAnimal"
+                [mainAnimalGender]="'parents'"
+              ></app-animal-details-card>
+            </div>
+            <div class="large-6 columns info-body">
+              <app-animal-details-card
+                [inputAnimal]="motherAnimal"
+                [mainAnimalGender]="'parents'"
+              >
+
+              </app-animal-details-card>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row" *ngIf="hasBreedValues()">
       <div class="large-8 columns">
         <app-bar-component [data]="breedValueData" [config]="breedValueConfig" [elementId]="breedValueElementId"></app-bar-component>
       </div>
@@ -499,11 +528,33 @@
             </table>
         </div>
     </div>
-    <div class="row">
+
+    <div class="row" *ngIf="hasWeights()">
       <div class="large-12 columns">
         <app-line-component [data]="weightData" [config]="weightConfig" [elementId]="weightElementId"></app-line-component>
       </div>
     </div>
+
+    <div class="large-12 columns">
+      <div class="info-container">
+        <div class="info-header">
+          <label>{{ "CHILDREN" | translate }}</label>
+        </div>
+        <div class="row">
+          <div class="large-12 columns">
+            <div class="large-6 columns info-body" *ngFor="let child of children">
+              <app-animal-details-card
+                [inputAnimal]="child"
+                [mainAnimalGender]="animal.gender"
+              >
+
+              </app-animal-details-card>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <div class="row">
       <div class="large-12 columns">
         <table class="animal-logs">

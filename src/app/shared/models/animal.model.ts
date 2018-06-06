@@ -10,6 +10,7 @@ export class Animal {
   public uln: string;
   public pedigree_country_code: string;
   public pedigree_number: string;
+  public stn: string;
   public work_number: string;
   public collar: Collar = new Collar();
   public collar_color: number;
@@ -18,6 +19,7 @@ export class Animal {
   public date_of_birth: string;
   public birth_progress: string;
   public litter_size: string;
+  public n_ling: number;
   public inbreeding_index: string;
   public gender: string;
   public rearing: string;
@@ -41,6 +43,8 @@ export class Animal {
   public surrogate_mother: any;
   public mother: string;
   public father: string;
+  public parent_mother: Ewe;
+  public parent_father: Ram;
   public exteriors: Exterior[] = [];
   public exterior: Exterior = new Exterior();
   public breeder: Breeder = new Breeder();
@@ -58,6 +62,13 @@ export class Animal {
   public successful: boolean;
   public selected: boolean;
   public breed_values: BreedValues[] = [];
+  public pedigree: string;
+}
+
+export class Ewe extends Animal {
+}
+
+export class Ram extends Animal {
 }
 
 export class Collar {
@@ -68,9 +79,7 @@ export class Collar {
 export class LivestockAnimal extends Animal {
   public selected: boolean;
   public added: boolean;
-  public uln: string;
   public ulnLastFive: string;
-  public pedigree: string;
   public current_weight: string;
   date_of_birth_sort: string;
   public filtered: any;
