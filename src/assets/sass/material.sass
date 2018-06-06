@@ -1,0 +1,16 @@
+@import '~@angular/material/theming'
+// Plus imports for other components in your app.
+
+// Include the common styles for Angular Material. We include this here so that you only
+// have to load a single css file for Angular Material in your app.
+// **Be sure that you only ever include this mixin once!**
+@include mat-core()
+
+// Define the default theme (same as the example above).
+$nsfo-app-primary: mat-palette($mat-green, 500, 300, 900)
+$nsfo-app-accent:  mat-palette($mat-orange, A400, A100, A700)
+$nsfo-app-warn:    mat-palette($mat-red, 500, 300, 900)
+$nsfo-app-theme:   mat-light-theme($nsfo-app-primary, $nsfo-app-accent, $nsfo-app-warn)
+
+// Include the default theme styles.
+@include angular-material-theme($nsfo-app-theme)
