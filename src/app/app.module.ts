@@ -133,6 +133,9 @@ import {GoogleColumnChartService} from './shared/services/google/googlecolumncha
 import {LineComponent} from './shared/components/googlechart/line.component';
 import {GoogleLineChartService} from './shared/services/google/googlelinechart.service';
 import {AnimalDetailsCardComponent} from './shared/components/animal-details-card/animal-details-card.component';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {MatProgressSpinnerModule} from '@angular/material';
+import {PageLoadingSpinnerComponent} from './shared/components/page-loading-spinner/page-loading-spinner.component';
 // AoT requires an exported function for factories
 export function CreateTranslateLoader(http: HttpClient) {
     return new TranslateHttpLoader(http, '../assets/i18n/', '.json');
@@ -258,9 +261,11 @@ export function CreateTranslateLoader(http: HttpClient) {
     TagReplacementHistoryFilterPipe,
     MateHistoryPipe,
       BarComponent,
+    PageLoadingSpinnerComponent,
   ],
   imports: [
       Ng2GoogleChartsModule,
+    BrowserAnimationsModule,
     BrowserModule,
     HttpModule,
     HttpClientModule,
@@ -275,7 +280,8 @@ export function CreateTranslateLoader(http: HttpClient) {
         useFactory: (CreateTranslateLoader),
         deps: [HttpClient]
       }
-    })
+    }),
+    MatProgressSpinnerModule,
   ],
   providers: [
     UtilsService,
