@@ -1,0 +1,18 @@
+<button mat-button
+        [color]="buttonColor"
+        [class.active]="active"
+        [class.fullWidth]="fullWidth"
+        [class.mat-raised-button]="raised"
+        [disabled]="!active"
+
+>
+  <span class="button-text" *ngIf="!isSpinning">{{ text | translate | uppercase }}</span>
+  <span class="button-text spinning-button" *ngIf="isSpinning">{{ spinnerText | translate | uppercase }}</span>
+  <mat-spinner class="spinner"
+               [diameter]="spinnerSize"
+               [color]="spinnerColor"
+               [mode]="mode"
+               [value]="value"
+               *ngIf="isSpinning">
+  </mat-spinner>
+</button>

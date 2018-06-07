@@ -394,15 +394,28 @@
 
           <span>
               <div class="large-2 end pull-right">
-                  <button type="submit" [disabled]="in_progress || form.invalid"
-                          class="small primary button expanded">
-                      <span *ngIf="!in_progress">
-                          {{ 'SAVE' | translate }}
-                      </span>
-                      <span *ngIf="in_progress">
-                          <i class="fa fa-gear fa-spin fa-fw"></i>
-                      </span>
-                  </button>
+                <app-button-primary
+                  type="submit"
+                  [text]="'SAVE'"
+                  [spinnerText]="'SAVING'"
+                  [active]="!in_progress && !form.invalid"
+                  [isSpinning]="in_progress"
+                ></app-button-primary>
+
+                <!--<button-->
+                    <!--mat-raised-button-->
+                    <!--class="primary"-->
+                    <!--color="primary"-->
+                    <!--type="submit"-->
+                    <!--[disabled]="in_progress || form.invalid"-->
+                  <!--&gt;-->
+                      <!--<span *ngIf="!in_progress">-->
+                          <!--{{ 'SAVE' | translate | uppercase }}-->
+                      <!--</span>-->
+                      <!--<span *ngIf="in_progress">-->
+                          <!--<i class="fa fa-gear fa-spin fa-fw"></i>-->
+                      <!--</span>-->
+                  <!--</button>-->
               </div>
           </span>
 
@@ -483,4 +496,5 @@
       </div>
     </div>
   </div>
+
 </div>

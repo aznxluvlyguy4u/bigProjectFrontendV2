@@ -1,0 +1,21 @@
+@import "../../../../assets/sass/main"
+
+button
+  .button-text
+    color: $nsfo-white-font
+
+button /deep/ .mat-button-wrapper
+  display: flex
+  align-items: center
+  justify-content: center
+
+button.active
+  .spinner
+    margin-top: 8px
+    margin-left: 5px
+
+  .fullWidth
+    width: 100%
+
+button.spinning-button
+  cursor: not-allowed
