@@ -32,6 +32,10 @@ export class NSFOService {
         });
     }
 
+    static displayErrorMessage(errorMessage: string): boolean {
+        return errorMessage !== 'Client cannot be null';
+    }
+
     getDefaultHeaders(): HttpHeaders {
         let headers = new HttpHeaders();
         headers = headers.set(this.content_type, 'application/json');

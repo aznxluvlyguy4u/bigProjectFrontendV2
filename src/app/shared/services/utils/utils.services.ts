@@ -31,7 +31,10 @@ export class UtilsService {
           this.setUserInfo(res.result);
         },
         error => {
-          alert(this.api.getErrorMessage(error));
+            const errorMessage = this.api.getErrorMessage(error);
+            if (NSFOService.displayErrorMessage(errorMessage)) {
+              alert(errorMessage);
+            }
         });
   }
 

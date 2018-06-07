@@ -7,7 +7,7 @@ import {NSFOService} from '../../shared/services/nsfo-api/nsfo.service';
 import {SettingsService} from '../../shared/services/settings/settings.service';
 import {
     API_URI_GET_COUNTRY_CODES,
-    API_URI_GET_MESSAGES, API_URI_GET_USER_INFO,
+    API_URI_GET_MESSAGES,
 } from '../../shared/services/nsfo-api/nsfo.settings';
 import {UtilsService} from '../../shared/services/utils/utils.services';
 import { DownloadService } from '../../shared/services/download/download.service';
@@ -110,7 +110,10 @@ export class HomeComponent implements OnInit, OnDestroy, AfterContentChecked {
           this.settings.setCountryList(countryCodeList);
         },
         error => {
-          alert(this.apiService.getErrorMessage(error));
+          const errorMessage = this.apiService.getErrorMessage(error);
+          if (NSFOService.displayErrorMessage(errorMessage)) {
+            alert(errorMessage);
+          }
         }
       );
   }
