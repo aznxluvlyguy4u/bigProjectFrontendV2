@@ -1,5 +1,6 @@
 import {BrowserModule} from '@angular/platform-browser';
 import {enableProdMode, NgModule} from '@angular/core';
+import { CommonModule } from '@angular/common';
 
 import {AppComponent} from './app.component';
 import {HttpClient, HttpClientModule} from '@angular/common/http';
@@ -273,6 +274,7 @@ export function CreateTranslateLoader(http: HttpClient) {
     NgxPaginationModule,
     MomentModule,
     FormsModule,
+    CommonModule,
     ReactiveFormsModule,
     TranslateModule.forRoot({
       loader: {

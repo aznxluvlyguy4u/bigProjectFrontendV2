@@ -1,11 +1,11 @@
 <!--LOG DATE-->
 <td>
-    <span [hidden]="editMode">
+    <span *ngIf="editMode">
         <label class="show-for-small-only">{{ 'DATE' | translate }}</label>
         {{ stringAsViewDateTime(arrival.log_date) }}
     </span>
 
-  <span [hidden]="!editMode"> <i class="fa fa-pencil" aria-hidden="true"></i> </span>
+  <span *ngIf="!editMode"> <i class="fa fa-pencil" aria-hidden="true"></i> </span>
 </td>
 
 <!--ULN-->
@@ -28,12 +28,12 @@
 <!--ARRIVAL DATE-->
 <td>
   <label class="show-for-small-only">{{ 'ARRIVAL DATE' | translate }}</label>
-  <span [hidden]="editMode">{{ arrival.arrival_date }}</span>
-    <template [hidden]="!editMode">
+  <span *ngIf="editMode">{{ arrival.arrival_date }}</span>
+    <ng-template *ngIf="!editMode">
         <app-datepicker  [formCtrl]="form.controls['arrival_date']" [initDate]="arrival.arrival_date"
                     [viewFormat]="view_date_format" [modelFormat]="model_datetime_format"></app-datepicker>
-        <div [hidden]="form.controls['arrival_date'].valid || form_valid" class="input-error-msg text-center">{{ 'FILL IN THE ARRIVAL DATE' | translate }}</div>
-    </template>
+        <div *ngIf="form.controls['arrival_date'].valid || form_valid" class="input-error-msg text-center">{{ 'FILL IN THE ARRIVAL DATE' | translate }}</div>
+    </ng-template>
 </td>
 
 <!--IMPORT ANIMAL FLAG-->
@@ -46,18 +46,18 @@
 <!--UBN PREVIOUS OWNER-->
 <td>
   <label class="show-for-small-only">{{ 'UBN PREVIOUS OWNER' | translate }}</label>
-  <span [hidden]="editMode">{{ arrival.ubn_previous_owner }}</span>
-    <template [hidden]="!editMode">
+  <span *ngIf="editMode">{{ arrival.ubn_previous_owner }}</span>
+    <ng-template *ngIf="!editMode">
     <input type="text" *ngIf="!arrival.is_import_animal" [(ngModel)]="arrival.ubn_previous_owner"
                ngControl="ubn_previous_owner">
-        <div [hidden]="form.controls['ubn_previous_owner'].valid || form_valid" class="input-error-msg text-center">{{ 'UBN IS INVALID' | translate }}</div>
-    </template>
+        <div *ngIf="form.controls['ubn_previous_owner'].valid || form_valid" class="input-error-msg text-center">{{ 'UBN IS INVALID' | translate }}</div>
+    </ng-template>
 </td>
 
 <!--CERTIFICATE NUMBER-->
 <td *ngIf="false">
   <label class="show-for-small-only">{{ 'CERTIFICATE NUMBER' | translate }}</label>
-  <span [hidden]="editMode">{{ arrival.certificate_number }}</span>
+  <span *ngIf="editMode">{{ arrival.certificate_number }}</span>
         <input type="text" *ngIf="arrival.is_import_animal" [(ngModel)]="arrival.certificate_number"
                ngControl="certificate_number">
 </td>
@@ -66,7 +66,7 @@
 <!--ERROR CODE-->
 <td>
   <label class="show-for-small-only">{{ 'ERROR CODE' | translate }}</label>
-  <span [hidden]="editMode" id="error-{{ arrival_index }}" data-tooltip aria-haspopup="true" class="has-tip top"
+  <span *ngIf="editMode" id="error-{{ arrival_index }}" data-tooltip aria-haspopup="true" class="has-tip top"
         data-disable-hover="false" title="{{ arrival.error_message }}">
         {{ arrival.error_code }}
     </span>
@@ -74,13 +74,13 @@
 
 <!--ROW BUTTONS-->
 <td>
-    <span [hidden]="editMode">
+    <span *ngIf="editMode">
         <button *ngIf="false" class="tiny primary button" (click)="enableEditing()">{{ 'REVISE' | translate }}</button>
         <button *ngIf="!arrival.is_removed_by_user" class="tiny alert button" (click)="sendRemoveErrorRequest()">{{ 'DONT SHOW' | translate }}</button>
         <button *ngIf="arrival.is_removed_by_user" class="tiny alert button" disabled>{{ 'HIDDEN' | translate}}</button>
     </span>
 
-  <span [hidden]="!editMode">
+  <span *ngIf="!editMode">
         <button class="tiny primary button" (click)="sendChangeRequest()">{{ 'SEND' | translate }}</button>
         <button class="tiny alert button" (click)="cancelEditing()">{{ 'CANCEL' | translate }}</button>
     </span>

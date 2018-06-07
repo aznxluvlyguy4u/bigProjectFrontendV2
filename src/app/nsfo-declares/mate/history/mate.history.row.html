@@ -1,12 +1,12 @@
 <!--LOG DATE-->
 
 <td>
-    <span [hidden]="editMode">
+    <span *ngIf="editMode">
         <label class="show-for-small-only">{{ 'DATE' | translate }}</label>
         {{ stringAsViewDateTime(mate.log_date) }}
     </span>
 
-  <span [hidden]="!editMode"> <i class="fa fa-pencil" aria-hidden="true"></i> </span>
+  <span *ngIf="!editMode"> <i class="fa fa-pencil" aria-hidden="true"></i> </span>
 </td>
 
 <!--ULN MALE-->
@@ -24,59 +24,59 @@
 <!--MATE STARTDATE-->
 <td>
   <label class="show-for-small-only">{{ 'MATE DATE' | translate }}</label>
-  <span [hidden]="editMode">{{ mate.start_date }}</span>
-  <template [hidden]="!editMode" [formGroup]="form">
+  <span *ngIf="editMode">{{ mate.start_date }}</span>
+  <ng-template *ngIf="!editMode" [formGroup]="form">
         <app-datepicker [formCtrl]="form.controls['start_date']" [initDate]="mate.start_date"
                     [viewFormat]="view_date_format" [modelFormat]="model_datetime_format"></app-datepicker>
-        <div [hidden]="form.controls['start_date'].valid || form_valid" class="input-error-msg text-center">{{ 'FILL IN THE MATE STARTDATE' | translate }}</div>
-  </template>
+        <div *ngIf="form.controls['start_date'].valid || form_valid" class="input-error-msg text-center">{{ 'FILL IN THE MATE STARTDATE' | translate }}</div>
+  </ng-template>
 </td>
 
 <!--MATE ENDDATE-->
 <td>
   <label class="show-for-small-only">{{ 'TILL' | translate }}</label>
-  <span [hidden]="editMode">{{ mate.end_date }}</span>
-  <template [hidden]="!editMode" [formGroup]="form">
+  <span *ngIf="editMode">{{ mate.end_date }}</span>
+  <ng-template *ngIf="!editMode" [formGroup]="form">
         <app-datepicker [formCtrl]="form.controls['end_date']" [initDate]="mate.end_date" [viewFormat]="view_date_format"
                     [modelFormat]="model_datetime_format"></app-datepicker>
-        <div [hidden]="form.controls['end_date'].valid || form_valid" class="input-error-msg text-center">{{ 'FILL IN THE MATE ENDDATE' | translate }}</div>
-  </template>
+        <div *ngIf="form.controls['end_date'].valid || form_valid" class="input-error-msg text-center">{{ 'FILL IN THE MATE ENDDATE' | translate }}</div>
+  </ng-template>
 </td>
 
 <!--PMSG-->
 <td>
   <label class="show-for-small-only">{{ 'PMSG' | translate }}</label>
-  <span [hidden]="editMode">{{ mate.pmsg | translate }}</span>
-  <template [hidden]="!editMode" [formGroup]="form">
+  <span *ngIf="editMode">{{ mate.pmsg | translate }}</span>
+  <ng-template *ngIf="!editMode" [formGroup]="form">
         <select formControlName="pmsg">
             <option value="YES"> {{ 'YES' | translate }}</option>
             <option value="NO"> {{ 'NO' | translate }}</option>
         </select>
-    </template>
+    </ng-template>
 </td>
 
 <!--KI-->
 <td>
   <label class="show-for-small-only">{{ 'PMSG' | translate }}</label>
-  <span [hidden]="editMode">{{ mate.ki | translate }}</span>
-  <template [hidden]="!editMode" [formGroup]="form">
+  <span *ngIf="editMode">{{ mate.ki | translate }}</span>
+  <ng-template *ngIf="!editMode" [formGroup]="form">
         <select formControlName="ki">
             <option value="YES"> {{ 'YES' | translate }}</option>
             <option value="NO"> {{ 'NO' | translate }}</option>
         </select>
-    </template>
+    </ng-template>
 </td>
 
 
 <!--STATUS-->
 <td>
   <label class="show-for-small-only">{{ 'STATUS' | translate }}</label>
-  <span [hidden]="editMode" [ngSwitch]="mate.request_state">
-        <template ngSwitchWhen="OPEN"> {{ 'PROCESSING' | translate }} </template>
-        <template ngSwitchWhen="REVOKING"> {{ 'PROCESSING' | translate }} </template>
-        <template ngSwitchWhen="FINISHED"> {{ 'SENT' | translate }} </template>
-        <template ngSwitchWhen="FINISHED_WITH_WARNING"> {{ 'SENT' | translate }} </template>
-        <template ngSwitchWhen="REVOKED"> {{ 'REVOKED' | translate }} </template>
+  <span *ngIf="editMode" [ngSwitch]="mate.request_state">
+        <ng-template ngSwitchWhen="OPEN"> {{ 'PROCESSING' | translate }} </ng-template>
+        <ng-template ngSwitchWhen="REVOKING"> {{ 'PROCESSING' | translate }} </ng-template>
+        <ng-template ngSwitchWhen="FINISHED"> {{ 'SENT' | translate }} </ng-template>
+        <ng-template ngSwitchWhen="FINISHED_WITH_WARNING"> {{ 'SENT' | translate }} </ng-template>
+        <ng-template ngSwitchWhen="REVOKED"> {{ 'REVOKED' | translate }} </ng-template>
     </span>
 </td>
 
@@ -84,7 +84,7 @@
 <td>
   <div class="row">
         <span
-          [hidden]="editMode || mate.request_state == 'OPEN' || mate.request_state == 'REVOKING' ||  mate.request_state == 'REVOKED'">
+          *ngIf="editMode || mate.request_state == 'OPEN' || mate.request_state == 'REVOKING' ||  mate.request_state == 'REVOKED'">
             <!--<div class="small-6 columns">-->
           <!--<button class="tiny primary button expanded" (click)="enableEditing()">{{ 'EDIT' | translate }}</button>-->
           <!--</div>-->
@@ -94,7 +94,7 @@
             </div>
         </span>
 
-    <span [hidden]="!editMode">
+    <span *ngIf="!editMode">
             <div class="small-6 columns">
                 <button class="tiny primary button expanded" (click)="sendChangeRequest()" [disabled]="isSending">
                     <span *ngIf="!isSending">

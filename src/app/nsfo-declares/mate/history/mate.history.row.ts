@@ -9,7 +9,7 @@ import {SettingsService} from '../../../shared/services/settings/settings.servic
 import {MateChangeResponse} from '../../../shared/models/nsfo-declare.model';
 
 @Component({
-  selector: '[app-mate-history-row]',
+  selector: 'app-mate-history-row',
   templateUrl: './mate.history.row.html',
 
 })

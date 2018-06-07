@@ -88,12 +88,12 @@
 <td>
   <label class="show-for-small-only">{{ 'STATUS' | translate }}</label>
   <span [hidden]="editMode" [ngSwitch]="depart.request_state">
-        <template ngSwitchWhen="OPEN"> {{ 'PROCESSING' | translate }} </template>
-        <template ngSwitchWhen="REVOKING"> {{ 'PROCESSING' | translate }} </template>
-        <template ngSwitchWhen="FINISHED"> {{ 'SENT' | translate }} </template>
-        <template ngSwitchWhen="FINISHED_WITH_WARNING"> {{ 'SENT' | translate }} <app-history-error-info
-          [historyResponse]="depart"></app-history-error-info> </template>
-        <template ngSwitchWhen="REVOKED"> {{ 'REVOKED' | translate }} </template>
+        <ng-template ngSwitchWhen="OPEN"> {{ 'PROCESSING' | translate }} </ng-template>
+        <ng-template ngSwitchWhen="REVOKING"> {{ 'PROCESSING' | translate }} </ng-template>
+        <ng-template ngSwitchWhen="FINISHED"> {{ 'SENT' | translate }} </ng-template>
+        <ng-template ngSwitchWhen="FINISHED_WITH_WARNING"> {{ 'SENT' | translate }} <app-history-error-info
+          [historyResponse]="depart"></app-history-error-info> </ng-template>
+        <ng-template ngSwitchWhen="REVOKED"> {{ 'REVOKED' | translate }} </ng-template>
     </span>
 </td>
 

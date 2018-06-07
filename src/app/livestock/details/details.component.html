@@ -669,7 +669,7 @@
   </div>
 </div>
 
-<template #changeButton>
+<ng-template #changeButton>
 
   <button type="button" *ngIf="!edit_mode" [disabled]="!changeEnabled" (click)="toggleEditMode()"
           class="tiny primary button">
@@ -688,4 +688,4 @@
     | translate }}
   </button>
 
-</template>
+</ng-template>
