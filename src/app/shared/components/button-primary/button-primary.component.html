@@ -4,7 +4,6 @@
         [class.fullWidth]="fullWidth"
         [class.mat-raised-button]="raised"
         [disabled]="!active"
-
 >
   <span class="button-text" *ngIf="!isSpinning">{{ text | translate | uppercase }}</span>
   <span class="button-text spinning-button" *ngIf="isSpinning">{{ spinnerText | translate | uppercase }}</span>
