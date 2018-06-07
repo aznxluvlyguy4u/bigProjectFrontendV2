@@ -1,11 +1,11 @@
 <!--LOG DATE-->
 <td>
-    <span [hidden]="editMode">
+    <span *ngIf="editMode">
         <label class="show-for-small-only">{{ 'DATE' | translate }}</label>
         {{ stringAsViewDateTime(arrival.log_date) }}
     </span>
 
-  <span [hidden]="!editMode"> <i class="fa fa-pencil" aria-hidden="true"></i> </span>
+  <span *ngIf="!editMode"> <i class="fa fa-pencil" aria-hidden="true"></i> </span>
 </td>
 
 <!--ULN-->
@@ -28,11 +28,11 @@
 <!--ARRIVAL DATE-->
 <td>
   <label class="show-for-small-only">{{ 'ARRIVAL DATE' | translate }}</label>
-  <span [hidden]="editMode">{{ arrival.arrival_date }}</span>
-  <form [hidden]="!editMode" [formGroup]="form">
+  <span *ngIf="editMode">{{ arrival.arrival_date }}</span>
+  <form *ngIf="!editMode" [formGroup]="form">
         <app-datepicker  [formCtrl]="form.controls['arrival_date']" [initDate]="arrival.arrival_date"
                     [viewFormat]="view_date_format" [modelFormat]="model_datetime_format"></app-datepicker>
-        <div [hidden]="form_valid" class="input-error-msg text-center">{{ 'FILL IN THE ARRIVAL DATE' | translate }}</div>
+        <div *ngIf="form_valid" class="input-error-msg text-center">{{ 'FILL IN THE ARRIVAL DATE' | translate }}</div>
     </form>
 </td>
 
@@ -46,18 +46,18 @@
 <!--UBN PREVIOUS OWNER-->
 <td>
   <label class="show-for-small-only">{{ 'UBN PREVIOUS OWNER' | translate }}</label>
-  <span [hidden]="editMode">{{ arrival.ubn_previous_owner }}</span>
-    <template [hidden]="!editMode">
+  <span *ngIf="editMode">{{ arrival.ubn_previous_owner }}</span>
+    <ng-template *ngIf="!editMode">
         <input type="text" *ngIf="!arrival.is_import_animal" [(ngModel)]="arrival.ubn_previous_owner"
                ngControl="ubn_previous_owner">
-        <div [hidden]="form.controls['ubn_previous_owner'].valid || form_valid" class="input-error-msg text-center">{{ 'UBN IS INVALID' | translate }}</div>
-    </template>
+        <div *ngIf="form.controls['ubn_previous_owner'].valid || form_valid" class="input-error-msg text-center">{{ 'UBN IS INVALID' | translate }}</div>
+    </ng-template>
 </td>
 
 <!--CERTIFICATE NUMBER-->
 <td *ngIf="false">
   <label class="show-for-small-only">{{ 'CERTIFICATE NUMBER' | translate }}</label>
-  <span [hidden]="editMode">{{ arrival.certificate_number }}</span>
+  <span *ngIf="editMode">{{ arrival.certificate_number }}</span>
         <input type="text" *ngIf="arrival.is_import_animal" [(ngModel)]="arrival.certificate_number"
                ngControl="certificate_number">
 </td>
@@ -65,25 +65,25 @@
 <!--STATUS-->
 <td>
   <label class="show-for-small-only">{{ 'STATUS' | translate }}</label>
-  <span [hidden]="editMode" [ngSwitch]="arrival.request_state">
-        <template ngSwitchWhen="OPEN"> {{ 'PROCESSING' | translate }} </template>
-        <template ngSwitchWhen="REVOKING"> {{ 'PROCESSING' | translate }} </template>
-        <template ngSwitchWhen="FINISHED"> {{ 'SENT' | translate }} </template>
-        <template ngSwitchWhen="FINISHED_WITH_WARNING"> {{ 'SENT' | translate }} <app-history-error-info
-          [historyResponse]="arrival"></app-history-error-info></template>
-        <template ngSwitchWhen="REVOKED"> {{ 'REVOKED' | translate }} </template>
+  <span *ngIf="editMode" [ngSwitch]="arrival.request_state">
+        <ng-template ngSwitchWhen="OPEN"> {{ 'PROCESSING' | translate }} </ng-template>
+        <ng-template ngSwitchWhen="REVOKING"> {{ 'PROCESSING' | translate }} </ng-template>
+        <ng-template ngSwitchWhen="FINISHED"> {{ 'SENT' | translate }} </ng-template>
+        <ng-template ngSwitchWhen="FINISHED_WITH_WARNING"> {{ 'SENT' | translate }} <app-history-error-info
+          [historyResponse]="arrival"></app-history-error-info></ng-template>
+        <ng-template ngSwitchWhen="REVOKED"> {{ 'REVOKED' | translate }} </ng-template>
     </span>
 </td>
 
 <!--ROW BUTTONS-->
 <td>
     <span
-      [hidden]="editMode || arrival.request_state == 'OPEN' || arrival.request_state == 'REVOKING' || arrival.request_state == 'REVOKED'">
+      *ngIf="editMode || arrival.request_state == 'OPEN' || arrival.request_state == 'REVOKING' || arrival.request_state == 'REVOKED'">
         <button *ngIf="false" class="tiny primary button" (click)="enableEditing()">{{ 'EDIT' | translate }}</button>
         <app-revoke-button [isActive]="arrival.message_number" (click)="sendRevokeRequest()"></app-revoke-button>
     </span>
 
-  <span [hidden]="!editMode">
+  <span *ngIf="!editMode">
         <button class="tiny primary button" (click)="sendChangeRequest()">{{ 'SEND' | translate }}</button>
         <button class="tiny alert button" (click)="cancelEditing()">{{ 'CANCEL' | translate }}</button>
     </span>

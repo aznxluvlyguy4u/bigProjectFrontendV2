@@ -294,7 +294,7 @@
 </div>
 
 <!-- DOWNLOAD BUTTONS TEMPLATE -->
-<template #downloadButtons>
+<ng-template #downloadButtons>
 
   <app-download-button
     *ngIf="view_mode"
@@ -316,4 +316,4 @@
     (click)="generateLivestockDocument('CSV')"
   ></app-download-button>
 
-</template>
+</ng-template>

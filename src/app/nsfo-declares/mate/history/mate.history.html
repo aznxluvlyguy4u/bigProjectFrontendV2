@@ -19,9 +19,9 @@
   </tr>
   </thead>
   <tbody>
-  <tr app-mate-history-row
+  <app-mate-history-row
     *ngFor="let mate of mateHistoryList | mateHistoryFilter: searchValue | paginate: {itemsPerPage: 10, currentPage: page}; let i = index"
-    (revokeMate)="selectMate($event)" (showError)="showError($event)" [mate]="mate" [mate_index]="i"></tr>
+    (revokeMate)="selectMate($event)" (showError)="showError($event)" [mate]="mate" [mate_index]="i"></app-mate-history-row>
   </tbody>
 </table>
 
