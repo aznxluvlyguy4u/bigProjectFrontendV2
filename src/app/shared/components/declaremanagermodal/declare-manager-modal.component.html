@@ -9,13 +9,13 @@
       </button>
     </div>
 
-    <ng-template *ngIf="isModalEmpty()">
+    <ng-template [ngIf]="isModalEmpty()">
       <div class="modal-body">
         <p>{{ 'THERE ARE NO DECLARES SEND YET' | translate }}</p>
       </div>
     </ng-template>
 
-    <ng-template *ngIf="!isModalEmpty()">
+    <ng-template [ngIf]="!isModalEmpty()">
       <div class="modal-body">
 
         <table>

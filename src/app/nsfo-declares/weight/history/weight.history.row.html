@@ -18,7 +18,7 @@
 <td>
   <label class="show-for-small-only">{{ 'WEIGHT DATE' | translate }}</label>
   <span *ngIf="editMode">{{ weight.measurement_date }}</span>
-  <ng-template *ngIf="!editMode">
+  <ng-template [ngIf]="!editMode">
       <form [formGroup]="form">
         <app-datepicker [formCtrl]="form.controls['measurement_date']" [initDate]="weight.measurement_date"
                     [viewFormat]="view_date_format" [modelFormat]="model_datetime_format"></app-datepicker>

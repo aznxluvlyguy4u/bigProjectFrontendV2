@@ -29,7 +29,7 @@
 <td>
   <label class="show-for-small-only">{{ 'ARRIVAL DATE' | translate }}</label>
   <span *ngIf="editMode">{{ arrival.arrival_date }}</span>
-    <ng-template *ngIf="!editMode">
+    <ng-template [ngIf]="!editMode">
         <app-datepicker  [formCtrl]="form.controls['arrival_date']" [initDate]="arrival.arrival_date"
                     [viewFormat]="view_date_format" [modelFormat]="model_datetime_format"></app-datepicker>
         <div *ngIf="form.controls['arrival_date'].valid || form_valid" class="input-error-msg text-center">{{ 'FILL IN THE ARRIVAL DATE' | translate }}</div>
@@ -47,7 +47,7 @@
 <td>
   <label class="show-for-small-only">{{ 'UBN PREVIOUS OWNER' | translate }}</label>
   <span *ngIf="editMode">{{ arrival.ubn_previous_owner }}</span>
-    <ng-template *ngIf="!editMode">
+    <ng-template [ngIf]="!editMode">
     <input type="text" *ngIf="!arrival.is_import_animal" [(ngModel)]="arrival.ubn_previous_owner"
                ngControl="ubn_previous_owner">
         <div *ngIf="form.controls['ubn_previous_owner'].valid || form_valid" class="input-error-msg text-center">{{ 'UBN IS INVALID' | translate }}</div>

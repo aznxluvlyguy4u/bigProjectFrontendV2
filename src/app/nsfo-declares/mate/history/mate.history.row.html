@@ -25,7 +25,7 @@
 <td>
   <label class="show-for-small-only">{{ 'MATE DATE' | translate }}</label>
   <span *ngIf="editMode">{{ mate.start_date }}</span>
-  <ng-template *ngIf="!editMode" [formGroup]="form">
+  <ng-template [ngIf]="!editMode" [formGroup]="form">
         <app-datepicker [formCtrl]="form.controls['start_date']" [initDate]="mate.start_date"
                     [viewFormat]="view_date_format" [modelFormat]="model_datetime_format"></app-datepicker>
         <div *ngIf="form.controls['start_date'].valid || form_valid" class="input-error-msg text-center">{{ 'FILL IN THE MATE STARTDATE' | translate }}</div>
@@ -36,7 +36,7 @@
 <td>
   <label class="show-for-small-only">{{ 'TILL' | translate }}</label>
   <span *ngIf="editMode">{{ mate.end_date }}</span>
-  <ng-template *ngIf="!editMode" [formGroup]="form">
+  <ng-template [ngIf]="!editMode" [formGroup]="form">
         <app-datepicker [formCtrl]="form.controls['end_date']" [initDate]="mate.end_date" [viewFormat]="view_date_format"
                     [modelFormat]="model_datetime_format"></app-datepicker>
         <div *ngIf="form.controls['end_date'].valid || form_valid" class="input-error-msg text-center">{{ 'FILL IN THE MATE ENDDATE' | translate }}</div>
@@ -47,7 +47,7 @@
 <td>
   <label class="show-for-small-only">{{ 'PMSG' | translate }}</label>
   <span *ngIf="editMode">{{ mate.pmsg | translate }}</span>
-  <ng-template *ngIf="!editMode" [formGroup]="form">
+  <ng-template [ngIf]="!editMode" [formGroup]="form">
         <select formControlName="pmsg">
             <option value="YES"> {{ 'YES' | translate }}</option>
             <option value="NO"> {{ 'NO' | translate }}</option>
@@ -59,7 +59,7 @@
 <td>
   <label class="show-for-small-only">{{ 'PMSG' | translate }}</label>
   <span *ngIf="editMode">{{ mate.ki | translate }}</span>
-  <ng-template *ngIf="!editMode" [formGroup]="form">
+  <ng-template [ngIf]="!editMode" [formGroup]="form">
         <select formControlName="ki">
             <option value="YES"> {{ 'YES' | translate }}</option>
             <option value="NO"> {{ 'NO' | translate }}</option>

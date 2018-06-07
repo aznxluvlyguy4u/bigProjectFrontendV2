@@ -1,4 +1,4 @@
-<ng-template *ngIf="showErrorInfo()">
+<ng-template [ngIf]="showErrorInfo()">
     <span
       data-tooltip aria-haspopup="true" class="has-tip top" data-disable-hover="false"
       [title]="getErrorData()"
