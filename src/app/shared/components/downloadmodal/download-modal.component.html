@@ -9,13 +9,13 @@
       </button>
     </div>
 
-    <ng-template *ngIf="isModalEmpty()">
+    <div *ngIf="isModalEmpty()">
       <div class="modal-body">
         <p>{{ 'THERE ARE NO DOWNLOADS READY FOR DOWNLOAD YET' | translate }}</p>
       </div>
-    </ng-template>
+    </div>
 
-    <ng-template *ngIf="!isModalEmpty()">
+    <div *ngIf="!isModalEmpty()">
       <div class="modal-body">
 
         <table>
@@ -71,7 +71,7 @@
           {{ 'REMOVE FAILED FILES' | translate }}
         </button>
       </div>
-    </ng-template>
+    </div>
 
 
   </div>
