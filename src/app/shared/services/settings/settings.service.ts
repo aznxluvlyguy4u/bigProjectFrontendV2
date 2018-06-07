@@ -99,7 +99,7 @@ export class SettingsService {
   }
 
   public isAtLeastSuperAdmin(user: User): boolean {
-    if (user !== null) {
+    if (user !== null && user !== undefined) {
       return user.access_level === SUPER_ADMIN || user.access_level === DEVELOPER;
     }
 
