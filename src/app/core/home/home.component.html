@@ -36,19 +36,19 @@
           </li>
 
           <li class="li-right">
-            <ng-template *ngIf="!isDownloadModalEmpty()">
+            <div *ngIf="!isDownloadModalEmpty()">
               <button type="button" (click)="toggleDownloadModal()" [class.active]="isActiveDownloadModal" class="download-toggle">
                 <i class="fa fa-download"><span *ngIf="downloadCount() > 0"> {{ downloadCount() }}</span></i>
               </button>
-            </ng-template>
+            </div>
           </li>
 
           <li class="li-right">
-            <ng-template *ngIf="!isDeclareModalEmpty()">
+            <div *ngIf="!isDeclareModalEmpty()">
               <button type="button" (click)="toggleDeclareItemsModal()" [class.active]="isActiveDeclareItemsModal" class="declare-modal-toggle">
                 <i class="fa fa-list"><span *ngIf="declareItemsCount() > 0"> {{ declareItemsCount() }}</span></i>
               </button>
-            </ng-template>
+            </div>
           </li>
         </ul>
     </nav>
