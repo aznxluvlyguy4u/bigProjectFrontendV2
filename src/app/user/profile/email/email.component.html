@@ -1,5 +1,5 @@
 <div class="row">
-  <form [formGroup]="form_nsfo">
+  <form [formGroup]="form_nsfo" (ngSubmit)="saveNSFOLoginInfo()">
   <div class="large-12 columns">
     <div class="info-container">
       <div class="info-header">
@@ -24,7 +24,7 @@
           </div>
           <div class="large-2 columns end">
             <input type="text" formControlName="email_address"
-                   [ngClass]="{'input-error-border': !form_nsfo.controls.email_address.valid && !form_nsfo_valid}">
+                   [ngClass]="{'input-error-border': form_nsfo.controls.email_address.invalid && form_nsfo.controls.email_address.dirty}">
           </div>
         </div>
 
@@ -35,7 +35,7 @@
           </div>
           <div class="large-2 columns end">
             <input type="password" formControlName="password"
-                   [ngClass]="{'input-error-border': !form_nsfo.controls.password.valid && !form_nsfo_valid}">
+                   [ngClass]="{'input-error-border': form_nsfo.controls.password.invalid && form_nsfo.controls.password.dirty}">
           </div>
         </div>
 
@@ -46,19 +46,29 @@
             <span *ngIf="changed_nsfo_email"
                   class="input-success-msg">{{ 'YOUR NSFO EMAIL HAS CHANGED' | translate }}</span>
             <div class="large-3 end pull-right">
-              <button type="button" (click)="saveNSFOLoginInfo()" [disabled]="in_progress"
-                      class="small primary button expanded">
-                                <span *ngIf="!in_progress">
-                                    {{ 'SAVE' | translate }}
-                                </span>
-                <span *ngIf="in_progress">
-                                    <i class="fa fa-gear fa-spin fa-fw"></i>
-                                </span>
-              </button>
+
+              <app-button-primary
+                type="submit"
+                [text]="'SAVE'"
+                [spinnerText]="'SAVING'"
+                [active]="!in_progress && form_nsfo.valid"
+                [isSpinning]="in_progress"
+              ></app-button-primary>
+
+              <!--<button type="submit" [disabled]="in_progress"-->
+                      <!--class="small primary button expanded">-->
+                                <!--<span *ngIf="!in_progress">-->
+                                    <!--{{ 'SAVE' | translate }}-->
+                                <!--</span>-->
+                <!--<span *ngIf="in_progress">-->
+                                    <!--<i class="fa fa-gear fa-spin fa-fw"></i>-->
+                                <!--</span>-->
+              <!--</button>-->
+
             </div>
-            <span *ngIf="!form_nsfo.valid">
+            <span *ngIf="form_nsfo.invalid && form_nsfo.controls.password.dirty && form_nsfo.controls.email_address.dirty">
                             <span
-                              *ngIf="(form_nsfo.controls.password.hasError('required') || form_nsfo.controls.email_address.hasError('required')) && !form_nsfo_valid"
+                              *ngIf="(form_nsfo.controls.password.hasError('required') || form_nsfo.controls.email_address.hasError('required'))"
                               class="input-error-msg">{{ 'FILL IN ALL FIELDS' | translate }}</span>
                         </span>
             <span *ngIf="!!error_message" class="input-error-msg">{{ error_message | translate }}</span>

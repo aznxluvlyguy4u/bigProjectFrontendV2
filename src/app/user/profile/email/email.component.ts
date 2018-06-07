@@ -16,7 +16,6 @@ export class ProfileEmailComponent implements OnInit {
 
   private error_message = '';
   private in_progress = false;
-  private form_nsfo_valid = true;
   private changed_nsfo_email = false;
 
   constructor(private apiService: NSFOService, private fb: FormBuilder, private settings: SettingsService) {
@@ -48,7 +47,6 @@ export class ProfileEmailComponent implements OnInit {
     this.changed_nsfo_email = false;
 
     if (this.form_nsfo.valid) {
-      this.form_nsfo_valid = true;
       this.in_progress = true;
 
       const request = {
@@ -69,8 +67,6 @@ export class ProfileEmailComponent implements OnInit {
             alert(this.apiService.getErrorMessage(err));
           }
         );
-    } else {
-      this.form_nsfo_valid = false;
     }
   }
 }
