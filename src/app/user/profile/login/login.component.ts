@@ -18,7 +18,6 @@ export class ProfileLoginComponent implements OnInit {
 
   private error_message = '';
   private in_progress = false;
-  private form_nsfo_valid = true;
   private changed_nsfo_password = false;
 
   constructor(private apiService: NSFOService, private fb: FormBuilder, private settings: SettingsService) {
@@ -52,7 +51,6 @@ export class ProfileLoginComponent implements OnInit {
     this.changed_nsfo_password = false;
 
     if (this.form_nsfo.valid) {
-      this.form_nsfo_valid = true;
       this.in_progress = true;
 
       const request = {
@@ -72,8 +70,6 @@ export class ProfileLoginComponent implements OnInit {
             this.in_progress = false;
           }
         );
-    } else {
-      this.form_nsfo_valid = false;
     }
   }
 }

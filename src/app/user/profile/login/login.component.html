@@ -1,11 +1,12 @@
 <div class="row">
-  <form [formGroup]="form_nsfo">
+  <form [formGroup]="form_nsfo" (ngSubmit)="saveNSFOLoginInfo()">
   <div class="large-12 columns">
     <div class="info-container">
       <div class="info-header">
         {{ 'CHANGE NSFO ONLINE PASSWORD' | translate }}
       </div>
       <div class="info-body">
+
 
         <!-- USERNAME -->
         <div class="row margin-spacing">
@@ -25,7 +26,8 @@
           </div>
           <div class="large-2 columns end">
             <input type="password" formControlName="current_password"
-                   [ngClass]="{'input-error-border': !form_nsfo.controls.current_password.valid && !form_nsfo_valid}">
+                   [ngClass]="{'input-error-border': form_nsfo.controls.current_password.invalid
+                   && form_nsfo.controls.current_password.dirty}">
           </div>
         </div>
 
@@ -36,7 +38,10 @@
           </div>
           <div class="large-2 columns end">
             <input type="password" formControlName="password"
-                   [ngClass]="{'input-error-border': !form_nsfo.controls.password.valid && !form_nsfo_valid}">
+                   [ngClass]="{'input-error-border': form_nsfo.controls.password.invalid
+                   && form_nsfo.controls.password.dirty}">
+            <label> <span *ngIf="form_nsfo.controls.password.hasError('minlength') && form_nsfo.controls.password.dirty"
+                    class="input-error-msg">{{ 'THE PASSWORD NEEDS TO BE LONGER THAN 6 CHARACTERS' | translate }}</span></label>
           </div>
         </div>
 
@@ -47,7 +52,9 @@
           </div>
           <div class="large-2 columns end">
             <input type="password" formControlName="repeat_password"
-                   [ngClass]="{'input-error-border': !form_nsfo.controls.repeat_password.valid && !form_nsfo_valid}">
+                   [ngClass]="{'input-error-border': form_nsfo.controls.repeat_password.invalid && form_nsfo.controls.repeat_password.dirty}">
+            <label><span *ngIf="form_nsfo.hasError('invalidPassword') && form_nsfo.controls.repeat_password.dirty"
+                        class="input-error-msg">{{ 'THE REPEATED PASSWORD DOES NOT MATCH' | translate }}</span></label>
           </div>
         </div>
 
@@ -55,26 +62,34 @@
         <div class="row">
           <div class="large-4 columns end">
             <span *ngIf="changed_nsfo_password" class="input-success-msg">{{ 'YOUR NSFO PASSWORD HAS CHANGED' | translate }}</span>
+            <label><span *ngIf="form_nsfo.invalid">
+                      <span
+                        *ngIf="(form_nsfo.controls.current_password.hasError('required') ||
+                        form_nsfo.controls.password.hasError('required')
+                        || form_nsfo.controls.repeat_password.hasError('required')) && form_nsfo.invalid"
+                         class="input-error-msg">{{ 'FILL IN ALL FIELDS' | translate }}</span>
+                     </span>
+            </label>
             <div class="large-3 end pull-right">
-              <button type="button" (click)="saveNSFOLoginInfo()" [disabled]="in_progress"
-                      class="small primary button expanded">
-                                <span *ngIf="!in_progress">
-                                    {{ 'SAVE' | translate }}
-                                </span>
-                <span *ngIf="in_progress">
-                                    <i class="fa fa-gear fa-spin fa-fw"></i>
-                                </span>
-              </button>
+              <app-button-primary
+                type="submit"
+                [text]="'SAVE'"
+                [spinnerText]="'SAVING'"
+                [active]="!in_progress && form_nsfo.valid"
+                [isSpinning]="in_progress"
+              ></app-button-primary>
+
+              <!--<button type="submit" [disabled]="in_progress"-->
+                      <!--class="small primary button expanded">-->
+                                <!--<span *ngIf="!in_progress">-->
+                                    <!--{{ 'SAVE' | translate }}-->
+                                <!--</span>-->
+                <!--<span *ngIf="in_progress">-->
+                                    <!--<i class="fa fa-gear fa-spin fa-fw"></i>-->
+                                <!--</span>-->
+              <!--</button>-->
+
             </div>
-            <span *ngIf="!form_nsfo.valid">
-                            <span
-                              *ngIf="(form_nsfo.controls.current_password.hasError('required') || form_nsfo.controls.password.hasError('required') || form_nsfo.controls.repeat_password.hasError('required')) && !form_nsfo_valid"
-                              class="input-error-msg">{{ 'FILL IN ALL FIELDS' | translate }}</span>
-                            <span *ngIf="form_nsfo.hasError('invalidPassword') && !form_nsfo_valid"
-                                  class="input-error-msg">{{ 'THE REPEATED PASSWORD DOES NOT MATCH' | translate }}</span>
-                            <span *ngIf="form_nsfo.controls.password.hasError('minlength') && !form_nsfo_valid"
-                                  class="input-error-msg">{{ 'THE PASSWORD NEEDS TO BE LONGER THAN 6 CHARACTERS' | translate }}</span>
-                        </span>
             <span *ngIf="!!error_message" class="input-error-msg">{{ error_message | translate }}</span>
           </div>
         </div>
