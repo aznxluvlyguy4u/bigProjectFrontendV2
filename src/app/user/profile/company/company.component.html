@@ -23,254 +23,394 @@
             <label class="middle"> {{ 'BRS NUMBER' | translate }} </label>
           </div>
           <div class="large-6 columns">
-            <input type="text" [(ngModel)]="company.company_relation_number" ngControl="company_relation_number"
-                   [ngClass]="{'input-error-border': !form.controls.company_relation_number.valid && !form_valid}"
-                   maxlength="20" disabled>
+            <input type="text" [(ngModel)]="company.company_relation_number" maxlength="20" disabled>
           </div>
         </div>
 
-        <!-- COMPANY NAME -->
-        <div class="row">
-          <div class="large-6 columns">
-            <label class="middle"> {{ 'COMPANY NAME' | translate }} * </label>
-          </div>
-          <div class="large-6 columns">
-            <input type="text" [(ngModel)]="company.company_name" ngControl="company_name"
-                   [ngClass]="{'input-error-border': !form.controls.company_name.valid && !form_valid}">
-          </div>
-        </div>
+        <form [formGroup]="form" (ngSubmit)="saveCompanyInfo()">
 
-        <!-- TELEPHONE -->
-        <div class="row">
-          <div class="large-6 columns">
-            <label class="middle"> {{ 'TELEPHONE NUMBER' | translate }} </label>
+          <!-- COMPANY NAME -->
+          <div class="form-group">
+            <div class="row">
+              <div class="large-6 columns">
+                <label class="middle"> {{ 'COMPANY NAME' | translate }} * </label>
+              </div>
+              <div class="large-6 columns">
+                <input
+                  formControlName="company_name"
+                  type="text"
+                  id="company_name"
+                  [ngClass]="{'input-error-border': form.get('company_name').invalid && form.invalid}">
+              </div>
+            </div>
           </div>
-          <div class="large-6 columns">
-            <input type="text" [(ngModel)]="company.telephone_number" ngControl="telephone_number" maxlength="12">
-          </div>
-        </div>
 
-        <!-- BTW NUMBER -->
-        <div class="row">
-          <div class="large-6 columns">
-            <label class="middle"> {{ 'BTW NUMBER' | translate }} </label>
+          <!-- TELEPHONE -->
+          <div class="form-group">
+            <div class="row">
+            <div class="large-6 columns">
+              <label class="middle"> {{ 'TELEPHONE NUMBER' | translate }} </label>
+            </div>
+            <div class="large-6 columns">
+              <input
+                formControlName="telephone_number"
+                id="telephone_number"
+                type="text"
+                [ngClass]="{'input-error-border': form.get('telephone_number').invalid && form.invalid}"
+                maxlength="12">
+            </div>
           </div>
-          <div class="large-6 columns">
-            <input type="text" [(ngModel)]="company.vat_number" ngControl="vat_number"
-                   [ngClass]="{'input-error-border': !form.controls.vat_number.valid && !form_valid}" maxlength="18">
           </div>
-        </div>
 
-        <!-- KVK NUMBER -->
-        <div class="row">
-          <div class="large-6 columns">
-            <label class="middle"> {{ 'KVK NUMBER' | translate }} </label>
+          <!-- BTW NUMBER -->
+          <div class="form-group">
+            <div class="row">
+            <div class="large-6 columns">
+              <label class="middle"> {{ 'BTW NUMBER' | translate }} </label>
+            </div>
+            <div class="large-6 columns">
+              <input
+                formControlName="vat_number"
+                id="vat_number"
+                type="text"
+                [ngClass]="{'input-error-border': form.get('vat_number').invalid && form.invalid}"
+                maxlength="18">
+            </div>
           </div>
-          <div class="large-6 columns">
-            <input type="text" [(ngModel)]="company.chamber_of_commerce_number" ngControl="chamber_of_commerce_number"
-                   [ngClass]="{'input-error-border': !form.controls.chamber_of_commerce_number.valid && !form_valid}"
-                   maxlength="15">
           </div>
-        </div>
 
-        <!-- HISTORIC ANIMALS -->
-        <div class="row">
-          <div class="large-6 columns">
-            <label class="middle"> {{ 'MAKE LIVESTOCK PUBLIC' | translate }} </label>
+          <!-- KVK NUMBER -->
+          <div class="form-group">
+            <div class="row">
+            <div class="large-6 columns">
+              <label class="middle"> {{ 'KVK NUMBER' | translate }} </label>
+            </div>
+            <div class="large-6 columns">
+              <input
+                formControlName="chamber_of_commerce_number"
+                id="chamber_of_commerce_number"
+                type="text"
+                [ngClass]="{'input-error-border': form.get('chamber_of_commerce_number').invalid && form.invalid}"
+                maxlength="15">
+            </div>
           </div>
-          <div class="large-6 columns">
-            <select [(ngModel)]="company.is_reveal_historic_animals" ngControl="is_reveal_historic_animals">
-              <option [value]="false">{{ 'NO' | translate}}</option>
-              <option [value]="true">{{ 'YES' | translate}}</option>
-            </select>
           </div>
-        </div>
 
-        <!-- CONTACT PERSON -->
-        <div class="row">
-          <div class="large-12 columns">
-            <label class="category bottom"> {{ 'CONTACT PERSON' | translate }} </label>
+          <!-- HISTORIC ANIMALS -->
+          <div class="form-group">
+            <div class="row">
+            <div class="large-6 columns">
+              <label class="middle"> {{ 'MAKE LIVESTOCK PUBLIC' | translate }} </label>
+            </div>
+            <div class="large-6 columns">
+              <select
+                formControlName="is_reveal_historic_animals"
+                id="is_reveal_historic_animals"
+                [ngClass]="{'input-error-border': form.get('is_reveal_historic_animals').invalid && form.invalid}"
+              >
+                <option [value]="false">{{ 'NO' | translate}}</option>
+                <option [value]="true">{{ 'YES' | translate}}</option>
+              </select>
+            </div>
           </div>
-        </div>
+          </div>
 
-        <div class="row">
-          <div class="large-6 columns">
-            <label class="middle"> {{ 'FIRST NAME' | translate }} * </label>
+          <!-- CONTACT PERSON -->
+          <div class="form-group">
+            <div class="row">
+            <div class="large-12 columns">
+              <label class="category bottom"> {{ 'CONTACT PERSON' | translate }} </label>
+            </div>
           </div>
-          <div class="large-6 columns">
-            <input type="text" [(ngModel)]="company.contact_person.first_name" ngControl="first_name"
-                   [ngClass]="{'input-error-border': !form.controls.first_name.valid && !form_valid}">
           </div>
-        </div>
 
-        <div class="row">
-          <div class="large-6 columns">
-            <label class="middle"> {{ 'LAST NAME' | translate }} * </label>
+          <div class="form-group">
+            <div class="row">
+            <div class="large-6 columns">
+              <label class="middle"> {{ 'FIRST NAME' | translate }} * </label>
+            </div>
+            <div class="large-6 columns">
+              <input
+                formControlName="first_name"
+                id="first_name"
+                type="text"
+                [ngClass]="{'input-error-border': form.get('first_name').invalid && form.invalid}"
+              >
+            </div>
           </div>
-          <div class="large-6 columns">
-            <input type="text" [(ngModel)]="company.contact_person.last_name" ngControl="last_name"
-                   [ngClass]="{'input-error-border': !form.controls.last_name.valid && !form_valid}">
           </div>
-        </div>
 
-        <div class="row">
-          <div class="large-6 columns">
-            <label class="middle"> {{ 'CELLPHONE NUMBER' | translate }} </label>
+          <div class="form-group">
+            <div class="row">
+            <div class="large-6 columns">
+              <label class="middle"> {{ 'LAST NAME' | translate }} * </label>
+            </div>
+            <div class="large-6 columns">
+              <input
+                formControlName="last_name"
+                id="last_name"
+                type="text"
+                [ngClass]="{'input-error-border': form.get('last_name').invalid && form.invalid}"
+              >
+            </div>
           </div>
-          <div class="large-6 columns">
-            <input type="text" [(ngModel)]="company.contact_person.cellphone_number" ngControl="cellphone_number"
-                   [ngClass]="{'input-error-border': !form.controls.cellphone_number.valid && !form_valid}"
-                   maxlength="12">
           </div>
-        </div>
 
-        <!-- ADDRESS -->
-        <div class="row">
-          <div class="large-12 columns">
-            <label class="category bottom"> {{ 'ADDRESS' | translate }} </label>
+          <div class="form-group">
+            <div class="row">
+            <div class="large-6 columns">
+              <label class="middle"> {{ 'CELLPHONE NUMBER' | translate }} </label>
+            </div>
+            <div class="large-6 columns">
+              <input
+                formControlName="cellphone_number"
+                id="cellphone_number"
+                type="text"
+                [ngClass]="{'input-error-border': form.get('cellphone_number').invalid && form.invalid}"
+                maxlength="12">
+            </div>
           </div>
-        </div>
-        <div class="row">
-          <div class="large-6 columns">
-            <label class="middle"> {{ 'STREET NAME' | translate }} * </label>
           </div>
-          <div class="large-6 columns">
-            <input type="text" [(ngModel)]="company.address.street_name" ngControl="address_street_name"
-                   [ngClass]="{'input-error-border': !form.controls.address_street_name.valid && !form_valid}">
-          </div>
-        </div>
-        <div class="row">
-          <div class="large-6 columns">
-            <label class="middle"> {{ 'STREET NUMBER' | translate }} * </label>
-          </div>
-          <div class="large-6 columns">
-            <input type="number" [(ngModel)]="company.address.address_number" ngControl="address_address_number"
-                   [ngClass]="{'input-error-border': !form.controls.address_address_number.valid && !form_valid}">
-          </div>
-        </div>
-        <div class="row">
-          <div class="large-6 columns">
-            <label class="middle"> {{ 'STREET NUMBER SUFFIX' | translate }} </label>
-          </div>
-          <div class="large-6 columns">
-            <input type="text" [(ngModel)]="company.address.suffix" ngControl="address_suffix">
-          </div>
-        </div>
-        <div class="row">
-          <div class="large-6 columns">
-            <label class="middle"> {{ 'POSTAL CODE' | translate }} * </label>
-          </div>
-          <div class="large-6 columns">
-            <input type="text" [(ngModel)]="company.address.postal_code" ngControl="address_postal_code"
-                   [ngClass]="{'input-error-border': !form.controls.address_postal_code.valid && !form_valid}"
-                   maxlength="6">
-          </div>
-        </div>
-        <div class="row">
-          <div class="large-6 columns">
-            <label class="middle"> {{ 'PLACE' | translate }} * </label>
-          </div>
-          <div class="large-6 columns">
-            <input type="text" [(ngModel)]="company.address.city" ngControl="address_city"
-                   [ngClass]="{'input-error-border': !form.controls.address_city.valid && !form_valid}">
-          </div>
-        </div>
-        <div class="row">
-          <div class="large-6 columns">
-            <label class="middle"> {{ 'STATE' | translate }} * </label>
-          </div>
-          <div class="large-6 columns">
-            <select [(ngModel)]="company.address.state" ngControl="address_state"
-                    [ngClass]="{'input-error-border': !form.controls.address_state.valid && !form_valid}">
-              <option value="">--</option>
-              <option *ngFor="let state of stateList" value="{{ state.code }}">{{ state.name }}</option>
-            </select>
-          </div>
-        </div>
 
-        <!-- BILLING ADDRESS -->
-        <div class="row">
-          <div class="large-12 columns">
-            <label class="category bottom"> {{ 'BILLING ADDRESS' | translate }} </label>
+          <!-- ADDRESS -->
+          <div class="form-group">
+            <div class="row">
+            <div class="large-12 columns">
+              <label class="category bottom"> {{ 'ADDRESS' | translate }} </label>
+            </div>
           </div>
-        </div>
+          </div>
 
-        <div class="row">
-          <div class="large-6 columns">
-            <label class="middle"> {{ 'STREET NAME' | translate }} * </label>
+          <div class="form-group">
+            <div class="row">
+            <div class="large-6 columns">
+              <label class="middle"> {{ 'STREET NAME' | translate }} * </label>
+            </div>
+            <div class="large-6 columns">
+              <input
+                formControlName="address_street_name"
+                id="address_street_name"
+                type="text"
+                [ngClass]="{'input-error-border': form.get('address_street_name').invalid && form.invalid}"
+              >
+            </div>
           </div>
-          <div class="large-6 columns">
-            <input type="text" [(ngModel)]="company.billing_address.street_name" ngControl="billing_address_street_name"
-                   [ngClass]="{'input-error-border': !form.controls.billing_address_street_name.valid && !form_valid}">
           </div>
-        </div>
-        <div class="row">
-          <div class="large-6 columns">
-            <label class="middle"> {{ 'STREET NUMBER' | translate }} * </label>
+
+          <div class="form-group">
+            <div class="row">
+            <div class="large-6 columns">
+              <label class="middle"> {{ 'STREET NUMBER' | translate }} * </label>
+            </div>
+            <div class="large-6 columns">
+              <input
+                formControlName="address_address_number"
+                id="address_address_number"
+                type="number"
+                [ngClass]="{'input-error-border': form.get('address_address_number').invalid && form.invalid}"
+              >
+            </div>
           </div>
-          <div class="large-6 columns">
-            <input type="number" [(ngModel)]="company.billing_address.address_number"
-                   ngControl="billing_address_address_number"
-                   [ngClass]="{'input-error-border': !form.controls.billing_address_address_number.valid && !form_valid}">
           </div>
-        </div>
-        <div class="row">
-          <div class="large-6 columns">
-            <label class="middle"> {{ 'STREET NUMBER SUFFIX' | translate }} </label>
+
+          <div class="form-group">
+            <div class="row">
+            <div class="large-6 columns">
+              <label class="middle"> {{ 'STREET NUMBER SUFFIX' | translate }} </label>
+            </div>
+            <div class="large-6 columns">
+              <input
+                formControlName="address_suffix"
+                id="address_suffix"
+                type="text"
+                [ngClass]="{'input-error-border': form.get('address_suffix').invalid && form.invalid}"
+              >
+            </div>
           </div>
-          <div class="large-6 columns">
-            <input type="text" [(ngModel)]="company.billing_address.suffix" ngControl="billing_address_suffix">
           </div>
-        </div>
-        <div class="row">
-          <div class="large-6 columns">
-            <label class="middle"> {{ 'POSTAL CODE' | translate }} * </label>
+
+          <div class="form-group">
+            <div class="row">
+              <div class="large-6 columns">
+                <label class="middle"> {{ 'POSTAL CODE' | translate }} * </label>
+              </div>
+              <div class="large-6 columns">
+                <input
+                  formControlName="address_postal_code"
+                  id="address_postal_code"
+                  type="text"
+                  [ngClass]="{'input-error-border': form.get('address_postal_code').invalid && form.invalid}"
+                  maxlength="6">
+              </div>
+            </div>
           </div>
-          <div class="large-6 columns">
-            <input type="text" [(ngModel)]="company.billing_address.postal_code" ngControl="billing_address_postal_code"
-                   [ngClass]="{'input-error-border': !form.controls.billing_address_postal_code.valid && !form_valid}"
-                   maxlength="6">
+
+          <div class="form-group">
+            <div class="row">
+            <div class="large-6 columns">
+              <label class="middle"> {{ 'PLACE' | translate }} * </label>
+            </div>
+            <div class="large-6 columns">
+              <input
+                formControlName="address_city"
+                id="address_city"
+                type="text"
+                [ngClass]="{'input-error-border': form.get('address_city').invalid && form.invalid}"
+              >
+            </div>
           </div>
-        </div>
-        <div class="row">
-          <div class="large-6 columns">
-            <label class="middle"> {{ 'PLACE' | translate }} * </label>
           </div>
-          <div class="large-6 columns">
-            <input type="text" [(ngModel)]="company.billing_address.city" ngControl="billing_address_city"
-                   [ngClass]="{'input-error-border': !form.controls.billing_address_city.valid && !form_valid}">
+
+          <div class="form-group">
+            <div class="row">
+            <div class="large-6 columns">
+              <label class="middle"> {{ 'STATE' | translate }} * </label>
+            </div>
+            <div class="large-6 columns">
+              <select
+                formControlName="address_state"
+                id="address_state"
+                [ngClass]="{'input-error-border': form.get('address_state').invalid && form.invalid}"
+              >
+                <option value="">--</option>
+                <option *ngFor="let state of stateList" value="{{ state.code }}">{{ state.name }}</option>
+              </select>
+            </div>
           </div>
-        </div>
-        <div class="row">
-          <div class="large-6 columns">
-            <label class="middle"> {{ 'STATE' | translate }} </label>
           </div>
-          <div class="large-6 columns">
-            <select [(ngModel)]="company.billing_address.state" ngControl="billing_address_state"
-                    [ngClass]="{'input-error-border': !form.controls.billing_address_state.valid && !form_valid}">
-              <option value="">--</option>
-              <option *ngFor="let state of stateList" value="{{ state.code }}">{{ state.name }}</option>
-            </select>
+
+          <!-- BILLING ADDRESS -->
+          <div class="form-group">
+            <div class="row">
+            <div class="large-12 columns">
+              <label class="category bottom"> {{ 'BILLING ADDRESS' | translate }} </label>
+            </div>
           </div>
-        </div>
+          </div>
+
+          <div class="form-group">
+            <div class="row">
+            <div class="large-6 columns">
+              <label class="middle"> {{ 'STREET NAME' | translate }} * </label>
+            </div>
+            <div class="large-6 columns">
+              <input
+                formControlName="billing_address_street_name"
+                id="billing_address_street_name"
+                type="text"
+                [ngClass]="{'input-error-border': form.get('billing_address_street_name').invalid && form.invalid}"
+              >
+            </div>
+          </div>
+          </div>
+
+          <div class="form-group">
+            <div class="row">
+            <div class="large-6 columns">
+              <label class="middle"> {{ 'STREET NUMBER' | translate }} * </label>
+            </div>
+            <div class="large-6 columns">
+              <input
+                formControlName="billing_address_address_number"
+                id="billing_address_address_number"
+                type="number"
+                [ngClass]="{'input-error-border': form.get('billing_address_address_number').invalid && form.invalid}"
+              >
+            </div>
+          </div>
+          </div>
+
+          <div class="form-group">
+            <div class="row">
+            <div class="large-6 columns">
+              <label class="middle"> {{ 'STREET NUMBER SUFFIX' | translate }} </label>
+            </div>
+            <div class="large-6 columns">
+              <input
+                formControlName="billing_address_suffix"
+                id="billing_address_suffix"
+                type="text"
+                ngControl="billing_address_suffix"
+                [ngClass]="{'input-error-border': form.get('billing_address_suffix').invalid && form.invalid}"
+              >
+            </div>
+          </div>
+          </div>
+
+          <div class="form-group">
+            <div class="row">
+            <div class="large-6 columns">
+              <label class="middle"> {{ 'POSTAL CODE' | translate }} * </label>
+            </div>
+            <div class="large-6 columns">
+              <input
+                formControlName="billing_address_postal_code"
+                id="billing_address_postal_code"
+                type="text"
+                [ngClass]="{'input-error-border': form.get('billing_address_postal_code').invalid && form.invalid}"
+                maxlength="6"
+              >
+            </div>
+          </div>
+          </div>
+
+          <div class="form-group">
+            <div class="row">
+            <div class="large-6 columns">
+              <label class="middle"> {{ 'PLACE' | translate }} * </label>
+            </div>
+            <div class="large-6 columns">
+              <input
+                formControlName="billing_address_city"
+                id="billing_address_city"
+                type="text"
+                [ngClass]="{'input-error-border': form.get('billing_address_city').invalid && form.invalid}"
+              >
+            </div>
+          </div>
+          </div>
+
+          <div class="form-group">
+            <div class="row">
+              <div class="large-6 columns">
+                <label class="middle"> {{ 'STATE' | translate }} </label>
+              </div>
+              <div class="large-6 columns">
+                <select
+                  formControlName="billing_address_state"
+                  id="billing_address_state"
+                  [ngClass]="{'input-error-border': form.get('billing_address_state').invalid && form.invalid}"
+                >
+                  <option value="">--</option>
+                  <option *ngFor="let state of stateList" value="{{ state.code }}">{{ state.name }}</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <span *ngIf="changed_company_info"
+                class="input-success-msg">{{ 'YOUR COMPANY INFO HAS BEEN SAVED' | translate }}</span>
+          <span *ngIf="form.invalid" class="input-error-msg">{{ 'FILL IN THE MANDATORY FIELDS' | translate }}</span>
+
+          <span>
+              <div class="large-2 end pull-right">
+                  <button type="submit" [disabled]="in_progress || form.invalid"
+                          class="small primary button expanded">
+                      <span *ngIf="!in_progress">
+                          {{ 'SAVE' | translate }}
+                      </span>
+                      <span *ngIf="in_progress">
+                          <i class="fa fa-gear fa-spin fa-fw"></i>
+                      </span>
+                  </button>
+              </div>
+          </span>
+
+
+        </form>
       </div>
     </div>
-    <span *ngIf="changed_company_info"
-          class="input-success-msg">{{ 'YOUR COMPANY INFO HAS BEEN SAVED' | translate }}</span>
-    <span *ngIf="!form_valid" class="input-error-msg">{{ 'FILL IN THE MANDATORY FIELDS' | translate }}</span>
-    <span>
-            <div class="large-2 end pull-right">
-                <button type="button" [disabled]="in_progress" (click)="saveCompanyInfo()"
-                        class="small primary button expanded">
-                    <span *ngIf="!in_progress">
-                        {{ 'SAVE' | translate }}
-                    </span>
-                    <span *ngIf="in_progress">
-                        <i class="fa fa-gear fa-spin fa-fw"></i>
-                    </span>
-                </button>
-            </div>
-        </span>
+
   </div>
 
   <div class="large-6 columns end">
@@ -286,7 +426,12 @@
             <label class="middle"> {{ 'DAP NUMBER' | translate }} </label>
           </div>
           <div class="large-6 columns">
-            <input type="text" [(ngModel)]="company.veterinarian.dap_number" ngControl="veterinarian_dap_number">
+            <input
+              formControlName="veterinarian_dap_number"
+              id="veterinarian_dap_number"
+              type="text"
+              [ngClass]="{'input-error-border': form.get('veterinarian_dap_number').invalid && form.invalid}"
+            >
           </div>
         </div>
 
@@ -296,7 +441,12 @@
             <label class="middle"> {{ 'NAME' | translate }} </label>
           </div>
           <div class="large-6 columns">
-            <input type="text" [(ngModel)]="company.veterinarian.company_name" ngControl="veterinarian_company_name">
+            <input
+              formControlName="veterinarian_company_name"
+              id="veterinarian_company_name"
+              type="text"
+              [ngClass]="{'input-error-border': form.get('veterinarian_company_name').invalid && form.invalid}"
+            >
           </div>
         </div>
 
@@ -306,8 +456,13 @@
             <label class="middle"> {{ 'TELEPHONE NUMBER' | translate }} </label>
           </div>
           <div class="large-6 columns">
-            <input type="text" [(ngModel)]="company.veterinarian.telephone_number"
-                   ngControl="veterinarian_telephone_number" maxlength="12">
+            <input
+              formControlName="veterinarian_telephone_number"
+              id="veterinarian_telephone_number"
+              type="text"
+              [ngClass]="{'input-error-border': form.get('veterinarian_telephone_number').invalid && form.invalid}"
+              maxlength="12"
+            >
           </div>
         </div>
 
@@ -317,7 +472,12 @@
             <label class="middle"> {{ 'E-MAIL ADDRESS' | translate }} </label>
           </div>
           <div class="large-6 columns">
-            <input type="email" [(ngModel)]="company.veterinarian.email_address" ngControl="veterinarian_email_address">
+            <input
+              formControlName="veterinarian_email_address"
+              id="veterinarian_email_address"
+              type="email"
+              [ngClass]="{'input-error-border': form.get('veterinarian_email_address').invalid && form.invalid}"
+            >
           </div>
         </div>
       </div>
