@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, NgZone, OnInit} from '@angular/core';
 
 import {NSFOService} from '../../../shared/services/nsfo-api/nsfo.service';
 import {
@@ -6,11 +6,13 @@ import {
   API_URI_GET_COMPANY_PROFILE,
   API_URI_GET_STATE_CODES
 } from '../../../shared/services/nsfo-api/nsfo.settings';
-import {FormControl, FormGroup, FormBuilder, Validators} from '@angular/forms';
+import {FormGroup, FormBuilder, Validators} from '@angular/forms';
 import {UtilsService} from '../../../shared/services/utils/utils.services';
 import * as _ from 'lodash';
 import {Company} from '../../../shared/models/company.model';
 import {JsonResponseModel} from '../../../shared/models/json-response.model';
+import {MatSnackBar} from '@angular/material';
+import {TranslateService} from '@ngx-translate/core';
 
 @Component({
   templateUrl: './company.component.html',
@@ -23,7 +25,9 @@ export class ProfileCompanyComponent implements OnInit {
   private changed_company_info = false;
   private in_progress = false;
 
-  constructor(private apiService: NSFOService, private fb: FormBuilder, private utils: UtilsService) {
+  constructor(private apiService: NSFOService, private fb: FormBuilder, private utils: UtilsService,
+              private snackBar: MatSnackBar, private translate: TranslateService,
+              private zone: NgZone) {
     this.form = fb.group({
       company_name: ['', Validators.required],
       telephone_number: [''],
@@ -173,6 +177,11 @@ export class ProfileCompanyComponent implements OnInit {
             this.utils.initUserInfo();
             this.changed_company_info = true;
             this.in_progress = false;
+            this.zone.run(() => {
+              const snackBarRef = this.snackBar.open(this.translate.instant('YOUR COMPANY INFO HAS BEEN SAVED'), '', {
+                duration: 3000
+              });
+            });
           },
           error => {
             alert(this.apiService.getErrorMessage(error));
