@@ -23,7 +23,7 @@
   <div class="filters small-12 large-2 columns">
 
     <div class="row hide-for-large" style="margin-left: 20px">
-      <template [ngTemplateOutlet]="downloadButtons"></template>
+      <ng-template [ngTemplateOutlet]="downloadButtons"></ng-template>
     </div>
 
     <div class="large-11">
@@ -76,7 +76,7 @@
       </div>
 
 
-      <ng-template *ngIf="view_mode">
+      <ng-template [ngIf]="view_mode">
 
         <!--ACCORDION BUTTON-->
         <button class="accordion-button expanded" [ngClass]="{'toggled': report_options_toggled}"
@@ -159,7 +159,7 @@
                                                                    title="{{ 'LAST MATE INFO' | translate }}"></i></span>
         </th>
         <th style="text-align: right">
-          <template [ngTemplateOutlet]="downloadButtons"></template>
+          <ng-template [ngTemplateOutlet]="downloadButtons"></ng-template>
 
           <app-download-button
             *ngIf="!weightMode && !view_mode && !disableMultipleSelection"
@@ -244,17 +244,17 @@
         </td>
         <td *ngIf="mateMode" class="padding-column">
           <label class="show-for-small-only">{{ 'LAST MATE' | translate }}</label>
-          <ng-template *ngIf="animal.last_mate != null">
-            <ng-template *ngIf="animal.last_mate.start_date == null && animal.last_mate.end_date == null">
+          <ng-template [ngIf]="animal.last_mate != null">
+            <ng-template [ngIf]="animal.last_mate.start_date == null && animal.last_mate.end_date == null">
               <span>-</span>
             </ng-template>
-            <ng-template *ngIf="animal.last_mate.start_date != null || animal.last_mate.end_date != null">
+            <ng-template [ngIf]="animal.last_mate.start_date != null || animal.last_mate.end_date != null">
                                 <span
                                   title="ram: {{animal.last_mate.ram_uln_country_code + animal.last_mate.ram_uln_number}} {{animal.last_mate.pmsg ? ('PMSG' | translate) : ''}} {{animal.last_mate.ki ? ('KI' | translate) : ''}}"
                                 >{{ animal.last_mate ? animal.last_mate.start_date : '...' }} - {{ animal.last_mate ? animal.last_mate.end_date : '...' }}</span>
             </ng-template>
           </ng-template>
-          <ng-template *ngIf="animal.last_mate == null">
+          <ng-template [ngIf]="animal.last_mate == null">
             <span>-</span>
           </ng-template>
         </td>
