@@ -13,7 +13,7 @@ export class SelectorFilterPipe implements PipeTransform {
     if (filtered) {
       // Filter: Search Field
       if (type === 'FEMALES') {
-        if (search_query !== null) {
+        if (!!search_query) {
           search_query = args[0].toLocaleUpperCase();
           filtered = filtered.filter(animal => (
             animal.uln +
@@ -26,7 +26,7 @@ export class SelectorFilterPipe implements PipeTransform {
       }
 
       if (type === 'MALES') {
-        if (search_query !== null) {
+        if (!!search_query) {
           search_query = args[0].toLocaleUpperCase();
           filtered = filtered.filter(animal => (
             animal.uln +
@@ -39,7 +39,7 @@ export class SelectorFilterPipe implements PipeTransform {
       }
 
       if (type === 'NONE') {
-        if (search_query !== null) {
+        if (!!search_query) {
           search_query = args[0].toLocaleUpperCase();
           filtered = filtered.filter(tag => (
             tag.uln +

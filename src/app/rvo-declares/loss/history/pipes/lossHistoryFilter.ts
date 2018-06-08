@@ -11,7 +11,7 @@ export class LossHistoryFilterPipe implements PipeTransform {
     let filtered = value;
 
     // Filter: Search Field
-    if (search_query !== null) {
+    if (!!search_query) {
       search_query = args[0].toLocaleUpperCase();
       filtered = filtered.filter(loss => (
         loss.log_date +
