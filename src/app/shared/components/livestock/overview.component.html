@@ -23,7 +23,7 @@
   <div class="filters small-12 large-2 columns">
 
     <div class="row hide-for-large" style="margin-left: 20px">
-      <template [ngTemplateOutlet]="downloadButtons"></template>
+      <ng-template [ngTemplateOutlet]="downloadButtons"></ng-template>
     </div>
 
     <div class="large-11">
@@ -159,7 +159,7 @@
                                                                    title="{{ 'LAST MATE INFO' | translate }}"></i></span>
         </th>
         <th style="text-align: right">
-          <template [ngTemplateOutlet]="downloadButtons"></template>
+          <ng-template [ngTemplateOutlet]="downloadButtons"></ng-template>
 
           <app-download-button
             *ngIf="!weightMode && !view_mode && !disableMultipleSelection"
