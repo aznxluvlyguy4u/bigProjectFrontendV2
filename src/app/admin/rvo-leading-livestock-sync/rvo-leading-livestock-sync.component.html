@@ -5,17 +5,17 @@
         {{ 'RVO LEADING LIVESTOCK SYNC' | translate }}
       </div>
 
-      <ng-template *ngIf="loadingData || loadingLatestSyncData ">
+      <ng-template [ngIf]="loadingData || loadingLatestSyncData ">
         <div>
           <i class="fa fa-gear fa-spin fa-fw fa-5x"></i>
         </div>
       </ng-template>
 
-      <ng-template *ngIf="!loadingData && !loadingLatestSyncData">
+      <ng-template [ngIf]="!loadingData && !loadingLatestSyncData">
 
         <div class="info-body">
 
-          <ng-template *ngIf="latestSyncData">
+          <ng-template [ngIf]="latestSyncData">
 
             <div class="row margin-spacing">
               <div class="large-3 columns">
@@ -77,7 +77,7 @@
 
             <div class="large-3 columns">
 
-              <ng-template *ngIf="!requested_livestock_sync && isAtLeastSuperAdmin">
+              <ng-template [ngIf]="!requested_livestock_sync && isAtLeastSuperAdmin">
 
                                 <span
                                   *ngIf="!showWarningMessage"
