@@ -43,10 +43,10 @@
 <td>
   <label class="show-for-small-only">{{ 'STATUS' | translate }}</label>
   <span *ngIf="editMode" [ngSwitch]="weight.request_state">
-        <ng-template ngSwitchWhen="OPEN"> {{ 'PROCESSING' | translate }} </ng-template>
-        <ng-template ngSwitchWhen="REVOKING"> {{ 'PROCESSING' | translate }} </ng-template>
-        <ng-template ngSwitchWhen="FINISHED"> {{ 'SENT' | translate }} </ng-template>
-        <ng-template ngSwitchWhen="REVOKED"> {{ 'REVOKED' | translate }} </ng-template>
+        <ng-template [ngSwitchCase]="'OPEN'"> {{ 'PROCESSING' | translate }} </ng-template>
+        <ng-template [ngSwitchCase]="'REVOKING'"> {{ 'PROCESSING' | translate }} </ng-template>
+        <ng-template [ngSwitchCase]="'FINISHED'"> {{ 'SENT' | translate }} </ng-template>
+        <ng-template [ngSwitchCase]="'REVOKED'"> {{ 'REVOKED' | translate }} </ng-template>
     </span>
 </td>
 
