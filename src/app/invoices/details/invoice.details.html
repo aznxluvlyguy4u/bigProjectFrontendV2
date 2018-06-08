@@ -14,9 +14,9 @@
               {{ 'UBN' | translate }}
             </td>
             <td class="large-6 columns">
-                            <span>
-                                {{ invoice.ubn }}
-                            </span>
+              <span>
+                  {{ invoice.ubn }}
+              </span>
             </td>
           </tr>
           <tr class="row">
@@ -32,9 +32,9 @@
               {{ 'NAME' | translate }}
             </td>
             <td class="large-6 columns">
-                            <span>
-                                {{ invoice.company_name }}
-                            </span>
+              <span>
+                  {{ invoice.company_name }}
+              </span>
             </td>
           </tr>
           <tr class="row">
@@ -42,9 +42,9 @@
               {{ 'VAT NUMBER' | translate }}
             </td>
             <td class="large-6 columns">
-                            <span>
-                                {{ invoice.company_vat_number }}
-                            </span>
+              <span>
+                  {{ invoice.company_vat_number }}
+              </span>
             </td>
           </tr>
         </table>
@@ -59,9 +59,9 @@
               {{ 'NAME' | translate }}
             </td>
             <td class="large-6 columns">
-                            <span>
-                                {{ senderDetails.name }}
-                            </span>
+              <span>
+                  {{ senderDetails.name }}
+              </span>
             </td>
           </tr>
           <tr class="row">
@@ -69,9 +69,9 @@
               {{ 'IBAN' | translate }}
             </td>
             <td class="large-6 columns">
-                            <span>
-                                {{senderDetails.iban}}
-                            </span>
+              <span>
+                  {{senderDetails.iban}}
+              </span>
             </td>
           </tr>
           <tr class="row">
@@ -79,9 +79,9 @@
               {{ 'VAT NUMBER' | translate }}
             </td>
             <td class="large-6 columns">
-                            <span>
-                                {{senderDetails.vat_number}}
-                            </span>
+              <span>
+                  {{senderDetails.vat_number}}
+              </span>
             </td>
           </tr>
         </table>
@@ -92,33 +92,32 @@
         <table>
           <thead>
           <tr>
-            <td>
+            <th>
               {{ "DATE" | translate}}
-            </td>
-            <td>
+            </th>
+            <th>
               {{"CATEGORY" | translate }}
-            </td>
-            <td>
+            </th>
+            <th>
               {{ 'DESCRIPTION' | translate }}
-            </td>
-            <td class="text-right">
+            </th>
+            <th class="text-right">
               {{ 'VAT RATE' | translate }}
-            </td>
-            <td class="text-right">
+            </th>
+            <th class="text-right">
               {{ 'UNIT COST' | translate }}
-            </td>
-            <td class="text-right">
+            </th>
+            <th class="text-right">
               {{ 'AMOUNT' | translate }}
-            </td>
-            <td class="text-right">
+            </th>
+            <th class="text-right">
               {{ 'PRICE' | translate }}
-            </td>
+            </th>
           </tr>
           </thead>
           <tbody *ngIf="invoice && invoice.invoice_rule_selections">
 
           <tr *ngFor="let invoice_rule_selection of invoice.invoice_rule_selections">
-              <!--*ngIf="invoice_rule_selection != null && invoice_rule_selection.invoice_rule != null"-->>
             <td>
               {{ settingsService.convertToViewDate(invoice_rule_selection.date) }}
             </td>
