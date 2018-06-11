@@ -5,13 +5,11 @@
         {{ 'RVO LEADING LIVESTOCK SYNC' | translate }}
       </div>
 
-      <ng-template [ngIf]="loadingData || loadingLatestSyncData ">
-        <div>
-          <i class="fa fa-gear fa-spin fa-fw fa-5x"></i>
-        </div>
+      <ng-template [ngIf]="loadingData">
+        <app-page-loading-spinner></app-page-loading-spinner>
       </ng-template>
 
-      <ng-template [ngIf]="!loadingData && !loadingLatestSyncData">
+      <ng-template [ngIf]="!loadingData">
 
         <div class="info-body">
 

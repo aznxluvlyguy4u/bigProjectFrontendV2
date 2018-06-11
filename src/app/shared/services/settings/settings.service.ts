@@ -26,7 +26,7 @@ export class SettingsService {
   }
 
   public getCurrentUser(): User {
-    if (this.currentUser === null) {
+    if (!this.currentUser) {
       this.apiService.doGetRequest(API_URI_GET_COMPANY_LOGIN)
         .subscribe(
             (res: JsonResponseModel) => {

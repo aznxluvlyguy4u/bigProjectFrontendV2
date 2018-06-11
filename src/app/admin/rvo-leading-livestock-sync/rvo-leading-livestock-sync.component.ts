@@ -90,7 +90,7 @@ export class RvoLeadingLivestockSyncComponent implements OnInit, OnDestroy {
 
   private dataLoadingCheck() {
     this.isAtLeastSuperAdmin = this.settingsService.isAtLeastSuperAdmin(this.user);
-    this.loadingData = this.user === null || this.loadingLatestSyncData;
+    this.loadingData = !this.user || this.loadingLatestSyncData;
   }
 
   private doForcedRvoLeadingLivestockSyncRequest() {

@@ -311,12 +311,12 @@
           </div>
 
 
-          <ng-template *ngIf="!showUsedEartagsCount">
+          <ng-template [ngIf]="!showUsedEartagsCount">
             <label>{{ 'AMOUNT FREE EARTAGS' | translate }}</label>
             <div class="value">{{ dashboard_info.tag_transfer.unassigned_tags }}</div>
           </ng-template>
 
-          <ng-template *ngIf="showUsedEartagsCount">
+          <ng-template [ngIf]="showUsedEartagsCount">
             <div class="row">
               <div class="large-6 columns">
                 <label>{{ 'AMOUNT FREE' | translate }}</label>
