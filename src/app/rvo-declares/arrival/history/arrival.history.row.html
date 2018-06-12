@@ -32,7 +32,7 @@
   <form *ngIf="editMode" [formGroup]="form">
         <app-datepicker  [formCtrl]="form.controls['arrival_date']" [initDate]="arrival.arrival_date"
                     [viewFormat]="view_date_format" [modelFormat]="model_datetime_format"></app-datepicker>
-        <div *ngIf="form_valid" class="input-error-msg text-center">{{ 'FILL IN THE ARRIVAL DATE' | translate }}</div>
+        <div *ngIf="!form.controls['arrival_date'].valid" class="input-error-msg text-center">{{ 'FILL IN THE ARRIVAL DATE' | translate }}</div>
     </form>
 </td>
 
@@ -47,20 +47,20 @@
 <td>
   <label class="show-for-small-only">{{ 'UBN PREVIOUS OWNER' | translate }}</label>
   <span *ngIf="!editMode">{{ arrival.ubn_previous_owner }}</span>
-  <span *ngIf="editMode">
+  <div *ngIf="editMode" [formGroup]="form">
       <input type="text" *ngIf="!arrival.is_import_animal" [(ngModel)]="arrival.ubn_previous_owner"
-             ngControl="ubn_previous_owner">
-      <div *ngIf="form.controls['ubn_previous_owner'].valid || form_valid" class="input-error-msg text-center">{{ 'UBN IS INVALID' | translate }}</div>
-  </span>
+             formControlName="ubn_previous_owner">
+      <div *ngIf="!form.controls['ubn_previous_owner'].valid" class="input-error-msg text-center">{{ 'UBN IS INVALID' | translate }}</div>
+  </div>
 </td>
 
 <!--CERTIFICATE NUMBER-->
 <td *ngIf="false">
   <label class="show-for-small-only">{{ 'CERTIFICATE NUMBER' | translate }}</label>
   <span [hidden]="!editMode">{{ arrival.certificate_number }}</span>
-  <span *ngIf="editMode">{{ arrival.certificate_number }}</span>
+  <div *ngIf="editMode" [formGroup]="form">{{ arrival.certificate_number }}</div>
         <input type="text" *ngIf="arrival.is_import_animal" [(ngModel)]="arrival.certificate_number"
-               ngControl="certificate_number">
+               formControlName="certificate_number">
 </td>
 
 <!--STATUS-->
