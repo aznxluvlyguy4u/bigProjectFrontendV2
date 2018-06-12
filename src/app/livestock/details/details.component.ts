@@ -52,7 +52,7 @@ export class LivestockDetailComponent implements OnInit {
   private model_datetime_format: string;
   private livestock_gender_options = LIVESTOCK_GENDER_OPTIONS;
   private livestock_breed_options = LIVESTOCK_BREED_OPTIONS;
-  private edit_mode = false;
+  public edit_mode = false;
   private gender_edit_mode = false;
   private changeEnabled = false;
   private changed_animal_info = false;
