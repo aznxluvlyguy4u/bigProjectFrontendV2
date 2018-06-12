@@ -93,7 +93,7 @@ export class ArrivalDeclareComponent implements OnInit, OnDestroy, AfterViewInit
   private getCountryCodeList() {
     this.countryCodeObs = this.settings.getCountryList()
       .subscribe(countryCodeList => {
-        this.country_code_list = countryCodeList;
+        this.country_code_list = countryCodeList[0];
       });
   }
 
