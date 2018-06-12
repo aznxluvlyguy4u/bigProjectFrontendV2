@@ -148,7 +148,7 @@
             </div>
             <div class="medium-6 columns">
               <select [(ngModel)]="animal.gender" [disabled]="!gender_edit_mode">
-                <option *ngFor="let option of livestock_gender_options" value="{{ option }}">{{ option | translate }}
+                <option *ngFor="let option of livestock_gender_options" [value]="option">{{ option | translate }}
                 </option>
               </select>
             </div>

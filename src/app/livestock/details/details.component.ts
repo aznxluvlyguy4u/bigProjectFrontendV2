@@ -341,8 +341,7 @@ export class LivestockDetailComponent implements OnInit {
         err => {
           this.gender_changed_animal_info_error = true;
           this.changeEnabled = true;
-          const body = JSON.parse(err._body);
-          this.gender_change_error = body.result.message;
+          this.gender_change_error = err.error.result.message;
           this.animal.gender = this.temp_animal.gender;
         }
       );
