@@ -283,16 +283,20 @@ export class LivestockDetailComponent implements OnInit {
                  this.weightData.push([date, weight.weight]);
               });
 
-              this.fatherAnimal = res.result.parent_father;
-              this.fatherAnimal.pedigree = res.result.parent_father.stn;
-              this.fatherAnimal.dd_mm_yyyy_date_of_birth = res.result.parent_father.dd_mm_yyyy_date_of_birth;
-              this.fatherAnimal.gender = 'MALE';
-              this.fatherAnimal.litter_size = res.result.parent_father.n_ling;
-              this.motherAnimal = res.result.parent_mother;
-              this.motherAnimal.pedigree = res.result.parent_mother.stn;
-              this.motherAnimal.dd_mm_yyyy_date_of_birth = res.result.parent_mother.dd_mm_yyyy_date_of_birth;
-              this.motherAnimal.gender = 'FEMALE';
-              this.motherAnimal.litter_size = res.result.parent_mother.n_ling;
+              if  (res.result.parent_father) {
+                this.fatherAnimal = res.result.parent_father;
+                this.fatherAnimal.pedigree = res.result.parent_father.stn;
+                this.fatherAnimal.dd_mm_yyyy_date_of_birth = res.result.parent_father.dd_mm_yyyy_date_of_birth;
+                this.fatherAnimal.gender = 'MALE';
+                this.fatherAnimal.litter_size = res.result.parent_father.n_ling;
+              }
+              if (res.result.parent_mother) {
+                this.motherAnimal = res.result.parent_mother;
+                this.motherAnimal.pedigree = res.result.parent_mother.stn;
+                this.motherAnimal.dd_mm_yyyy_date_of_birth = res.result.parent_mother.dd_mm_yyyy_date_of_birth;
+                this.motherAnimal.gender = 'FEMALE';
+                this.motherAnimal.litter_size = res.result.parent_mother.n_ling;
+              }
               this.children = res.result.children;
               for (const child of this.children) {
                 child.litter_size = child.n_ling ? child.n_ling.toString() : undefined;
