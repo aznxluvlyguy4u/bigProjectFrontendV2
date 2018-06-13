@@ -218,7 +218,7 @@
 <div id="measurement-modal" class="reveal-overlay" *ngIf="showExteriorModal" style="display:block">
   <!--[ngStyle]="{'display': displayExteriorModal}"-->
   <div class="tiny reveal" style="display:block">
-    <form #exteriorForm="ngForm">
+    <form [formGroup]="exteriorForm">
     <div class="modal-header">
             <span *ngIf="isAdmin">
                 <span *ngIf="!isExteriorEditMode"> {{ 'NEW EXTERIOR' | translate }} </span>
@@ -238,8 +238,7 @@
           <!-- selectedDate -->
           <app-datepicker  [editMode]="true" [initDate]="initDate" [formCtrl]="exteriorForm.controls['measurement_date']"
                       [viewFormat]="view_date_format" [modelFormat]="model_datetime_format"></app-datepicker>
-          <div class="pull-right input-error-msg" [hidden]="!invalidMeasurementDate"> {{'AN EXTERIOR ALREADY EXISTS FOR
-            THIS DATE' | translate}}
+          <div class="pull-right input-error-msg" [hidden]="!invalidMeasurementDate"> {{'AN EXTERIOR ALREADY EXISTS FOR THIS DATE' | translate}}
           </div>
         </div>
       </div>
@@ -254,7 +253,7 @@
           </label>
         </div>
         <div class="medium-6 columns">
-          <select [(ngModel)]="tempExterior.kind" ngControl="kind">
+          <select [(ngModel)]="tempExterior.kind" formControlName="kind">
             <option value=""> --</option>
             <option *ngFor="let kind of kinds" value="{{ kind.code }}"> {{ kind.code }}</option>
           </select>
@@ -267,10 +266,9 @@
           <label class="middle">{{ 'HEAD' | translate }}</label>
         </div>
         <div class="medium-6 columns">
-          <input type="number" [(ngModel)]="tempExterior.skull" ngControl="skull">
+          <input type="number" [(ngModel)]="tempExterior.skull" formControlName="skull">
           <div class="pull-right input-error-msg"
-               [hidden]="exteriorForm.controls['skull'].valid || isValidExteriorForm"> {{ 'THE MEASUREMENTS NEED TO BE
-            BETWEEN 69 AND 99' | translate }}.
+               [hidden]="exteriorForm.controls['skull'].valid || isValidExteriorForm"> {{ 'THE MEASUREMENTS NEED TO BE BETWEEN 69 AND 99' | translate }}.
           </div>
         </div>
       </div>
@@ -281,10 +279,9 @@
           <label class="middle">{{ 'PROGRESS' | translate }}</label>
         </div>
         <div class="medium-6 columns">
-          <input type="number" [(ngModel)]="tempExterior.progress" ngControl="progress">
+          <input type="number" [(ngModel)]="tempExterior.progress" formControlName="progress">
           <div class="pull-right input-error-msg"
-               [hidden]="exteriorForm.controls['progress'].valid || isValidExteriorForm"> {{ 'THE MEASUREMENTS NEED TO
-            BE BETWEEN 69 AND 99' | translate }}.
+               [hidden]="exteriorForm.controls['progress'].valid || isValidExteriorForm"> {{ 'THE MEASUREMENTS NEED TO BE BETWEEN 69 AND 99' | translate }}.
           </div>
         </div>
       </div>
@@ -295,10 +292,9 @@
           <label class="middle">{{ 'MUSCULARITY' | translate }}</label>
         </div>
         <div class="medium-6 columns">
-          <input type="number" [(ngModel)]="tempExterior.muscularity" ngControl="muscularity">
+          <input type="number" [(ngModel)]="tempExterior.muscularity" formControlName="muscularity">
           <div class="pull-right input-error-msg"
-               [hidden]="exteriorForm.controls['muscularity'].valid || isValidExteriorForm"> {{ 'THE MEASUREMENTS NEED
-            TO BE BETWEEN 69 AND 99' | translate }}.
+               [hidden]="exteriorForm.controls['muscularity'].valid || isValidExteriorForm"> {{ 'THE MEASUREMENTS NEED TO BE BETWEEN 69 AND 99' | translate }}.
           </div>
         </div>
       </div>
@@ -309,10 +305,9 @@
           <label class="middle">{{ 'PROPORTION' | translate }}</label>
         </div>
         <div class="medium-6 columns">
-          <input type="number" [(ngModel)]="tempExterior.proportion" ngControl="proportion">
+          <input type="number" [(ngModel)]="tempExterior.proportion" formControlName="proportion">
           <div class="pull-right input-error-msg"
-               [hidden]="exteriorForm.controls['proportion'].valid || isValidExteriorForm"> {{ 'THE MEASUREMENTS NEED TO
-            BE BETWEEN 69 AND 99' | translate }}.
+               [hidden]="exteriorForm.controls['proportion'].valid || isValidExteriorForm"> {{ 'THE MEASUREMENTS NEED TO BE BETWEEN 69 AND 99' | translate }}.
           </div>
         </div>
       </div>
@@ -323,10 +318,9 @@
           <label class="middle">{{ 'TYPE' | translate }}</label>
         </div>
         <div class="medium-6 columns">
-          <input type="number" [(ngModel)]="tempExterior.exterior_type" ngControl="exterior_type">
+          <input type="number" [(ngModel)]="tempExterior.exterior_type" formControlName="exterior_type">
           <div class="pull-right input-error-msg"
-               [hidden]="exteriorForm.controls['exterior_type'].valid || isValidExteriorForm"> {{ 'THE MEASUREMENTS NEED
-            TO BE BETWEEN 69 AND 99' | translate }}.
+               [hidden]="exteriorForm.controls['exterior_type'].valid || isValidExteriorForm"> {{ 'THE MEASUREMENTS NEED TO BE BETWEEN 69 AND 99' | translate }}.
           </div>
         </div>
       </div>
@@ -337,10 +331,9 @@
           <label class="middle">{{ 'LEG WORK' | translate }}</label>
         </div>
         <div class="medium-6 columns">
-          <input type="number" [(ngModel)]="tempExterior.leg_work" ngControl="leg_work">
+          <input type="number" [(ngModel)]="tempExterior.leg_work" formControlName="leg_work">
           <div class="pull-right input-error-msg"
-               [hidden]="exteriorForm.controls['leg_work'].valid || isValidExteriorForm"> {{ 'THE MEASUREMENTS NEED TO
-            BE BETWEEN 69 AND 99' | translate }}.
+               [hidden]="exteriorForm.controls['leg_work'].valid || isValidExteriorForm"> {{ 'THE MEASUREMENTS NEED TO BE BETWEEN 69 AND 99' | translate }}.
           </div>
         </div>
       </div>
@@ -351,7 +344,7 @@
           <label class="middle">{{ 'PELT' | translate }}</label>
         </div>
         <div class="medium-6 columns">
-          <input type="number" [(ngModel)]="tempExterior.fur" ngControl="fur">
+          <input type="number" [(ngModel)]="tempExterior.fur" formControlName="fur">
           <div class="pull-right input-error-msg" [hidden]="exteriorForm.controls['fur'].valid || isValidExteriorForm">
             {{ 'THE MEASUREMENTS NEED TO BE BETWEEN 69 AND 99' | translate }}.
           </div>
@@ -364,10 +357,9 @@
           <label class="middle">{{ 'GENERAL APPEARANCE' | translate }}</label>
         </div>
         <div class="medium-6 columns">
-          <input type="number" [(ngModel)]="tempExterior.general_appearance" ngControl="general_appearance">
+          <input type="number" [(ngModel)]="tempExterior.general_appearance" formControlName="general_appearance">
           <div class="pull-right input-error-msg"
-               [hidden]="exteriorForm.controls['general_appearance'].valid || isValidExteriorForm"> {{ 'THE MEASUREMENTS
-            NEED TO BE BETWEEN 69 AND 99' | translate }}.
+               [hidden]="exteriorForm.controls['general_appearance'].valid || isValidExteriorForm"> {{ 'THE MEASUREMENTS NEED TO BE BETWEEN 69 AND 99' | translate }}.
           </div>
         </div>
       </div>
@@ -378,10 +370,9 @@
           <label class="middle">{{ 'HEIGHT' | translate }}</label>
         </div>
         <div class="medium-6 columns">
-          <input type="number" [(ngModel)]="tempExterior.height" ngControl="height">
+          <input type="number" [(ngModel)]="tempExterior.height" formControlName="height">
           <div class="pull-right input-error-msg"
-               [hidden]="exteriorForm.controls['height'].valid || isValidExteriorForm"> {{ 'THE MEASUREMENTS NEED TO BE
-            BETWEEN 0 AND 99' | translate }}.
+               [hidden]="exteriorForm.controls['height'].valid || isValidExteriorForm"> {{ 'THE MEASUREMENTS NEED TO BE BETWEEN 0 AND 99' | translate }}.
           </div>
         </div>
       </div>
@@ -392,10 +383,9 @@
           <label class="middle">{{ 'BREAST DEPTH' | translate }}</label>
         </div>
         <div class="medium-6 columns">
-          <input type="number" [(ngModel)]="tempExterior.breast_depth" ngControl="breast_depth">
+          <input type="number" [(ngModel)]="tempExterior.breast_depth" formControlName="breast_depth">
           <div class="pull-right input-error-msg"
-               [hidden]="exteriorForm.controls['breast_depth'].valid || isValidExteriorForm"> {{ 'THE MEASUREMENTS NEED
-            TO BE BETWEEN 0 AND 99' | translate }}.
+               [hidden]="exteriorForm.controls['breast_depth'].valid || isValidExteriorForm"> {{ 'THE MEASUREMENTS NEED TO BE BETWEEN 0 AND 99' | translate }}.
           </div>
         </div>
       </div>
@@ -406,10 +396,9 @@
           <label class="middle">{{ 'TORSO LENGTH' | translate }}</label>
         </div>
         <div class="medium-6 columns">
-          <input type="number" [(ngModel)]="tempExterior.torso_length" ngControl="torso_length">
+          <input type="number" [(ngModel)]="tempExterior.torso_length" formControlName="torso_length">
           <div class="pull-right input-error-msg"
-               [hidden]="exteriorForm.controls['torso_length'].valid || isValidExteriorForm"> {{ 'THE MEASUREMENTS NEED
-            TO BE BETWEEN 0 AND 99' | translate }}.
+               [hidden]="exteriorForm.controls['torso_length'].valid || isValidExteriorForm"> {{ 'THE MEASUREMENTS NEED TO BE BETWEEN 0 AND 99' | translate }}.
           </div>
         </div>
       </div>
@@ -420,10 +409,9 @@
           <label class="middle">{{ 'MARKINGS' | translate }}</label>
         </div>
         <div class="medium-6 columns">
-          <input type="number" [(ngModel)]="tempExterior.markings" ngControl="markings">
+          <input type="number" [(ngModel)]="tempExterior.markings" formControlName="markings">
           <div class="pull-right input-error-msg"
-               [hidden]="exteriorForm.controls['markings'].valid || isValidExteriorForm"> {{ 'THE MEASUREMENTS NEED TO
-            BE BETWEEN 69 AND 99' | translate }}.
+               [hidden]="exteriorForm.controls['markings'].valid || isValidExteriorForm"> {{ 'THE MEASUREMENTS NEED TO BE BETWEEN 69 AND 99' | translate }}.
           </div>
         </div>
       </div>
@@ -434,8 +422,8 @@
           <label class="middle">{{ 'INSPECTOR' | translate }}</label>
         </div>
         <div class="medium-6 columns">
-          <select *ngIf="tempExterior.inspector" [(ngModel)]="tempExterior.inspector.person_id" ngControl="inspector">
-            <option *ngFor="let inspector of inspectors" value="{{inspector.person_id}}"
+          <select *ngIf="tempExterior.inspector" [(ngModel)]="tempExterior.inspector.person_id" formControlName="inspector">
+            <option *ngFor="let inspector of inspectors" [value]="inspector.person_id"
                     [selected]="tempExterior.inspector.person_id == inspector.person_id">
               {{ inspector.first_name }} {{ inspector.last_name }}
             </option>
