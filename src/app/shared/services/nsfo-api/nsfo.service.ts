@@ -122,8 +122,9 @@ export class NSFOService {
             case 500:
                 return this.translate.instant('SOMETHING WENT WRONG. TRY ANOTHER TIME.');
             case 524:
-                return this.translate.instant('A TIMEOUT OCCURED. TRY AGAIN LATER, PERHAPS WHEN THE SERVER IS LESS BUSY OR TRY IT WITH LESS DATA.');
-
+                return this.translate.instant(
+                    'A TIMEOUT OCCURED. TRY AGAIN LATER, PERHAPS WHEN THE SERVER IS LESS BUSY OR TRY IT WITH LESS DATA.'
+                );
             case 403:
                 this.logout();
                 return this.translate.instant('YOU ARE UNAUTHORIZED');
@@ -131,22 +132,30 @@ export class NSFOService {
             default:
                 const jsonBody: ResultModel = err.body;
 
-                if (jsonBody && jsonBody.result) {
-                    const result = jsonBody.result;
-
-                    if (result instanceof Array) {
-                        let message = '';
-                        for (const resultPart of result) {
-                            message += this.getTranslatedMessage(resultPart.message) + '. ';
-                        }
-                        return message;
-                    }
-
-                    const dataPart = result.data !== null ? ' (' + this.translate.instant(result.data) + ') ' : '';
-                    return this.getTranslatedMessage(result.message) + dataPart;
+                let message = '';
+                for (const result of err['error']['result']) {
+                    message += result.message;
+                }
+                if (message !== '') {
+                    return message;
                 }
 
-                return this.translate.instant('SOMETHING WENT WRONG. TRY ANOTHER TIME.');
+                // if (jsonBody && jsonBody.result) {
+                //     const result = jsonBody.result;
+                //
+                //     if (result instanceof Array) {
+                //         let message = '';
+                //         for (const resultPart of result) {
+                //             message += this.getTranslatedMessage(resultPart.message) + '. ';
+                //         }
+                //         return message;
+                //     }
+                //
+                //     const dataPart = result.data !== null ? ' (' + this.translate.instant(result.data) + ') ' : '';
+                //     return this.getTranslatedMessage(result.message) + dataPart;
+                // }
+
+                 return this.translate.instant('SOMETHING WENT WRONG. TRY ANOTHER TIME.');
         }
     }
 
