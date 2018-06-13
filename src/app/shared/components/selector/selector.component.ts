@@ -70,7 +70,7 @@ export class SelectorComponent implements OnInit, OnChanges, OnDestroy {
   private getCountryCodeList() {
     this.countryCode$ = this.settings.getCountryList()
       .subscribe(countryCodeList => {
-        this.country_code_list = countryCodeList;
+        this.country_code_list = countryCodeList[0];
       });
   }
 

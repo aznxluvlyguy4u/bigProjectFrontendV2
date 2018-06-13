@@ -18,7 +18,7 @@
           <label>{{ 'ULN' | translate }}</label>
           <div class="uid-input-group">
             <select formControlName="uid_country_code">
-              <option *ngFor="let country_code of country_code_list" value="{{ country_code.code }}">{{
+              <option *ngFor="let country_code of country_code_list" [value]="country_code.code">{{
                 country_code.code }}
               </option>
             </select>
