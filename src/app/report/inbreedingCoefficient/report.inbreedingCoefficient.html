@@ -1,13 +1,13 @@
 <div class='row'>
     <div class='large-4 large-centered columns form-controls'>
-        <form #form="ngForm">
+        <form [formGroup]="form">
         <div class='large-6 columns'>
             <label class='middle'>
                 {{ 'ULN (RAM)' | translate }}
             </label>
         </div>
         <div class='large-6 columns end'>
-            <input type='text' ngControl='uln' (focus)='selector.openModal()'>
+            <input type='text' formControlName='uln' (focus)='selector.openModal()'>
         </div>
         </form>
     </div>
