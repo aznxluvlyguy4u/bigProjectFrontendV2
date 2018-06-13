@@ -52,7 +52,7 @@ export class LivestockDetailComponent implements OnInit {
   private model_datetime_format: string;
   private livestock_gender_options = LIVESTOCK_GENDER_OPTIONS;
   private livestock_breed_options = LIVESTOCK_BREED_OPTIONS;
-  private edit_mode = false;
+  public edit_mode = false;
   private gender_edit_mode = false;
   private changeEnabled = false;
   private changed_animal_info = false;
@@ -341,8 +341,7 @@ export class LivestockDetailComponent implements OnInit {
         err => {
           this.gender_changed_animal_info_error = true;
           this.changeEnabled = true;
-          const body = JSON.parse(err._body);
-          this.gender_change_error = body.result.message;
+          this.gender_change_error = err.error.result.message;
           this.animal.gender = this.temp_animal.gender;
         }
       );

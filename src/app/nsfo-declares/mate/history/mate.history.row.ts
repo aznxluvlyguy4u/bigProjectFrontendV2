@@ -9,7 +9,7 @@ import {SettingsService} from '../../../shared/services/settings/settings.servic
 import {MateChangeResponse} from '../../../shared/models/nsfo-declare.model';
 
 @Component({
-  selector: 'app-mate-history-row',
+  selector: '[app-mate-history-row]',
   templateUrl: './mate.history.row.html',
 
 })
@@ -27,7 +27,7 @@ export class MateHistoryRowComponent {
   constructor(private fb: FormBuilder,
               private nsfo: NSFOService,
               private settings: SettingsService) {
-    this.form = fb.group({
+    this.form = new FormGroup({
       start_date: new FormControl(''),
       end_date: new FormControl(''),
       pmsg: new FormControl(''),
