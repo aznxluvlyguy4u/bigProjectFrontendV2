@@ -61,7 +61,7 @@
       <label>
         {{ 'ULN' | translate }}
         <input (keyup)="preventKeyPress($event)" (keydown)="preventKeyPress($event)"
-               (keypress)="preventKeyPress($event)" id="uln_mother" type="text" ngControl="uid_number_mother"
+               (keypress)="preventKeyPress($event)" id="uln_mother" type="text" formControlName="uid_number_mother"
                (focus)="getCandidateMothers(); motherSelector.openModal()" [disabled]="isChildListOn">
       </label>
       <div [hidden]="form.controls['uid_number_mother'].valid || isValidForm" class="input-error-msg pull-right">{{
@@ -198,11 +198,11 @@
     </tr>
     </thead>
     <tbody>
-    <tr app-birth-declare-row *ngFor="let child of birth_list; let i = index" [country_code_list]="country_code_list"
-        [candidateSurrogates]="candidateSurrogates" [animal]="child" [index]="i" [parent_form]="formChildren"
-        [isDisabled]="isSending" [form_valid]="isValidFormChildren" [tags]="filteredTags"
-        (selectedTag)="addToSelection($event)" (birthRowEvent)="getChildData($event)"
-        [selectedMother]="selectedMother"></tr>
+      <tr app-birth-declare-row *ngFor="let child of birth_list; let i = index" [country_code_list]="country_code_list"
+          [candidateSurrogates]="candidateSurrogates" [animal]="child" [index]="i" [parent_form]="formChildren"
+          [isDisabled]="isSending" [form_valid]="isValidFormChildren" [tags]="filteredTags"
+          (selectedTag)="addToSelection($event)" (birthRowEvent)="getChildData($event)"
+          [selectedMother]="selectedMother"></tr>
     </tbody>
   </table>
   <button type="button" [disabled]="isSending" (click)="declareBirth()" class="small primary button pull-right">

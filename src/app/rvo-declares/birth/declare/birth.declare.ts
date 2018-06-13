@@ -93,8 +93,8 @@ export class BirthDeclareComponent implements OnInit, OnDestroy {
     this.model_datetime_format = settings.MODEL_DATETIME_FORMAT;
 
     this.litter = new FormGroup({
-      litter_size: new FormControl('', Validators.required),
-      litter_alive: new FormControl('', Validators.required)
+      litter_size: new FormControl('0', Validators.required),
+      litter_alive: new FormControl('0', Validators.required)
     });
     this.litter.validator = Validators.compose([Validators.required, LitterValidator.validateLitterSizeNotGreaterThenAlive]);
 
@@ -105,58 +105,15 @@ export class BirthDeclareComponent implements OnInit, OnDestroy {
       uid_number_mother: new FormControl('', Validators.compose([Validators.required])),
       // uid_type_father: new FormControl(constants.ULN),
       // uid_country_code_father: new FormControl('NL'),
-      uid_number_father: new FormControl({disabled: this.isChildListOn || !this.selectedMother}),
-      date_of_birth: new FormControl('', Validators.compose([DateValidator.validateDateFormat, DateValidator.validateDateIsNotInTheFuture])),
-      aborted: new FormControl({value: constants.NO, disabled: this.disableAbortedInput()}),
-      pseudopregnancy: new FormControl({value: constants.NO, disabled: this.disablePseudoPregnancy()}),
-      litter: this.litter,
-        test: new FormGroup({
-            litter_size: new FormControl({disabled: this.disableLitter()}, Validators.required),
-            litter_alive: new FormControl('', Validators.required)
-        }, Validators.compose([Validators.required, LitterValidator.validateLitterSizeNotGreaterThenAlive]))
+      uid_number_father: new FormControl(''),
+      date_of_birth: new FormControl('',
+        Validators.compose([DateValidator.validateDateFormat, DateValidator.validateDateIsNotInTheFuture])),
+      aborted: new FormControl(constants.NO),
+      pseudopregnancy: new FormControl(constants.NO),
+      litter: this.litter
     });
 
-    this.formChildren = fb.group({});
-  }
-
-  disableAbortedInput() {
-    if (this.litterSizeInput && this.litterSizeInput.valueOf() > 0) {
-        return true;
-    }
-    if (this.PseudoPregnancySelect && this.PseudoPregnancySelect.valueOf() === 'YES') {
-      return true;
-    }
-    if (this.isChildListOn) {
-        return true;
-    }
-
-    return false;
-  }
-
-  disablePseudoPregnancy() {
-      if (this.litterSizeInput && this.litterSizeInput.valueOf() > 0) {
-          return true;
-      }
-      if (this.abortedSelect && this.abortedSelect.valueOf() > 0) {
-          return true;
-      }
-      if (this.isChildListOn) {
-          return true;
-      }
-      return false;
-  }
-
-  disableLitter() {
-      if (this.abortedSelect && this.abortedSelect.valueOf() > 0) {
-          return true;
-      }
-      if (this.PseudoPregnancySelect && this.PseudoPregnancySelect.valueOf() > 0) {
-          return true;
-      }
-      if (this.isChildListOn) {
-          return true;
-      }
-      return false;
+    this.formChildren = new FormGroup({});
   }
 
   ngOnInit() {
@@ -174,7 +131,6 @@ export class BirthDeclareComponent implements OnInit, OnDestroy {
           }
         }
       );
-
     this.form.valueChanges.subscribe((value) => {
       if (this.isMotherSelected()) {
         if (this.isAborted() || this.isPseudoPregnancy()) {
@@ -182,6 +138,14 @@ export class BirthDeclareComponent implements OnInit, OnDestroy {
               LitterValidator.validateLitterSizeNotGreaterThenAlive,
               LitterValidator.validateLitterSizeNotGreaterThenSeven
             ]);
+          if (this.isAborted()) {
+            this.form.get('pseudopregnancy').disable({onlySelf: true, emitEvent: false});
+          }
+          if (this.isPseudoPregnancy()) {
+            this.form.get('aborted').disable({onlySelf: true, emitEvent: false});
+          }
+          this.litter.get('litter_size').disable({onlySelf: true, emitEvent: false});
+          this.litter.get('litter_alive').disable({onlySelf: true, emitEvent: false});
           this.litter.get('litter_size').validator = null;
           this.litter.get('litter_alive').validator = null;
         }
@@ -191,21 +155,51 @@ export class BirthDeclareComponent implements OnInit, OnDestroy {
             LitterValidator.validateLitterSizeNotGreaterThenAlive,
             LitterValidator.validateLitterSizeNotGreaterThenSeven
           ]);
+          this.form.get('pseudopregnancy').enable({onlySelf: true, emitEvent: false});
+          this.form.get('aborted').enable({onlySelf: true, emitEvent: false});
+          this.litter.get('litter_size').enable({onlySelf: true, emitEvent: false});
+          this.litter.get('litter_alive').enable({onlySelf: true, emitEvent: false});
           this.litter.get('litter_size').validator = Validators.required;
           this.litter.get('litter_alive').validator = Validators.required;
+          if (this.litter.get('litter_size').value > 0) {
+            this.form.get('pseudopregnancy').disable({onlySelf: true, emitEvent: false});
+            this.form.get('aborted').disable({onlySelf: true, emitEvent: false});
+          }
+          if (this.litter.get('litter_size').value <= 0) {
+            this.form.get('pseudopregnancy').enable({onlySelf: true, emitEvent: false});
+            this.form.get('aborted').enable({onlySelf: true, emitEvent: false});
+          }
         }
-
       } else {
-
         if (this.isAborted() || this.isPseudoPregnancy()) {
           this.litter.validator = Validators.compose([LitterValidator.validateLitterSizeNotGreaterThenAlive]);
+          if (this.isAborted()) {
+            this.form.get('pseudopregnancy').disable({onlySelf: true, emitEvent: false});
+          }
+          if (this.isPseudoPregnancy()) {
+            this.form.get('aborted').disable({onlySelf: true, emitEvent: false});
+          }
+          this.litter.get('litter_size').disable({onlySelf: true, emitEvent: false});
+          this.litter.get('litter_alive').disable({onlySelf: true, emitEvent: false});
           this.litter.get('litter_size').validator = null;
           this.litter.get('litter_alive').validator = null;
         }
         if (!this.isAborted() && !this.isPseudoPregnancy()) {
           this.litter.validator = Validators.compose([Validators.required, LitterValidator.validateLitterSizeNotGreaterThenAlive]);
+          this.form.get('pseudopregnancy').enable({onlySelf: true, emitEvent: false});
+          this.form.get('aborted').enable({onlySelf: true, emitEvent: false});
+          this.litter.get('litter_size').enable({onlySelf: true, emitEvent: false});
+          this.litter.get('litter_alive').enable({onlySelf: true, emitEvent: false});
           this.litter.get('litter_size').validator = Validators.required;
           this.litter.get('litter_alive').validator = Validators.required;
+          if (this.litter.get('litter_size').value > 0) {
+            this.form.get('pseudopregnancy').disable({onlySelf: true, emitEvent: false});
+            this.form.get('aborted').disable({onlySelf: true, emitEvent: false});
+          }
+          if (this.litter.get('litter_size').value <= 0) {
+            this.form.get('pseudopregnancy').enable({onlySelf: true, emitEvent: false});
+            this.form.get('aborted').enable({onlySelf: true, emitEvent: false});
+          }
         }
       }
 
@@ -213,21 +207,26 @@ export class BirthDeclareComponent implements OnInit, OnDestroy {
     });
 
     this.form.get('uid_number_mother').valueChanges.subscribe(() => {
-      this.litter.updateValueAndValidity();
+      this.litter.get('litter_size').setValue('0');
+      this.litter.get('litter_size').setErrors(null);
+
+      this.litter.get('litter_alive').setValue('0');
+      this.litter.get('litter_alive').setErrors(null);
     });
 
     this.form.get('aborted').valueChanges.subscribe(() => {
-      this.litter.get('litter_size').setValue('');
+      this.litter.get('litter_size').setValue('0');
       this.litter.get('litter_size').setErrors(null);
 
-      this.litter.get('litter_alive').setValue('');
+      this.litter.get('litter_alive').setValue('0');
       this.litter.get('litter_alive').setErrors(null);
     });
+
     this.form.get('pseudopregnancy').valueChanges.subscribe(() => {
-      this.litter.get('litter_size').setValue('');
+      this.litter.get('litter_size').setValue('0');
       this.litter.get('litter_size').setErrors(null);
 
-      this.litter.get('litter_alive').setValue('');
+      this.litter.get('litter_alive').setValue('0');
       this.litter.get('litter_alive').setErrors(null);
     });
 
@@ -259,7 +258,7 @@ export class BirthDeclareComponent implements OnInit, OnDestroy {
   }
 
   isPseudoPregnancy() {
-    if (this.form.get('aborted').value === this.constants.YES) {
+    if (this.form.get('pseudopregnancy').value === this.constants.YES) {
       return true;
     }
     return false;
@@ -653,7 +652,6 @@ export class BirthDeclareComponent implements OnInit, OnDestroy {
 
     // if the mother is a pedigree animal
     // make the pedigree_number field for the child required
-
     this.selectedMother = mother;
     this.getCandidateSurrogates();
     this.getCandidateFathers();
