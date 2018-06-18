@@ -157,12 +157,6 @@ export class EartagDeclareComponent implements OnInit, OnDestroy {
       error => {
         this.loopSyncEartagsList = false;
       });
-
-    setTimeout(() => {
-      if (this.areRecurrentApiCallsActivated && this.loopSyncEartagsList) {
-        this.syncEartagsList();
-      }
-    }, 10 * 1000);
   }
 
   private getEartagsSyncStatusOverview() {
