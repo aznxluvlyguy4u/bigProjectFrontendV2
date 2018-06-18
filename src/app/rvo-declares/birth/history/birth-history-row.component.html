@@ -90,12 +90,12 @@
 
 <!--ROW BUTTONS-->
 <td>
-    <span *ngIf="litter.request_state == 'REVOKING' || litter.request_state == 'REVOKED'">
+    <span *ngIf="litter.request_state != 'REVOKING' || litter.request_state != 'REVOKED'">
         <button class="tiny primary button" (click)="getLitterDetails(); openModal()">{{ 'VIEW' | translate }}</button>
     </span>
 
   <span
-    *ngIf="litter.request_state == 'OPEN' || litter.request_state == 'REVOKING' || litter.request_state == 'REVOKED'">
+    *ngIf="litter.request_state != 'OPEN' && litter.request_state != 'REVOKING' && litter.request_state != 'REVOKED'">
         <button class="tiny alert button" (click)="sendRevokeRequest()">{{ 'REVOKE' | translate }}</button>
     </span>
 </td>

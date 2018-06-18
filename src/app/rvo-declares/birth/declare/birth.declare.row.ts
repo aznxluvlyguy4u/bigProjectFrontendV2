@@ -1,5 +1,4 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-
 import {BIRTH_PROGRESS_TYPES, LAMBAR_SURROGATE_OPTIONS, SurrogateMotherByUln} from '../birth.model';
 import {Constants} from '../../../shared/variables/constants';
 import {NSFOService} from '../../../shared/services/nsfo-api/nsfo.service';
@@ -26,6 +25,7 @@ export class BirthDeclareRowComponent implements OnInit {
   @Output() birthRowEvent = new EventEmitter();
   @Output() selectedTag = new EventEmitter();
   private form: FormGroup;
+  private ulnSurrogateEnabled = false;
   private birth_progress_types = BIRTH_PROGRESS_TYPES;
   private options_lambar_surrogate = LAMBAR_SURROGATE_OPTIONS;
 
@@ -41,6 +41,20 @@ export class BirthDeclareRowComponent implements OnInit {
 
     this.form.valueChanges.subscribe(
       () => {
+
+        if (this.animal.nurture_type !== 'SURROGATE') {
+          if (!this.form.get('uln_surrogate').disabled) {
+            this.form.get('uln_surrogate').disable({onlySelf: true , emitEvent: false});
+            this.form.get('uln_surrogate').setErrors(null);
+          }
+          this.ulnSurrogateEnabled = false;
+        } else {
+          if (!this.form.get('uln_surrogate').enabled) {
+            this.form.get('uln_surrogate').enable({onlySelf: true , emitEvent: false});
+            this.form.get('uln_surrogate').setErrors(null);
+          }
+          this.ulnSurrogateEnabled = true;
+        }
 
         this.birthRowEvent.emit({
           'index': this.index,
@@ -81,8 +95,7 @@ export class BirthDeclareRowComponent implements OnInit {
       this.form.addControl('weight', new FormControl(''));
     }
 
-
-    this.parent_form.addFormControl(this.index, this.form);
+    this.parent_form.addControl(this.index, this.form);
 
     this.birthRowEvent.emit({
       'index': this.index,

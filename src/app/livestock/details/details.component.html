@@ -7,7 +7,7 @@
 
     <div class="show-for-small-only small-9 columns end">
             <span class="pull-right">
-                <ng-template #changeButton></ng-template>
+                <ng-template [ngTemplateOutlet]="changeButton"></ng-template>
             </span>
     </div>
 
@@ -44,14 +44,14 @@
     <div *ngIf="!edit_mode"
          class="large-1 medium-2 small-6 hide-for-small-only columns">
             <span class="pull-right">
-                <ng-template #changeButton></ng-template>
+                <ng-template [ngTemplateOutlet]="changeButton"></ng-template>
             </span>
     </div>
 
     <div *ngIf="edit_mode"
          class="small-6 hide-for-small-only columns">
             <span class="pull-right">
-                <ng-template #changeButton></ng-template>
+                <ng-template [ngTemplateOutlet]="changeButton"></ng-template>
             </span>
     </div>
 
@@ -148,7 +148,7 @@
             </div>
             <div class="medium-6 columns">
               <select [(ngModel)]="animal.gender" [disabled]="!gender_edit_mode">
-                <option *ngFor="let option of livestock_gender_options" value="{{ option }}">{{ option | translate }}
+                <option *ngFor="let option of livestock_gender_options" [value]="option">{{ option | translate }}
                 </option>
               </select>
             </div>
@@ -670,7 +670,6 @@
 </div>
 
 <ng-template #changeButton>
-
   <button type="button" *ngIf="!edit_mode" [disabled]="!changeEnabled" (click)="toggleEditMode()"
           class="tiny primary button">
                     <span *ngIf="!changeEnabled">
