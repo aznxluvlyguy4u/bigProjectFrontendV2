@@ -6,7 +6,7 @@ import {TranslateService} from '@ngx-translate/core';
   templateUrl: './app.component.html',
 })
 export class AppComponent {
-    title = 'nsfo online';
+    title = 'NSFO Online';
 
     constructor(private translate: TranslateService) {
       this.translate.setDefaultLang('nl-NL');
