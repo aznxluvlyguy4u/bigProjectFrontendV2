@@ -100,7 +100,7 @@
   </div>
   <div class="row">
     <div class="large-12 columns">
-      <button (click)="redirectToAnimal()" class="button small primary" [disabled]="ulnIsEmpty()">
+      <button (click)="redirectToAnimal()" class="button small primary" [disabled]="ulnIsEmpty() || !inputAnimal.is_public">
         {{ "SHOW ANIMAL CARD" | translate }}
       </button>
     </div>
