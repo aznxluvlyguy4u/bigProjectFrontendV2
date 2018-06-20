@@ -66,9 +66,14 @@
     </div>
   </div>
 
+  <div class="row" *ngIf="isLoading">
+    <div class="medium-12 columns">
+      <app-page-loading-spinner></app-page-loading-spinner>
+    </div>
+  </div>
 
   <!--TABLE-->
-  <div class="row">
+  <div class="row" *ngIf="!isLoading">
     <table>
       <thead>
       <tr>

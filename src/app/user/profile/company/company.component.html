@@ -1,4 +1,10 @@
-<div class="row">
+<div class="row" *ngIf="isLoading">
+  <div class="medium-12 columns">
+    <app-page-loading-spinner></app-page-loading-spinner>
+  </div>
+</div>
+
+<div class="row" *ngIf="!isLoading">
   <div class="large-6 columns">
     <div class="info-container">
       <div class="info-header">

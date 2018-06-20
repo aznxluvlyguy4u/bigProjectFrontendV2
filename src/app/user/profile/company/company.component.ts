@@ -25,6 +25,8 @@ export class ProfileCompanyComponent implements OnInit {
   private changed_company_info = false;
   private in_progress = false;
 
+  public isLoading = true;
+
   constructor(private apiService: NSFOService, private fb: FormBuilder, private utils: UtilsService,
               private snackBar: MatSnackBar, private translate: TranslateService,
               private zone: NgZone) {
@@ -62,6 +64,7 @@ export class ProfileCompanyComponent implements OnInit {
   }
 
   private getCompanyInfo() {
+    this.isLoading = true;
     this.apiService.doGetRequest(API_URI_GET_COMPANY_PROFILE)
       .subscribe(
           (res: JsonResponseModel) => {
@@ -117,9 +120,11 @@ export class ProfileCompanyComponent implements OnInit {
           }
 
           this.updateIsRevealHistoricAnimalsValue();
+          this.isLoading = false;
         },
         error => {
-          alert(this.apiService.getErrorMessage(error));
+            this.isLoading = false;
+            alert(this.apiService.getErrorMessage(error));
         }
       );
   }

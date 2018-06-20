@@ -17,6 +17,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   public dashboard_info: DashboardInfo = new DashboardInfo;
   public cleanUpComponent = false;
   public loopGetDashboardInfo = true;
+  public isLoading: boolean;
 
   constructor(
       private apiService: NSFOService,
@@ -26,6 +27,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+     this.isLoading = true;
      this.getDashboardInfo();
      this.syncLivestock();
      this.syncEartags();
@@ -41,10 +43,12 @@ export class DashboardComponent implements OnInit, OnDestroy {
       .subscribe(
           (res: JsonResponseModel) => {
           this.dashboard_info = res.result;
+          this.isLoading = false;
         },
         error => {
           this.loopGetDashboardInfo = false;
           // DO NOT LOGOUT HERE TO PREVENT THE RISK OF BEING LOGGED OUT, WHILE TRYING TO LOGIN AGAIN
+          this.isLoading = false;
         }
       );
 

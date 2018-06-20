@@ -1,4 +1,10 @@
-<div id="dashboard">
+<div class="row" *ngIf="isLoading">
+  <div class="medium-12 columns">
+    <app-page-loading-spinner></app-page-loading-spinner>
+  </div>
+</div>
+
+<div id="dashboard" *ngIf="!isLoading">
 
   <!--BREADCRUMBS-->
   <div class="row">

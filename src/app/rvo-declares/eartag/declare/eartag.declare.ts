@@ -47,6 +47,8 @@ export class EartagDeclareComponent implements OnInit, OnDestroy {
 
   private loopSyncEartagsList = true;
 
+  public isLoading: boolean;
+
   constructor(private apiService: NSFOService,
               private fb: FormBuilder,
               private translate: TranslateService,
@@ -124,6 +126,7 @@ export class EartagDeclareComponent implements OnInit, OnDestroy {
   }
 
   private getEartagsList() {
+    this.isLoading = true;
     this.apiService
       .doGetRequest(API_URI_GET_EARTAGS)
       .subscribe(
@@ -137,9 +140,11 @@ export class EartagDeclareComponent implements OnInit, OnDestroy {
             this.eartags_list.push(eartag);
           }
           this.eartags_list = _.orderBy(this.eartags_list, ['ulnLastFive']);
+          this.isLoading = false;
         },
         error => {
           alert(this.apiService.getErrorMessage(error));
+          this.isLoading = false;
         }
       );
   }

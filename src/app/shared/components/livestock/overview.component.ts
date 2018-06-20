@@ -72,6 +72,8 @@ export class LivestockOverviewComponent implements OnInit, OnDestroy {
     // Report options
     public concatBreedValueAndAccuracyColumns = 'YES';
 
+    public isLoading: boolean;
+
     constructor(private apiService: NSFOService,
                 private router: Router,
                 private settings: Settings,
@@ -206,7 +208,7 @@ export class LivestockOverviewComponent implements OnInit, OnDestroy {
     }
 
     private getLivestockListBase(queryParam: string) {
-
+        this.isLoading = true;
         this.apiService
             .doGetRequest(API_URI_GET_ANIMALS + queryParam)
             .subscribe(
@@ -242,9 +244,11 @@ export class LivestockOverviewComponent implements OnInit, OnDestroy {
                     this.livestock_list = _.orderBy(this.livestock_list, ['ulnLastFive'], ['asc']);
                     this.filtered_list = this.livestock_list;
                     this.livestock_list_initial = this.livestock_list;
+                    this.isLoading = false;
                 },
                 error => {
                     alert(this.apiService.getErrorMessage(error));
+                    this.isLoading = false;
                 }
             );
     }

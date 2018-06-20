@@ -20,6 +20,8 @@ export class ProfileLoginComponent implements OnInit {
   private in_progress = false;
   private changed_nsfo_password = false;
 
+  public isLoading = true;
+
   constructor(private apiService: NSFOService, private fb: FormBuilder, private settings: SettingsService) {
     this.form_nsfo = new FormGroup({
       current_password: new FormControl('', Validators.required),
@@ -34,14 +36,17 @@ export class ProfileLoginComponent implements OnInit {
   }
 
   private getCompanyInfo() {
+    this.isLoading = true;
     this.apiService.doGetRequest(API_URI_GET_COMPANY_LOGIN)
       .subscribe(
           (res: JsonResponseModel) => {
           this.login_nsfo = res.result.nsfo;
           this.settings.setCurrentUser(this.login_nsfo.logged_in_user);
+          this.isLoading = false;
         },
         error => {
           alert(this.apiService.getErrorMessage(error));
+          this.isLoading = false;
         }
       );
   }
