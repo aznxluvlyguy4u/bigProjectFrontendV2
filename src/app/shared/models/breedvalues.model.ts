@@ -8,4 +8,5 @@ export class BreedValues {
     public value: number;
     public accuracy: number;
     public normalized_value: number;
+    public prioritize_normalized_values_in_table: boolean;
 }

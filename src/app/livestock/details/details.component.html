@@ -526,7 +526,7 @@
                 <tr *ngFor="let breedValue of breedValues">
                   <td><div class="ordinal-box" [ngStyle]="{'background': breedValue.chart_color}">{{ breedValue.ordinal}}</div></td>
                   <td>{{ breedValue.chart_label}}</td>
-                  <td>{{ breedValue.normalized_value}} / {{ breedValue.accuracy}}%</td>
+                  <td class="breed-value-and-accuracy-column">{{ breedValue.prioritize_normalized_values_in_table ? breedValue.normalized_value : breedValue.value}} / {{ breedValue.accuracy}}%</td>
                 </tr>
                 </tbody>
               </table>
