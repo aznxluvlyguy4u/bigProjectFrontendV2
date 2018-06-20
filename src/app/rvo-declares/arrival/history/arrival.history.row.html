@@ -79,7 +79,7 @@
 <!--ROW BUTTONS-->
 <td>
     <span
-      *ngIf="!editMode || arrival.request_state == 'OPEN' || arrival.request_state == 'REVOKING' || arrival.request_state == 'REVOKED'">
+      [hidden]="editMode || arrival.request_state == 'OPEN' || arrival.request_state == 'REVOKING' || arrival.request_state == 'REVOKED'">
         <button *ngIf="false" class="tiny primary button" (click)="enableEditing()">{{ 'EDIT' | translate }}</button>
         <app-revoke-button [isActive]="arrival.message_number" (click)="sendRevokeRequest()"></app-revoke-button>
     </span>

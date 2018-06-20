@@ -84,7 +84,7 @@
 <td>
   <div class="row">
         <span
-          *ngIf="!editMode || mate.request_state == 'OPEN' || mate.request_state == 'REVOKING' ||  mate.request_state == 'REVOKED'">
+          [hidden]="editMode || mate.request_state == 'OPEN' || mate.request_state == 'REVOKING' ||  mate.request_state == 'REVOKED'">
             <div class="small-6 columns">
           <button class="tiny primary button expanded" (click)="enableEditing()">{{ 'EDIT' | translate }}</button>
           </div>
