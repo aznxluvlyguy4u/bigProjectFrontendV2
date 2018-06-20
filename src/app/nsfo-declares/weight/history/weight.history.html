@@ -1,3 +1,7 @@
+<app-page-loading-spinner *ngIf="isLoading"></app-page-loading-spinner>
+
+<ng-container *ngIf="!isLoading">
+
 <table class="stack confirmation">
   <thead>
   <th>{{ 'DATE' | translate }}</th>
@@ -15,6 +19,8 @@
 </table>
 
 <pagination-controls (pageChange)="page = $event"></pagination-controls>
+
+</ng-container>
 
 <!--REVOKE MODAL-->
 <div class="reveal-overlay" [ngStyle]="{'display': modalDisplay}">

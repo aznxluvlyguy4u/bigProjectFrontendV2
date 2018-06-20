@@ -29,8 +29,7 @@
 </table>
 
 <div *ngIf="isLoading" class="data-loader">
-  <i class="fa fa-spinner fa-pulse fa-fw"></i>
-  <div class="description">{{ 'LOADING' | translate }}</div>
+  <app-page-loading-spinner></app-page-loading-spinner>
 </div>
 
 <pagination-controls (pageChange)="page = $event"></pagination-controls>

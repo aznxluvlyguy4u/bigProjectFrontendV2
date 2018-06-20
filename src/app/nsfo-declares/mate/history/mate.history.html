@@ -4,28 +4,38 @@
   </div>
 </div>
 
-<table class="stack confirmation">
-  <thead>
-  <tr>
-  <th>{{ 'DATE' | translate }}</th>
-  <th>{{ 'ULN (RAM)' | translate }}</th>
-  <th>{{ 'ULN (EWE)' | translate }}</th>
-  <th>{{ 'MATE DATE' | translate }}</th>
-  <th>{{ 'TILL' | translate }}</th>
-  <th>{{ 'PMSG' | translate }}</th>
-  <th>{{ 'KI' | translate }}</th>
-  <th>{{ 'STATUS' | translate }}</th>
-  <th></th>
-  </tr>
-  </thead>
-  <tbody>
-  <tr app-mate-history-row
-    *ngFor="let mate of mateHistoryList | mateHistoryFilter: searchValue | paginate: {itemsPerPage: 10, currentPage: page}; let i = index"
-    (revokeMate)="selectMate($event)" (showError)="showError($event)" [mate]="mate" [mate_index]="i"></tr>
-  </tbody>
-</table>
+<div class="row" *ngIf="isLoading">
+  <div class="medium-12 columns">
+    <app-page-loading-spinner></app-page-loading-spinner>
+  </div>
+</div>
 
-<pagination-controls (pageChange)="page = $event"></pagination-controls>
+<div *ngIf="!isLoading">
+
+  <table class="stack confirmation">
+    <thead>
+    <tr>
+    <th>{{ 'DATE' | translate }}</th>
+    <th>{{ 'ULN (RAM)' | translate }}</th>
+    <th>{{ 'ULN (EWE)' | translate }}</th>
+    <th>{{ 'MATE DATE' | translate }}</th>
+    <th>{{ 'TILL' | translate }}</th>
+    <th>{{ 'PMSG' | translate }}</th>
+    <th>{{ 'KI' | translate }}</th>
+    <th>{{ 'STATUS' | translate }}</th>
+    <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr app-mate-history-row
+      *ngFor="let mate of mateHistoryList | mateHistoryFilter: searchValue | paginate: {itemsPerPage: 10, currentPage: page}; let i = index"
+      (revokeMate)="selectMate($event)" (showError)="showError($event)" [mate]="mate" [mate_index]="i"></tr>
+    </tbody>
+  </table>
+
+  <pagination-controls (pageChange)="page = $event"></pagination-controls>
+
+</div>
 
 <!--REVOKE MODAL-->
 <div class="reveal-overlay" [ngStyle]="{'display': modal_display}">

@@ -22,6 +22,8 @@ export class BirthHistoryComponent implements OnInit {
   private selectedLitter: Litter;
   private modal_display: string;
 
+  public isLoading: boolean;
+
   constructor(private nsfo: NSFOService, private settings: Settings) {
   }
 
@@ -30,14 +32,17 @@ export class BirthHistoryComponent implements OnInit {
   }
 
   private getBirthHistoryList() {
+    this.isLoading = true;
     this.nsfo
       .doGetRequest(API_URI_GET_BIRTHS_HISTORY)
       .subscribe((res: JsonResponseModel) => {
           this.litters = <Litter[]> res.result;
           this.litters = _.orderBy(this.litters, ['log_date'], ['desc']);
+          this.isLoading = false;
         },
         error => {
           alert(this.nsfo.getErrorMessage(error));
+          this.isLoading = false;
         }
       );
   }

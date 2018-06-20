@@ -23,6 +23,8 @@ export class MateHistoryComponent implements OnInit {
   private errorModalDisplay = 'none';
   private errorMessages: ErrorMessage[] = [];
 
+  public isLoading: boolean;
+
   constructor(private apiService: NSFOService, private settings: SettingsService) {
   }
 
@@ -31,6 +33,7 @@ export class MateHistoryComponent implements OnInit {
   }
 
   private getMateHistoryList() {
+    this.isLoading = true;
     this.apiService
       .doGetRequest(API_URI_GET_MATE_HISTORY)
       .subscribe(
@@ -53,9 +56,11 @@ export class MateHistoryComponent implements OnInit {
             }
           }
           this.mateHistoryList = _.orderBy(mates, ['log_date'], ['desc']);
+          this.isLoading = false;
         },
         error => {
           alert(this.apiService.getErrorMessage(error));
+          this.isLoading = false;
         }
       );
   }

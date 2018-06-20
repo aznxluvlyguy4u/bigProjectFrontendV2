@@ -21,6 +21,8 @@ export class BirthHistoryRowComponent {
   private modalDisplay = 'none';
   private litterDetails: LitterDetails = new LitterDetails();
 
+  public isLoadingDetails: boolean;
+
   constructor(private settings: Settings, private nsfo: NSFOService) {
   }
 
@@ -29,6 +31,7 @@ export class BirthHistoryRowComponent {
   }
 
   private getLitterDetails() {
+    this.isLoadingDetails = true;
     this.nsfo.doGetRequest(API_URI_GET_BIRTH_DETAILS + '/' + this.litter.litter_id)
       .subscribe(
           (res: JsonResponseModel) => {
@@ -36,9 +39,11 @@ export class BirthHistoryRowComponent {
           // for(let child of this.litterDetails.children) {
           //     child.error_message = 'test ' + child.uln_number;
           // }
+          this.isLoadingDetails = false;
         },
         error => {
           alert(this.nsfo.getErrorMessage(error));
+          this.isLoadingDetails = false;
         }
       );
   }

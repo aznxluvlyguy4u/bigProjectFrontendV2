@@ -22,6 +22,8 @@ export class WeightHistoryComponent implements OnInit {
   private errorModalDisplay = 'none';
   private errorMessages: ErrorMessage[] = [];
 
+  public isLoading: boolean;
+
   constructor(private nsfo: NSFOService, private settings: SettingsService) {
   }
 
@@ -30,6 +32,7 @@ export class WeightHistoryComponent implements OnInit {
   }
 
   private getWeightHistoryList() {
+    this.isLoading = true;
     this.nsfo
       .doGetRequest(API_URI_GET_WEIGHT_HISTORY)
       .subscribe(
@@ -39,9 +42,11 @@ export class WeightHistoryComponent implements OnInit {
             weight.measurement_date = moment(weight.measurement_date).format(this.settings.getViewDateFormat());
           }
           this.weightHistoryList = _.orderBy(weights, ['log_date'], ['desc']);
+          this.isLoading = false;
         },
         error => {
           alert(this.nsfo.getErrorMessage(error));
+          this.isLoading = false;
         }
       );
   }

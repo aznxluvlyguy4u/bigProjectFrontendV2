@@ -138,6 +138,7 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {MatButtonModule, MatProgressSpinnerModule, MatSnackBar, MatSnackBarModule} from '@angular/material';
 import {PageLoadingSpinnerComponent} from './shared/components/page-loading-spinner/page-loading-spinner.component';
 import {ButtonPrimaryComponent} from './shared/components/button-primary/button-primary.component';
+import {InsideComponentLoadingSpinnerComponent} from './shared/components/inside-component-loading-spinner/inside-component-loading-spinner.component';
 // AoT requires an exported function for factories
 export function CreateTranslateLoader(http: HttpClient) {
     return new TranslateHttpLoader(http, '../assets/i18n/', '.json');
@@ -264,6 +265,7 @@ export function CreateTranslateLoader(http: HttpClient) {
     MateHistoryPipe,
       BarComponent,
     PageLoadingSpinnerComponent,
+    InsideComponentLoadingSpinnerComponent,
     ButtonPrimaryComponent,
   ],
   imports: [

@@ -109,7 +109,10 @@
         <i class="fa fa-times" aria-hidden="true"></i>
       </button>
     </div>
-    <div class="modal-body">
+    <div class="modal-body" *ngIf="isLoadingDetails">
+      <app-inside-component-loading-spinner></app-inside-component-loading-spinner>
+    </div>
+    <div class="modal-body" *ngIf="!isLoadingDetails">
       <div class="row">
         <div class="large-2 columns">
           <label>
