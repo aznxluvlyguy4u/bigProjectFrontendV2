@@ -10,14 +10,13 @@ export class NSFOAuthService implements CanActivate {
 
   canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
 
-    console.log('CAN ACTIVATE NSFO AUTH SERVICE');
-
     if (!!this.cache.getAccessToken()) {
-      console.log('CAN ACTIVATE NSFO AUTH SERVICE: VALID');
-      return true;
-    }
+      if (!!this.cache.getAccessToken()) {
+        return true;
+      }
 
-    this.router.navigate(['/login']);
-    return false;
+      this.router.navigate(['/login']);
+      return false;
+    }
   }
 }
