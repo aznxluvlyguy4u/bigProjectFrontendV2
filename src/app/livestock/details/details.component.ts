@@ -260,12 +260,14 @@ export class LivestockDetailComponent implements OnInit {
                   if (breedValue.has_data) {
                       this.breedValues.push(breedValue);
                       const value = breedValue.normalized_value;
+                      const tooltipValue = breedValue.prioritize_normalized_values_in_table ?
+                        breedValue.normalized_value.toString() : breedValue.value.toString();
                       this.breedValueData.push(
                           [
                               '',
                               value,
                               breedValue.ordinal.toString(),
-                              breedValue.chart_label + ' ' + breedValue.value.toString() + ' / ' + breedValue.accuracy.toString() + '%',
+                              breedValue.chart_label + ' ' + tooltipValue + ' / ' + breedValue.accuracy.toString() + '%',
                               'color: ' + breedValue.chart_color + ';'
                           ]
                       );
@@ -320,7 +322,7 @@ export class LivestockDetailComponent implements OnInit {
   }
 
   hasBreedValues(): boolean {
-    return this.animal.breed_values.length > 0;
+    return this.breedValues.length > 0;
   }
 
   private sendGenderChangeRequest() {
