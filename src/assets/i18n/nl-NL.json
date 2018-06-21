@@ -574,6 +574,7 @@
   "STATUS KNOWN BY AHD": "Status bij GD bekend",
   "FILE IS DOWNLOADED": "Het bestand is gedownload",
   "THERE ARE NO DOWNLOADS READY FOR DOWNLOAD YET": "Er staan nog geen downloads klaar",
+  "THERE ARE NO REPORTS READY FOR DOWNLOAD YET": "Er staan nog geen rapportages klaar",
   "TIME": "Tijd",
   "AMOUNT": "Aantal",
   "FILE TYPE": "Bestandstype",
@@ -639,6 +640,18 @@
   "SHOW ANIMAL CARD": "Toon dierkaart",
   "THIS ANIMAL HAS NO WEIGHT MEASUREMENTS": "Dit dier heeft geen gewichtmetingen",
   "THIS ANIMAL HAS NO BREED VALUES": "Dit dier heeft geen fokwaarden",
-  "BREED VALUES": "Fokwaarden"
+  "BREED VALUES": "Fokwaarden",
+  "REPORT_ANNUAL_ACTIVE_LIVE_STOCK": "Stallijst rapportage",
+  "REPORT_ANNUAL_TE_100": "",
+  "REPORT_FERTILIZER_ACCOUNTING": "Kunstmest rapportage",
+  "REPORT_INBREEDING_COEFFICIENT": "Inteeltcoefficient rapportage",
+  "REPORT_PEDIGREE_CERTIFICATE": "Stamboom certificering rapportage",
+  "REPORT_ANIMALS_OVERVIEW": "Dieroverzicht rapportage",
+  "REPORT_ANNUAL_ACTIVE_LIVE_STOCK_RAM_MATES": "Stallijst rapportage",
+  "REPORT_OFF_SPRING": "Nakomelingen rapportage",
+  "REPORT_PEDIGREE_REGISTER_OVERVIEW": "Stamboom rapportage",
+  "REPORT_UNKNOWN": "Onbekende rapportage",
+  "END_TIME": "Verwerkt op",
+  "START_TIME": "Gestart op"
 }
 

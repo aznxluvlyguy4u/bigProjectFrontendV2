@@ -267,6 +267,7 @@ export function CreateTranslateLoader(http: HttpClient) {
     PageLoadingSpinnerComponent,
     InsideComponentLoadingSpinnerComponent,
     ButtonPrimaryComponent,
+      ReportModalComponent,
   ],
   imports: [
       Ng2GoogleChartsModule,
@@ -304,6 +305,7 @@ export function CreateTranslateLoader(http: HttpClient) {
       GoogleChartsBaseService,
       GoogleColumnChartService,
       GoogleLineChartService,
+      ReportService,
     Settings,
     Constants,
     MatSnackBar

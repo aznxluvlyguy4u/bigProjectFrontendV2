@@ -16,6 +16,7 @@ import {Message} from '../../shared/models/message.model';
 import {User} from '../../shared/models/person.model';
 import {JsonResponseModel} from '../../shared/models/json-response.model';
 import {CacheService} from '../../shared/services/settings/cache.service';
+import {ReportService} from '../../shared/services/report/report.service';
 
 @Component({
   templateUrl: './home.component.html'
@@ -25,6 +26,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterContentChecked {
   public isActiveSideMenu = false;
   public isActiveMessageMenu = false;
   public isActiveDownloadModal = false;
+  public isActiveReportModal = false;
   public isActiveDeclareItemsModal = false;
   public isActiveUserMenu = false;
   public messageList = <Message[]> [];
@@ -43,6 +45,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterContentChecked {
               private cache: CacheService, private settings: SettingsService,
               private utils: UtilsService, private zone: NgZone,
               private downloadService: DownloadService,
+              private reportService: ReportService,
               private declareManagerService: DeclareManagerService
   ) {}
 
@@ -224,6 +227,14 @@ export class HomeComponent implements OnInit, OnDestroy, AfterContentChecked {
     this.isActiveDeclareItemsModal = false;
   }
 
+    toggleReportModal() {
+      this.reportService.toggleDownloadModal();
+        this.isActiveMessageMenu = false;
+        this.isActiveUserMenu = false;
+        this.isActiveSideMenu = false;
+        this.isActiveDeclareItemsModal = false;
+    }
+
   toggleDeclareItemsModal() {
     this.declareManagerService.toggleDeclareItemsModal();
     this.isActiveMessageMenu = false;
@@ -239,6 +250,10 @@ export class HomeComponent implements OnInit, OnDestroy, AfterContentChecked {
   isDownloadModalEmpty(): boolean {
     return this.downloadService.isModalEmpty();
   }
+
+    isReportModalEmpty(): boolean {
+        return this.reportService.getDownloadsInModalCount() === 0;
+    }
 
   declareItemsCount(): number {
     return this.declareManagerService.getDeclaresInModalCount();
