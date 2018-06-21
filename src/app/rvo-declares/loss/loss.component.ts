@@ -14,8 +14,8 @@ import {JsonResponseModel} from '../../shared/models/json-response.model';
 export class LossComponent implements OnInit, OnDestroy {
   cleanUpComponent = false;
   loopGetLossErrorList = true;
-  private errorAmount = 0;
-  private selectedRoute: string;
+  public errorAmount = 0;
+  public selectedRoute: string;
 
   constructor(private apiService: NSFOService, private router: Router, private location: Location) {
   }
@@ -32,7 +32,7 @@ export class LossComponent implements OnInit, OnDestroy {
     this.cleanUpComponent = true;
   }
 
-  private getLossErrorList() {
+  public getLossErrorList() {
     this.apiService
       .doGetRequest(API_URI_GET_LOSS_ERRORS)
       .subscribe((res: JsonResponseModel) => {
@@ -58,16 +58,16 @@ export class LossComponent implements OnInit, OnDestroy {
     }, 10 * 1000);
   }
 
-  private navigateTo(route: string) {
+  public navigateTo(route: string) {
     this.selectedRoute = route;
     this.router.navigate([route]);
   }
 
-  private selectRoute(event) {
+  public selectRoute(event) {
     this.navigateTo(event.target.value);
   }
 
-  private isActiveRoute(route: string) {
+  public isActiveRoute(route: string) {
     return this.router.serializeUrl(this.router.createUrlTree([])) === this.router.serializeUrl((this.router.createUrlTree([route])));
   }
 }

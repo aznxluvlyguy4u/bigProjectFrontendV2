@@ -17,10 +17,12 @@ import {JsonResponseModel} from '../../../shared/models/json-response.model';
 })
 
 export class LossHistoryComponent implements OnInit {
-  private lossHistoryList = <LossChangeResponse[]>[];
-  private selected_loss: LossChangeResponse;
-  private modal_display = 'none';
-  private isLoading = true;
+  public lossHistoryList = <LossChangeResponse[]>[];
+  public selected_loss: LossChangeResponse;
+  public modal_display = 'none';
+  public isLoading = true;
+  public page: number;
+  public searchValue: string;
 
   constructor(private apiService: NSFOService, private settings: Settings) {
   }
@@ -29,7 +31,7 @@ export class LossHistoryComponent implements OnInit {
     this.getLossHistoryList();
   }
 
-  private getLossHistoryList() {
+  public getLossHistoryList() {
     this.apiService
       .doGetRequest(API_URI_GET_LOSS_HISTORY)
       .subscribe((res: JsonResponseModel) => {
@@ -52,20 +54,20 @@ export class LossHistoryComponent implements OnInit {
       );
   }
 
-  private selectLoss(event) {
+  public selectLoss(event) {
     this.selected_loss = <LossChangeResponse> event;
     this.openModal();
   }
 
-  private openModal() {
+  public openModal() {
     this.modal_display = 'block';
   }
 
-  private closeModal() {
+  public closeModal() {
     this.modal_display = 'none';
   }
 
-  private revokeLoss() {
+  public revokeLoss() {
     this.apiService
       .doPostRequest(API_URI_REVOKE_DECLARATION, this.selected_loss)
       .subscribe(

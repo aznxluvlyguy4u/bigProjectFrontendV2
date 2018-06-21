@@ -16,7 +16,7 @@ export class TagReplacementHistoryRowComponent {
   constructor() {
   }
 
-  private sendRevokeRequest() {
+  public sendRevokeRequest() {
     this.revokeTagReplacement.emit(this.tagReplacement);
   }
 }

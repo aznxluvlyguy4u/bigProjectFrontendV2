@@ -22,18 +22,18 @@ export class BirthErrorRowComponent implements AfterViewChecked {
   @Input() birth_index: number;
   @Output() removeBirth = new EventEmitter();
   @Output() revokeLitter = new EventEmitter();
-  private editMode = false;
-  private popupIsLoaded = false;
-  private temp_birth: BirthErrorResponse;
-  private form_valid = true;
-  private form: FormGroup;
-  private view_date_format: string;
-  private view_datetime_format;
-  private model_datetime_format;
+  public editMode = false;
+  public popupIsLoaded = false;
+  public temp_birth: BirthErrorResponse;
+  public form_valid = true;
+  public form: FormGroup;
+  public view_date_format: string;
+  public view_datetime_format;
+  public model_datetime_format;
 
   constructor(private fb: FormBuilder,
               private apiService: NSFOService,
-              private constants: Constants,
+              public constants: Constants,
               private settings: Settings) {
     this.view_datetime_format = this.settings.VIEW_DATE_FORMAT;
     this.model_datetime_format = this.settings.MODEL_DATETIME_FORMAT;
@@ -55,7 +55,7 @@ export class BirthErrorRowComponent implements AfterViewChecked {
     }
   }
 
-  private sendChangeRequest() {
+  public sendChangeRequest() {
     if (this.form.valid) {
       this.form_valid = true;
       this.editMode = false;
@@ -77,11 +77,11 @@ export class BirthErrorRowComponent implements AfterViewChecked {
     }
   }
 
-  private sendRevokeRequest() {
+  public sendRevokeRequest() {
     this.revokeLitter.emit(this.birth);
   }
 
-  private sendRemoveErrorRequest() {
+  public sendRemoveErrorRequest() {
     const request = {
       'is_removed_by_user': true,
       'request_id': this.birth.request_id
@@ -95,7 +95,7 @@ export class BirthErrorRowComponent implements AfterViewChecked {
     this.removeBirth.emit(this.birth);
   }
 
-  private enableEditing() {
+  public enableEditing() {
     if (this.editMode) {
       this.cancelEditing();
     }
@@ -103,12 +103,12 @@ export class BirthErrorRowComponent implements AfterViewChecked {
     this.temp_birth = _.clone(this.birth);
   }
 
-  private cancelEditing() {
+  public cancelEditing() {
     this.editMode = false;
     this.birth = this.temp_birth;
   }
 
-  private stringAsViewDateTime(date) {
+  public stringAsViewDateTime(date) {
     return moment(date).format(this.settings.VIEW_DATETIME_FORMAT);
   }
 }

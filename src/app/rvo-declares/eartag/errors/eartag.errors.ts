@@ -12,12 +12,13 @@ import {JsonResponseModel} from '../../../shared/models/json-response.model';
   templateUrl: './eartag.errors.html',
 })
 export class EartagErrorsComponent implements OnInit {
-  private eartagErrorList = <EartagErrorResponse[]>[];
-  private error_modal_display = 'none';
-  private error_message = '';
-  private error_number = '';
-  private isLoading = true;
-  private showHiddenMessages = false;
+  public eartagErrorList = <EartagErrorResponse[]>[];
+  public error_modal_display = 'none';
+  public error_message = '';
+  public error_number = '';
+  public isLoading = true;
+  public showHiddenMessages = false;
+  public page: number;
 
   constructor(private apiService: NSFOService, private settings: SettingsService) {
   }
@@ -26,7 +27,7 @@ export class EartagErrorsComponent implements OnInit {
     this.getEartagErrorList();
   }
 
-  private getEartagErrorList() {
+  public getEartagErrorList() {
     this.apiService
       .doGetRequest(API_URI_GET_EARTAGS_ERRORS)
       .subscribe((res: JsonResponseModel) => {
@@ -39,28 +40,28 @@ export class EartagErrorsComponent implements OnInit {
       );
   }
 
-  private displayHiddenMessages() {
+  public displayHiddenMessages() {
     this.showHiddenMessages = !this.showHiddenMessages;
   }
 
-  private showError(event) {
+  public showError(event) {
     this.error_message = event.error.message;
     this.error_number = event.error.pedigree;
     this.error_number = event.error.uln;
     this.openErrorModal();
   }
 
-  private removeEartag(event) {
+  public removeEartag(event) {
     const item = <EartagErrorResponse> event;
     const index = this.eartagErrorList.indexOf(item);
     this.eartagErrorList.splice(index, 1);
   }
 
-  private openErrorModal() {
+  public openErrorModal() {
     this.error_modal_display = 'block';
   }
 
-  private closeErrorModal() {
+  public closeErrorModal() {
     this.error_modal_display = 'none';
   }
 }

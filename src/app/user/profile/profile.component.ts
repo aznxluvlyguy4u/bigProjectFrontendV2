@@ -7,7 +7,7 @@ import {Router} from '@angular/router';
 })
 
 export class ProfileComponent {
-  private selectedRoute: string;
+  public selectedRoute: string;
 
   navLinks: {label: string, path: string}[] = [
     {
@@ -29,16 +29,16 @@ export class ProfileComponent {
     router.navigate(['/main/profile/company']);
   }
 
-  private navigateTo(route: string) {
+  public navigateTo(route: string) {
     this.selectedRoute = route;
     this.router.navigate([route]);
   }
 
-  private selectRoute(event) {
+  public selectRoute(event) {
     this.navigateTo(event.target.value);
   }
 
-  private isActiveRoute(route: string) {
+  public isActiveRoute(route: string) {
     return this.router.serializeUrl(this.router.createUrlTree([])) === this.router.serializeUrl((this.router.createUrlTree([route])));
   }
 }

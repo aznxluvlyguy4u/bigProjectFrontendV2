@@ -35,7 +35,7 @@ export class MateHistoryRowComponent {
     });
   }
 
-  private sendChangeRequest() {
+  public sendChangeRequest() {
     if (this.form.valid) {
       this.isSending = true;
       let newMate: MateChangeResponse = new MateChangeResponse();
@@ -78,11 +78,11 @@ export class MateHistoryRowComponent {
     }
   }
 
-  private sendRevokeRequest() {
+  public sendRevokeRequest() {
     this.revokeMate.emit(this.mate);
   }
 
-  private enableEditing() {
+  public enableEditing() {
     if (this.editMode) {
       this.cancelEditing();
     }
@@ -102,16 +102,16 @@ export class MateHistoryRowComponent {
     }
   }
 
-  private cancelEditing() {
+  public cancelEditing() {
     this.editMode = false;
     this.mate = this.temp_mate;
   }
 
-  private stringAsViewDate(date) {
+  public stringAsViewDate(date) {
     return moment(date).format(this.settings.getViewDateFormat());
   }
 
-  private stringAsViewDateTime(date) {
+  public stringAsViewDateTime(date) {
     return moment(date).format(this.settings.getViewDateTimeFormat());
   }
 }

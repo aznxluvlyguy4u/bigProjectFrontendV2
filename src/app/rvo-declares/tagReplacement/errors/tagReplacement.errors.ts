@@ -1,7 +1,7 @@
 import * as moment from 'moment';
 import * as _ from 'lodash';
 
-import {Component, OnInit} from '@angular/core';
+import {Component, EventEmitter, OnInit} from '@angular/core';
 import {NSFOService} from '../../../shared/services/nsfo-api/nsfo.service';
 import {SettingsService} from '../../../shared/services/settings/settings.service';
 import {API_URI_GET_TAG_REPLACEMENT_ERRORS} from '../../../shared/services/nsfo-api/nsfo.settings';
@@ -16,9 +16,10 @@ import {JsonResponseModel} from '../../../shared/models/json-response.model';
 })
 
 export class TagReplacementErrorsComponent implements OnInit {
-  private tagReplacementErrorList = <TagReplacementErrorResponse[]>[];
-  private isLoading = true;
-  private showHiddenMessages = false;
+  public tagReplacementErrorList = <TagReplacementErrorResponse[]>[];
+  public isLoading = true;
+  public showHiddenMessages = false;
+  public page: number;
 
   constructor(private nsfo: NSFOService, private settings: SettingsService) {
   }
@@ -27,7 +28,7 @@ export class TagReplacementErrorsComponent implements OnInit {
     this.getTagReplacementErrorList();
   }
 
-  private getTagReplacementErrorList() {
+  public getTagReplacementErrorList() {
     this.nsfo
       .doGetRequest(API_URI_GET_TAG_REPLACEMENT_ERRORS)
       .subscribe(
@@ -48,13 +49,13 @@ export class TagReplacementErrorsComponent implements OnInit {
         });
   }
 
-  private revokeTagReplacement(event) {
+  public revokeTagReplacement(event) {
     const item = <TagReplacementErrorResponse> event;
     item.is_removed_by_user = true;
     this.tagReplacementErrorList = _.orderBy(this.tagReplacementErrorList, ['log_date'], ['desc']);
   }
 
-  private displayHiddenMessages() {
+  public displayHiddenMessages() {
     this.showHiddenMessages = !this.showHiddenMessages;
   }
 }

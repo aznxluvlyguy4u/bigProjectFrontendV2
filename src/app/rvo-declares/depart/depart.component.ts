@@ -13,10 +13,10 @@ import {JsonResponseModel} from '../../shared/models/json-response.model';
 })
 
 export class DepartComponent implements OnInit, OnDestroy {
-  private errorAmount = 0;
-  private selectedRoute: string;
-  private cleanUpComponent = false;
-  private loopGetDepartErrorList = true;
+  public errorAmount = 0;
+  public selectedRoute: string;
+  public cleanUpComponent = false;
+  public loopGetDepartErrorList = true;
 
   constructor(private apiService: NSFOService, private router: Router, private location: Location) {
   }
@@ -33,7 +33,7 @@ export class DepartComponent implements OnInit, OnDestroy {
     this.cleanUpComponent = true;
   }
 
-  private getDepartErrorList() {
+  public getDepartErrorList() {
     this.apiService
       .doGetRequest(API_URI_GET_DEPARTS_ERRORS)
       .subscribe((res: JsonResponseModel) => {
@@ -66,16 +66,16 @@ export class DepartComponent implements OnInit, OnDestroy {
     }, 10 * 1000);
   }
 
-  private navigateTo(route: string) {
+  public navigateTo(route: string) {
     this.selectedRoute = route;
     this.router.navigate([route]);
   }
 
-  private selectRoute(event) {
+  public selectRoute(event) {
     this.navigateTo(event.target.value);
   }
 
-  private isActiveRoute(route: string) {
+  public isActiveRoute(route: string) {
     return this.router.serializeUrl(this.router.createUrlTree([])) === this.router.serializeUrl((this.router.createUrlTree([route])));
   }
 }

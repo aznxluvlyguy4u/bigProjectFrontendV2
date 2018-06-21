@@ -24,27 +24,27 @@ export class ExteriorComponent implements OnInit, AfterViewInit, OnChanges {
   @Input() uln: string;
   @Output() getAnimalDetails = new EventEmitter();
 
-  private inspectors: User[] = [];
+  public inspectors: User[] = [];
 
-  private showExteriorModal = false;
-  private exteriorForm: FormGroup;
-  private isValidExteriorForm = true;
-  private isRequestingExterior = false;
-  private hasServerError = false;
+  public showExteriorModal = false;
+  public exteriorForm: FormGroup;
+  public isValidExteriorForm = true;
+  public isRequestingExterior = false;
+  public hasServerError = false;
 
-  private isExteriorEditMode = false;
-  private kinds: string[] = [];
-  private selectedExterior: Exterior = new Exterior();
-  private isAdmin = false;
-  private tempExterior: Exterior = new Exterior();
-  private displayExteriorModal = 'none';
-  // private selectedExteriorDate = '';
-  private selectedDate: string;
-  private invalidMeasurementDate = false;
+  public isExteriorEditMode = false;
+  public kinds: string[] = [];
+  public selectedExterior: Exterior = new Exterior();
+  public isAdmin = false;
+  public tempExterior: Exterior = new Exterior();
+  public displayExteriorModal = 'none';
+  // public selectedExteriorDate = '';
+  public selectedDate: string;
+  public invalidMeasurementDate = false;
 
-  private initDate: string;
+  public initDate: string;
 
-  private showConfirmDeleteModal = false;
+  public showConfirmDeleteModal = false;
 
   constructor(private apiService: NSFOService,
               private settings: SettingsService,
@@ -90,7 +90,7 @@ export class ExteriorComponent implements OnInit, AfterViewInit, OnChanges {
 
   }
 
-  private getExteriorKinds() {
+  public getExteriorKinds() {
     this.apiService
       .doGetRequest(API_URI_MEASUREMENTS + '/' + this.uln + '/exteriors/kinds')
       .subscribe(
@@ -103,7 +103,7 @@ export class ExteriorComponent implements OnInit, AfterViewInit, OnChanges {
       );
   }
 
-  private getExteriorKindsForEdit(measurementDate: string) {
+  public getExteriorKindsForEdit(measurementDate: string) {
     this.apiService
       .doGetRequest(API_URI_MEASUREMENTS + '/' + this.uln + '/exteriors/kinds/' + measurementDate)
       .subscribe(
@@ -116,7 +116,7 @@ export class ExteriorComponent implements OnInit, AfterViewInit, OnChanges {
       );
   }
 
-  private getInspectors() {
+  public getInspectors() {
     if (!this.settings.isAdmin()) {
         return;
     }
@@ -133,7 +133,7 @@ export class ExteriorComponent implements OnInit, AfterViewInit, OnChanges {
       );
   }
 
-  private doPostExteriorRequest() {
+  public doPostExteriorRequest() {
     this.isValidExteriorForm = true;
     this.isRequestingExterior = true;
     this.hasServerError = false;
@@ -166,15 +166,15 @@ export class ExteriorComponent implements OnInit, AfterViewInit, OnChanges {
     }
   }
 
-  private openConfirmDeleteModal() {
+  public openConfirmDeleteModal() {
     this.showConfirmDeleteModal = true;
   }
 
-  private closeConfirmDeleteModal() {
+  public closeConfirmDeleteModal() {
     this.showConfirmDeleteModal = false;
   }
 
-  private doPutExteriorDeactivateRequest() {
+  public doPutExteriorDeactivateRequest() {
     this.isRequestingExterior = true;
     this.hasServerError = false;
 
@@ -210,7 +210,7 @@ export class ExteriorComponent implements OnInit, AfterViewInit, OnChanges {
   }
 
 
-  private doPutExteriorRequest() {
+  public doPutExteriorRequest() {
     this.isValidExteriorForm = true;
     this.isRequestingExterior = true;
     this.hasServerError = false;
@@ -249,12 +249,12 @@ export class ExteriorComponent implements OnInit, AfterViewInit, OnChanges {
     }
   }
 
-  private closeExteriorModal() {
+  public closeExteriorModal() {
     this.showExteriorModal = false;
     this.displayExteriorModal = 'none';
   }
 
-  private openExteriorModal(editMode: boolean = false) {
+  public openExteriorModal(editMode: boolean = false) {
     this.isValidExteriorForm = true;
     this.hasServerError = false;
     this.isExteriorEditMode = editMode;
@@ -281,7 +281,7 @@ export class ExteriorComponent implements OnInit, AfterViewInit, OnChanges {
     this.selectedExterior = _.find(this.exteriors, ['measurement_date', value]);
   }
 
-  private exteriorMeasurementDateExists(measurement_date: string): boolean {
+  public exteriorMeasurementDateExists(measurement_date: string): boolean {
     let alreadyExists = false;
 
     this.exteriors.forEach(
@@ -302,15 +302,15 @@ export class ExteriorComponent implements OnInit, AfterViewInit, OnChanges {
     return alreadyExists;
   }
 
-  private stringAsViewDate(date): string {
+  public stringAsViewDate(date): string {
     return moment(date).format(this.settings.getViewDateFormat());
   }
 
-  private stringAsViewDateTime(date: string): string {
+  public stringAsViewDateTime(date: string): string {
     return moment(date).format(this.settings.getViewDateTimeFormat());
   }
 
-  private stringAsModelDate(date: string): string {
+  public stringAsModelDate(date: string): string {
     return moment(date).format(this.settings.getModelDateFormat());
   }
 }

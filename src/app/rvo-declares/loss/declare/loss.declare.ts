@@ -15,20 +15,20 @@ import {JsonResponseModel} from '../../../shared/models/json-response.model';
 })
 
 export class LossDeclareComponent implements OnInit {
-  private options_reason_of_loss = LOSS_REASON_OF_LOSS;
-  private ubn_processors = [];
+  public options_reason_of_loss = LOSS_REASON_OF_LOSS;
+  public ubn_processors = [];
 
-  private isSendingDeclare = false;
-  private isValidForm = true;
+  public isSendingDeclare = false;
+  public isValidForm = true;
 
-  private view_date_format;
-  private model_datetime_format;
+  public view_date_format;
+  public model_datetime_format;
 
-  private errorMessage: string;
+  public errorMessage: string;
 
-  private form: FormGroup;
+  public form: FormGroup;
 
-  private modalDisplay: string;
+  public modalDisplay: string;
 
   constructor(private fb: FormBuilder,
               private nsfo: NSFOService,
@@ -49,7 +49,7 @@ export class LossDeclareComponent implements OnInit {
     this.getUBNProcessors();
   }
 
-  private getUBNProcessors() {
+  public getUBNProcessors() {
     this.nsfo.doGetRequest(API_URI_GET_UBN_PROCESSORS)
       .subscribe(
           (res: JsonResponseModel) => {
@@ -61,7 +61,7 @@ export class LossDeclareComponent implements OnInit {
       );
   }
 
-  private declareLoss(event: AnimalsOverviewSelection) {
+  public declareLoss(event: AnimalsOverviewSelection) {
     const animals = event.animals;
     const selectionList = event.selectionList;
 
@@ -110,11 +110,11 @@ export class LossDeclareComponent implements OnInit {
     }
   }
 
-  private openModal() {
+  public openModal() {
     this.modalDisplay = 'block';
   }
 
-  private closeModal() {
+  public closeModal() {
     this.modalDisplay = 'none';
   }
 }

@@ -15,7 +15,7 @@ export class ReportFertilizerAccountingComponent implements OnInit {
   referenceDateString: string;
   initialValuesChanged = new EventEmitter<boolean>();
 
-  constructor(private downloadService: DownloadService, private settings: SettingsService) {}
+  constructor(private downloadService: DownloadService, public settings: SettingsService) {}
 
   ngOnInit() {
     this.selectedFileType = this.getFileTypesList()[0];

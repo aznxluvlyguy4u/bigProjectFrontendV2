@@ -29,23 +29,23 @@ export class EartagDeclareComponent implements OnInit, OnDestroy {
   birthRevokesInProgress: number;
   areBirthsInProgress: boolean;
   statusHasBeenRetrieved: boolean;
-  private eartags_list = [];
-  private selected_eartags_list = <EartagRequest[]> [];
-  private selected_eartag: EartagRequest;
-  private sync_in_progress = false;
-  private form_valid = true;
-  private form_single_valid = true;
-  private form: FormGroup;
-  private form_single_tag: FormGroup;
-  private modal_display = 'none';
-  private modal_all_display = 'none';
-  private all_eartags_in_progress = false;
-  private eartag_in_progress = false;
-  private order_column_uln_asc = true;
-  private error_message = '';
-  private loopGetEartagsSyncStatusOverview = true;
-
-  private loopSyncEartagsList = true;
+  public eartags_list = [];
+  public selected_eartags_list = <EartagRequest[]> [];
+  public selected_eartag: EartagRequest;
+  public sync_in_progress = false;
+  public form_valid = true;
+  public form_single_valid = true;
+  public form: FormGroup;
+  public form_single_tag: FormGroup;
+  public modal_display = 'none';
+  public modal_all_display = 'none';
+  public all_eartags_in_progress = false;
+  public eartag_in_progress = false;
+  public order_column_uln_asc = true;
+  public error_message = '';
+  public loopGetEartagsSyncStatusOverview = true;
+  public searchValue: string;
+  public loopSyncEartagsList = true;
 
   public isLoading: boolean;
 
@@ -149,7 +149,7 @@ export class EartagDeclareComponent implements OnInit, OnDestroy {
       );
   }
 
-  private syncEartagsList() {
+  public syncEartagsList() {
     this.sync_in_progress = true;
     this.apiService
       .doPostRequest(API_URI_SYNC_EARTAGS, {
@@ -164,7 +164,7 @@ export class EartagDeclareComponent implements OnInit, OnDestroy {
       });
   }
 
-  private getEartagsSyncStatusOverview() {
+  public getEartagsSyncStatusOverview() {
     this.apiService
       .doGetRequest(API_URI_SYNC_EARTAGS + '-status')
       .subscribe(
@@ -187,7 +187,7 @@ export class EartagDeclareComponent implements OnInit, OnDestroy {
     }, 10 * 1000);
   }
 
-  private selectEartag(eartag, event) {
+  public selectEartag(eartag, event) {
     if (event.target.checked) {
       eartag.selected = true;
       this.selected_eartags_list.push(eartag);
@@ -200,7 +200,7 @@ export class EartagDeclareComponent implements OnInit, OnDestroy {
     }
   }
 
-  private selectAllEartags(event) {
+  public selectAllEartags(event) {
     if (event.target.checked) {
       for (const eartag of this.eartags_list) {
         eartag.selected = true;
@@ -217,7 +217,7 @@ export class EartagDeclareComponent implements OnInit, OnDestroy {
     }
   }
 
-  private setOrderULN() {
+  public setOrderULN() {
     this.order_column_uln_asc = !this.order_column_uln_asc;
 
     if (this.order_column_uln_asc) {
@@ -227,7 +227,7 @@ export class EartagDeclareComponent implements OnInit, OnDestroy {
     }
   }
 
-  private sendEartagTransferRequest() {
+  public sendEartagTransferRequest() {
     if (this.form_single_tag.valid) {
       this.form_single_valid = true;
       this.eartag_in_progress = true;
@@ -268,7 +268,7 @@ export class EartagDeclareComponent implements OnInit, OnDestroy {
     }
   }
 
-  private sendAllEartagTransferRequest() {
+  public sendAllEartagTransferRequest() {
     if (this.form.valid) {
       this.form_valid = true;
       this.all_eartags_in_progress = true;
@@ -312,20 +312,20 @@ export class EartagDeclareComponent implements OnInit, OnDestroy {
     }
   }
 
-  private openModal() {
+  public openModal() {
     this.modal_display = 'block';
   }
 
-  private closeModal() {
+  public closeModal() {
     this.modal_display = 'none';
     this.error_message = '';
   }
 
-  private openModalAll() {
+  public openModalAll() {
     this.modal_all_display = 'block';
   }
 
-  private closeModalAll() {
+  public closeModalAll() {
     this.modal_all_display = 'none';
     this.error_message = '';
   }

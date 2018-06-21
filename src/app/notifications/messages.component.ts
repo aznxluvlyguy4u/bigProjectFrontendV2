@@ -17,10 +17,11 @@ import {NgxPaginationModule} from 'ngx-pagination';
 })
 
 export class MessagesComponent implements OnInit {
-  private messages: Message[] = [];
-  private selectedMessage: Message = null;
-  private initMessageNumber = '';
-  private modalDisplay = 'none';
+  public messages: Message[] = [];
+  public selectedMessage: Message = null;
+  public initMessageNumber = '';
+  public modalDisplay = 'none';
+  public page: number;
 
   constructor(private route: ActivatedRoute,
               private nsfo: NSFOService,
@@ -51,39 +52,39 @@ export class MessagesComponent implements OnInit {
       );
   }
 
-  private getMessages() {
+  public getMessages() {
     this.utils.getMessages()
       .subscribe(res => {
         this.messages = res;
       });
   }
 
-  private changeReadStatus(message: Message): void {
+  public changeReadStatus(message: Message): void {
     message.is_read = true;
     this.nsfo.doPutRequest(API_URI_CHANGE_MESSAGES_READ_STATUS + '/' + message.message_id, {})
       .subscribe(res => {
       });
   }
 
-  private openMessage(message: Message): void {
+  public openMessage(message: Message): void {
     this.selectedMessage = message;
     this.changeReadStatus(message);
     this.openModal();
   }
 
-  private navigateTo(route: string) {
+  public navigateTo(route: string) {
     this.router.navigate([route]);
   }
 
-  private stringAsViewDateTime(date) {
+  public stringAsViewDateTime(date) {
     return moment(date).format(this.settings.getViewDateTimeFormat());
   }
 
-  private openModal() {
+  public openModal() {
     this.modalDisplay = 'block';
   }
 
-  private closeModal() {
+  public closeModal() {
     this.modalDisplay = 'none';
   }
 }

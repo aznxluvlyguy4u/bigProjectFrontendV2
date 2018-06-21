@@ -20,6 +20,7 @@ export class ArrivalErrorsComponent implements OnInit {
   public error_number = '';
   public isLoading = true;
   public showHiddenMessages = false;
+  public page: number;
 
   constructor(private apiService: NSFOService, private settings: Settings) {
   }
@@ -28,7 +29,7 @@ export class ArrivalErrorsComponent implements OnInit {
     this.getArrivalErrorList();
   }
 
-  private getArrivalErrorList() {
+  public getArrivalErrorList() {
     this.apiService
       .doGetRequest(API_URI_GET_ARRIVALS_ERRORS)
       .subscribe((res: JsonResponseModel) => {
@@ -58,28 +59,28 @@ export class ArrivalErrorsComponent implements OnInit {
         });
   }
 
-  private displayHiddenMessages() {
+  public displayHiddenMessages() {
     this.showHiddenMessages = !this.showHiddenMessages;
   }
 
-  private showError(event) {
+  public showError(event) {
     this.error_message = event.error.message;
     this.error_number = event.error.pedigree;
     this.error_number = event.error.uln;
     this.openErrorModal();
   }
 
-  private removeArrival(event) {
+  public removeArrival(event) {
     const item = <ArrivalErrorResponse> event;
     item.is_removed_by_user = true;
     this.arrivalErrorList = _.orderBy(this.arrivalErrorList, ['log_date'], ['desc']);
   }
 
-  private openErrorModal() {
+  public openErrorModal() {
     this.error_modal_display = 'block';
   }
 
-  private closeErrorModal() {
+  public closeErrorModal() {
     this.error_modal_display = 'none';
   }
 }
