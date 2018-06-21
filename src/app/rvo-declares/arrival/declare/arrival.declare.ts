@@ -81,7 +81,7 @@ export class ArrivalDeclareComponent implements OnInit, OnDestroy, AfterViewInit
     this.countryCodeObs.unsubscribe();
   }
 
-  private getTempArrivalList() {
+  public getTempArrivalList() {
     if (sessionStorage['arrival_list']) {
       const arrival_list = <ArrivalRequest[]> JSON.parse(sessionStorage['arrival_list']);
       for (const arrival of arrival_list) {
@@ -90,14 +90,14 @@ export class ArrivalDeclareComponent implements OnInit, OnDestroy, AfterViewInit
     }
   }
 
-  private getCountryCodeList() {
+  public getCountryCodeList() {
     this.countryCodeObs = this.settings.getCountryList()
       .subscribe(countryCodeList => {
         this.country_code_list = countryCodeList[0];
       });
   }
 
-  private addNewArrival() {
+  public addNewArrival() {
     if (this.form.valid) {
       this.form_valid = true;
 
@@ -135,13 +135,13 @@ export class ArrivalDeclareComponent implements OnInit, OnDestroy, AfterViewInit
     }
   }
 
-  private removeArrival(item) {
+  public removeArrival(item) {
     const index = this.arrival_list.indexOf(item);
     this.arrival_list.splice(index, 1);
     sessionStorage.setItem('arrival_list', JSON.stringify(this.arrival_list));
   }
 
-  private declareArrivals() {
+  public declareArrivals() {
     this.in_progress = true;
 
     if (this.arrival_list.length > 0) {
@@ -182,27 +182,27 @@ export class ArrivalDeclareComponent implements OnInit, OnDestroy, AfterViewInit
     }
   }
 
-  private clearUBNValue() {
+  public clearUBNValue() {
     this.import_animal.get('ubn_previous_owner').setValue('');
   }
 
-  private clearCertificateValue() {
+  public clearCertificateValue() {
     this.import_animal.get('certificate_number').setValue('');
   }
 
-  private openModal() {
+  public openModal() {
     this.modal_display = 'block';
   }
 
-  private closeModal() {
+  public closeModal() {
     this.modal_display = 'none';
   }
 
-  private stringAsDate(date) {
+  public stringAsDate(date) {
     return moment(date).format(this.settings.getViewDateFormat());
   }
 
-  private getToday() {
+  public getToday() {
     moment().format(this.settings.getViewDateFormat());
   }
 }

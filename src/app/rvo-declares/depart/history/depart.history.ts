@@ -14,10 +14,12 @@ import {JsonResponseModel} from '../../../shared/models/json-response.model';
 })
 
 export class DepartHistoryComponent implements OnInit {
-  private departHistoryList = <DepartChangeResponse[]>[];
-  private selected_depart: DepartChangeResponse;
-  private modal_display = 'none';
-  private isLoading = true;
+  public departHistoryList = <DepartChangeResponse[]>[];
+  public selected_depart: DepartChangeResponse;
+  public modal_display = 'none';
+  public isLoading = true;
+  public page: number;
+  public searchValue: string;
 
   constructor(private apiService: NSFOService, private settings: Settings) {
   }
@@ -26,7 +28,7 @@ export class DepartHistoryComponent implements OnInit {
     this.getDepartHistoryList();
   }
 
-  private getDepartHistoryList() {
+  public getDepartHistoryList() {
     this.apiService
       .doGetRequest(API_URI_GET_DEPARTS_HISTORY)
       .subscribe((res: JsonResponseModel) => {
@@ -58,20 +60,20 @@ export class DepartHistoryComponent implements OnInit {
         });
   }
 
-  private selectDepart(event) {
+  public selectDepart(event) {
     this.selected_depart = <DepartChangeResponse> event;
     this.openModal();
   }
 
-  private openModal() {
+  public openModal() {
     this.modal_display = 'block';
   }
 
-  private closeModal() {
+  public closeModal() {
     this.modal_display = 'none';
   }
 
-  private revokeDepart() {
+  public revokeDepart() {
     this.apiService
       .doPostRequest(API_URI_REVOKE_DECLARATION, this.selected_depart)
       .subscribe(

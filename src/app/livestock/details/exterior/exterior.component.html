@@ -38,8 +38,8 @@
       <label class="middle">{{ 'HEAD' | translate }}</label>
     </div>
     <div class="medium-6 columns">
-      <input *ngIf="selectedExterior.skull == 0" type="text" disabled>
-      <input type="number" *ngIf="selectedExterior.skull != 0" [(ngModel)]="selectedExterior.skull" disabled>
+      <input *ngIf="selectedExterior.skull === 0" type="text" disabled>
+      <input type="number" *ngIf="selectedExterior.skull !== 0" [(ngModel)]="selectedExterior.skull" disabled>
     </div>
   </div>
 
@@ -49,8 +49,8 @@
       <label class="middle">{{ 'PROGRESS' | translate }}</label>
     </div>
     <div class="medium-6 columns">
-      <input *ngIf="selectedExterior.progress == 0" type="text" disabled>
-      <input *ngIf="selectedExterior.progress != 0" type="number" [(ngModel)]="selectedExterior.progress" disabled>
+      <input *ngIf="selectedExterior.progress === 0" type="text" disabled>
+      <input *ngIf="selectedExterior.progress !== 0" type="number" [(ngModel)]="selectedExterior.progress" disabled>
     </div>
   </div>
 

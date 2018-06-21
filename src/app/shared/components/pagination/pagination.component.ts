@@ -21,8 +21,8 @@ export class PaginationComponent implements OnInit, OnChanges, AfterViewInit, On
   @Output() pageChange: EventEmitter<number> = new EventEmitter<number>();
   @ViewChild('template') template;
   pages: IPage[] = [];
-  private hasTemplate = false;
-  private changeSub: Subscription;
+  public hasTemplate = false;
+  public changeSub: Subscription;
 
   constructor(private service: PaginationService) {
     this.changeSub = this.service.change
@@ -33,7 +33,7 @@ export class PaginationComponent implements OnInit, OnChanges, AfterViewInit, On
       });
   }
 
-  private _directionLinks = true;
+  public _directionLinks = true;
 
   @Input()
   get directionLinks(): boolean {
@@ -44,7 +44,7 @@ export class PaginationComponent implements OnInit, OnChanges, AfterViewInit, On
     this._directionLinks = !!value && <any>value !== 'false';
   }
 
-  private _autoHide = false;
+  public _autoHide = false;
 
   @Input()
   get autoHide(): boolean {
@@ -130,7 +130,7 @@ export class PaginationComponent implements OnInit, OnChanges, AfterViewInit, On
    * NgxPaginationModule.change stream emits a value matching the current ID, or when any of the
    * input values changes.
    */
-  private updatePageLinks() {
+  public updatePageLinks() {
     const inst = this.service.getInstance(this.id);
     this.pages = this.createPageArray(inst.currentPage, inst.itemsPerPage, inst.totalItems, this.maxSize);
 
@@ -144,7 +144,7 @@ export class PaginationComponent implements OnInit, OnChanges, AfterViewInit, On
    * Checks that the instance.currentPage property is within bounds for the current page range.
    * If not, return a correct value for currentPage, or the current value if OK.
    */
-  private outOfBoundCorrection(instance: PaginationInstance): number {
+  public outOfBoundCorrection(instance: PaginationInstance): number {
     const totalPages = Math.ceil(instance.totalItems / instance.itemsPerPage);
     if (totalPages < instance.currentPage && 0 < totalPages) {
       return totalPages;
@@ -158,7 +158,7 @@ export class PaginationComponent implements OnInit, OnChanges, AfterViewInit, On
   /**
    * Returns an array of IPage objects to use in the pagination controls.
    */
-  private createPageArray(currentPage: number, itemsPerPage: number, totalItems: number, paginationRange: number): IPage[] {
+  public createPageArray(currentPage: number, itemsPerPage: number, totalItems: number, paginationRange: number): IPage[] {
     // paginationRange could be a string if passed from attribute, so cast to number.
     paginationRange = +paginationRange;
     const pages = [];
@@ -195,7 +195,7 @@ export class PaginationComponent implements OnInit, OnChanges, AfterViewInit, On
    * Given the position in the sequence of pagination links [i],
    * figure out what page number corresponds to that position.
    */
-  private calculatePageNumber(i: number, currentPage: number, paginationRange: number, totalPages: number) {
+  public calculatePageNumber(i: number, currentPage: number, paginationRange: number, totalPages: number) {
     const halfWay = Math.ceil(paginationRange / 2);
     if (i === paginationRange) {
       return totalPages;

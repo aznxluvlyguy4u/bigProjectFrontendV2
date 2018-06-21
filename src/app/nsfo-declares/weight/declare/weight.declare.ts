@@ -15,19 +15,19 @@ import {AnimalsOverviewSelection} from '../../../shared/components/livestock/ani
 })
 
 export class WeightDeclareComponent {
-  private isSendingDeclare = false;
-  private isValidForm = true;
+  public isSendingDeclare = false;
+  public isValidForm = true;
 
-  private modalDisplay = 'none';
-  private warningModalDisplay = 'none';
-  private errorMessages: ErrorMessage[] = [];
+  public modalDisplay = 'none';
+  public warningModalDisplay = 'none';
+  public errorMessages: ErrorMessage[] = [];
 
-  private view_date_format;
-  private model_datetime_format;
+  public view_date_format;
+  public model_datetime_format;
 
-  private form: FormGroup;
+  public form: FormGroup;
 
-  private selectedAnimal: Animal;
+  public selectedAnimal: Animal;
 
   request: any;
 
@@ -43,7 +43,7 @@ export class WeightDeclareComponent {
     });
   }
 
-  private declareWeight(event: AnimalsOverviewSelection) {
+  public declareWeight(event: AnimalsOverviewSelection) {
     this.selectedAnimal = event.animals[0];
     this.errorMessages = [];
 
@@ -79,7 +79,7 @@ export class WeightDeclareComponent {
   }
 
 
-  private doDeclareRequest() {
+  public doDeclareRequest() {
     this.selectedAnimal.sending = true;
     this.request = {
       'measurement_date': this.form.get('weight_date').value,
@@ -114,7 +114,7 @@ export class WeightDeclareComponent {
       );
   }
 
-  private isWeightInputValid(animal: Animal) {
+  public isWeightInputValid(animal: Animal) {
     const now = moment();
     const birthDate = moment(animal.date_of_birth, this.settings.getViewDateFormat());
     const dateDifference = now.diff(birthDate, 'months');
@@ -122,19 +122,19 @@ export class WeightDeclareComponent {
     return !(dateDifference < 6 && animal.weight > animal.new_weight);
   }
 
-  private openModal() {
+  public openModal() {
     this.modalDisplay = 'block';
   }
 
-  private closeModal() {
+  public closeModal() {
     this.modalDisplay = 'none';
   }
 
-  private openWarningModal() {
+  public openWarningModal() {
     this.warningModalDisplay = 'block';
   }
 
-  private closeWarningModal() {
+  public closeWarningModal() {
     this.warningModalDisplay = 'none';
   }
 }

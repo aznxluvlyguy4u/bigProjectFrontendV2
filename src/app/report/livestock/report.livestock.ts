@@ -9,7 +9,7 @@ import {FormBuilder, FormControl, FormGroup} from '@angular/forms';
 
 export class ReportLivestockComponent {
 
-  private form: FormGroup;
+  public form: FormGroup;
 
   constructor(private fb: FormBuilder) {
     this.form = fb.group({

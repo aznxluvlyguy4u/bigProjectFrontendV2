@@ -89,6 +89,14 @@ export class BirthErrorResponse extends Animal {
   public error_message: string;
   public request_state: string;
   public date_of_birth: string;
+  public stillborn_count: number;
+  public children: Animal[] = [];
+  public is_pseudo_pregnancy: boolean;
+  public is_abortion: boolean;
+  public father_uln_country_code: string;
+  public father_uln_number: string;
+  public mother_uln_country_code: string;
+  public mother_uln_number: string;
 }
 
 export class LitterDetails {

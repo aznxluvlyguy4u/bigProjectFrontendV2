@@ -17,10 +17,12 @@ import {JsonResponseModel} from '../../../shared/models/json-response.model';
 })
 
 export class BirthHistoryComponent implements OnInit {
-  private litters = <Litter[]>[];
-  private modalDisplay = 'none';
-  private selectedLitter: Litter;
-  private modal_display: string;
+  public litters = <Litter[]>[];
+  public modalDisplay = 'none';
+  public selectedLitter: Litter;
+  public modal_display: string;
+  public page: number;
+  public searchValue: string;
 
   public isLoading: boolean;
 
@@ -31,7 +33,7 @@ export class BirthHistoryComponent implements OnInit {
     this.getBirthHistoryList();
   }
 
-  private getBirthHistoryList() {
+  public getBirthHistoryList() {
     this.isLoading = true;
     this.nsfo
       .doGetRequest(API_URI_GET_BIRTHS_HISTORY)
@@ -47,20 +49,20 @@ export class BirthHistoryComponent implements OnInit {
       );
   }
 
-  private selectLitter(event) {
+  public selectLitter(event) {
     this.selectedLitter = <Litter> event;
     this.openModal();
   }
 
-  private openModal() {
+  public openModal() {
     this.modal_display = 'block';
   }
 
-  private closeModal() {
+  public closeModal() {
     this.modal_display = 'none';
   }
 
-  private revokeLitter() {
+  public revokeLitter() {
     const originalRequestState = this.selectedLitter.request_state;
     this.selectedLitter.request_state = 'REVOKING';
 

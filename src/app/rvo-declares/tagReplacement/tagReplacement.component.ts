@@ -9,6 +9,7 @@ import {Router} from '@angular/router';
 
 export class TagReplacementComponent implements OnInit {
   selectedRoute: string;
+  errorAmount: number; // TODO get errorAmount from TagReplacementErrorsComponent
 
   constructor(private router: Router, private location: Location) {}
 
@@ -19,16 +20,16 @@ export class TagReplacementComponent implements OnInit {
     }
   }
 
-  private navigateTo(route: string) {
+  public navigateTo(route: string) {
     this.selectedRoute = route;
     this.router.navigate([route]);
   }
 
-  private selectRoute(event) {
+  public selectRoute(event) {
     this.navigateTo(event.target.value);
   }
 
-  private isActiveRoute(route: string) {
+  public isActiveRoute(route: string) {
     return this.router.serializeUrl(this.router.createUrlTree([])) === this.router.serializeUrl((this.router.createUrlTree([route])));
   }
 }

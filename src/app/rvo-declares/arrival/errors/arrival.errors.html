@@ -35,11 +35,11 @@
 <pagination-controls (pageChange)="page = $event"></pagination-controls>
 
 <!--ERROR MODAL-->
-<div class="reveal-overlay" [ngStyle]="{'display': modal_display}">
-  <div class="tiny reveal" [ngStyle]="{'display': modal_display}">
+<div class="reveal-overlay" [ngStyle]="{'display': error_modal_display}">
+  <div class="tiny reveal" [ngStyle]="{'display': error_modal_display}">
     <div class="modal-header">
       {{ 'ERROR' | translate }}
-      <button type="button" class="pull-right" aria-label="Close modal" (click)="closeModal()">
+      <button type="button" class="pull-right" aria-label="Close modal" (click)="closeErrorModal()">
         <i class="fa fa-times" aria-hidden="true"></i>
       </button>
     </div>
@@ -47,7 +47,7 @@
       {{ error_message | translate:{value: error_number} }}
     </div>
     <div class="modal-footer">
-      <button class="tiny primary button pull-right" (click)="closeModal()">{{ 'OK' | translate}}</button>
+      <button class="tiny primary button pull-right" (click)="closeErrorModal()">{{ 'OK' | translate}}</button>
     </div>
   </div>
 </div>

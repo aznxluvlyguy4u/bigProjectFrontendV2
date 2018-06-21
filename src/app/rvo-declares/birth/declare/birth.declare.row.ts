@@ -24,12 +24,12 @@ export class BirthDeclareRowComponent implements OnInit {
   @Input() isDisabled: boolean;
   @Output() birthRowEvent = new EventEmitter();
   @Output() selectedTag = new EventEmitter();
-  private form: FormGroup;
-  private ulnSurrogateEnabled = false;
-  private birth_progress_types = BIRTH_PROGRESS_TYPES;
-  private options_lambar_surrogate = LAMBAR_SURROGATE_OPTIONS;
+  public form: FormGroup;
+  public ulnSurrogateEnabled = false;
+  public birth_progress_types = BIRTH_PROGRESS_TYPES;
+  public options_lambar_surrogate = LAMBAR_SURROGATE_OPTIONS;
 
-  constructor(private constants: Constants,
+  constructor(public constants: Constants,
               private apiService: NSFOService) {
     this.form = new FormGroup({
 
@@ -64,7 +64,7 @@ export class BirthDeclareRowComponent implements OnInit {
     );
   }
 
-  private _selectedMother: Animal;
+  public _selectedMother: Animal;
 
   @Input()
   set selectedMother(mother: Animal) {
@@ -109,14 +109,14 @@ export class BirthDeclareRowComponent implements OnInit {
     return false;
   }
 
-  private selectSurrogate(event: Animal) {
+  public selectSurrogate(event: Animal) {
     this.form.get('uln_surrogate').setValue(event.uln_country_code + event.uln_number);
     this.animal.surrogate_mother = new SurrogateMotherByUln();
     this.animal.surrogate_mother.uln_country_code = event.uln_country_code;
     this.animal.surrogate_mother.uln_number = event.uln_number;
   }
 
-  private enableSurrogate(event: Event) {
+  public enableSurrogate(event: Event) {
     const target = event.target;
     if (target.valueOf() === 'SURROGATE') {
       this.form.get('uln_surrogate').validator = Validators.required;
@@ -129,7 +129,7 @@ export class BirthDeclareRowComponent implements OnInit {
     }
   }
 
-  private selectTag(event: EarTag) {
+  public selectTag(event: EarTag) {
     this.selectedTag.emit([this.index, event]);
     this.animal.uln = event.uln;
     this.animal.uln_country_code = event.uln_country_code;

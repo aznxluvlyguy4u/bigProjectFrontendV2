@@ -79,7 +79,7 @@
              class="input-error-msg pull-right">{{ 'CAN NOT BE GREATER THEN 7' | translate }}
         </div>
         <div
-          *ngIf="litter.controls['litter_size']._touched && litter.controls['litter_size'].errors && litter.controls['litter_size'].errors.required"
+          *ngIf="litter.controls['litter_size'].touched && litter.controls['litter_size'].errors && litter.controls['litter_size'].errors.required"
           class="input-error-msg pull-right">{{ 'FILL IN A VALUE' | translate }}
         </div>
       </label>
@@ -94,7 +94,7 @@
              class="input-error-msg pull-right">{{ 'ALIVE AMOUNT MUST BE EQUAL OR LESS THAN LITTER SIZE' | translate }}
         </div>
         <div
-          *ngIf="litter.controls['litter_alive']._touched && litter.controls['litter_alive'].errors && litter.controls['litter_alive'].errors.required"
+          *ngIf="litter.controls['litter_alive'].touched && litter.controls['litter_alive'].errors && litter.controls['litter_alive'].errors.required"
           class="input-error-msg pull-right">{{ 'FILL IN A VALUE' | translate }}
         </div>
       </label>
@@ -219,7 +219,7 @@
 
 <selector #motherSelector [columns]="['ULN', 'PEDIGREE NUMBER']" [list]="suggestedCandidateMothers" [filter]="'FEMALES'"
           [SUGGESTION_LABEL]="'POSSIBLE MOTHER'" [isLoading]="isLoadingCandidateMothers"
-          (selection)="selectMother($event, mateSelector)"></selector>
+          (selection)="selectMother($event)"></selector>
 <selector #fatherSelector [columns]="['ULN', 'PEDIGREE NUMBER']" [list]="suggestedCandidateFathers" [filter]="'MALES'"
           [SUGGESTION_LABEL]="'POSSIBLE FATHER'" [isLoading]="isLoadingCandidateFathers"
           (selection)="selectFather($event)"></selector>

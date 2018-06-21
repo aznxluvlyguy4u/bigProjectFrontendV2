@@ -13,6 +13,7 @@ import { Animal } from '../../shared/models/animal.model';
 export class ReportOffspringComponent {
   defaultFileType = CSV;
   concatBreedValueAndAccuracyColumns = false;
+  lineageProofMaxSelectionCount = 50;
 
   constructor(private downloadService: DownloadService) {}
 

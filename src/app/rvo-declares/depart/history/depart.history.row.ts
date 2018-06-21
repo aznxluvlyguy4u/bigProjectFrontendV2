@@ -21,18 +21,18 @@ export class DepartHistoryRowComponent {
   @Input() depart: DepartChangeResponse;
   @Input() depart_index: number;
   @Output() revokeDepart = new EventEmitter();
-  private editMode = false;
-  private temp_depart: DepartChangeResponse;
-  private form_valid = true;
-  private options_reason_of_depart = DEPART_REASON_OF_DEPART;
-  private view_datetime_format;
-  private view_date_format;
-  private model_datetime_format;
-  private form: FormGroup;
+  public editMode = false;
+  public temp_depart: DepartChangeResponse;
+  public form_valid = true;
+  public options_reason_of_depart = DEPART_REASON_OF_DEPART;
+  public view_datetime_format;
+  public view_date_format;
+  public model_datetime_format;
+  public form: FormGroup;
 
   constructor(private fb: FormBuilder,
               private apiService: NSFOService,
-              private constants: Constants,
+              public constants: Constants,
               private settings: Settings) {
     this.view_datetime_format = settings.VIEW_DATETIME_FORMAT;
     this.view_date_format = settings.VIEW_DATE_FORMAT;
@@ -46,7 +46,7 @@ export class DepartHistoryRowComponent {
     });
   }
 
-  private sendChangeRequest() {
+  public sendChangeRequest() {
     if (this.form.valid) {
       this.form_valid = true;
       this.editMode = false;
@@ -73,11 +73,11 @@ export class DepartHistoryRowComponent {
     }
   }
 
-  private sendRevokeRequest() {
+  public sendRevokeRequest() {
     this.revokeDepart.emit(this.depart);
   }
 
-  private enableEditing() {
+  public enableEditing() {
     if (this.editMode) {
       this.cancelEditing();
     }
@@ -85,12 +85,12 @@ export class DepartHistoryRowComponent {
     this.temp_depart = _.clone(this.depart);
   }
 
-  private cancelEditing() {
+  public cancelEditing() {
     this.editMode = false;
     this.depart = this.temp_depart;
   }
 
-  private stringAsViewDateTime(date) {
+  public stringAsViewDateTime(date) {
     return moment(date).format(this.settings.VIEW_DATETIME_FORMAT);
   }
 }

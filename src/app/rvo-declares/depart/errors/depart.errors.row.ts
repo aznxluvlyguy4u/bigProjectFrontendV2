@@ -32,7 +32,7 @@ export class DepartErrorRowComponent implements AfterViewChecked {
 
   constructor(private fb: FormBuilder,
               private apiService: NSFOService,
-              private constants: Constants,
+              public constants: Constants,
               private settings: Settings) {
     this.view_date_format = settings.VIEW_DATE_FORMAT;
     this.view_datetime_format = settings.VIEW_DATETIME_FORMAT;
@@ -53,7 +53,7 @@ export class DepartErrorRowComponent implements AfterViewChecked {
     }
   }
 
-  private sendChangeRequest() {
+  public sendChangeRequest() {
     if (this.form.valid) {
       this.form_valid = true;
       this.editMode = false;
@@ -81,7 +81,7 @@ export class DepartErrorRowComponent implements AfterViewChecked {
     }
   }
 
-  private sendRemoveErrorRequest() {
+  public sendRemoveErrorRequest() {
     const request = {
       'is_removed_by_user': true,
       'request_id': this.depart.request_id
@@ -94,7 +94,7 @@ export class DepartErrorRowComponent implements AfterViewChecked {
     this.removeDepart.emit(this.depart);
   }
 
-  private enableEditing() {
+  public enableEditing() {
     if (this.editMode) {
       this.cancelEditing();
     }
@@ -102,12 +102,12 @@ export class DepartErrorRowComponent implements AfterViewChecked {
     this.temp_depart = _.clone(this.depart);
   }
 
-  private cancelEditing() {
+  public cancelEditing() {
     this.editMode = false;
     this.depart = this.temp_depart;
   }
 
-  private stringAsViewDateTime(date) {
+  public stringAsViewDateTime(date) {
     return moment(date).format(this.settings.VIEW_DATETIME_FORMAT);
   }
 }

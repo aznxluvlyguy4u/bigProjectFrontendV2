@@ -16,9 +16,10 @@ import {JsonResponseModel} from '../../../shared/models/json-response.model';
 })
 
 export class DepartErrorsComponent implements OnInit {
-  private departErrorList = <DepartErrorResponse[]>[];
-  private isLoading = true;
-  private showHiddenMessages = false;
+  public departErrorList = <DepartErrorResponse[]>[];
+  public isLoading = true;
+  public showHiddenMessages = false;
+  public page: number;
 
   constructor(private apiService: NSFOService, private settings: Settings) {
   }
@@ -27,7 +28,7 @@ export class DepartErrorsComponent implements OnInit {
     this.getDepartErrorList();
   }
 
-  private getDepartErrorList() {
+  public getDepartErrorList() {
     this.apiService
       .doGetRequest(API_URI_GET_DEPARTS_ERRORS)
       .subscribe((res: JsonResponseModel) => {
@@ -52,13 +53,13 @@ export class DepartErrorsComponent implements OnInit {
       );
   }
 
-  private removeDepart(event) {
+  public removeDepart(event) {
     const item = <DepartErrorResponse> event;
     item.is_removed_by_user = true;
     this.departErrorList = _.orderBy(this.departErrorList, ['log_date'], ['desc']);
   }
 
-  private displayHiddenMessages() {
+  public displayHiddenMessages() {
     this.showHiddenMessages = !this.showHiddenMessages;
   }
 }

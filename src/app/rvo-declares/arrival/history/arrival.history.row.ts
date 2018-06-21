@@ -50,7 +50,7 @@ export class ArrivalHistoryRowComponent implements OnInit {
     this.getCountryCodeList();
   }
 
-  private getCountryCodeList() {
+  public getCountryCodeList() {
     this.apiService
       .doGetRequest(API_URI_GET_COUNTRY_CODES)
       .subscribe(
@@ -58,7 +58,7 @@ export class ArrivalHistoryRowComponent implements OnInit {
       );
   }
 
-  private sendChangeRequest() {
+  public sendChangeRequest() {
     if (this.form.valid) {
       this.form_valid = true;
       this.editMode = false;
@@ -86,11 +86,11 @@ export class ArrivalHistoryRowComponent implements OnInit {
     }
   }
 
-  private sendRevokeRequest() {
+  public sendRevokeRequest() {
     this.revokeArrival.emit(this.arrival);
   }
 
-  private enableEditing() {
+  public enableEditing() {
     if (this.editMode) {
       this.cancelEditing();
     }
@@ -98,12 +98,12 @@ export class ArrivalHistoryRowComponent implements OnInit {
     this.temp_arrival = clone(this.arrival);
   }
 
-  private cancelEditing() {
+  public cancelEditing() {
     this.editMode = false;
     this.arrival = this.temp_arrival;
   }
 
-  private stringAsViewDateTime(date) {
+  public stringAsViewDateTime(date) {
     return moment(date).format(this.settings.VIEW_DATETIME_FORMAT);
   }
 }

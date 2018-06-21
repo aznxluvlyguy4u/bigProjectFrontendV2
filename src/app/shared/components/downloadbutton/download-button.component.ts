@@ -18,9 +18,9 @@ export class DownloadButtonComponent implements OnInit {
   @Input() extraDisabledCriteria = false;
   @Input() buttonSizeClass = 'tiny';
   @Output() click = new EventEmitter();
-  private isActive = true;
-  private showSuccess = false;
-  private showSpinner = false;
+  public isActive = true;
+  public showSuccess = false;
+  public showSpinner = false;
 
   ngOnInit() {
     if (this.includeBadgeCount && this.badgeCount > 0) {

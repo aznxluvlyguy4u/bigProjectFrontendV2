@@ -12,7 +12,7 @@ export class LiveSearchComponent implements OnChanges {
   @Input() searchQuery = '';
   @Output() selected: EventEmitter<any> = new EventEmitter<any>();
   @Output() searchQueryChange: EventEmitter<any> = new EventEmitter<any>();
-  private livesearchEnabled = false;
+  public livesearchEnabled = false;
 
   ngOnChanges() {
     if (!this.editMode) {
@@ -20,15 +20,15 @@ export class LiveSearchComponent implements OnChanges {
     }
   }
 
-  private enableLivesearch(toggle: boolean) {
+  public enableLivesearch(toggle: boolean) {
     this.livesearchEnabled = toggle;
   }
 
-  private selectObject(selectedObject) {
+  public selectObject(selectedObject) {
     this.selected.emit(selectedObject);
   }
 
-  private changeSearchQuery() {
+  public changeSearchQuery() {
     if (this.searchQuery) {
       this.searchQueryChange.emit(this.searchQuery);
     }

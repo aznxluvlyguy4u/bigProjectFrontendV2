@@ -13,17 +13,17 @@ export class AdminComponent {
         router.navigate(['/main/admin/rvo-leading-livestock-sync']);
     }
 
-    private navigateTo(route: string) {
+    public navigateTo(route: string) {
         this.selectedRoute = route;
         this.router.navigate([route]);
     }
 
-    private selectRoute(event) {
+    public selectRoute(event) {
         this.selectedRoute = event.target.value;
         this.navigateTo(event.target.value);
     }
 
-    private isActiveRoute(route: string) {
+    public isActiveRoute(route: string) {
         return this.router.serializeUrl(this.router.createUrlTree([])) === this.router.serializeUrl((this.router.createUrlTree([route])));
     }
 }

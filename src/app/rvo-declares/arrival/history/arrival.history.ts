@@ -16,14 +16,15 @@ import {JsonResponseModel} from '../../../shared/models/json-response.model';
 })
 
 export class ArrivalHistoryComponent implements OnInit {
-  private arrivalHistoryList = <ArrivalChangeResponse[]>[];
-  private selected_arrival: ArrivalChangeResponse;
-  private searchValue = '';
-  private modal_display = 'none';
-  private error_modal_display = 'none';
-  private error_message = '';
-  private error_number = '';
-  private isLoading = true;
+  public arrivalHistoryList = <ArrivalChangeResponse[]>[];
+  public selected_arrival: ArrivalChangeResponse;
+  public searchValue = '';
+  public modal_display = 'none';
+  public error_modal_display = 'none';
+  public error_message = '';
+  public error_number = '';
+  public isLoading = true;
+  public page: number;
 
   constructor(private apiService: NSFOService, private settings: Settings) {
   }
@@ -32,7 +33,7 @@ export class ArrivalHistoryComponent implements OnInit {
     this.getArrivalHistoryList();
   }
 
-  private getArrivalHistoryList() {
+  public getArrivalHistoryList() {
     this.apiService
       .doGetRequest(API_URI_GET_ARRIVALS_HISTORY)
       .subscribe((res: JsonResponseModel) => {
@@ -59,35 +60,35 @@ export class ArrivalHistoryComponent implements OnInit {
       });
   }
 
-  private selectArrival(event) {
+  public selectArrival(event) {
     this.selected_arrival = <ArrivalChangeResponse> event;
     this.openModal();
   }
 
-  private showError(event) {
+  public showError(event) {
     this.error_message = event.error.message;
     this.error_number = event.error.pedigree;
     this.error_number = event.error.uln;
     this.openErrorModal();
   }
 
-  private openModal() {
+  public openModal() {
     this.modal_display = 'block';
   }
 
-  private closeModal() {
+  public closeModal() {
     this.modal_display = 'none';
   }
 
-  private openErrorModal() {
+  public openErrorModal() {
     this.error_modal_display = 'block';
   }
 
-  private closeErrorModal() {
+  public closeErrorModal() {
     this.error_modal_display = 'none';
   }
 
-  private revokeArrival() {
+  public revokeArrival() {
     this.apiService
       .doPostRequest(API_URI_REVOKE_DECLARATION, this.selected_arrival)
       .subscribe(

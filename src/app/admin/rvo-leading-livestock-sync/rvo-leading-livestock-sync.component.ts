@@ -20,7 +20,7 @@ export class RvoLeadingLivestockSyncComponent implements OnInit, OnDestroy {
 
   private isAtLeastSuperAdmin = false;
   private currentUserSubscription: Subscription;
-  private loadingData = true;
+  public loadingData = true;
   private loadingLatestSyncData = true;
   private showWarningMessage = false;
 

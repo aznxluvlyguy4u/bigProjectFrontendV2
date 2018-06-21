@@ -25,30 +25,30 @@ import {JsonResponseModel} from '../../../shared/models/json-response.model';
 export class MateDeclareComponent implements OnInit, OnDestroy {
   livestockType = LIVESTOCK_TYPE_MATE;
   lastDeclareUpdateSubject = new Subject<MateChangeResponse>();
-  private countryCode$;
-  private country_code_list = [];
-  private isSendingDeclare = false;
-  private isValidForm = true;
-  private livestock = <LivestockAnimal[]>[];
-  private selectedRam: MateAnimalWithStatus;
-  private modalDisplay = 'none';
-  private errorMessages: ErrorMessage[] = [];
-  private view_date_format;
-  private model_datetime_format;
-  private form: FormGroup = new FormGroup({
+  public countryCode$;
+  public country_code_list = [];
+  public isSendingDeclare = false;
+  public isValidForm = true;
+  public livestock = <LivestockAnimal[]>[];
+  public selectedRam: MateAnimalWithStatus;
+  public modalDisplay = 'none';
+  public errorMessages: ErrorMessage[] = [];
+  public view_date_format;
+  public model_datetime_format;
+  public form: FormGroup = new FormGroup({
         uln: new FormControl(''),
         pmsg: new FormControl('NO'),
         ki: new FormControl('NO'),
         mate_startdate: new FormControl(),
         mate_enddate: new FormControl()
     });
-  private uidPattern = '[0-9]';
-  private successDurationSeconds = 3;
+  public uidPattern = '[0-9]';
+  public successDurationSeconds = 3;
 
   constructor(private fb: FormBuilder,
               private nsfo: NSFOService,
               private router: Router,
-              private constants: Constants,
+              public constants: Constants,
               private settingsService: SettingsService,
               private settings: Settings,
               private translate: TranslateService) {
@@ -72,14 +72,14 @@ export class MateDeclareComponent implements OnInit, OnDestroy {
     this.closeModal();
   }
 
-  private getCountryCodeList() {
+  public getCountryCodeList() {
     this.countryCode$ = this.settingsService.getCountryList()
       .subscribe(countryCodeList => {
         this.country_code_list = countryCodeList;
       });
   }
 
-  private getLivestockList() {
+  public getLivestockList() {
     this.nsfo
       .doGetRequest(API_URI_GET_ANIMALS)
       .subscribe(
@@ -104,7 +104,7 @@ export class MateDeclareComponent implements OnInit, OnDestroy {
       );
   }
 
-  private declareMate(event: AnimalsOverviewSelection) {
+  public declareMate(event: AnimalsOverviewSelection) {
     const animals: MateAnimalWithStatus[] = <MateAnimalWithStatus[]>(event.animals);
     const selectionList = event.selectionList;
 
@@ -191,24 +191,24 @@ export class MateDeclareComponent implements OnInit, OnDestroy {
     }
   }
 
-  private updateLastMateAfterDeclare(declareResult: MateChangeResponse) {
+  public updateLastMateAfterDeclare(declareResult: MateChangeResponse) {
     this.lastDeclareUpdateSubject.next(declareResult);
   }
 
-  private selectRam(ram: MateAnimalWithStatus) {
+  public selectRam(ram: MateAnimalWithStatus) {
     this.selectedRam = ram;
     this.form.get('uln').setValue(ram.uln);
   }
 
-  private openModal() {
+  public openModal() {
     this.modalDisplay = 'block';
   }
 
-  private closeModal() {
+  public closeModal() {
     this.modalDisplay = 'none';
   }
 
-  private navigateTo(route: string) {
+  public navigateTo(route: string) {
     this.router.navigate([route]);
   }
 

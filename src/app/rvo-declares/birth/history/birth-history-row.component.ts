@@ -18,8 +18,8 @@ declare var $;
 export class BirthHistoryRowComponent {
   @Input('litter-object') litter: Litter;
   @Output() revokeLitter = new EventEmitter();
-  private modalDisplay = 'none';
-  private litterDetails: LitterDetails = new LitterDetails();
+  public modalDisplay = 'none';
+  public litterDetails: LitterDetails = new LitterDetails();
 
   public isLoadingDetails: boolean;
 
@@ -30,7 +30,7 @@ export class BirthHistoryRowComponent {
     this.revokeLitter.emit(this.litter);
   }
 
-  private getLitterDetails() {
+  public getLitterDetails() {
     this.isLoadingDetails = true;
     this.nsfo.doGetRequest(API_URI_GET_BIRTH_DETAILS + '/' + this.litter.litter_id)
       .subscribe(
@@ -48,30 +48,30 @@ export class BirthHistoryRowComponent {
       );
   }
 
-  private openModal() {
+  public openModal() {
     this.modalDisplay = 'block';
   }
 
-  private closeModal() {
+  public closeModal() {
     this.modalDisplay = 'none';
   }
 
-  private stringAsViewDateTime(date) {
+  public stringAsViewDateTime(date) {
     return moment(date).format(this.settings.VIEW_DATETIME_FORMAT);
   }
 
-  private stringAsViewDate(date) {
+  public stringAsViewDate(date) {
     return moment(date).format(this.settings.VIEW_DATE_FORMAT);
   }
 
-  private loadPopup(child) {
+  public loadPopup(child) {
     if (!child.isLoadedPopUp) {
       $('#popup-' + child.uln_number).foundation();
       child.isLoadedPopUp = true;
     }
   }
 
-  private textify(bool: boolean) {
+  public textify(bool: boolean) {
     if (bool) {
       return 'YES';
     }

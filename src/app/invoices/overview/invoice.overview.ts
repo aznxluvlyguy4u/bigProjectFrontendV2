@@ -17,13 +17,13 @@ import {JsonResponseModel} from '../../shared/models/json-response.model';
 
 export class InvoiceOverviewComponent implements OnInit, OnDestroy {
   public page = 1;
-  areRecurrentApiCallsActivated: boolean;
-  loopGetInvoicesList = true;
-  private invoices: Invoice[] = [];
-  private isLoaded = false;
-  private status = 'ALL';
-  private filterSearch = '';
-  private filterAmount = 10;
+  public areRecurrentApiCallsActivated: boolean;
+  public loopGetInvoicesList = true;
+  public invoices: Invoice[] = [];
+  public isLoaded = false;
+  public status = 'ALL';
+  public filterSearch = '';
+  public filterAmount = 10;
 
   constructor(private apiService: NSFOService,
               private settings: SettingsService,

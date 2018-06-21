@@ -16,12 +16,12 @@ import {JsonResponseModel} from '../../../shared/models/json-response.model';
 
 export class MateHistoryComponent implements OnInit {
   searchValue: string;
-  private mateHistoryList = <MateChangeResponse[]>[];
-  private selectedAnimal: MateChangeResponse;
-  private isSending = false;
-  private modal_display = 'none';
-  private errorModalDisplay = 'none';
-  private errorMessages: ErrorMessage[] = [];
+  public mateHistoryList = <MateChangeResponse[]>[];
+  public selectedAnimal: MateChangeResponse;
+  public isSending = false;
+  public modal_display = 'none';
+  public errorModalDisplay = 'none';
+  public errorMessages: ErrorMessage[] = [];
 
   public isLoading: boolean;
 
@@ -32,7 +32,7 @@ export class MateHistoryComponent implements OnInit {
     this.getMateHistoryList();
   }
 
-  private getMateHistoryList() {
+  public getMateHistoryList() {
     this.isLoading = true;
     this.apiService
       .doGetRequest(API_URI_GET_MATE_HISTORY)
@@ -65,7 +65,7 @@ export class MateHistoryComponent implements OnInit {
       );
   }
 
-  private revokeMate() {
+  public revokeMate() {
     this.isSending = true;
     this.apiService
       .doPutRequest(API_URI_REVOKE_MATE + '/' + this.selectedAnimal.message_id, '')
@@ -87,20 +87,20 @@ export class MateHistoryComponent implements OnInit {
       );
   }
 
-  private selectMate(event) {
+  public selectMate(event) {
     this.selectedAnimal = <MateChangeResponse> event;
     this.openModal();
   }
 
-  private openModal() {
+  public openModal() {
     this.modal_display = 'block';
   }
 
-  private closeModal() {
+  public closeModal() {
     this.modal_display = 'none';
   }
 
-  private showError(event) {
+  public showError(event) {
     this.errorMessages = event.result;
 
     if (this.errorMessages.length === 0) {
@@ -114,11 +114,11 @@ export class MateHistoryComponent implements OnInit {
     this.openErrorModal();
   }
 
-  private openErrorModal() {
+  public openErrorModal() {
     this.errorModalDisplay = 'block';
   }
 
-  private closeErrorModal() {
+  public closeErrorModal() {
     this.errorModalDisplay = 'none';
   }
 }

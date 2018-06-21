@@ -13,8 +13,9 @@ import {JsonResponseModel} from '../../../shared/models/json-response.model';
 })
 
 export class BirthErrorsComponent implements OnInit {
-  private birthErrorList = <BirthErrorResponse[]>[];
-  private showHiddenMessages = false;
+  public birthErrorList = <BirthErrorResponse[]>[];
+  public showHiddenMessages = false;
+  public page: number;
 
   constructor(private apiService: NSFOService, private settings: Settings) {
   }
@@ -23,7 +24,7 @@ export class BirthErrorsComponent implements OnInit {
     this.getBirthErrorList();
   }
 
-  private getBirthErrorList() {
+  public getBirthErrorList() {
     this.apiService
       .doGetRequest(API_URI_GET_BIRTHS_ERRORS)
       .subscribe((res: JsonResponseModel) => {
@@ -40,14 +41,14 @@ export class BirthErrorsComponent implements OnInit {
       );
   }
 
-  private removeBirth(event) {
+  public removeBirth(event) {
     const item = <BirthErrorResponse> event;
     const index = this.birthErrorList.indexOf(item);
     this.birthErrorList.splice(index, 1);
   }
 
-  private displayHiddenMessages() {
+  public displayHiddenMessages() {
     this.showHiddenMessages = !this.showHiddenMessages;
-  };
+  }
 
 }
