@@ -15,19 +15,9 @@ export class ParentByUln {
   public uln_number: string;
 }
 
-export class ParentByPedigree {
-  public pedigree_country_code: string;
-  public pedigree_number: string;
-}
-
 export class SurrogateMotherByUln extends ParentByUln {
 }
 
-export class SurrogateMotherByPedigree extends ParentByPedigree {
-}
-
-
-// TODO: figure out how to type surrogate_mother as union-types
 export class Child {
   public uln_country_code: string;
   public uln_number: string;
@@ -37,7 +27,7 @@ export class Child {
   public birth_progress: string;
   public birth_weight: number;
   public tail_length: number;
-  public surrogate_mother: any; // SurrogateMotherByUln | SurrogateMotherByPedigree;
+  public surrogate_mother: SurrogateMotherByUln | Animal;
   public date_of_birth: string;
   public has_lambar: boolean;
 }
@@ -52,10 +42,9 @@ export class StillBorn {
 }
 
 
-// TODO: figure out how to type father and mother as union-types
 export class BirthRequest {
-  public mother: any;  // ParentByPedigree | ParentByUln;
-  public father: any; //  ParentByPedigree | ParentByUln;
+  public mother: any;
+  public father: any;
   public children: Array<Child | StillBorn>;
   public date_of_birth: string;
   public is_aborted: boolean;

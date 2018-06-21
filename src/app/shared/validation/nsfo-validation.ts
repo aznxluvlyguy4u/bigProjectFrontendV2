@@ -161,7 +161,6 @@ export class ExteriorMeasurementsValidator {
     return {'invalidExteriorMeasurement': true};
   }
 
-  // TODO : Find out exact minimum
   static validateMeasurementValueBetween0And99(control: FormControl): ValidationResult {
     if ((control.value > 0 && control.value <= 99) || control.value === 0) {
       return null;
