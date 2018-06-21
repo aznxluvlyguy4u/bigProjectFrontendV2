@@ -127,7 +127,6 @@ import {EartagErrorRowComponent} from './rvo-declares/eartag/errors/eartag.error
 import {HttpModule} from '@angular/http';
 import {LiveSearchComponent} from './shared/components/livesearch/livesearch.component';
 import {CacheService} from './shared/services/settings/cache.service';
-import {Ng2GoogleChartsModule} from 'ng2-google-charts';
 import {BarComponent} from './shared/components/googlechart/bar.component';
 import {GoogleChartsBaseService} from './shared/services/google/googlechartsbase.service';
 import {GoogleColumnChartService} from './shared/services/google/googlecolumnchart.service';
@@ -272,7 +271,6 @@ export function CreateTranslateLoader(http: HttpClient) {
       ReportModalComponent,
   ],
   imports: [
-      Ng2GoogleChartsModule,
     BrowserAnimationsModule,
     BrowserModule,
     HttpModule,

@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core';
+import {Injectable, OnInit} from '@angular/core';
 import {Subject} from 'rxjs';
 import {NSFOService} from '../nsfo-api/nsfo.service';
 import {
@@ -32,7 +32,7 @@ export const OFFSPRING_REPORT = 'OFFSPRING';
 export const FERTILIZER_ACCOUNTING = 'FERTILIZER ACCOUNTING';
 
 @Injectable()
-export class ReportService {
+export class ReportService implements OnInit{
 
   isModalActive = new Subject<boolean>();
   toggleIsModalActive = new Subject<boolean>();
@@ -42,13 +42,24 @@ export class ReportService {
   private lastId: number;
 
   constructor(private nsfo: NSFOService) {
-    this.resetDownloadList();
+      this.fetchReports();
+  }
+
+  ngOnInit() {
+  }
+
+  fetchReports() {
     this.nsfo.doGetRequest(API_URI_GET_REPORTS).subscribe((res: JsonResponseModel) => {
-      const test: ReportRequest[] = res.result;
-      test.forEach((report) => {
-        this.downloadRequestShownInModal.push(report);
-      });
+        this.resetDownloadList();
+        const reportRequest: ReportRequest[] = res.result;
+        reportRequest.forEach((report) => {
+            this.downloadRequestShownInModal.push(report);
+        });
     });
+
+    setTimeout(() => {
+      this.fetchReports();
+    }, 10000);
   }
 
   resetDownloadList() {
