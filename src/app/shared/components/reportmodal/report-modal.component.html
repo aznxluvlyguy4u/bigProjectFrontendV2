@@ -35,8 +35,8 @@
             <td>{{i + 1}}</td>
             <td>{{reportRequest.started_at | date:'yyyy-MM-dd HH:mm:ss' }}</td>
             <td>{{reportRequest.finished_at | date:'yyyy-MM-dd HH:mm:ss' }}</td>
-            <td>{{ getReportTypeString(reportRequest.report_worker.report_type)}}</td>
-            <td>{{reportRequest.report_worker.file_type }}</td>
+            <td><ng-template [ngIf]="reportRequest.report_worker">{{ getReportTypeString(reportRequest.report_worker.report_type)}}</ng-template></td>
+            <td><ng-template [ngIf]="reportRequest.report_worker">{{reportRequest.report_worker.file_type }}</ng-template></td>
 
             <td *ngIf="!reportRequest.finished_at">
               <i class="fa fa-spinner fa-pulse fa-2x fa-fw"
@@ -54,7 +54,7 @@
               {{ 'FAILED' | translate }}
               <i class="fa fa-info-circle"
                  aria-hidden="true"
-                 title="{{(reportRequest.errorMessage != null ? reportRequest.errorMessage : 'DOWNLOAD MODAL FAILED DEFAULT INFO TEXT') | translate}}">
+                 title="{{(reportRequest.error_message != null ? reportRequest.error_message : 'DOWNLOAD MODAL FAILED DEFAULT INFO TEXT') | translate}}">
               </i>
             </td>
 

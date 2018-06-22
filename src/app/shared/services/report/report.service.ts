@@ -1,47 +1,23 @@
 import {Injectable, OnInit} from '@angular/core';
 import {Subject} from 'rxjs';
 import {NSFOService} from '../nsfo-api/nsfo.service';
-import {
-    API_URI_GET_FERTILIZER_ACCOUNTING_REPORT,
-    API_URI_GET_INBREEDING_COEFFICIENT,
-    API_URI_GET_LINEAGE_PROOF,
-    API_URI_GET_LIVESTOCK_DOCUMENT,
-    API_URI_GET_OFFSPRING_REPORT, API_URI_GET_REPORTS,
-    API_URI_INVOICES
-} from '../nsfo-api/nsfo.settings';
-import {
-  QUERY_PARAM_CONCAT_VALUE_AND_ACCURACY,
-  QUERY_PARAM_FILE_TYPE,
-  QUERY_PARAM_REFERENCE_DATE
-} from '../../variables/query-param.constant';
-import {UtilsService} from '../utils/utils.services';
-import {QueryParamsService} from '../utils/query-params.service';
-import {CSV, PDF} from '../../variables/file-type.enum';
+import { API_URI_GET_REPORTS } from '../nsfo-api/nsfo.settings';
+
 import * as _ from 'lodash';
-import {Animal, LivestockAnimal} from '../../models/animal.model';
-import {Invoice} from '../../models/invoice.model';
 import {JsonResponseModel} from '../../models/json-response.model';
 import {ReportRequest} from './report-request.model';
-import {DownloadRequest} from '../download/download-request.model';
-
-export const INBREEDING_COEFFICIENT_REPORT = 'INBREEDING_COEFFICIENT_REPORT';
-export const LINEAGE_PROOF_REPORT = 'LINEAGE_PROOF_REPORT';
-export const LIVESTOCK_REPORT = 'LIVESTOCK_REPORT';
-export const INVOICE_PDF = 'INVOICE_PDF';
-export const OFFSPRING_REPORT = 'OFFSPRING';
-export const FERTILIZER_ACCOUNTING = 'FERTILIZER ACCOUNTING';
 
 @Injectable()
-export class ReportService implements OnInit{
+export class ReportService implements OnInit {
 
   isModalActive = new Subject<boolean>();
   toggleIsModalActive = new Subject<boolean>();
-  downloadsShownInModalChanged = new Subject<ReportRequest[]>();
-  failedDownloadsCount: number;
-  private downloadRequestShownInModal: ReportRequest[];
-  private lastId: number;
+  reportsShownInModelChanged = new Subject<ReportRequest[]>();
+  failedReportsCount: number;
+  private reportRequestShownInModal: ReportRequest[];
 
   constructor(private nsfo: NSFOService) {
+      this.resetReportList();
       this.fetchReports();
   }
 
@@ -50,45 +26,50 @@ export class ReportService implements OnInit{
 
   fetchReports() {
     this.nsfo.doGetRequest(API_URI_GET_REPORTS).subscribe((res: JsonResponseModel) => {
-        this.resetDownloadList();
+        this.resetReportList();
         const reportRequest: ReportRequest[] = res.result;
         reportRequest.forEach((report) => {
-            this.downloadRequestShownInModal.push(report);
+            this.reportRequestShownInModal.push(report);
         });
+        this.reportsShownInModelChanged.next(this.reportRequestShownInModal.slice());
+
+        const hasUnfinished = _.filter(this.reportRequestShownInModal, function (download: ReportRequest) {
+            return (!download.finished_at);
+        });
+        if (hasUnfinished.length > 0) {
+            setTimeout(() => {
+                this.fetchReports();
+            }, 2000);
+        }
     });
-
-    setTimeout(() => {
-      this.fetchReports();
-    }, 10000);
   }
 
-  resetDownloadList() {
-    this.downloadRequestShownInModal = [];
-    this.lastId = 0;
-    this.failedDownloadsCount = 0;
+  resetReportList() {
+    this.reportRequestShownInModal = [];
+    this.failedReportsCount = 0;
   }
 
-  getDownloadRequestsShownInModal(): ReportRequest[] {
-    return this.downloadRequestShownInModal;
+  getReportRequestsShownInModal(): ReportRequest[] {
+    return this.reportRequestShownInModal;
   }
 
-  getDownloadsInModalCount(): number {
-    return this.downloadRequestShownInModal.length;
+  getReportsInModalCount(): number {
+    return this.reportRequestShownInModal.length;
   }
 
   isModalEmpty(): boolean {
-    return this.getDownloadsInModalCount() === 0;
+    return this.getReportsInModalCount() === 0;
   }
 
-  public openDownloadModal() {
+  public openReportModal() {
     this.updateModalNotificationStatus(true);
   }
 
-  public closeDownloadModal() {
+  public closeReportModal() {
     this.updateModalNotificationStatus(false);
   }
 
-  public toggleDownloadModal() {
+  public toggleReportModal() {
     this.toggleIsModalActive.next(true);
   }
 

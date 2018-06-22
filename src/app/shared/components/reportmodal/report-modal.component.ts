@@ -25,13 +25,13 @@ export class ReportModalComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
 
-    this.reportRequestSubscription = this.reportService.downloadsShownInModalChanged.subscribe(
+    this.reportRequestSubscription = this.reportService.reportsShownInModelChanged.subscribe(
       (downloadRequests: ReportRequest[]) => {
         this.reportRequestsShownInModal = downloadRequests;
         this.closeIfEmpty();
       }
     );
-    this.reportRequestsShownInModal = this.reportService.getDownloadRequestsShownInModal();
+    this.reportRequestsShownInModal = this.reportService.getReportRequestsShownInModal();
 
 
     this.isModalActiveSubscription = this.reportService.isModalActive.subscribe(
@@ -120,7 +120,7 @@ export class ReportModalComponent implements OnInit, OnDestroy {
   }
 
   public resetDownloadList() {
-    this.reportService.resetDownloadList();
+    this.reportService.resetReportList();
   }
 
   public isModalEmpty(): boolean {
@@ -128,6 +128,6 @@ export class ReportModalComponent implements OnInit, OnDestroy {
   }
 
   public hasFailedDownloads() {
-    return this.reportService.failedDownloadsCount > 0;
+    return this.reportService.failedReportsCount > 0;
   }
 }

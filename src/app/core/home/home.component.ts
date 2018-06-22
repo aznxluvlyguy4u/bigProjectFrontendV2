@@ -228,7 +228,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterContentChecked {
   }
 
     toggleReportModal() {
-      this.reportService.toggleDownloadModal();
+      this.reportService.toggleReportModal();
         this.isActiveMessageMenu = false;
         this.isActiveUserMenu = false;
         this.isActiveSideMenu = false;
@@ -252,7 +252,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterContentChecked {
   }
 
     isReportModalEmpty(): boolean {
-        return this.reportService.getDownloadsInModalCount() === 0;
+        return this.reportService.isModalEmpty();
     }
 
   declareItemsCount(): number {

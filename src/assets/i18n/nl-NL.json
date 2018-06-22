@@ -652,6 +652,7 @@
   "REPORT_PEDIGREE_REGISTER_OVERVIEW": "Stamboom rapportage",
   "REPORT_UNKNOWN": "Onbekende rapportage",
   "END_TIME": "Verwerkt op",
-  "START_TIME": "Gestart op"
+  "START_TIME": "Gestart op",
+  "DATA IS EMPTY": "Er is geen data beschikbaar"
 }
 
