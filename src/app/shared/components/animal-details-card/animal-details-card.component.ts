@@ -4,6 +4,7 @@ import {Component, Input, OnInit} from '@angular/core';
 import {Settings} from '../../variables/settings';
 import {Router} from '@angular/router';
 import {Animal} from '../../models/animal.model';
+import {SettingsService} from '../../services/settings/settings.service';
 
 @Component({
   selector: 'app-animal-details-card',
@@ -11,7 +12,7 @@ import {Animal} from '../../models/animal.model';
 })
 export class AnimalDetailsCardComponent implements OnInit {
 
-  constructor (private settings: Settings, private router: Router) {}
+  constructor (private settings: Settings, private router: Router, private settingsService: SettingsService) {}
 
   @Input() inputAnimal: Animal;
   @Input() mainAnimalGender: string = null;
@@ -53,6 +54,22 @@ export class AnimalDetailsCardComponent implements OnInit {
 
   private isStringEmpty(string: string): boolean {
     return string === undefined || string === null || string === '';
+  }
+
+  isRedirectButtonEnabled(): boolean {
+    if (this.ulnIsEmpty()) {
+      return false;
+    }
+
+    if (this.settingsService.isAdmin()) {
+      return true;
+    }
+
+    if (this.inputAnimal.is_own_historic_animal) {
+      return true;
+    }
+
+    return this.inputAnimal.is_public;
   }
 
 }
