@@ -22,6 +22,7 @@ import * as _ from 'lodash';
 import {Animal, LivestockAnimal} from '../../models/animal.model';
 import {Invoice} from '../../models/invoice.model';
 import {JsonResponseModel} from '../../models/json-response.model';
+import {ReportService} from '../report/report.service';
 
 export const INBREEDING_COEFFICIENT_REPORT = 'INBREEDING_COEFFICIENT_REPORT';
 export const LINEAGE_PROOF_REPORT = 'LINEAGE_PROOF_REPORT';
@@ -42,7 +43,10 @@ export class DownloadService {
   private downloadRequestShownInModal: DownloadRequest[];
   private lastId: number;
 
-  constructor(private nsfo: NSFOService) {
+  constructor(
+      private nsfo: NSFOService,
+      private reportService: ReportService,
+  ) {
     this.resetDownloadList();
   }
 
@@ -253,6 +257,7 @@ export class DownloadService {
     this.updateDownloadRequestsShownForModal();
     this.updateFailedDownloadCount();
     this.downloadsShownInModalChanged.next(this.downloadRequestShownInModal.slice());
+    this.reportService.fetchReports();
   }
 
   private doDownloadPostRequest(uri: string, request: any, download: DownloadRequest) {

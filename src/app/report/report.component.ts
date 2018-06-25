@@ -25,11 +25,11 @@ export class ReportComponent implements OnInit {
         this.router.navigate([route]);
     }
 
-    private selectRoute(event) {
+    public selectRoute(event) {
         this.navigateTo(event.target.value);
     }
 
-    private isActiveRoute(route: string) {
+    public isActiveRoute(route: string) {
         return this.router.serializeUrl(this.router.createUrlTree([])) === this.router.serializeUrl((this.router.createUrlTree([route])));
     }
 }
