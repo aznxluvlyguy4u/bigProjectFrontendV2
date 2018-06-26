@@ -18,6 +18,7 @@ export enum ReportType {
   ANNUAL_ACTIVE_LIVE_STOCK_RAM_MATES = 7,
   OFF_SPRING = 8,
   PEDIGREE_REGISTER_OVERVIEW = 9,
+  LIVE_STOCK = 10
 }
 
 export class ReportWorker {

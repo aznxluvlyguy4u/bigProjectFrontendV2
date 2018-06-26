@@ -56,6 +56,8 @@ export class ReportModalComponent implements OnInit, OnDestroy {
 
   public getReportTypeString(reportType: ReportType) {
     switch (reportType) {
+        case ReportType.LIVE_STOCK:
+            return this.translate.instant('REPORT_LIVE_STOCK');
         case ReportType.ANNUAL_ACTIVE_LIVE_STOCK:
           return this.translate.instant('REPORT_ANNUAL_ACTIVE_LIVE_STOCK');
         case ReportType.ANNUAL_TE_100:
