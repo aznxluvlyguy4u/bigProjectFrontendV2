@@ -31,7 +31,7 @@
           </thead>
           <tbody>
 
-          <tr *ngFor="let reportRequest of reportRequestsShownInModal; let i = index">
+          <tr *ngFor="let reportRequest of reportRequestsShownInModal | paginate: {itemsPerPage: items_per_page, currentPage: page}; let i = index">
             <td>{{i + 1}}</td>
             <td>{{reportRequest.started_at | date:'yyyy-MM-dd HH:mm:ss' }}</td>
             <td>{{reportRequest.finished_at | date:'yyyy-MM-dd HH:mm:ss' }}</td>
@@ -61,7 +61,7 @@
           </tr>
           </tbody>
         </table>
-
+        <pagination-controls (pageChange)="page = $event"></pagination-controls>
         <button *ngIf="hasFailedDownloads()"
                 type="button"
                 class="button alert pull-right"

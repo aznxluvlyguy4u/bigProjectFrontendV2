@@ -46,7 +46,7 @@
         <li class="li-right">
             <ng-template [ngIf]="!isReportModalEmpty()">
                 <button type="button" (click)="toggleReportModal()" [class.active]="isActiveReportModal" class="download-toggle">
-                    <i class="far fa-chart-bar"><span *ngIf="downloadCount() > 0"> {{ downloadCount() }}</span></i>
+                    <i class="fas fa-cloud-download-alt"><span *ngIf="downloadCount() > 0"> {{ downloadCount() }}</span></i>
                 </button>
             </ng-template>
         </li>

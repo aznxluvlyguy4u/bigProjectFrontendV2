@@ -5,10 +5,12 @@ import {Subscription} from 'rxjs';
 import {ReportRequest, ReportType} from '../../services/report/report-request.model';
 import {ReportService} from '../../services/report/report.service';
 import {TranslateService} from '@ngx-translate/core';
+import {NgxPaginationModule} from 'ngx-pagination';
 
 @Component({
   selector: 'app-report-modal',
-  templateUrl: './report-modal.component.html'
+    providers: [NgxPaginationModule],
+    templateUrl: './report-modal.component.html'
 })
 export class ReportModalComponent implements OnInit, OnDestroy {
   public reportRequestsShownInModal: ReportRequest[];
@@ -16,6 +18,8 @@ export class ReportModalComponent implements OnInit, OnDestroy {
   private reportRequestSubscription: Subscription;
   private isModalActiveSubscription: Subscription;
   private toggleModalSubscription: Subscription;
+
+  public items_per_page = 5;
 
   constructor(
       private translate: TranslateService,
