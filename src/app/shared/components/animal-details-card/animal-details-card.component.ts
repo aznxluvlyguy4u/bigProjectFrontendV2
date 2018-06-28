@@ -15,6 +15,7 @@ export class AnimalDetailsCardComponent implements OnInit {
   constructor (private settings: Settings, private router: Router, private settingsService: SettingsService) {}
 
   @Input() inputAnimal: Animal;
+  @Input() offSpring = false;
   @Input() mainAnimalGender: string = null;
 
   dateOfBirth = '';

@@ -1,5 +1,15 @@
 <div id="animal-details-card-component" class="details-card-wrapper">
   <div class="row">
+    <div class="medium-offset-6 medium-6 columns">
+      <ng-template [ngIf]="!offSpring">
+      {{ inputAnimal.gender == 'FEMALE' ? ('MOTHER' | translate) : ('FATHER' | translate) }}
+      </ng-template>
+      <ng-template [ngIf]="offSpring">
+        {{ inputAnimal.gender == 'FEMALE' ? ('OOI' | translate) : ('RAM' | translate) }}
+      </ng-template>
+    </div>
+  </div><br>
+  <div class="row">
     <div class="medium-6 columns">
       <label class="middle">{{ 'ULN' | translate }}</label>
     </div>
@@ -30,16 +40,6 @@
     </div>
   </div>
 
-  <!-- GENDER -->
-  <div class="row">
-    <div class="medium-6 columns">
-      <label class="middle">{{ 'GENDER' | translate }}</label>
-    </div>
-    <div class="medium-6 columns">
-      <input type="text" disabled value="{{ inputAnimal.gender ? (inputAnimal.gender | translate) : '' }}">
-    </div>
-  </div>
-
   <!-- LITTER SIZE -->
   <div class="row">
     <div class="medium-6 columns">
@@ -47,6 +47,23 @@
     </div>
     <div class="medium-6 columns">
       <input type="text" disabled value="{{ inputAnimal.litter_size ? inputAnimal.litter_size : '' }}">
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="medium-6 columns">
+      <label class="middle">{{ 'PRODUCTION' | translate }}</label>
+    </div>
+    <div class="medium-6 columns">
+      <input type="text" disabled value="{{ inputAnimal.production }}">
+    </div>
+  </div>
+  <div class="row">
+    <div class="medium-6 columns">
+      <label class="middle">{{ 'GENERAL APPEARANCE' | translate }}</label>
+    </div>
+    <div class="medium-6 columns">
+      <input type="text" disabled value="{{ inputAnimal.general_appearance }}">
     </div>
   </div>
 
