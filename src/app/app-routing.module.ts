@@ -58,12 +58,22 @@ import {ReportInbreedingCoefficientComponent} from './report/inbreedingCoefficie
 import {ReportLivestockComponent} from './report/livestock/report.livestock';
 import {ReportFertilizerAccountingComponent} from './report/fertilityAccounting/report.fertilizer-accounting.component';
 import {ReportOffspringComponent} from './report/offspring/report.offspring.component';
+import {AnimalHealthComponent} from './animal-health/animal-health.component';
+import {AnimalHealthRequestComponent} from "./animal-health/request/animal-health.request";
 
 // const appRoutes: Routes = [
 const appRoutes = [
   {
     path: 'main',  component: HomeComponent, index: true, canActivate: [NSFOAuthService],
     children: [
+      {
+        path: 'animal-health', component: AnimalHealthComponent, canActivate: [NSFOAuthService],
+        children: [
+          {
+            path: 'request', component: AnimalHealthRequestComponent, canActivate: [NSFOAuthService]
+          }
+        ]
+      },
       {path: '', component: DashboardComponent, index: true},
       {
         path: 'admin',  component: AdminComponent, canActivate: [NSFOAdminAuthService],

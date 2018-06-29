@@ -139,6 +139,9 @@ import {MatButtonModule, MatProgressSpinnerModule, MatSnackBar, MatSnackBarModul
 import {PageLoadingSpinnerComponent} from './shared/components/page-loading-spinner/page-loading-spinner.component';
 import {ButtonPrimaryComponent} from './shared/components/button-primary/button-primary.component';
 import {InsideComponentLoadingSpinnerComponent} from './shared/components/inside-component-loading-spinner/inside-component-loading-spinner.component';
+import {AnimalHealthComponent} from './animal-health/animal-health.component';
+import {AnimalHealthRequestComponent} from './animal-health/request/animal-health.request';
+
 // AoT requires an exported function for factories
 export function CreateTranslateLoader(http: HttpClient) {
     return new TranslateHttpLoader(http, '../assets/i18n/', '.json');
@@ -147,6 +150,8 @@ export function CreateTranslateLoader(http: HttpClient) {
 @NgModule({
   declarations: [
     AppComponent,
+      AnimalHealthComponent,
+      AnimalHealthRequestComponent,
       LiveSearchComponent,
       RvoLeadingLivestockSyncComponent,
       AdminComponent,
