@@ -76,6 +76,10 @@
                 <i class="fa fa-phone fa-fw" aria-hidden="true"></i>
                 {{ 'CONTACT NSFO' | translate }}
             </li>
+            <li *ngIf="!isHealthSubscribed" (click)="navigateTo('/main/animal-health'); isActiveSideMenu = false" [class.active]="isActiveRoute('/main/animal-health')" class="link">
+                <i class="fa fa-flask fa-fw" aria-hidden="true"></i>
+                {{ 'ANIMAL HEALTH' | translate }}
+            </li>
             <li class="category">{{ 'DECLARE' | translate }}</li>
             <li (click)="navigateTo('/main/arrival'); isActiveSideMenu = false" [class.active]="isActiveRoute('/main/arrival/declare') || isActiveRoute('/main/arrival/history') || isActiveRoute('/main/arrival/errors')" class="item link">
                 {{ 'ARRIVAL' | translate }}

@@ -37,6 +37,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterContentChecked {
   public userInfo$;
   public currentUBN$;
   public isAdmin = false;
+  public isHealthSubscribed = false;
   public recheckMessages = true;
 
   constructor(private router: Router, private location: Location, private apiService: NSFOService,
@@ -54,12 +55,12 @@ export class HomeComponent implements OnInit, OnDestroy, AfterContentChecked {
       .subscribe(
         res => {
           this.is_logged_in = true;
-
           this.getUserInfo();
           this.getCountryCodeList();
           this.utils.initUserInfo();
           this.getMessages();
           this.isAdmin = this.settings.isAdmin();
+          this.isHealthSubscribed = this.userInfo$.health_subscription;
           },
         err => {
           this.is_logged_in = false;
@@ -73,7 +74,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterContentChecked {
   }
 
   ngOnDestroy() {
-    //this.userInfo$.unsubscribe();
+    // this.userInfo$.unsubscribe();
     this.recheckMessages = false;
   }
 
@@ -84,7 +85,6 @@ export class HomeComponent implements OnInit, OnDestroy, AfterContentChecked {
           this.currentUser.first_name_letter = res.first_name.charAt(0);
           this.currentUser.first_name = res.first_name;
           this.currentUser.last_name = res.last_name;
-
           this.ubnList = res.ubns;
           if (!!this.cache.getUbn()) {
             this.currentUBNValue = this.ubnList[0];
