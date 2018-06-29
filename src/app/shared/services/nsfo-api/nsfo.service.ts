@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {API_URI_VERIFY_GHOST_TOKEN,} from './nsfo.settings';
+import {API_URI_VERIFY_GHOST_TOKEN} from './nsfo.settings';
 import {TranslateService} from '@ngx-translate/core';
 import {Animal} from '../../models/animal.model';
 import {Router} from '@angular/router';
@@ -114,7 +114,7 @@ export class NSFOService {
     this.navigateToLogin();
   }
 
-  public getErrorMessage(err: HttpErrorResponse<any>): string {
+  public getErrorMessage(err: HttpErrorResponse): string {
     switch (err.status) {
       case 500:
         return this.translate.instant('SOMETHING WENT WRONG. TRY ANOTHER TIME.');
