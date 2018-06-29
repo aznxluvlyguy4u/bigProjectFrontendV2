@@ -1,5 +1,5 @@
 import * as moment from 'moment';
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 
 import {Settings} from '../../variables/settings';
 import {Router} from '@angular/router';
@@ -17,11 +17,12 @@ export class AnimalDetailsCardComponent implements OnInit {
   @Input() inputAnimal: Animal;
   @Input() offSpring = false;
   @Input() mainAnimalGender: string = null;
-
+  @Output() historyUpdate = new EventEmitter();
   dateOfBirth = '';
 
   redirectToAnimal(isEdit: boolean = false) {
     if (!this.ulnIsEmpty()) {
+      this.historyUpdate.emit(this.inputAnimal.uln);
       this.router.navigate(['/main/livestock/details/' + this.inputAnimal.uln]);
     }
   }
