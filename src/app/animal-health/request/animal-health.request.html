@@ -1,10 +1,27 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>$Title$</title>
-</head>
-<body>
-$END$
-</body>
-</html>
+<div class="page-header">
+    {{ 'ANIMAL HEALTH REQUEST' | translate }}
+</div>
+<div class="row">
+  <div class="large-12 columns">
+    <form [formGroup]="form">
+      <div class="large-3">
+        <label>{{ 'ILLNESS_TYPE' | translate }}</label>
+        <select formControlName="illness_type" name="illness_type" [ngModel]="selectedIllness">
+          <option *ngFor="let illness of illnesses" value="{{illness}}">
+            {{ illness | translate }}
+          </option>
+        </select>
+      </div>
+      <div class="large-2">
+        <button class="button primary medium" (click)="sendHealthRequest()">
+          {{ 'REQUEST HEALTH CHECK' | translate }}
+        </button>
+      </div>
+      <div *ngIf="isError" class="large-12">
+        <span>
+          {{"THE REQUEST WAS NOT PROCESSED. MOST LIKELY A RESEARCH IS ALREADY IN PROGRESS FOR THIS LOCATION. FOR FURTHER CLARIFICATION, CONTACT NSFO." | translate}}
+        </span>
+      </div>
+    </form>
+  </div>
+</div>
