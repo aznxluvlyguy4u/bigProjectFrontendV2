@@ -255,6 +255,7 @@
   "OPTIONAL": "Optioneel",
   "MESSAGE HAS BEEN SENT": "Het bericht is verstuurd.",
   "ANIMAL HEALTH": "Dierengezondheid",
+  "ANIMAL HEALTH REQUEST": "Diergezondheid aanvraag",
   "COMPANY STATUS": "Bedrijfsstatus",
   "LAST DECLARATION": "Laatste Melding",
   "LAST TRANSFER": "Laatste Overdracht",
@@ -639,6 +640,9 @@
   "SHOW ANIMAL CARD": "Toon dierkaart",
   "THIS ANIMAL HAS NO WEIGHT MEASUREMENTS": "Dit dier heeft geen gewichtmetingen",
   "THIS ANIMAL HAS NO BREED VALUES": "Dit dier heeft geen fokwaarden",
-  "BREED VALUES": "Fokwaarden"
+  "BREED VALUES": "Fokwaarden",
+  "ILLNESS_TYPE": "Soort ziekte",
+  "REQUEST HEALTH CHECK": "Gezondheids onderzoek aanvragen",
+  "THE REQUEST WAS NOT PROCESSED. PLEASE CONTACT NSFO.": "Het verzoek is niet verwerkt. Neem contact op met NSFO."
 }
 
