@@ -247,6 +247,10 @@ export class HomeComponent implements OnInit, OnDestroy, AfterContentChecked {
     return this.downloadService.getDownloadsInModalCount();
   }
 
+  reportCount(): number {
+    return this.reportService.getReportsInModalCount();
+  }
+
   isDownloadModalEmpty(): boolean {
     return this.downloadService.isModalEmpty();
   }

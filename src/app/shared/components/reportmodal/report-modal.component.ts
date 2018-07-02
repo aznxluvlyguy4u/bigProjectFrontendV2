@@ -19,6 +19,7 @@ export class ReportModalComponent implements OnInit, OnDestroy {
   private isModalActiveSubscription: Subscription;
   private toggleModalSubscription: Subscription;
 
+  public title = 'REPORT OVERVIEW';
   public items_per_page = 5;
 
   constructor(
