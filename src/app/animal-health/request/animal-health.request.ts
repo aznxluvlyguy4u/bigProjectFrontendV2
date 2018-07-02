@@ -1,8 +1,11 @@
-import {Component, OnInit} from '@angular/core';
+import {Component} from '@angular/core';
 import {Router} from '@angular/router';
 import {NSFOService} from '../../shared/services/nsfo-api/nsfo.service';
 import {FormBuilder, FormControl, FormGroup} from '@angular/forms';
-import {API_URI_ANIMAL_HEALTH_ANNOUNCEMENTS} from '../../shared/services/nsfo-api/nsfo.settings';
+import {
+  API_URI_ANIMAL_HEALTH_ANNOUNCEMENTS, API_URI_GET_UBN_CAN_REQUEST,
+  API_URI_GET_UBN_PROCESSORS
+} from '../../shared/services/nsfo-api/nsfo.settings';
 import {AnimalHealthRequest} from '../../shared/models/animal-health.model';
 import {CacheService} from '../../shared/services/settings/cache.service';
 
@@ -10,7 +13,7 @@ import {CacheService} from '../../shared/services/settings/cache.service';
   templateUrl: './animal-health.request.html'
 })
 
-export class AnimalHealthRequestComponent implements OnInit {
+export class AnimalHealthRequestComponent {
 
   private illnesses = ['MAEDI VISNA', 'SCRAPIE'];
   private isError = false;
@@ -29,19 +32,24 @@ export class AnimalHealthRequestComponent implements OnInit {
     });
   }
 
-  ngOnInit() {
-    this.getUserInfo();
-  }
 
   sendHealthRequest() {
     const data = new AnimalHealthRequest();
     data.illness = this.form.get('illness_type').value;
     data.ubn = this.ubn;
-    this.apiService.doPostRequest(API_URI_ANIMAL_HEALTH_ANNOUNCEMENTS + '/customer', data).subscribe(
+    this.apiService.doGetRequest(API_URI_GET_UBN_CAN_REQUEST + '/' + data.ubn + '/validate').subscribe(
       res => {
-          if (res.result.result === 'null' && res.result.failed !== 'null') {
-            this.isError = true;
-          }
+        if (res.result.length > 0) {
+          this.apiService.doPostRequest(API_URI_ANIMAL_HEALTH_ANNOUNCEMENTS + '/customer', data).subscribe(
+            result => {
+              if (result.result.result === 'null' && result.result.failed !== 'null') {
+                this.isError = true;
+              }
+            }
+          );
+        } else {
+          this.isError = true;
+        }
       }
     );
   }
