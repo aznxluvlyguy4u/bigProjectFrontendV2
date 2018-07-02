@@ -253,6 +253,7 @@ export class DownloadService {
           this.reportService.fetchReports();
           },
         error => {
+          alert(this.nsfo.getErrorMessage(error));
         }
       );
   }
@@ -264,6 +265,7 @@ export class DownloadService {
               this.reportService.fetchReports();
           },
         error => {
+          alert(this.nsfo.getErrorMessage(error));
         }
       );
   }
