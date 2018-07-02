@@ -76,7 +76,7 @@
                 <i class="fa fa-phone fa-fw" aria-hidden="true"></i>
                 {{ 'CONTACT NSFO' | translate }}
             </li>
-            <li *ngIf="!isHealthSubscribed" (click)="navigateTo('/main/animal-health'); isActiveSideMenu = false" [class.active]="isActiveRoute('/main/animal-health')" class="link">
+            <li *ngIf="isHealthSubscribed" (click)="navigateTo('/main/animal-health'); isActiveSideMenu = false" [class.active]="isActiveRoute('/main/animal-health')" class="link">
                 <i class="fa fa-flask fa-fw" aria-hidden="true"></i>
                 {{ 'ANIMAL HEALTH' | translate }}
             </li>

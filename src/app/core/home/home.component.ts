@@ -6,8 +6,8 @@ import {Router} from '@angular/router';
 import {NSFOService} from '../../shared/services/nsfo-api/nsfo.service';
 import {SettingsService} from '../../shared/services/settings/settings.service';
 import {
-    API_URI_GET_COUNTRY_CODES,
-    API_URI_GET_MESSAGES,
+  API_URI_GET_COUNTRY_CODES,
+  API_URI_GET_MESSAGES, API_URI_GET_UBN_CAN_REQUEST,
 } from '../../shared/services/nsfo-api/nsfo.settings';
 import {UtilsService} from '../../shared/services/utils/utils.services';
 import { DownloadService } from '../../shared/services/download/download.service';
@@ -60,7 +60,6 @@ export class HomeComponent implements OnInit, OnDestroy, AfterContentChecked {
           this.utils.initUserInfo();
           this.getMessages();
           this.isAdmin = this.settings.isAdmin();
-          this.isHealthSubscribed = this.userInfo$.health_subscription;
           },
         err => {
           this.is_logged_in = false;
@@ -78,6 +77,15 @@ export class HomeComponent implements OnInit, OnDestroy, AfterContentChecked {
     this.recheckMessages = false;
   }
 
+  private validateHealthSubscription() {
+    this.apiService.doGetRequest(API_URI_GET_UBN_CAN_REQUEST + '/' + this.currentUBNValue)
+      .subscribe(
+        res => {
+          this.isHealthSubscribed = res.result;
+        }
+      );
+  }
+
   private getUserInfo() {
     this.userInfo$ = this.utils.getUserInfo()
       .subscribe(
@@ -85,6 +93,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterContentChecked {
           this.currentUser.first_name_letter = res.first_name.charAt(0);
           this.currentUser.first_name = res.first_name;
           this.currentUser.last_name = res.last_name;
+          this.currentUser.health_subscription = res.health_subscription;
           this.ubnList = res.ubns;
           if (!!this.cache.getUbn()) {
             this.currentUBNValue = this.ubnList[0];
@@ -98,6 +107,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterContentChecked {
           } else {
             this.currentUBNValue = this.ubnList[0];
           }
+          this.validateHealthSubscription();
         });
   }
 
