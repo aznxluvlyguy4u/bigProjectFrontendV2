@@ -18,10 +18,12 @@ import {JsonResponseModel} from '../../../shared/models/json-response.model';
 })
 
 export class TagReplacementHistoryComponent implements OnInit {
-  private tagReplacementHistoryList = <TagReplacementHistoryChangeResponse[]>[];
-  private selectedTagReplacement: TagReplacementHistoryChangeResponse;
-  private modalDisplay = 'none';
-  private isLoading = true;
+  public tagReplacementHistoryList = <TagReplacementHistoryChangeResponse[]>[];
+  public selectedTagReplacement: TagReplacementHistoryChangeResponse;
+  public modalDisplay = 'none';
+  public isLoading = true;
+  public page: number;
+  public searchValue: string;
 
   constructor(private nsfo: NSFOService, private settings: SettingsService) {
   }
@@ -30,7 +32,7 @@ export class TagReplacementHistoryComponent implements OnInit {
     this.getTagReplacementHistoryList();
   }
 
-  private getTagReplacementHistoryList() {
+  public getTagReplacementHistoryList() {
     this.nsfo
       .doGetRequest(API_URI_GET_TAG_REPLACEMENT_HISTORY)
       .subscribe(
@@ -52,20 +54,20 @@ export class TagReplacementHistoryComponent implements OnInit {
         });
   }
 
-  private selectTagReplacement(event) {
+  public selectTagReplacement(event) {
     this.selectedTagReplacement = <TagReplacementHistoryChangeResponse> event;
     this.openModal();
   }
 
-  private openModal() {
+  public openModal() {
     this.modalDisplay = 'block';
   }
 
-  private closeModal() {
+  public closeModal() {
     this.modalDisplay = 'none';
   }
 
-  private revokeTagReplacement() {
+  public revokeTagReplacement() {
     this.nsfo
       .doPostRequest(API_URI_REVOKE_DECLARATION, this.selectedTagReplacement)
       .subscribe(

@@ -10,7 +10,7 @@ import {REPORT_OPTIONS_LIST} from './report.model';
 
 export class ReportComponent implements OnInit {
 
-    private report_options_list = REPORT_OPTIONS_LIST;
+    public report_options_list = REPORT_OPTIONS_LIST;
 
     constructor(private router: Router, private location: Location) {}
 
@@ -21,7 +21,7 @@ export class ReportComponent implements OnInit {
         }
     }
 
-    private navigateTo(route: string) {
+    public navigateTo(route: string) {
         this.router.navigate([route]);
     }
 

@@ -30,7 +30,7 @@ export class DepartDeclareComponent {
 
   constructor(private fb: FormBuilder,
               private nsfo: NSFOService,
-              private constants: Constants,
+              public constants: Constants,
               private settings: Settings,
               private translate: TranslateService) {
     this.view_date_format = settings.VIEW_DATE_FORMAT;
@@ -50,7 +50,7 @@ export class DepartDeclareComponent {
     });
   }
 
-  private declareDepart(event: AnimalsOverviewSelection) {
+  public declareDepart(event: AnimalsOverviewSelection) {
     const animals = event.animals;
     const selectionList = event.selectionList;
 
@@ -109,21 +109,21 @@ export class DepartDeclareComponent {
     }
   }
 
-  private openModal() {
+  public openModal() {
     this.modalDisplay = 'block';
   }
 
-  private closeModal() {
+  public closeModal() {
     this.modalDisplay = 'none';
   }
 
-  private clearUBNValue() {
+  public clearUBNValue() {
     if (this.export_animal.get('export_flag').value === this.constants.NO) {
       this.export_animal.get('ubn_new_owner').setValue('');
     }
   }
 
-  private clearCertificateValue() {
+  public clearCertificateValue() {
     if (this.export_animal.get('export_flag').value === this.constants.YES) {
       this.export_animal.get('certificate_number').setValue('');
     }

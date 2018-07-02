@@ -17,10 +17,10 @@ export class WeightHistoryRowComponent {
   @Input() weight_index: any;
   @Output() revokeWeight = new EventEmitter();
   @Output() showError = new EventEmitter();
-  private editMode = false;
-  private isSending = false;
-  private weightTemp: WeightChangeResponse;
-  private form: FormGroup;
+  public editMode = false;
+  public isSending = false;
+  public weightTemp: WeightChangeResponse;
+  public form: FormGroup;
 
   constructor(private fb: FormBuilder,
               private nsfo: NSFOService,
@@ -31,7 +31,7 @@ export class WeightHistoryRowComponent {
     });
   }
 
-  private sendChangeRequest() {
+  public sendChangeRequest() {
     if (this.form.valid) {
       this.isSending = true;
       const newWeight = _.cloneDeep(this.weight);
@@ -57,11 +57,11 @@ export class WeightHistoryRowComponent {
     }
   }
 
-  private sendRevokeRequest() {
+  public sendRevokeRequest() {
     this.revokeWeight.emit(this.weight);
   }
 
-  private enableEditing() {
+  public enableEditing() {
     if (this.editMode) {
       this.cancelEditing();
     }
@@ -69,16 +69,16 @@ export class WeightHistoryRowComponent {
     this.weightTemp = _.cloneDeep(this.weight);
   }
 
-  private cancelEditing() {
+  public cancelEditing() {
     this.editMode = false;
     this.weight = this.weightTemp;
   }
 
-  private stringAsViewDate(date) {
+  public stringAsViewDate(date) {
     return moment(date).format(this.settings.getViewDateFormat());
   }
 
-  private stringAsViewDateTime(date) {
+  public stringAsViewDateTime(date) {
     return moment(date).format(this.settings.getViewDateTimeFormat());
   }
 }

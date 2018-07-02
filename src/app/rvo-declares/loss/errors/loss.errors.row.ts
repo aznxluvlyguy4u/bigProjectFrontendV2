@@ -19,19 +19,19 @@ export class LossErrorRowComponent implements AfterViewChecked {
   @Input() loss: LossErrorResponse;
   @Input() loss_index: number;
   @Output() removeLoss = new EventEmitter();
-  private editMode = false;
-  private popupIsLoaded = false;
-  private temp_loss: LossErrorResponse;
-  private form_valid = true;
-  private options_reason_of_loss = LOSS_REASON_OF_LOSS;
-  private view_date_format;
-  private view_datetime_format;
-  private model_datetime_format;
-  private form: FormGroup;
+  public editMode = false;
+  public popupIsLoaded = false;
+  public temp_loss: LossErrorResponse;
+  public form_valid = true;
+  public options_reason_of_loss = LOSS_REASON_OF_LOSS;
+  public view_date_format;
+  public view_datetime_format;
+  public model_datetime_format;
+  public form: FormGroup;
 
   constructor(private fb: FormBuilder,
               private apiService: NSFOService,
-              private constants: Constants,
+              public constants: Constants,
               private settings: Settings) {
     this.view_date_format = settings.VIEW_DATE_FORMAT;
     this.view_datetime_format = settings.VIEW_DATETIME_FORMAT;
@@ -50,7 +50,7 @@ export class LossErrorRowComponent implements AfterViewChecked {
     }
   }
 
-  private sendChangeRequest() {
+  public sendChangeRequest() {
     if (this.form.valid) {
       this.form_valid = true;
       this.editMode = false;
@@ -75,7 +75,7 @@ export class LossErrorRowComponent implements AfterViewChecked {
     }
   }
 
-  private sendRemoveErrorRequest() {
+  public sendRemoveErrorRequest() {
     const request = {
       'is_removed_by_user': true,
       'request_id': this.loss.request_id
@@ -88,7 +88,7 @@ export class LossErrorRowComponent implements AfterViewChecked {
     this.removeLoss.emit(this.loss);
   }
 
-  private enableEditing() {
+  public enableEditing() {
     if (this.editMode) {
       this.cancelEditing();
     }
@@ -96,12 +96,12 @@ export class LossErrorRowComponent implements AfterViewChecked {
     this.temp_loss = _.clone(this.loss);
   }
 
-  private cancelEditing() {
+  public cancelEditing() {
     this.editMode = false;
     this.loss = this.temp_loss;
   }
 
-  private stringAsViewDateTime(date) {
+  public stringAsViewDateTime(date) {
     return moment(date).format(this.settings.VIEW_DATETIME_FORMAT);
   }
 }

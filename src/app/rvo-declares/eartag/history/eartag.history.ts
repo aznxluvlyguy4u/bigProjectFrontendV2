@@ -13,14 +13,15 @@ import {JsonResponseModel} from '../../../shared/models/json-response.model';
 })
 
 export class EartagHistoryComponent implements OnInit {
-  private eartagHistoryList = <EartagChangeResponse[]>[];
-  private selected_eartag: EartagChangeResponse;
-  private searchValue = '';
-  private modal_display = 'none';
-  private error_modal_display = 'none';
-  private error_message = '';
-  private error_number = '';
-  private isLoading = true;
+  public eartagHistoryList = <EartagChangeResponse[]>[];
+  public selected_eartag: EartagChangeResponse;
+  public searchValue = '';
+  public modal_display = 'none';
+  public error_modal_display = 'none';
+  public error_message = '';
+  public error_number = '';
+  public isLoading = true;
+  public page: number;
 
   constructor(private apiService: NSFOService, private settings: SettingsService) {
   }
@@ -29,7 +30,7 @@ export class EartagHistoryComponent implements OnInit {
     this.getEartaglHistoryList();
   }
 
-  private getEartaglHistoryList() {
+  public getEartaglHistoryList() {
     this.apiService
       .doGetRequest(API_URI_GET_EARTAGS_HISTORY)
       .subscribe((res: JsonResponseModel) => {
@@ -48,35 +49,35 @@ export class EartagHistoryComponent implements OnInit {
         });
   }
 
-  private selectEartag(event) {
+  public selectEartag(event) {
     this.selected_eartag = <EartagChangeResponse> event;
     this.openModal();
   }
 
-  private showError(event) {
+  public showError(event) {
     this.error_message = event.error.message;
     this.error_number = event.error.pedigree;
     this.error_number = event.error.uln;
     this.openErrorModal();
   }
 
-  private openModal() {
+  public openModal() {
     this.modal_display = 'block';
   }
 
-  private closeModal() {
+  public closeModal() {
     this.modal_display = 'none';
   }
 
-  private openErrorModal() {
+  public openErrorModal() {
     this.error_modal_display = 'block';
   }
 
-  private closeErrorModal() {
+  public closeErrorModal() {
     this.error_modal_display = 'none';
   }
 
-  private revokeEartag() {
+  public revokeEartag() {
     this.apiService
       .doPostRequest(API_URI_REVOKE_DECLARATION, this.selected_eartag)
       .subscribe(

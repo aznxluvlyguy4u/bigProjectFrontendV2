@@ -18,11 +18,11 @@ import {JsonResponseModel} from '../../shared/models/json-response.model';
 })
 
 export class ReportInbreedingCoefficientComponent {
-    private livestock = <LivestockAnimal[]>[];
-    private selectedRam: Animal = new Animal;
-    private form: FormGroup;
+    public livestock = <LivestockAnimal[]>[];
+    public selectedRam: Animal = new Animal;
+    public form: FormGroup;
     defaultFileType: string = PDF;
-    private inbreedingMaxSelectionCount = 50;
+    public inbreedingMaxSelectionCount = 50;
 
     constructor(
         private nsfo: NSFOService,
@@ -36,7 +36,7 @@ export class ReportInbreedingCoefficientComponent {
         this.getLivestockList();
     }
 
-    private getLivestockList() {
+    public getLivestockList() {
         this.nsfo
             .doGetRequest(API_URI_GET_ANIMALS)
             .subscribe(
@@ -62,11 +62,11 @@ export class ReportInbreedingCoefficientComponent {
             );
     }
 
-    private generateReport(event: AnimalsOverviewSelection) {
+    public generateReport(event: AnimalsOverviewSelection) {
         this.downloadService.doInbreedingCoefficientReportPostRequest(this.selectedRam, event.animals, event.fileType);
     }
 
-    private selectRam(ram: Animal) {
+    public selectRam(ram: Animal) {
         this.selectedRam = ram;
         this.form.get('uln').setValue(ram.uln);
     }

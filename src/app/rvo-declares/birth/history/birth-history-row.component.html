@@ -90,7 +90,7 @@
 
 <!--ROW BUTTONS-->
 <td>
-    <span *ngIf="litter.request_state != 'REVOKING' || litter.request_state != 'REVOKED'">
+    <span *ngIf="!litter.request_state.match('REVOKING') || !litter.request_state.match('REVOKED')">
         <button class="tiny primary button" (click)="getLitterDetails(); openModal()">{{ 'VIEW' | translate }}</button>
     </span>
 

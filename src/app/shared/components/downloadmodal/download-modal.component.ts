@@ -10,8 +10,9 @@ import {Subscription} from 'rxjs';
   templateUrl: './download-modal.component.html'
 })
 export class DownloadModalComponent implements OnInit, OnDestroy {
+  public title = 'DOWNLOAD';
   public downloadRequestsShownInModal: DownloadRequest[];
-  private modalDisplay = 'none';
+  public modalDisplay = 'none';
   private downloadRequestSubscription: Subscription;
   private isModalActiveSubscription: Subscription;
   private toggleModalSubscription: Subscription;

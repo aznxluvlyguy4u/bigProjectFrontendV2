@@ -12,16 +12,16 @@ import {JsonResponseModel} from '../../shared/models/json-response.model';
 })
 
 export class ContactComponent implements OnInit, OnDestroy {
-  private form: FormGroup;
-  private feedback = '';
-  private userEmail = '';
-  private category_default = '';
-  private category = '';
-  private mood_default = '';
-  private mood = '';
-  private contactInfo = '';
-  private userInfo$;
-  private message = '';
+  public form: FormGroup;
+  public feedback = '';
+  public userEmail = '';
+  public category_default = '';
+  public category = '';
+  public mood_default = '';
+  public mood = '';
+  public contactInfo = '';
+  public userInfo$;
+  public message = '';
 
   constructor(private apiService: NSFOService, private fb: FormBuilder, private settings: SettingsService,
               private utils: UtilsService, private translate: TranslateService) {
@@ -43,7 +43,7 @@ export class ContactComponent implements OnInit, OnDestroy {
     this.userInfo$.unsubscribe();
   }
 
-  private initTranslation() {
+  public initTranslation() {
     this.translate.get('GENERAL')
       .subscribe(
         res => {
@@ -61,7 +61,7 @@ export class ContactComponent implements OnInit, OnDestroy {
       );
   }
 
-  private getContactInfo() {
+  public getContactInfo() {
     this.apiService.doGetRequest(API_URI_GET_CMS)
       .subscribe((res: JsonResponseModel) => {
           if (res.result) {
@@ -73,14 +73,14 @@ export class ContactComponent implements OnInit, OnDestroy {
         });
   }
 
-  private getUserInfo() {
+  public getUserInfo() {
     this.userInfo$ = this.utils.getUserInfo()
       .subscribe(res => {
         this.userEmail = res.email_address;
       });
   }
 
-  private sendMessage() {
+  public sendMessage() {
     const request = {
       email: this.userEmail,
       category: this.category,

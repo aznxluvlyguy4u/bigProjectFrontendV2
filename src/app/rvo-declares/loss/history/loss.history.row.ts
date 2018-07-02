@@ -21,18 +21,18 @@ export class LossHistoryRowComponent {
   @Input() loss: LossChangeResponse;
   @Input() loss_index: number;
   @Output() revokeLoss = new EventEmitter();
-  private editMode = false;
-  private temp_loss: LossChangeResponse;
-  private form_valid = true;
-  private options_reason_of_loss = LOSS_REASON_OF_LOSS;
-  private view_datetime_format;
-  private view_date_format;
-  private model_datetime_format;
-  private form: FormGroup;
+  public editMode = false;
+  public temp_loss: LossChangeResponse;
+  public form_valid = true;
+  public options_reason_of_loss = LOSS_REASON_OF_LOSS;
+  public view_datetime_format;
+  public view_date_format;
+  public model_datetime_format;
+  public form: FormGroup;
 
   constructor(private fb: FormBuilder,
               private apiService: NSFOService,
-              private constants: Constants,
+              public constants: Constants,
               private settings: Settings) {
     this.view_datetime_format = settings.VIEW_DATETIME_FORMAT;
     this.view_date_format = settings.VIEW_DATE_FORMAT;
@@ -44,7 +44,7 @@ export class LossHistoryRowComponent {
     });
   }
 
-  private sendChangeRequest() {
+  public sendChangeRequest() {
     if (this.form.valid) {
       this.form_valid = true;
       this.editMode = false;
@@ -68,11 +68,11 @@ export class LossHistoryRowComponent {
     }
   }
 
-  private sendRevokeRequest() {
+  public sendRevokeRequest() {
     this.revokeLoss.emit(this.loss);
   }
 
-  private enableEditing() {
+  public enableEditing() {
     if (this.editMode) {
       this.cancelEditing();
     }
@@ -80,12 +80,12 @@ export class LossHistoryRowComponent {
     this.temp_loss = _.clone(this.loss);
   }
 
-  private cancelEditing() {
+  public cancelEditing() {
     this.editMode = false;
     this.loss = this.temp_loss;
   }
 
-  private stringAsViewDateTime(date) {
+  public stringAsViewDateTime(date) {
     return moment(date).format(this.settings.VIEW_DATETIME_FORMAT);
   }
 }

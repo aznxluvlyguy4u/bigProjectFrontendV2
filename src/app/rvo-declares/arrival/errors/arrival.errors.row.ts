@@ -57,7 +57,7 @@ export class ArrivalErrorRowComponent implements OnInit, AfterViewChecked {
     // }
   }
 
-  private getCountryCodeList() {
+  public getCountryCodeList() {
     this.apiService
       .doGetRequest(API_URI_GET_COUNTRY_CODES)
       .subscribe(
@@ -70,7 +70,7 @@ export class ArrivalErrorRowComponent implements OnInit, AfterViewChecked {
       );
   }
 
-  private sendChangeRequest() {
+  public sendChangeRequest() {
     if (this.form.valid) {
       this.form_valid = true;
       this.editMode = false;
@@ -100,7 +100,7 @@ export class ArrivalErrorRowComponent implements OnInit, AfterViewChecked {
     }
   }
 
-  private sendRemoveErrorRequest() {
+  public sendRemoveErrorRequest() {
     const request = {
       'is_removed_by_user': true,
       'request_id': this.arrival.request_id
@@ -117,7 +117,7 @@ export class ArrivalErrorRowComponent implements OnInit, AfterViewChecked {
     this.removeArrival.emit(this.arrival);
   }
 
-  private enableEditing() {
+  public enableEditing() {
     if (this.editMode) {
       this.cancelEditing();
     }
@@ -125,12 +125,12 @@ export class ArrivalErrorRowComponent implements OnInit, AfterViewChecked {
     this.temp_arrival = _.clone(this.arrival);
   }
 
-  private cancelEditing() {
+  public cancelEditing() {
     this.editMode = false;
     this.arrival = this.temp_arrival;
   }
 
-  private stringAsViewDateTime(date) {
+  public stringAsViewDateTime(date) {
     return moment(date).format(this.settings.VIEW_DATETIME_FORMAT);
   }
 }

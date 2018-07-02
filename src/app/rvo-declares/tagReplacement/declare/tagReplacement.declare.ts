@@ -13,17 +13,17 @@ import {JsonResponseModel} from '../../../shared/models/json-response.model';
 })
 
 export class TagReplacementDeclareComponent {
-  private tags = [];
-  private filteredTags = [];
-  private selectedAnimal: Animal;
-  private selectedTag;
-  private sending: boolean;
+  public tags = [];
+  public filteredTags = [];
+  public selectedAnimal: Animal;
+  public selectedTag;
+  public sending: boolean;
 
   constructor(private nsfo: NSFOService) {
     this.getEartagsList();
   }
 
-  private getEartagsList() {
+  public getEartagsList() {
     this.nsfo
       .doGetRequest(API_URI_GET_EARTAGS)
       .subscribe(
@@ -44,11 +44,11 @@ export class TagReplacementDeclareComponent {
       );
   }
 
-  private selectAnimal(event) {
+  public selectAnimal(event) {
     this.selectedAnimal = event.animals[0];
   }
 
-  private declareTagReplacement(event) {
+  public declareTagReplacement(event) {
     this.selectedAnimal.sending = true;
     this.selectedTag = event;
 

@@ -32,60 +32,60 @@ import {TranslateService} from '@ngx-translate/core';
 
 export class LivestockDetailComponent implements OnInit {
 
-    private breedValueData: any[];
-    private breedValueConfig: GoogleChartConfigModel;
-    private breedValueElementId: string;
+    public breedValueData: any[];
+    public breedValueConfig: GoogleChartConfigModel;
+    public breedValueElementId: string;
 
-    private weightData: any[];
-    private weightConfig: GoogleChartConfigModel;
-    private weightElementId: string;
+    public weightData: any[];
+    public weightConfig: GoogleChartConfigModel;
+    public weightElementId: string;
 
   // ANIMAL DETAILS
-  private form: FormGroup;
-  private animal: Animal = new Animal();
-  private temp_animal: Animal;
-  private fatherAnimal: Animal = new Animal();
-  private motherAnimal: Animal = new Animal();
-  private children: Animal[] = [];
-  private collar_color_list = [];
-  private view_date_format: string;
-  private model_datetime_format: string;
-  private livestock_gender_options = LIVESTOCK_GENDER_OPTIONS;
-  private livestock_breed_options = LIVESTOCK_BREED_OPTIONS;
+  public form: FormGroup;
+  public animal: Animal = new Animal();
+  public temp_animal: Animal;
+  public fatherAnimal: Animal = new Animal();
+  public motherAnimal: Animal = new Animal();
+  public children: Animal[] = [];
+  public collar_color_list = [];
+  public view_date_format: string;
+  public model_datetime_format: string;
+  public livestock_gender_options = LIVESTOCK_GENDER_OPTIONS;
+  public livestock_breed_options = LIVESTOCK_BREED_OPTIONS;
   public edit_mode = false;
-  private gender_edit_mode = false;
-  private changeEnabled = false;
-  private changed_animal_info = false;
-  private changed_animal_info_error = false;
-  private gender_changed_animal_info_error = false;
-  private in_progress = false;
-  private sub: any;
-  private error_message = 'AN ERROR OCCURRED WHILE SAVING';
-  private gender_change_error = '';
-  private measurementDates: string[] = [];
-  private measurementWeights: number[] = [];
-  private logs: DeclareLog[] = [];
-  private breedValues: BreedValues[] = [];
+  public gender_edit_mode = false;
+  public changeEnabled = false;
+  public changed_animal_info = false;
+  public changed_animal_info_error = false;
+  public gender_changed_animal_info_error = false;
+  public in_progress = false;
+  public sub: any;
+  public error_message = 'AN ERROR OCCURRED WHILE SAVING';
+  public gender_change_error = '';
+  public measurementDates: string[] = [];
+  public measurementWeights: number[] = [];
+  public logs: DeclareLog[] = [];
+  public breedValues: BreedValues[] = [];
   // EXTERIOR MEASUREMENTS
-  private exteriorForm: FormGroup;
-  private isValidExteriorForm = true;
-  private isRequestingExterior = false;
-  private hasServerError = false;
+  public exteriorForm: FormGroup;
+  public isValidExteriorForm = true;
+  public isRequestingExterior = false;
+  public hasServerError = false;
 
-  private isExteriorEditMode = false;
-  private inspectors: User[] = [];
-  private kinds: string[] = [];
-  private selectedExterior: Exterior = new Exterior();
-  private isAdmin = false;
-  private tempExterior: Exterior = new Exterior();
-  private displayExteriorModal = 'none';
-  private selectedExteriorDate = '';
+  public isExteriorEditMode = false;
+  public inspectors: User[] = [];
+  public kinds: string[] = [];
+  public selectedExterior: Exterior = new Exterior();
+  public isAdmin = false;
+  public tempExterior: Exterior = new Exterior();
+  public displayExteriorModal = 'none';
+  public selectedExteriorDate = '';
 
-  private invalidMeasurementDate = false;
-  private model_date_format: string;
+  public invalidMeasurementDate = false;
+  public model_date_format: string;
 
-  private isLoadingAnimalDetails: boolean;
-  private isLoadingCollarColorList: boolean;
+  public isLoadingAnimalDetails: boolean;
+  public isLoadingCollarColorList: boolean;
   isLoading: boolean;
 
   constructor(private route: ActivatedRoute,
@@ -166,7 +166,7 @@ export class LivestockDetailComponent implements OnInit {
       });
   }
 
-  private genderType(gender: string): string {
+  public genderType(gender: string): string {
     const gender_type = {
       'FEMALE': 'EWE',
       'MALE': 'RAM',
@@ -176,7 +176,7 @@ export class LivestockDetailComponent implements OnInit {
     return gender_type[gender];
   }
 
-  private getCollarColorList() {
+  public getCollarColorList() {
     this.apiService
       .doGetRequest(API_URI_GET_COLLAR_COLORS)
       .subscribe(
@@ -193,7 +193,7 @@ export class LivestockDetailComponent implements OnInit {
       );
   }
 
-  private getAnimalDetails() {
+  public getAnimalDetails() {
     this.route.params
       .subscribe(params => {
         this.apiService
@@ -325,7 +325,7 @@ export class LivestockDetailComponent implements OnInit {
     return this.breedValues.length > 0;
   }
 
-  private sendGenderChangeRequest() {
+  public sendGenderChangeRequest() {
     this.changeEnabled = false;
     this.gender_edit_mode = false;
     this.changed_animal_info = false;
@@ -353,7 +353,7 @@ export class LivestockDetailComponent implements OnInit {
       );
   }
 
-  private sendChangeRequest() {
+  public sendChangeRequest() {
     this.changeEnabled = false;
     this.edit_mode = false;
     this.changed_animal_info = false;
@@ -388,12 +388,12 @@ export class LivestockDetailComponent implements OnInit {
       );
   }
 
-  private generateLineageProof(fileType: string) {
+  public generateLineageProof(fileType: string) {
     this.downloadService.doLineageProofPostRequest([this.animal], fileType);
   }
 
 
-  private selectTag(tag) {
+  public selectTag(tag) {
     this.animal.uln = tag.uln;
     this.animal.uln_country_code = tag.uln_country_code;
     this.animal.uln_number = tag.uln_number;
@@ -401,7 +401,7 @@ export class LivestockDetailComponent implements OnInit {
   }
 
 
-  private toggleGenderEditMode() {
+  public toggleGenderEditMode() {
     this.gender_edit_mode = !this.gender_edit_mode;
 
     if (!this.gender_edit_mode) {
@@ -409,7 +409,7 @@ export class LivestockDetailComponent implements OnInit {
     }
   }
 
-  private toggleEditMode() {
+  public toggleEditMode() {
     this.edit_mode = !this.edit_mode;
 
     if (!this.edit_mode) {
@@ -419,19 +419,19 @@ export class LivestockDetailComponent implements OnInit {
     }
   }
 
-  private goBack() {
+  public goBack() {
     this.router.navigate(['/main/livestock/overview']);
   }
 
-  private stringAsViewDate(date) {
+  public stringAsViewDate(date) {
     return moment(date).format(this.settings.getViewDateFormat());
   }
 
-  private stringAsViewDateTime(date) {
+  public stringAsViewDateTime(date) {
     return moment(date).format(this.settings.getViewDateTimeFormat());
   }
 
-  private stringAsModelDate(date) {
+  public stringAsModelDate(date) {
     return moment(date).format(this.settings.getModelDateFormat());
   }
 }

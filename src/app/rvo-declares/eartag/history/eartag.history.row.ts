@@ -20,12 +20,12 @@ export class EartagHistoryRowComponent {
   @Input() eartag_index: number;
   @Output() revokeEartag = new EventEmitter();
   @Output() showError = new EventEmitter();
-  private editMode = false;
-  private temp_eartag: EartagChangeResponse;
-  private country_code_list = [];
-  private form_valid = true;
-  private uid_type_changed;
-  private form: FormGroup;
+  public editMode = false;
+  public temp_eartag: EartagChangeResponse;
+  public country_code_list = [];
+  public form_valid = true;
+  public uid_type_changed;
+  public form: FormGroup;
 
   constructor(private fb: FormBuilder,
               private apiService: NSFOService,
@@ -35,11 +35,11 @@ export class EartagHistoryRowComponent {
     });
   }
 
-  private sendRevokeRequest() {
+  public sendRevokeRequest() {
     this.revokeEartag.emit(this.eartag);
   }
 
-  private enableEditing() {
+  public enableEditing() {
     if (this.editMode) {
       this.cancelEditing();
     }
@@ -47,12 +47,12 @@ export class EartagHistoryRowComponent {
     this.temp_eartag = _.clone(this.eartag);
   }
 
-  private cancelEditing() {
+  public cancelEditing() {
     this.editMode = false;
     this.eartag = this.temp_eartag;
   }
 
-  private stringAsViewDateTime(date) {
+  public stringAsViewDateTime(date) {
     return moment(date).format(this.settings.getViewDateTimeFormat());
   }
 }

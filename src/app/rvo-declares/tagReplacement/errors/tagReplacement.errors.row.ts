@@ -19,7 +19,7 @@ export class TagReplacementErrorRowComponent {
   constructor(private apiService: NSFOService) {
   }
 
-  private sendRemoveErrorRequest() {
+  public sendRemoveErrorRequest() {
     const request = {
       'is_removed_by_user': true,
       'request_id': this.tagReplacement.request_id

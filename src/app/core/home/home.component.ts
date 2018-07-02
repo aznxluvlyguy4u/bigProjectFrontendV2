@@ -181,7 +181,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterContentChecked {
     window.location.reload();
   }
 
-  private navigateTo(route: string) {
+  public navigateTo(route: string) {
     if (
       this.location.path() !== route + '/declare' &&
       this.location.path() !== route + '/history' &&
@@ -194,11 +194,11 @@ export class HomeComponent implements OnInit, OnDestroy, AfterContentChecked {
     }
   }
 
-  private isActiveRoute(route: string) {
+  public isActiveRoute(route: string) {
     return this.router.serializeUrl(this.router.createUrlTree([])) === this.router.serializeUrl((this.router.createUrlTree([route])));
   }
 
-  private logout() {
+  public logout() {
     this.cache.deleteTokens();
     this.navigateTo('/login');
   }

@@ -13,7 +13,7 @@ import * as moment from 'moment';
 export class DeclareManagerModalComponent implements OnInit, OnDestroy {
   title = 'DECLARES';
   public declareItemsShownInModal: DeclareManagerItem[];
-  private modalDisplay = 'none';
+  public modalDisplay = 'none';
   private declareItemRequestSubscription: Subscription;
   private isModalActiveSubscription: Subscription;
   private toggleModalSubscription: Subscription;

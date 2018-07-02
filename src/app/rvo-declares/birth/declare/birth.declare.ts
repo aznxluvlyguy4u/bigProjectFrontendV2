@@ -33,57 +33,57 @@ import {JsonResponseModel} from '../../../shared/models/json-response.model';
 
 export class BirthDeclareComponent implements OnInit, OnDestroy {
 
-  private birth_list: any = [];
-  private country_code_list = <CountryCode[]>[];
-  private children_list: any = [];
-  private suggestedCandidateFathers = <LivestockAnimal[]>[];
-  private otherCandidateFathers = <LivestockAnimal[]>[];
-  private suggestedCandidateMothers = <LivestockAnimal[]>[];
-  private otherCandidateMothers = <LivestockAnimal[]>[];
+  public birth_list: any = [];
+  public country_code_list = <CountryCode[]>[];
+  public children_list: any = [];
+  public suggestedCandidateFathers = <LivestockAnimal[]>[];
+  public otherCandidateFathers = <LivestockAnimal[]>[];
+  public suggestedCandidateMothers = <LivestockAnimal[]>[];
+  public otherCandidateMothers = <LivestockAnimal[]>[];
 
-  private candidateSurrogates = <LivestockAnimal[]>[];
-  private selectedTags: Array<EarTag> = [];
-  private filteredTags: Array<EarTag> = [];
-  private tags: Array<EarTag> = [];
+  public candidateSurrogates = <LivestockAnimal[]>[];
+  public selectedTags: Array<EarTag> = [];
+  public filteredTags: Array<EarTag> = [];
+  public tags: Array<EarTag> = [];
 
-  private isValidForm = true;
-  private isValidFormChildren = true;
-  private isSending = false;
-  private isChildListOn = false;
+  public isValidForm = true;
+  public isValidFormChildren = true;
+  public isSending = false;
+  public isChildListOn = false;
 
-  private selectedMother: Animal;
-  private selectedFather: Animal;
-  private birth_progress_types = BIRTH_PROGRESS_TYPES;
-  private view_date_format;
-  private model_datetime_format;
-  private errorMessage = '';
-  private errorData = '';
+  public selectedMother: Animal;
+  public selectedFather: Animal;
+  public birth_progress_types = BIRTH_PROGRESS_TYPES;
+  public view_date_format;
+  public model_datetime_format;
+  public errorMessage = '';
+  public errorData = '';
 
-  private form: FormGroup;
-  private litter: FormGroup;
+  public form: FormGroup;
+  public litter: FormGroup;
 
-  private formChildren: FormGroup;
+  public formChildren: FormGroup;
 
-  private user: User = new User();
+  public user: User = new User();
 
-  private candidateFathersRequest = new CandidateFathersRequest();
-  private candidateMothersRequest = new CandidateMothersRequest();
-  private candidateSurrogatesRequest = new CandidateSurrogatesRequest();
+  public candidateFathersRequest = new CandidateFathersRequest();
+  public candidateMothersRequest = new CandidateMothersRequest();
+  public candidateSurrogatesRequest = new CandidateSurrogatesRequest();
 
-  private datepickerActive = false;
+  public datepickerActive = false;
 
-  private isLoadingCandidateSurrogates = false;
-  private isLoadingCandidateMothers = false;
-  private isLoadingCandidateFathers = false;
+  public isLoadingCandidateSurrogates = false;
+  public isLoadingCandidateMothers = false;
+  public isLoadingCandidateFathers = false;
 
-  private declareBirthResultSubscription: Subscription;
+  public declareBirthResultSubscription: Subscription;
 
   public litterSizeInput: any = 0;
   public PseudoPregnancySelect: any = undefined;
   public abortedSelect: any = undefined;
 
   constructor(private fb: FormBuilder,
-              private constants: Constants,
+              public constants: Constants,
               private apiService: NSFOService,
               private settings: Settings,
               private declareManagerService: DeclareManagerService,
@@ -319,12 +319,12 @@ export class BirthDeclareComponent implements OnInit, OnDestroy {
     });
   }
 
-  private getUser() {
+  public getUser() {
     this.utils.getUserInfo()
       .subscribe(res => this.user = res);
   }
 
-  private getCountryCodeList() {
+  public getCountryCodeList() {
     this.apiService
       .doGetRequest(API_URI_GET_COUNTRY_CODES)
       .subscribe(
@@ -337,7 +337,7 @@ export class BirthDeclareComponent implements OnInit, OnDestroy {
       );
   }
 
-  private getCandidateFathers() {
+  public getCandidateFathers() {
 
     this.isLoadingCandidateFathers = true;
 
@@ -392,7 +392,7 @@ export class BirthDeclareComponent implements OnInit, OnDestroy {
       );
   }
 
-  private getCandidateSurrogates() {
+  public getCandidateSurrogates() {
 
     if (!this.selectedMother.uln) {
       return;
@@ -438,7 +438,7 @@ export class BirthDeclareComponent implements OnInit, OnDestroy {
       );
   }
 
-  private getEartagsList() {
+  public getEartagsList() {
     this.apiService
       .doGetRequest(API_URI_GET_EARTAGS)
       .subscribe(
@@ -458,7 +458,7 @@ export class BirthDeclareComponent implements OnInit, OnDestroy {
       );
   }
 
-  private createChildList() {
+  public createChildList() {
 
     this.form.get('uid_number_mother').markAsTouched();
     this.litter.get('litter_size').markAsTouched();
@@ -506,7 +506,7 @@ export class BirthDeclareComponent implements OnInit, OnDestroy {
     }
   }
 
-  private destroyChildList() {
+  public destroyChildList() {
     this.isChildListOn = false;
     this.birth_list = [];
     this.children_list = [];
@@ -515,12 +515,12 @@ export class BirthDeclareComponent implements OnInit, OnDestroy {
     this.formChildren = this.fb.group({});
   }
 
-  private getChildData(event: Event) {
+  public getChildData(event: Event) {
     const index = event['index'];
     this.children_list[index] = event['animal'];
   }
 
-  private declareBirth() {
+  public declareBirth() {
 
     this.form.get('uid_number_mother').markAsTouched();
     this.litter.get('litter_size').markAsTouched();
@@ -593,7 +593,7 @@ export class BirthDeclareComponent implements OnInit, OnDestroy {
     }
   }
 
-  private resetForms() {
+  public resetForms() {
 
     this.selectedMother = new Animal();
     this.form.get('uid_number_mother').setValue('');
@@ -615,14 +615,14 @@ export class BirthDeclareComponent implements OnInit, OnDestroy {
   }
 
 
-  private removeUsedCandidateMother(usedMother: LivestockAnimal) {
+  public removeUsedCandidateMother(usedMother: LivestockAnimal) {
     this.suggestedCandidateMothers = this.suggestedCandidateMothers.filter(mother => (
       mother.uln_country_code + mother.uln_number
     ).indexOf(usedMother.uln_country_code + usedMother.uln_number) !== -1);
   }
 
 
-  private updateValidationSetsAndInputImmediatelyAfterDeclareBirth() {
+  public updateValidationSetsAndInputImmediatelyAfterDeclareBirth() {
     this.destroyChildList();
     this.resetForms();
 
@@ -631,68 +631,32 @@ export class BirthDeclareComponent implements OnInit, OnDestroy {
     this.isSending = false;
   }
 
-  private updateValidationSetsAfterSuccessResponse() {
+  public updateValidationSetsAfterSuccessResponse() {
     this.getEartagsList();
   }
 
-  private updateValidationSetsAfterFailureResponse() {
+  public updateValidationSetsAfterFailureResponse() {
     this.getEartagsList();
   }
 
 
-  private selectMother(mother: Animal, mateSelector: any) {
-
-    // check if the selectedMother has mates
-    // If there is only one
-    // fill in the father field with the given mate
-    // If there are more possible mates then show a button next to the father field to indicate how many there were found.
-    // Clicking on this button will show a modal from where the user can select one of the possible mates.
-    // If the mate is not in this list the user can still fill in the uln of the father by hand
-
-
-    // if the mother is a pedigree animal
-    // make the pedigree_number field for the child required
+  public selectMother(mother: Animal) {
     this.selectedMother = mother;
     this.getCandidateSurrogates();
     this.getCandidateFathers();
 
     this.litter.validator = LitterValidator.validateLitterSizeNotGreaterThenSeven;
-    // this.form.get('uln_surrogate').validator = Validators.required;
-    // this.form.get('uln_surrogate').setValue('');
-
-    // if (this.selectedMother.pedigree_number) {
-    // TODO refer to the correct fields
-    // for (let pedigree of this.user.pedigrees) {
-    //
-    //     if (pedigree === this.selectedMother.pedigree) {
-    //          this.form.get('uid_number_father').validator = Validators.required;
-    //          this.form.get('uid_number_father').setValueAndValidity();
-    //     }
-    //
-    // }
-    // this.form.get('uid_number_father').validator = Validators.required;
-    // this.form.get('uid_number_father').setValueAndValidity();
-    // }
 
     this.form.get('uid_number_mother').setValue(mother.uln);
-    // if(this.selectedMother.mates) {
-    //     if(this.selectedMother.mates.length === 1) {
-    //         let mateUln = this.selectedMother.mates[0].uln_country_code + this.selectedMother.mates[0].uln_number;
-    //         this.form.get('uid_type_father').setValue(constants.ULN);
-    //         this.form.get('uid_number_father').setValue(mateUln);
-    //     } else if (this.selectedMother.mates.length > 1) {
-    //         mateSelector.openModal()
-    //     }
-    // }
   }
 
-  private selectFather(father: Animal) {
+  public selectFather(father: Animal) {
     this.selectedFather = father;
     const mateUln = this.selectedFather.uln_country_code + this.selectedFather.uln_number;
     this.form.get('uid_number_father').setValue(mateUln);
   }
 
-  private addToSelection(event: Event) {
+  public addToSelection(event: Event) {
     const index = event[0];
     const tag = event[1];
     this.selectedTags[index] = tag;

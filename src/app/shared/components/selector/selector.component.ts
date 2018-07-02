@@ -31,9 +31,10 @@ export class SelectorComponent implements OnInit, OnChanges, OnDestroy {
   public filteredList: any;
   public form: FormGroup;
   public country_code_list: any;
+  public page: number;
 
   constructor(private fb: FormBuilder, private nsfo: NSFOService,
-              private settings: SettingsService, private constants: Constants) {
+              private settings: SettingsService, public constants: Constants) {
   }
 
   ngOnInit() {

@@ -16,8 +16,8 @@ import {JsonResponseModel} from '../../shared/models/json-response.model';
 export class InvoiceDetailsComponent implements OnInit {
   private pageMode: string;
   private id: string;
-  private senderDetails: InvoiceSenderDetails = new InvoiceSenderDetails();
-  private invoice: Invoice = new Invoice();
+  public senderDetails: InvoiceSenderDetails = new InvoiceSenderDetails();
+  public invoice: Invoice = new Invoice();
 
   constructor(private apiService: NSFOService, private router: Router, private activatedRoute: ActivatedRoute,
               private settingsService: SettingsService, private downloadService: DownloadService) {

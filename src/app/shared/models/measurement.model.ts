@@ -21,18 +21,18 @@ abstract class MeasurementBase {
 
 export class Exterior extends MeasurementBase {
   public kind: string;
-  public skull: string;
-  public progress: string;
-  public muscularity: string;
-  public proportion: string;
-  public exterior_type: string;
-  public leg_work: string;
-  public fur: string;
-  public general_appearance: string;
-  public height: string;        // May contain values below 69
-  public breast_depth: string;  // May contain values below 69
-  public torso_length: string;  // May contain values below 69
-  public markings: string;
+  public skull: number;
+  public progress: number;
+  public muscularity: number;
+  public proportion: number;
+  public exterior_type: number;
+  public leg_work: number;
+  public fur: number;
+  public general_appearance: number;
+  public height: number;        // May contain values below 69
+  public breast_depth: number;  // May contain values below 69
+  public torso_length: number;  // May contain values below 69
+  public markings: number;
 }
 
 export class ExteriorKind {

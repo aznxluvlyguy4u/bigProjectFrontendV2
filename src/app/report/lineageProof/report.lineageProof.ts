@@ -13,12 +13,12 @@ import {AnimalsOverviewSelection} from '../../shared/components/livestock/animal
 
 export class ReportLineageProofComponent {
     defaultFileType: string = PDF;
-    private lineageProofMaxSelectionCount = 50;
+    public lineageProofMaxSelectionCount = 50;
 
     constructor(private nsfo: NSFOService, private queryParamsService: QueryParamsService,
                 private downloadService: DownloadService, private translate: TranslateService) {}
 
-    private generateReport(event: AnimalsOverviewSelection) {
+    public generateReport(event: AnimalsOverviewSelection) {
         this.downloadService.doLineageProofPostRequest(event.animals, event.fileType);
     }
 

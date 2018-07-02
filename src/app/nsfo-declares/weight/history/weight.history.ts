@@ -15,12 +15,12 @@ import {JsonResponseModel} from '../../../shared/models/json-response.model';
 })
 
 export class WeightHistoryComponent implements OnInit {
-  private weightHistoryList = <WeightChangeResponse[]>[];
-  private selectedWeight: WeightChangeResponse;
-  private isSending = false;
-  private modalDisplay = 'none';
-  private errorModalDisplay = 'none';
-  private errorMessages: ErrorMessage[] = [];
+  public weightHistoryList = <WeightChangeResponse[]>[];
+  public selectedWeight: WeightChangeResponse;
+  public isSending = false;
+  public modalDisplay = 'none';
+  public errorModalDisplay = 'none';
+  public errorMessages: ErrorMessage[] = [];
 
   public isLoading: boolean;
 
@@ -31,7 +31,7 @@ export class WeightHistoryComponent implements OnInit {
     this.getWeightHistoryList();
   }
 
-  private getWeightHistoryList() {
+  public getWeightHistoryList() {
     this.isLoading = true;
     this.nsfo
       .doGetRequest(API_URI_GET_WEIGHT_HISTORY)
@@ -51,7 +51,7 @@ export class WeightHistoryComponent implements OnInit {
       );
   }
 
-  private revokeWeight() {
+  public revokeWeight() {
     this.isSending = true;
     this.nsfo
       .doPutRequest(API_URI_REVOKE_WEIGHT + '/' + this.selectedWeight.message_id, '')
@@ -73,20 +73,20 @@ export class WeightHistoryComponent implements OnInit {
       );
   }
 
-  private selectWeight(event) {
+  public selectWeight(event) {
     this.selectedWeight = <WeightChangeResponse> event;
     this.openModal();
   }
 
-  private openModal() {
+  public openModal() {
     this.modalDisplay = 'block';
   }
 
-  private closeModal() {
+  public closeModal() {
     this.modalDisplay = 'none';
   }
 
-  private showError(event) {
+  public showError(event) {
     this.errorMessages = event.result;
 
     if (this.errorMessages.length === 0) {
@@ -100,11 +100,11 @@ export class WeightHistoryComponent implements OnInit {
     this.openErrorModal();
   }
 
-  private openErrorModal() {
+  public openErrorModal() {
     this.errorModalDisplay = 'block';
   }
 
-  private closeErrorModal() {
+  public closeErrorModal() {
     this.errorModalDisplay = 'none';
   }
 }

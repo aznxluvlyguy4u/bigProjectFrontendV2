@@ -23,13 +23,13 @@ export class EartagErrorRowComponent implements OnInit, AfterViewChecked {
   @Input() eartag_index: number;
   @Output() removeEartag = new EventEmitter();
   @Output() showError = new EventEmitter();
-  private editMode = false;
-  private popupIsLoaded = false;
-  private temp_eartag: EartagErrorResponse;
-  private country_code_list = [];
-  private form_valid = true;
-  private uid_type_changed;
-  private form: FormGroup;
+  public editMode = false;
+  public popupIsLoaded = false;
+  public temp_eartag: EartagErrorResponse;
+  public country_code_list = [];
+  public form_valid = true;
+  public uid_type_changed;
+  public form: FormGroup;
 
   constructor(private fb: FormBuilder,
               private apiService: NSFOService,
@@ -50,7 +50,7 @@ export class EartagErrorRowComponent implements OnInit, AfterViewChecked {
     }
   }
 
-  private getCountryCodeList() {
+  public getCountryCodeList() {
     this.apiService
       .doGetRequest(API_URI_GET_COUNTRY_CODES)
       .subscribe(
@@ -63,7 +63,7 @@ export class EartagErrorRowComponent implements OnInit, AfterViewChecked {
       );
   }
 
-  private sendChangeRequest() {
+  public sendChangeRequest() {
     if (this.form.valid) {
       // this.form_valid = true;
       // this.editMode = false;
@@ -91,7 +91,7 @@ export class EartagErrorRowComponent implements OnInit, AfterViewChecked {
     }
   }
 
-  private sendRemoveErrorRequest() {
+  public sendRemoveErrorRequest() {
     const request = {
       'is_removed_by_user': true,
       'request_id': this.eartag.request_id
@@ -104,7 +104,7 @@ export class EartagErrorRowComponent implements OnInit, AfterViewChecked {
     this.removeEartag.emit(this.eartag);
   }
 
-  private enableEditing() {
+  public enableEditing() {
     if (this.editMode) {
       this.cancelEditing();
     }
@@ -112,12 +112,12 @@ export class EartagErrorRowComponent implements OnInit, AfterViewChecked {
     this.temp_eartag = _.clone(this.eartag);
   }
 
-  private cancelEditing() {
+  public cancelEditing() {
     this.editMode = false;
     this.eartag = this.temp_eartag;
   }
 
-  private stringAsViewDateTime(date) {
+  public stringAsViewDateTime(date) {
     return moment(date).format(this.settings.getViewDateTimeFormat());
   }
 }
