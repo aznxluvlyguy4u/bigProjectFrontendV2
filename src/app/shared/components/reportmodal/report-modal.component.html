@@ -35,8 +35,8 @@
             <td>{{i + 1}}</td>
             <td>{{reportRequest.started_at | date:'yyyy-MM-dd HH:mm:ss' }}</td>
             <td>{{reportRequest.finished_at | date:'yyyy-MM-dd HH:mm:ss' }}</td>
-            <td><ng-template [ngIf]="reportRequest.report_worker">{{ getReportTypeString(reportRequest.report_worker.report_type)}}</ng-template></td>
-            <td><ng-template [ngIf]="reportRequest.report_worker">{{reportRequest.report_worker.file_type }}</ng-template></td>
+            <td><ng-template [ngIf]="reportRequest">{{ getReportTypeString(reportRequest.report_type)}}</ng-template></td>
+            <td><ng-template [ngIf]="reportRequest">{{reportRequest.file_type }}</ng-template></td>
 
             <td *ngIf="!reportRequest.finished_at">
               <i class="fa fa-spinner fa-pulse fa-2x fa-fw"

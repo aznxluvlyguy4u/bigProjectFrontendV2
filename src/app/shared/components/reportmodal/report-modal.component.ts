@@ -116,12 +116,12 @@ export class ReportModalComponent implements OnInit, OnDestroy {
 
   public downloadFile(downloadRequest: ReportRequest) {
 
-    if (downloadRequest.report_worker.file_type === PDF) {
+    if (downloadRequest.file_type === PDF) {
       const win = window.open('/loading', '_blank');
-      win.location.href = downloadRequest.report_worker.download_url;
+      win.location.href = downloadRequest.download_url;
     } else {
       const win = window.open('/downloaded', '_blank');
-      win.location.href = downloadRequest.report_worker.download_url;
+      win.location.href = downloadRequest.download_url;
     }
   }
 
