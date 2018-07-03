@@ -81,7 +81,7 @@ export class UtilsService {
   }
 
   public showAlertPopup(alertText: string, number ?: number) {
-    const translatedText = (<ScalarObservable<string>>this.translate.get(alertText)).valueOf();
+    const translatedText = this.translate.instant(alertText);
 
     let suffix = '';
     if (number !== null) {

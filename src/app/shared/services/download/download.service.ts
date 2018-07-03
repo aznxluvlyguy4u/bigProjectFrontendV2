@@ -22,6 +22,7 @@ import * as _ from 'lodash';
 import {Animal, LivestockAnimal} from '../../models/animal.model';
 import {Invoice} from '../../models/invoice.model';
 import {JsonResponseModel} from '../../models/json-response.model';
+import {ReportService} from '../report/report.service';
 
 export const INBREEDING_COEFFICIENT_REPORT = 'INBREEDING_COEFFICIENT_REPORT';
 export const LINEAGE_PROOF_REPORT = 'LINEAGE_PROOF_REPORT';
@@ -42,7 +43,10 @@ export class DownloadService {
   private downloadRequestShownInModal: DownloadRequest[];
   private lastId: number;
 
-  constructor(private nsfo: NSFOService) {
+  constructor(
+      private nsfo: NSFOService,
+      private reportService: ReportService,
+  ) {
     this.resetDownloadList();
   }
 
@@ -160,9 +164,7 @@ export class DownloadService {
     };
 
     const queryParam = typeof fileType === 'string' ? '?' + QUERY_PARAM_FILE_TYPE + '=' + fileType.toLowerCase() : '';
-    const download = this.getNewDownloadRequest(LINEAGE_PROOF_REPORT, fileType, animals.length, request);
-
-    this.doDownloadPostRequest(API_URI_GET_LINEAGE_PROOF + queryParam, request, download);
+    this.doDownloadPostRequest(API_URI_GET_LINEAGE_PROOF + queryParam, request);
   }
 
   doLivestockReportPostRequest(animals: LivestockAnimal[], fileType: string, concatBreedValueAndAccuracyColumns: boolean) {
@@ -177,10 +179,7 @@ export class DownloadService {
     const concatBooleanString = UtilsService.getBooleanAsString(concatBreedValueAndAccuracyColumns);
     let queryParam = '?' + QUERY_PARAM_CONCAT_VALUE_AND_ACCURACY + '=' + concatBooleanString;
     queryParam += typeof fileType === 'string' ? '&' + QUERY_PARAM_FILE_TYPE + '=' + fileType.toLowerCase() : '';
-
-    const download = this.getNewDownloadRequest(LIVESTOCK_REPORT, fileType, dataCount, data);
-
-    this.doDownloadPostRequest(API_URI_GET_LIVESTOCK_DOCUMENT + queryParam, data, download);
+    this.doDownloadPostRequest(API_URI_GET_LIVESTOCK_DOCUMENT + queryParam, data);
   }
 
   doInbreedingCoefficientReportPostRequest(ram: Animal, ewes: LivestockAnimal[], fileType: string) {
@@ -192,10 +191,7 @@ export class DownloadService {
       },
       'ewes': ewes
     };
-
-    const download = this.getNewDownloadRequest(INBREEDING_COEFFICIENT_REPORT, fileType, ewes.length, request);
-
-    this.doDownloadPostRequest(API_URI_GET_INBREEDING_COEFFICIENT + QueryParamsService.getFileTypeQueryParam(fileType), request, download);
+    this.doDownloadPostRequest(API_URI_GET_INBREEDING_COEFFICIENT + QueryParamsService.getFileTypeQueryParam(fileType), request);
   }
 
   doOffspringReportPostRequest(animals: Animal[], concatBreedValueAndAccuracyColumns: boolean) {
@@ -206,25 +202,19 @@ export class DownloadService {
 
     const concatBooleanString = UtilsService.getBooleanAsString(concatBreedValueAndAccuracyColumns);
     const queryParam = '?' + QUERY_PARAM_CONCAT_VALUE_AND_ACCURACY + '=' + concatBooleanString;
-
-    const download = this.getNewDownloadRequest(OFFSPRING_REPORT, CSV, animals.length, request, queryParam);
-
-    this.doDownloadPostRequest(API_URI_GET_OFFSPRING_REPORT + queryParam, request, download);
+    this.doDownloadPostRequest(API_URI_GET_OFFSPRING_REPORT + queryParam, request);
   }
 
   doFertilizerAccountingReportGetRequest(referenceDateString: string, fileType: string) {
 
     const queryParam = '?' + QUERY_PARAM_REFERENCE_DATE + '=' + referenceDateString + '&' + QUERY_PARAM_FILE_TYPE + '=' + fileType;
-
-    const download = this.getNewDownloadRequest(FERTILIZER_ACCOUNTING, fileType, referenceDateString, {}, queryParam);
-
-    this.doDownloadGetRequest(API_URI_GET_FERTILIZER_ACCOUNTING_REPORT + queryParam, download);
+    this.doDownloadGetRequest(API_URI_GET_FERTILIZER_ACCOUNTING_REPORT + queryParam);
   }
 
   doInvoicePdfGetRequest(invoice: Invoice) {
     const download = this.getNewDownloadRequest(INVOICE_PDF, PDF, 0, null);
     const uri = API_URI_INVOICES + '/' + invoice.id + '/pdf';
-    this.doDownloadGetRequest(uri, download);
+    this.doDownloadGetRequest(uri);
   }
 
   private getNextId(): number {
@@ -255,42 +245,27 @@ export class DownloadService {
     this.downloadsShownInModalChanged.next(this.downloadRequestShownInModal.slice());
   }
 
-  private doDownloadPostRequest(uri: string, request: any, download: DownloadRequest) {
-
-    if (download === null) {
-      return;
-    }
-
-    this.addDownload(download);
+  private doDownloadPostRequest(uri: string, request: any) {
 
     this.nsfo.doPostRequest(uri, request)
       .subscribe(
           (res: JsonResponseModel) => {
-          download.url = res.result;
-          this.completeDownloadPreparation(download);
-        },
+          this.reportService.fetchReports();
+          },
         error => {
-          this.failDownload(download, error);
+          alert(this.nsfo.getErrorMessage(error));
         }
       );
   }
 
-  private doDownloadGetRequest(uri: string, download: DownloadRequest) {
-
-    if (download === null) {
-      return;
-    }
-
-    this.addDownload(download);
-
+  private doDownloadGetRequest(uri: string) {
     this.nsfo.doGetRequest(uri)
       .subscribe(
           (res: JsonResponseModel) => {
-          download.url = res.result;
-          this.completeDownloadPreparation(download);
-        },
+              this.reportService.fetchReports();
+          },
         error => {
-          this.failDownload(download, error);
+          alert(this.nsfo.getErrorMessage(error));
         }
       );
   }

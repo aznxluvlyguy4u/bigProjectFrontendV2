@@ -1,0 +1,79 @@
+<div class="reveal-overlay" [ngStyle]="{'display': modalDisplay}">
+  <div class="reveal tiny" [ngStyle]="{'display': modalDisplay}">
+
+    <!--<div class="modal-header" style="min-height: 2em; background: #48A770" >-->
+    <div class="modal-header-download">
+      {{ title | translate }}
+      <button type="button" class="pull-right" aria-label="Close modal" (click)="closeModal()">
+        <i class="fa fa-times" aria-hidden="true"></i>
+      </button>
+    </div>
+
+    <ng-template [ngIf]="isModalEmpty()">
+      <div class="modal-body">
+        <p>{{ 'THERE ARE NO REPORTS READY FOR DOWNLOAD YET' | translate }}</p>
+      </div>
+    </ng-template>
+
+    <ng-template [ngIf]="!isModalEmpty()">
+      <div class="modal-body">
+
+        <p>{{ 'ALL REPORTS ARE AVAILABLE FOR 1 DAY' | translate }}. {{ 'THE NEWEST REPORTS ARE AT THE TOP' | translate }}.</p>
+
+        <table>
+          <thead>
+          <tr>
+            <th>#</th>
+            <th>{{ 'START_TIME' | translate }}</th>
+            <th>{{ 'END_TIME' | translate }}</th>
+            <th>{{ 'CATEGORY' | translate }}</th>
+            <th>{{ 'FILE TYPE' | translate }}</th>
+            <th>{{ 'DOWNLOAD' | translate }}</th>
+          </tr>
+          </thead>
+          <tbody>
+
+          <tr *ngFor="let reportRequest of reportRequestsShownInModal | paginate: {itemsPerPage: items_per_page, currentPage: page}; let i = index">
+            <td>{{i + 1}}</td>
+            <td>{{reportRequest.started_at | date:'yyyy-MM-dd HH:mm:ss' }}</td>
+            <td>{{reportRequest.finished_at | date:'yyyy-MM-dd HH:mm:ss' }}</td>
+            <td><ng-template [ngIf]="reportRequest">{{ getReportTypeString(reportRequest.report_type)}}</ng-template></td>
+            <td><ng-template [ngIf]="reportRequest">{{reportRequest.file_type }}</ng-template></td>
+
+            <td *ngIf="!reportRequest.finished_at">
+              <i class="fa fa-spinner fa-pulse fa-2x fa-fw"
+                 title="{{ 'YOUR FILE IS NOW BEING GENERATED' | translate }}"></i>
+            </td>
+            <td *ngIf="reportRequest.finished_at && !reportRequest.error_code">
+              <button type="button"
+                      class="button primary pull-left"
+                      aria-label="Download file"
+                      (click)="downloadFile(reportRequest)">
+                {{ 'DOWNLOAD' | translate }}
+              </button>
+            </td>
+            <td *ngIf="reportRequest.error_code">
+              {{ 'FAILED' | translate }}
+              <i class="fa fa-info-circle"
+                 aria-hidden="true"
+                 title="{{(reportRequest.error_message != null ? reportRequest.error_message : 'DOWNLOAD MODAL FAILED DEFAULT INFO TEXT') | translate}}">
+              </i>
+            </td>
+
+          </tr>
+          </tbody>
+        </table>
+        <pagination-controls (pageChange)="page = $event"></pagination-controls>
+        <button *ngIf="hasFailedDownloads()"
+                type="button"
+                class="button alert pull-right"
+                aria-label="Clear list"
+                (click)="removeDownloadedAndFailedDownloads()">
+          {{ 'REMOVE FAILED FILES' | translate }}
+        </button>
+      </div>
+    </ng-template>
+
+
+  </div>
+</div>
