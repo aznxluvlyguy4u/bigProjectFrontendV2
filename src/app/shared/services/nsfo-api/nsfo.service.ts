@@ -114,7 +114,7 @@ export class NSFOService {
     this.navigateToLogin();
   }
 
-  public getErrorMessage(err: HttpErrorResponse<any>): string {
+  public getErrorMessage(err: HttpErrorResponse): string {
     switch (err.status) {
       case 500:
         return this.translate.instant('SOMETHING WENT WRONG. TRY ANOTHER TIME.');
