@@ -93,7 +93,7 @@ export class LivestockDetailComponent implements OnInit {
   constructor(private route: ActivatedRoute,
               private router: Router,
               private apiService: NSFOService,
-              private settings: SettingsService,
+              public settings: SettingsService,
               private fb: FormBuilder,
               private translate: TranslateService,
               private downloadService: DownloadService) {
@@ -106,8 +106,6 @@ export class LivestockDetailComponent implements OnInit {
     this.animal.mother = '';
     this.animal.father = '';
     this.animal.uln = '';
-
-
     this.form = fb.group({
       date_of_birth: new FormControl('', Validators.compose([Validators.required, DateValidator.validateDateFormat])),
       pedigree_country_code: new FormControl('NL'),

@@ -12,7 +12,11 @@ import {SettingsService} from '../../services/settings/settings.service';
 })
 export class AnimalDetailsCardComponent implements OnInit {
 
-  constructor (private settings: Settings, private router: Router, private settingsService: SettingsService) {}
+  constructor (
+      private settings: Settings,
+      private settingsService: SettingsService,
+      private router: Router
+  ) {}
 
   @Input() inputAnimal: Animal;
   @Input() offSpring = false;
@@ -69,6 +73,10 @@ export class AnimalDetailsCardComponent implements OnInit {
 
     if (this.inputAnimal.is_own_historic_animal) {
       return true;
+    }
+
+    if (!this.inputAnimal.is_own_historic_animal && !this.settingsService.getCurrentUser().public_live_stock) {
+        return false;
     }
 
     return this.inputAnimal.is_public;
