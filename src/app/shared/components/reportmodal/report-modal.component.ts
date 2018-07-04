@@ -14,7 +14,7 @@ import {NgxPaginationModule} from 'ngx-pagination';
 })
 export class ReportModalComponent implements OnInit, OnDestroy {
   public reportRequestsShownInModal: ReportRequest[];
-  private modalDisplay = 'none';
+  public modalDisplay = 'none';
   private reportRequestSubscription: Subscription;
   private isModalActiveSubscription: Subscription;
   private toggleModalSubscription: Subscription;
