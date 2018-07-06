@@ -326,6 +326,9 @@ export class LivestockDetailComponent implements OnInit {
   }
 
   public sendGenderChangeRequest() {
+    if (!this.animal.is_own_historic_animal) {
+      return;
+    }
     this.changeEnabled = false;
     this.gender_edit_mode = false;
     this.changed_animal_info = false;
@@ -402,6 +405,9 @@ export class LivestockDetailComponent implements OnInit {
 
 
   public toggleGenderEditMode() {
+    if (!this.animal.is_own_historic_animal) {
+        return;
+    }
     this.gender_edit_mode = !this.gender_edit_mode;
 
     if (!this.gender_edit_mode) {
