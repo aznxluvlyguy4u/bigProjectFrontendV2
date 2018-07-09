@@ -249,7 +249,7 @@ export class LivestockDetailComponent implements OnInit {
               }
 
 
-              this.changeEnabled = true;
+              this.changeEnabled = false;
               this.temp_animal = _.clone(this.animal);
 
               // this.getExteriorKinds();
@@ -309,6 +309,11 @@ export class LivestockDetailComponent implements OnInit {
               }
               // window.scrollTo(0, 0);
               this.isLoadingAnimalDetails = false;
+
+              if (this.isAdmin || (!this.isAdmin && this.animal.is_own_animal)) {
+                this.changeEnabled = true;
+              }
+
               this.updateLoadingStatus();
             },
             error => {

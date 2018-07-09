@@ -160,10 +160,10 @@
             </button>
             <button type="button" *ngIf="!gender_edit_mode" [disabled]="!changeEnabled" (click)="toggleGenderEditMode()"
                     class="tiny primary button pull-right">
-                            <span *ngIf="!changeEnabled">
+                            <span *ngIf="isLoading">
                                 <i class="fa fa-gear fa-spin fa-fw"></i>
                             </span>
-              <span *ngIf="changeEnabled">
+              <span *ngIf="!isLoading">
                                 {{ 'CHANGE' | translate }}
                             </span>
             </button>
@@ -675,10 +675,10 @@
 <ng-template #changeButton>
   <button type="button" *ngIf="!edit_mode" [disabled]="!changeEnabled" (click)="toggleEditMode()"
           class="tiny primary button">
-                    <span *ngIf="!changeEnabled">
+                    <span *ngIf="isLoading">
                         <i class="fa fa-gear fa-spin fa-fw"></i>
                     </span>
-    <span *ngIf="changeEnabled">
+    <span *ngIf="!isLoading">
                         {{ 'CHANGE' | translate }}
                     </span>
   </button>
