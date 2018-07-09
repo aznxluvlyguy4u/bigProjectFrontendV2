@@ -66,6 +66,8 @@ export class Animal {
   public pedigree: string;
   public is_own_historic_animal: boolean;
   public is_own_animal: boolean;
+  public production: string;
+  public general_appearance: number;
 }
 
 export class Ewe extends Animal {

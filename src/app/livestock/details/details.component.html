@@ -482,12 +482,14 @@
           <div class="large-12 columns">
             <div class="large-6 columns info-body">
               <app-animal-details-card
+                (historyUpdate)="updateHistory($event)"
                 [inputAnimal]="fatherAnimal"
                 [mainAnimalGender]="'parents'"
               ></app-animal-details-card>
             </div>
             <div class="large-6 columns info-body">
               <app-animal-details-card
+                (historyUpdate)="updateHistory($event)"
                 [inputAnimal]="motherAnimal"
                 [mainAnimalGender]="'parents'"
               >
@@ -581,10 +583,11 @@
           <div class="large-12 columns">
             <div class="large-6 columns info-body" *ngFor="let child of children">
               <app-animal-details-card
+                (historyUpdate)="updateHistory($event)"
+                [offSpring]="true"
                 [inputAnimal]="child"
                 [mainAnimalGender]="animal.gender"
               >
-
               </app-animal-details-card>
             </div>
           </div>

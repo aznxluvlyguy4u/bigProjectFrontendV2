@@ -88,10 +88,12 @@ export class LivestockDetailComponent implements OnInit {
   public isLoadingCollarColorList: boolean;
   isLoading: boolean;
 
+  public animalHistory: string[] = [];
+
   constructor(private route: ActivatedRoute,
               private router: Router,
               private apiService: NSFOService,
-              private settings: SettingsService,
+              public settings: SettingsService,
               private fb: FormBuilder,
               private translate: TranslateService,
               private downloadService: DownloadService) {
@@ -104,8 +106,6 @@ export class LivestockDetailComponent implements OnInit {
     this.animal.mother = '';
     this.animal.father = '';
     this.animal.uln = '';
-
-
     this.form = fb.group({
       date_of_birth: new FormControl('', Validators.compose([Validators.required, DateValidator.validateDateFormat])),
       pedigree_country_code: new FormControl('NL'),
@@ -117,6 +117,10 @@ export class LivestockDetailComponent implements OnInit {
     route.params.subscribe(value => {
       this.ngOnInit();
     });
+  }
+
+  public updateHistory(event: string) {
+      this.animalHistory.push(this.animal.uln);
   }
 
   startLoading() {
@@ -303,7 +307,6 @@ export class LivestockDetailComponent implements OnInit {
               for (const child of this.children) {
                 child.litter_size = child.n_ling ? child.n_ling.toString() : undefined;
               }
-
               // window.scrollTo(0, 0);
               this.isLoadingAnimalDetails = false;
               this.updateLoadingStatus();
@@ -430,7 +433,15 @@ export class LivestockDetailComponent implements OnInit {
   }
 
   public goBack() {
-    this.router.navigate(['/main/livestock/overview']);
+    if (this.animalHistory.length === 0) {
+        this.router.navigate(['/main/livestock/overview']);
+    } else {
+        const animalUln = this.animalHistory.pop();
+        if (this.animal.uln === animalUln) {
+            this.goBack();
+        }
+        this.router.navigate(['/main/livestock/details/' + animalUln]);
+    }
   }
 
   public stringAsViewDate(date) {
