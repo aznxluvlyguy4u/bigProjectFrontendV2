@@ -65,6 +65,7 @@ export class Animal {
   public breed_values: BreedValues[] = [];
   public pedigree: string;
   public is_own_historic_animal: boolean;
+  public is_own_animal: boolean;
 }
 
 export class Ewe extends Animal {

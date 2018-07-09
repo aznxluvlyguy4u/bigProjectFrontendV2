@@ -326,7 +326,7 @@ export class LivestockDetailComponent implements OnInit {
   }
 
   public sendGenderChangeRequest() {
-    if (!this.animal.is_own_historic_animal) {
+    if (!this.animal.is_own_animal && !this.isAdmin) {
       return;
     }
     this.changeEnabled = false;
@@ -357,6 +357,9 @@ export class LivestockDetailComponent implements OnInit {
   }
 
   public sendChangeRequest() {
+    if (!this.animal.is_own_animal && !this.isAdmin) {
+      return;
+    }
     this.changeEnabled = false;
     this.edit_mode = false;
     this.changed_animal_info = false;
@@ -405,8 +408,8 @@ export class LivestockDetailComponent implements OnInit {
 
 
   public toggleGenderEditMode() {
-    if (!this.animal.is_own_historic_animal) {
-        return;
+    if (!this.animal.is_own_animal && !this.isAdmin) {
+      return;
     }
     this.gender_edit_mode = !this.gender_edit_mode;
 
@@ -416,12 +419,13 @@ export class LivestockDetailComponent implements OnInit {
   }
 
   public toggleEditMode() {
+    if (!this.animal.is_own_animal && !this.isAdmin) {
+      return;
+    }
     this.edit_mode = !this.edit_mode;
 
     if (!this.edit_mode) {
-
       this.animal = _.clone(this.temp_animal);
-
     }
   }
 
