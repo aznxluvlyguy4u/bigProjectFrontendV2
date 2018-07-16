@@ -80,7 +80,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterContentChecked {
   private validateHealthSubscription() {
     this.apiService.doGetRequest(API_URI_GET_UBN_CAN_REQUEST + '/' + this.currentUBNValue)
       .subscribe(
-        res => {
+        (res: JsonResponseModel) => {
           this.isHealthSubscribed = res.result;
         }
       );
