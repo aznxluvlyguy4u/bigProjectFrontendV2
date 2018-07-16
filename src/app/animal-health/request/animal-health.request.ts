@@ -8,6 +8,7 @@ import {
 } from '../../shared/services/nsfo-api/nsfo.settings';
 import {AnimalHealthRequest} from '../../shared/models/animal-health.model';
 import {CacheService} from '../../shared/services/settings/cache.service';
+import {JsonResponseModel} from "../../shared/models/json-response.model";
 
 @Component({
   templateUrl: './animal-health.request.html'
@@ -38,10 +39,10 @@ export class AnimalHealthRequestComponent {
     data.illness = this.form.get('illness_type').value;
     data.ubn = this.ubn;
     this.apiService.doGetRequest(API_URI_GET_UBN_CAN_REQUEST + '/' + data.ubn + '/validate').subscribe(
-      res => {
+      (res: JsonResponseModel) => {
         if (res.result.length > 0) {
           this.apiService.doPostRequest(API_URI_ANIMAL_HEALTH_ANNOUNCEMENTS + '/customer', data).subscribe(
-            result => {
+            (result: JsonResponseModel) => {
               if (result.result.result === 'null' && result.result.failed !== 'null') {
                 this.isError = true;
               }
