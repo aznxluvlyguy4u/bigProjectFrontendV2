@@ -12,6 +12,7 @@ export class User {
   public pedigrees: Pedigree[] = [];
   public access_level: string;
   public health_subscription: boolean;
+  public public_live_stock: boolean;
 }
 
 export class ContactPerson extends User {

@@ -575,6 +575,7 @@
   "STATUS KNOWN BY AHD": "Status bij GD bekend",
   "FILE IS DOWNLOADED": "Het bestand is gedownload",
   "THERE ARE NO DOWNLOADS READY FOR DOWNLOAD YET": "Er staan nog geen downloads klaar",
+  "THERE ARE NO REPORTS READY FOR DOWNLOAD YET": "Er staan nog geen rapportages klaar",
   "TIME": "Tijd",
   "AMOUNT": "Aantal",
   "FILE TYPE": "Bestandstype",
@@ -643,6 +644,23 @@
   "BREED VALUES": "Fokwaarden",
   "ILLNESS_TYPE": "Soort ziekte",
   "REQUEST HEALTH CHECK": "Gezondheids onderzoek aanvragen",
-  "THE REQUEST WAS NOT PROCESSED. PLEASE CONTACT NSFO.": "Het verzoek is niet verwerkt. Neem contact op met NSFO."
+  "THE REQUEST WAS NOT PROCESSED. PLEASE CONTACT NSFO.": "Het verzoek is niet verwerkt. Neem contact op met NSFO.",
+  "REPORT_ANNUAL_ACTIVE_LIVE_STOCK": "Jaarlijkse actieve stallijst rapportage",
+  "REPORT_ANNUAL_TE_100": "Productie per TE100 bedrijf per jaar",
+  "REPORT_FERTILIZER_ACCOUNTING": "Mestboekhouding",
+  "REPORT_INBREEDING_COEFFICIENT": "Inteeltcoëfficiënt",
+  "REPORT_PEDIGREE_CERTIFICATE": "Afstammingsbewijzen",
+  "REPORT_ANIMALS_OVERVIEW": "Rapportage overzicht alle dieren",
+  "REPORT_ANNUAL_ACTIVE_LIVE_STOCK_RAM_MATES": "Jaarlijkse actieve stallijst ramdekkingen rapportage",
+  "REPORT_OFF_SPRING": "Nakomelingen",
+  "REPORT_PEDIGREE_REGISTER_OVERVIEW": "Stamboek overzicht",
+  "REPORT_LIVE_STOCK": "Stallijst rapportage",
+  "REPORT_UNKNOWN": "Onbekende rapportage",
+  "END_TIME": "Verwerkt op",
+  "START_TIME": "Gestart op",
+  "DATA IS EMPTY": "Er is geen data beschikbaar",
+  "ALL REPORTS ARE AVAILABLE FOR 1 DAY": "Alle rapportages zijn 1 dag beschikbaar",
+  "THE NEWEST REPORTS ARE AT THE TOP": "De nieuwste rapportages staan bovenaan",
+  "REPORT OVERVIEW": "Rapportage overzicht"
 }
 

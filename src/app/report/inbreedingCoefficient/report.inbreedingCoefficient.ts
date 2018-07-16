@@ -24,8 +24,12 @@ export class ReportInbreedingCoefficientComponent {
     defaultFileType: string = PDF;
     public inbreedingMaxSelectionCount = 50;
 
-    constructor(private nsfo: NSFOService, private fb: FormBuilder, private queryParamsService: QueryParamsService,
-                private downloadService: DownloadService) {
+    constructor(
+        private nsfo: NSFOService,
+        private fb: FormBuilder,
+        private queryParamsService: QueryParamsService,
+        private downloadService: DownloadService
+    ) {
         this.form = fb.group({
             uln: new FormControl(''),
         });

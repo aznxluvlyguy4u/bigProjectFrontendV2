@@ -59,7 +59,7 @@ import {ReportLivestockComponent} from './report/livestock/report.livestock';
 import {ReportFertilizerAccountingComponent} from './report/fertilityAccounting/report.fertilizer-accounting.component';
 import {ReportOffspringComponent} from './report/offspring/report.offspring.component';
 import {AnimalHealthComponent} from './animal-health/animal-health.component';
-import {AnimalHealthRequestComponent} from "./animal-health/request/animal-health.request";
+import {AnimalHealthRequestComponent} from './animal-health/request/animal-health.request';
 
 // const appRoutes: Routes = [
 const appRoutes = [

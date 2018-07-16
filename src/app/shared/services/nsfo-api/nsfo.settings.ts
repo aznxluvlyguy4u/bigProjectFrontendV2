@@ -11,6 +11,9 @@ export const API_URI_HIDE_ERROR = '/v1/errors';
 // GHOST LOGIN
 export const API_URI_VERIFY_GHOST_TOKEN = '/v1/admins/verify-ghost-token';
 
+export const API_URI_GET_REPORTS = '/v1/reports';
+
+
 // LIVESTOCK
 export const API_URI_GET_ANIMALS = '/v1/animals-livestock';
 export const API_URI_GET_HISTORIC_ANIMALS = '/v1/animals-historic-livestock';
