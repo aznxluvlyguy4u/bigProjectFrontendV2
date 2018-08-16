@@ -86,16 +86,14 @@
       </td>
       <td>
                 <span class="pull-left">
-                    <button [disabled]="invoice.status == 'PAID'" type="button" class="small primary button"
+                    <button [disabled]="invoice.status == 'PAID'" type="button" class="small primary button spanned-button"
                             (click)="startInvoicePaymentProcedure(invoice.id, invoice.company_name)">
                         {{'PAY INVOICE' | translate}}
                     </button>
-                    <a [routerLink]="['/main/invoices/details', invoice.id]">
-                    <button type="button" class="small primary button">
+                    <button type="button" class="small primary button spanned-button" (click)="navigateToInvoiceView(invoice.id)">
                         {{ 'VIEW' | translate }}
                     </button>
-                    </a>
-                    <button (click)="downloadPdf(invoice)" type="button" class="small primary button">
+                    <button (click)="downloadPdf(invoice)" type="button" class="small primary button spanned-button">
                         {{ "DOWNLOAD PDF"| translate }}
                     </button>
                 </span>
