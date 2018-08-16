@@ -480,20 +480,23 @@
         </div>
         <div class="row">
           <div class="large-12 columns">
-            <div class="large-6 columns info-body">
+            <span *ngIf="!animalExists(fatherAnimal) && !animalExists(motherAnimal)" class="large-6 columns info-body">
+              {{'NO PARENT DATA AVAILABLE' | translate}}
+            </span>
+
+            <div *ngIf="animalExists(fatherAnimal)" class="large-6 columns info-body">
               <app-animal-details-card
                 (historyUpdate)="updateHistory($event)"
                 [inputAnimal]="fatherAnimal"
                 [mainAnimalGender]="'parents'"
               ></app-animal-details-card>
             </div>
-            <div class="large-6 columns info-body">
+            <div *ngIf="animalExists(motherAnimal)" class="large-6 columns info-body">
               <app-animal-details-card
                 (historyUpdate)="updateHistory($event)"
                 [inputAnimal]="motherAnimal"
                 [mainAnimalGender]="'parents'"
               >
-
               </app-animal-details-card>
             </div>
           </div>

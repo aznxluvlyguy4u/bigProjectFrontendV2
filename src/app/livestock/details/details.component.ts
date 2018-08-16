@@ -325,6 +325,10 @@ export class LivestockDetailComponent implements OnInit {
       });
   }
 
+  animalExists(animal: Animal): boolean {
+    return !!animal && (!!animal.uln || (!!animal.uln_country_code && !!animal.uln_number));
+  }
+
   hasWeights(): boolean {
     return this.animal.weights.length > 0;
   }
