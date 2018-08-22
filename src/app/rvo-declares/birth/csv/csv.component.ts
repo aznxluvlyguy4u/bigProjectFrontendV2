@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { LivestockAnimal } from '../../../shared/models/animal.model';
-import { BirthRequest, Child, CandidateFathersRequest, CandidateSurrogatesRequest } from '../birth.model';
+import { BirthRequest, Child, CandidateFathersRequest, CandidateSurrogatesRequest, BIRTH_PROGRESS_TYPES } from '../birth.model';
 import { PapaParseService, PapaParseConfig } from 'ngx-papaparse';
 import { Settings } from '../../../shared/variables/settings';
 import {
@@ -36,6 +36,8 @@ class ExtendedBirthRequest extends BirthRequest {
   templateUrl: './csv.component.html'
 })
 export class CsvComponent implements OnInit {
+
+  private birth_progress_types = BIRTH_PROGRESS_TYPES;
 
   private isLoadingCandidateSurrogates = false;
   private isLoadingCandidateMothers = false;
@@ -185,6 +187,37 @@ export class CsvComponent implements OnInit {
 
       if (tmpCsvRow.electronicId) {
         const child = new Child();
+
+        switch (tmpCsvRow.birth_progress) {
+          case 'Zonder hulp': {
+            return BIRTH_PROGRESS_TYPES[0];
+            break;
+          }
+          case 'Licht met hulp': {
+            return BIRTH_PROGRESS_TYPES[1];
+            break;
+          }
+          case 'Normaal met hulp': {
+            return BIRTH_PROGRESS_TYPES[2];
+            break;
+          }
+          case 'Zwaar met hulp': {
+            return BIRTH_PROGRESS_TYPES[3];
+            break;
+          }
+          case 'Keizersnede (lam te groot)': {
+            return BIRTH_PROGRESS_TYPES[4];
+            break;
+          }
+          case 'Keizersnede (onvoldoende ontsluiting)': {
+            return BIRTH_PROGRESS_TYPES[5];
+            break;
+          }
+          default: {
+            return tmpCsvRow.electronicId;
+          }
+        }
+
         child.birth_progress = tmpCsvRow.birth_progress;
         child.birth_weight = Number(tmpCsvRow.birth_weight);
         child.gender = tmpCsvRow.gender;
