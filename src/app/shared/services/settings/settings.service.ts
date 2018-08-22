@@ -113,5 +113,36 @@ export class SettingsService {
   public getLocale() {
     return this.locale;
   }
+
+  getCountryCodeByIso(iso) {
+    const countrycodes = {
+      '056' : 'BE',
+      '100' : 'BG',
+      '196' : 'CY',
+      '208' : 'DK',
+      '276' : 'DE',
+      '233' : 'EE',
+      '246' : 'FI',
+      '250' : 'FR',
+      '300' : 'GR',
+      '348' : 'HU',
+      '372' : 'IE',
+      '380' : 'IT',
+      '428' : 'LV',
+      '442' : 'LU',
+      '528' : 'NL',
+      '040' : 'AT',
+      '616' : 'PL',
+      '620' : 'PT',
+      '642' : 'RO',
+      '705' : 'SI',
+      '703' : 'SK',
+      '724' : 'ES',
+      '203' : 'CZ',
+      '752' : 'SE'
+    };
+
+    return countrycodes[iso];
+  }
 }
 

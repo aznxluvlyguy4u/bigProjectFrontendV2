@@ -9,6 +9,7 @@ import {
 import { NSFOService } from '../../../shared/services/nsfo-api/nsfo.service';
 import * as moment from 'moment';
 import { JsonResponseModel } from '../../../shared/models/json-response.model';
+import { SettingsService } from '../../../shared/services/settings/settings.service';
 
 interface CsvRow {
   electronicId: string;
@@ -58,7 +59,8 @@ export class CsvComponent implements OnInit {
   constructor(
     private papa: PapaParseService,
     private settings: Settings,
-    private apiService: NSFOService
+    private apiService: NSFOService,
+    private settingService: SettingsService
   ) { }
 
   ngOnInit() {
@@ -108,9 +110,9 @@ export class CsvComponent implements OnInit {
     return this.csvRows;
   }
 
-  countryNumberToCountryIdentifier(number: string) {
+  countryNumberToCountryIdentifier(iso: string) {
     // TODO: Implement logic to return actual country identifier.
-    return 'NL';
+    return this.settingService.getCountryCodeByIso(iso);
   }
 
   toBirthRequest(data: any) {
