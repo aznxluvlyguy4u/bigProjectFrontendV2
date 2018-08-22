@@ -38,6 +38,8 @@ export class Child {
   public birth_weight: number;
   public tail_length: number;
   public surrogate_mother: any; // SurrogateMotherByUln | SurrogateMotherByPedigree;
+  public date_of_birth: string;
+  public has_lambar: boolean;
 }
 
 
@@ -61,6 +63,11 @@ export class BirthRequest {
   public litter_size: number;
   public stillborn_count: number;
   public born_alive_count: number;
+  public declareStatus: boolean;
+  public isSubmitting: boolean;
+  constructor() {
+    this.declareStatus = null;
+  }
 }
 
 
