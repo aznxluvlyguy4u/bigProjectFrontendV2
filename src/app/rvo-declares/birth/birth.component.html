@@ -17,6 +17,9 @@
       <li [class.active]="isActiveRoute('/main/birth/history')" class="tabs-title">
         <a (click)="navigateTo('/main/birth/history')">{{ 'HISTORY' | translate }}</a>
       </li>
+      <li [class.active]="isActiveRoute('/main/birth/csv')" class="tabs-title">
+        <a (click)="navigateTo('/main/birth/csv')">{{ 'CSV' | translate }}</a>
+      </li>
       <!--<li [class.active]="isActiveRoute('/main/birth/errors')" class="tabs-title">
           <a (click)="navigateTo('/main/birth/errors')">{{ 'ERRORS' | translate }}</a>
       </li>-->
