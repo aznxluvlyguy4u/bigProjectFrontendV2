@@ -190,31 +190,31 @@ export class CsvComponent implements OnInit {
 
         switch (tmpCsvRow.birth_progress) {
           case 'Zonder hulp': {
-            return BIRTH_PROGRESS_TYPES[0];
+            child.birth_progress = BIRTH_PROGRESS_TYPES[0];
             break;
           }
           case 'Licht met hulp': {
-            return BIRTH_PROGRESS_TYPES[1];
+            child.birth_progress = BIRTH_PROGRESS_TYPES[1];
             break;
           }
           case 'Normaal met hulp': {
-            return BIRTH_PROGRESS_TYPES[2];
+            child.birth_progress = BIRTH_PROGRESS_TYPES[2];
             break;
           }
           case 'Zwaar met hulp': {
-            return BIRTH_PROGRESS_TYPES[3];
+            child.birth_progress = BIRTH_PROGRESS_TYPES[3];
             break;
           }
           case 'Keizersnede (lam te groot)': {
-            return BIRTH_PROGRESS_TYPES[4];
+            child.birth_progress = BIRTH_PROGRESS_TYPES[4];
             break;
           }
           case 'Keizersnede (onvoldoende ontsluiting)': {
-            return BIRTH_PROGRESS_TYPES[5];
+            child.birth_progress = BIRTH_PROGRESS_TYPES[5];
             break;
           }
           default: {
-            return tmpCsvRow.electronicId;
+            child.birth_progress = tmpCsvRow.birth_progress;
           }
         }
 
@@ -224,17 +224,16 @@ export class CsvComponent implements OnInit {
         switch (tmpCsvRow.birth_progress) {
 
           case 'Ram': {
-            return LIVESTOCK_GENDER_FILTER_OPTIONS[1];
+            child.gender = LIVESTOCK_GENDER_FILTER_OPTIONS[1];
             break;
           }
           case 'Ooi': {
-            return LIVESTOCK_GENDER_FILTER_OPTIONS[2];
+            child.gender = LIVESTOCK_GENDER_FILTER_OPTIONS[2];
             break;
           }
 
         }
 
-        child.gender = tmpCsvRow.gender;
         child.is_alive = true;
 
         // Use scan date if date of birth is empty
