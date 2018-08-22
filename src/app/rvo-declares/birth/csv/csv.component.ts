@@ -39,12 +39,12 @@ export class CsvComponent implements OnInit {
 
   private birth_progress_types = BIRTH_PROGRESS_TYPES;
 
-  private isLoadingCandidateSurrogates = false;
-  private isLoadingCandidateMothers = false;
-  private isLoadingCandidateFathers = false;
+  isLoadingCandidateSurrogates = false;
+  isLoadingCandidateMothers = false;
+  isLoadingCandidateFathers = false;
 
-  private suggestedCandidateFathers = <LivestockAnimal[]>[];
-  private candidateSurrogates = <LivestockAnimal[]>[];
+  suggestedCandidateFathers = <LivestockAnimal[]>[];
+  candidateSurrogates = <LivestockAnimal[]>[];
 
   private selectedBirthRequest: ExtendedBirthRequest;
   private selectedChild;
@@ -124,6 +124,9 @@ export class CsvComponent implements OnInit {
 
       // instantiate a new BirthRequest
       const birthRequest = new ExtendedBirthRequest();
+
+      birthRequest.is_aborted = false;
+      birthRequest.is_pseudo_pregnancy = false;
 
       if ( csvRow.date_of_birth && !csvRow.birth_progress ) {
         // we have a mother.
@@ -231,10 +234,9 @@ export class CsvComponent implements OnInit {
           // }
         }
 
-        child.birth_progress = tmpCsvRow.birth_progress;
         child.birth_weight = Number(tmpCsvRow.birth_weight);
 
-        switch (tmpCsvRow.birth_progress) {
+        switch (tmpCsvRow.gender) {
 
           case 'Ram': {
             child.gender = LIVESTOCK_GENDER_FILTER_OPTIONS[1];
