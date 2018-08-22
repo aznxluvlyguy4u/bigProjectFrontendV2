@@ -1,0 +1,122 @@
+<form class="form-declare">
+  <div class="row">
+      <div class="medium-2 columns">
+        <input #csv (change)="handleFileInput($event.target.files)" type="file" id="csv" name="file" accept=".csv">
+      </div>
+  </div>
+</form>
+
+<div class="row" *ngIf="birthRequests.length > 0">
+  <div class="columns">
+    <button (click)="submitBirthRequests()" class="small primary button">Melden  <span class="badge">{{birthRequests.length}}</span></button>
+  </div>
+</div>
+
+<div *ngFor="let birthRequest of birthRequests" class="csv_birthrequest" [class.success]="birthRequest.declareStatus === true" [class.error]="birthRequest.declareStatus === false">
+  <ng-container *ngIf="birthRequest.declareStatus === null || birthRequest.declareStatus === false">
+    <div class="row">
+        <div class="medium-2 columns">
+          <label>
+            {{ 'LITTER SIZE' | translate }}
+            <i *ngIf="birthRequest.isSubmitting" class="fa fa-spinner fa-pulse fa-fw"></i>
+          </label>
+          {{birthRequest.litter_size}}
+        </div>
+        <div class="medium-2 columns">
+            <label>{{ 'MOTHER' | translate }}</label>
+            {{birthRequest?.mother?.uln_country_code}} {{birthRequest?.mother?.uln_number}}
+        </div>
+
+        <div class="medium-2 columns">
+          <label>{{ 'FATHER' |translate }}</label>
+          <ng-container *ngIf="birthRequest?.father">
+              {{birthRequest?.father?.uln_country_code}} {{birthRequest?.father?.uln_number}}
+              <button class="tiny button" (click)="birthRequest.father = null">{{'REMOVE' | translate}}</button>
+          </ng-container>
+
+          <ng-container *ngIf="!birthRequest?.father">
+
+              <input (keyup)="preventKeyPress($event)" (keydown)="preventKeyPress($event)"
+                    (keypress)="preventKeyPress($event)" type="text" name="uid_number_father"
+                    (focus)="getCandidateFathers(birthRequest); fatherSelector.openModal()">
+
+          </ng-container>
+
+        </div>
+      <div class="medium-2 columns">
+
+      </div>
+
+      <div class="medium-2 columns">
+          <label>
+            {{ 'STILLBORN' | translate }}
+          </label>
+          {{birthRequest.stillborn_count}}
+        </div>
+    </div>
+    <div class="row">
+      <div class="columns">
+        <div *ngIf="birthRequest?.children?.length > 0">
+          <table class="stack">
+            <thead>
+              <th>
+                {{ 'ULN' | translate }}*
+              </th>
+              <th>
+                {{ 'GENDER' | translate }}
+              </th>
+              <th>
+                {{ 'BIRTH PROGRESS' | translate }}
+              </th>
+              <th>
+                {{ 'BIRTH WEIGHT (KG)' | translate }}
+              </th>
+              <th>
+                {{ 'DATE OF BIRTH' | translate }}
+              </th>
+              <th>
+                {{ 'DATE SCANNED' | translate }}
+              </th>
+              <th>
+                {{ 'TAIL LENGTH (CM)' | translate }}
+              </th>
+              <th>
+                {{ 'LAMBAR/SURROGATE' | translate }}
+              </th>
+              <th>
+                {{ 'ULN' | translate }} ({{ 'SURROGATE' | translate }})
+              </th>
+            </thead>
+            <tbody>
+              <tr *ngFor="let child of birthRequest.children; let i = index">
+                <td>{{child?.uln_country_code}} {{child?.uln_number}}</td>
+                <td>{{child?.gender }}</td>
+                <td>{{child?.birth_progress }}</td>
+                <td>{{child?.birth_weight }}</td>
+                <td>{{child?.date_of_birth }}</td>
+                <td>{{child?.date_scanned }}</td>
+                <td>{{child?.tail_length }}</td>
+                <td>{{child?.nurture_type }}</td>
+                <td>
+                  <ng-container *ngIf="child?.surrogate_mother">
+                    {{child?.surrogate_mother?.uln_country_code }} {{child?.surrogate_mother?.uln_number }}  <button class="tiny button" (click)="child.surrogate_mother = null">{{'REMOVE' | translate}}</button>
+                  </ng-container>
+                  <ng-container *ngIf="!child?.surrogate_mother">
+                    <input (keyup)="preventKeyPress($event)" (keydown)="preventKeyPress($event)"
+                      (keypress)="preventKeyPress($event)" type="text" name="uid_number_father"
+                      (focus)="getCandidateSurrogates(birthRequest, child); surrogateMotherSelector.openModal()">
+                  </ng-container>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+</div>
+  <selector #fatherSelector [columns]="['ULN', 'PEDIGREE NUMBER']" [list]="suggestedCandidateFathers" [filter]="'MALES'"
+            [SUGGESTION_LABEL]="'POSSIBLE FATHER'" [isLoading]="isLoadingCandidateFathers"
+            (selection)="selectFather($event)"></selector>
+
+  <selector #surrogateMotherSelector [columns]="['ULN', 'PEDIGREE NUMBER']" [list]="candidateSurrogates" [filter]="'FEMALES'" [SUGGESTION_LABEL]="'POSSIBLE SURROGATE MOTHER'" (selection)="selectSurrogateMother($event)"></selector>
