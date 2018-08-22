@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { LivestockAnimal } from '../../../shared/models/animal.model';
+import { LivestockAnimal, LIVESTOCK_GENDER_FILTER_OPTIONS } from '../../../shared/models/animal.model';
 import { BirthRequest, Child, CandidateFathersRequest, CandidateSurrogatesRequest, BIRTH_PROGRESS_TYPES } from '../birth.model';
 import { PapaParseService, PapaParseConfig } from 'ngx-papaparse';
 import { Settings } from '../../../shared/variables/settings';
@@ -220,6 +220,20 @@ export class CsvComponent implements OnInit {
 
         child.birth_progress = tmpCsvRow.birth_progress;
         child.birth_weight = Number(tmpCsvRow.birth_weight);
+
+        switch (tmpCsvRow.birth_progress) {
+
+          case 'Ram': {
+            return LIVESTOCK_GENDER_FILTER_OPTIONS[1];
+            break;
+          }
+          case 'Ooi': {
+            return LIVESTOCK_GENDER_FILTER_OPTIONS[2];
+            break;
+          }
+
+        }
+
         child.gender = tmpCsvRow.gender;
         child.is_alive = true;
 
