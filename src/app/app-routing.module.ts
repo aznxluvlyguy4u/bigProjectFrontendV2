@@ -58,6 +58,7 @@ import {ReportInbreedingCoefficientComponent} from './report/inbreedingCoefficie
 import {ReportLivestockComponent} from './report/livestock/report.livestock';
 import {ReportFertilizerAccountingComponent} from './report/fertilityAccounting/report.fertilizer-accounting.component';
 import {ReportOffspringComponent} from './report/offspring/report.offspring.component';
+import { CsvComponent } from './rvo-declares/birth/csv/csv.component';
 
 // const appRoutes: Routes = [
 const appRoutes = [
@@ -99,7 +100,8 @@ const appRoutes = [
         children: [
           {path: 'declare', component: BirthDeclareComponent},
           {path: 'history', component: BirthHistoryComponent},
-          {path: 'errors', component: BirthErrorsComponent}
+          {path: 'errors', component: BirthErrorsComponent},
+          {path: 'csv', component: CsvComponent},
         ]
       },
       {
