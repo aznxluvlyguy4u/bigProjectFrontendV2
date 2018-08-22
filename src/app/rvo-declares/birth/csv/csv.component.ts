@@ -189,33 +189,46 @@ export class CsvComponent implements OnInit {
         const child = new Child();
 
         switch (tmpCsvRow.birth_progress) {
-          case 'Zonder hulp': {
+           case 'Anders': {
             child.birth_progress = BIRTH_PROGRESS_TYPES[0];
             break;
           }
-          case 'Licht met hulp': {
+          case 'Minder': {
             child.birth_progress = BIRTH_PROGRESS_TYPES[1];
             break;
           }
-          case 'Normaal met hulp': {
+          case 'Normaal': {
             child.birth_progress = BIRTH_PROGRESS_TYPES[2];
             break;
           }
-          case 'Zwaar met hulp': {
-            child.birth_progress = BIRTH_PROGRESS_TYPES[3];
-            break;
-          }
-          case 'Keizersnede (lam te groot)': {
-            child.birth_progress = BIRTH_PROGRESS_TYPES[4];
-            break;
-          }
-          case 'Keizersnede (onvoldoende ontsluiting)': {
-            child.birth_progress = BIRTH_PROGRESS_TYPES[5];
-            break;
-          }
-          default: {
-            child.birth_progress = tmpCsvRow.birth_progress;
-          }
+
+          // case 'Zonder hulp': {
+          //   child.birth_progress = BIRTH_PROGRESS_TYPES[0];
+          //   break;
+          // }
+          // case 'Licht met hulp': {
+          //   child.birth_progress = BIRTH_PROGRESS_TYPES[1];
+          //   break;
+          // }
+          // case 'Normaal met hulp': {
+          //   child.birth_progress = BIRTH_PROGRESS_TYPES[2];
+          //   break;
+          // }
+          // case 'Zwaar met hulp': {
+          //   child.birth_progress = BIRTH_PROGRESS_TYPES[3];
+          //   break;
+          // }
+          // case 'Keizersnede (lam te groot)': {
+          //   child.birth_progress = BIRTH_PROGRESS_TYPES[4];
+          //   break;
+          // }
+          // case 'Keizersnede (onvoldoende ontsluiting)': {
+          //   child.birth_progress = BIRTH_PROGRESS_TYPES[5];
+          //   break;
+          // }
+          // default: {
+          //   child.birth_progress = tmpCsvRow.birth_progress;
+          // }
         }
 
         child.birth_progress = tmpCsvRow.birth_progress;
@@ -231,7 +244,6 @@ export class CsvComponent implements OnInit {
             child.gender = LIVESTOCK_GENDER_FILTER_OPTIONS[2];
             break;
           }
-
         }
 
         child.is_alive = true;
