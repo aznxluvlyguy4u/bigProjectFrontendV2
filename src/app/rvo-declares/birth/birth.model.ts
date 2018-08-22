@@ -54,6 +54,7 @@ export class BirthRequest {
   public born_alive_count: number;
   public declareStatus: boolean;
   public isSubmitting: boolean;
+  public errorMessage: string;
   constructor() {
     this.declareStatus = null;
   }

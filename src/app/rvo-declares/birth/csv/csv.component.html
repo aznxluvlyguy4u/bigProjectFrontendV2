@@ -15,10 +15,17 @@
 <div *ngFor="let birthRequest of birthRequests" class="csv_birthrequest" [class.success]="birthRequest.declareStatus === true" [class.error]="birthRequest.declareStatus === false">
   <ng-container *ngIf="birthRequest.declareStatus === null || birthRequest.declareStatus === false">
     <div class="row">
+      <div class="columns">
+        <i *ngIf="birthRequest.isSubmitting" class="fa fa-spinner fa-pulse fa-fw"></i>
+        <p style="color:#ff0000;">
+          {{birthRequest.errorMessage}}
+        </p>
+      </div>
+    </div>
+    <div class="row">
         <div class="medium-2 columns">
           <label>
             {{ 'LITTER SIZE' | translate }}
-            <i *ngIf="birthRequest.isSubmitting" class="fa fa-spinner fa-pulse fa-fw"></i>
           </label>
           {{birthRequest.litter_size}}
         </div>

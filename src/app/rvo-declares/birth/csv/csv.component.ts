@@ -319,6 +319,7 @@ export class CsvComponent implements OnInit {
           },
           err => {
             birthRequest.isSubmitting = false;
+            birthRequest.errorMessage = err.error.result.message;
             birthRequest.declareStatus = false;
           }
         );
