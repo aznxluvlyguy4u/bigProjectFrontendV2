@@ -59,7 +59,7 @@
       </td>
     </tr>
     <tr
-      *ngFor="let invoice of invoices | invoiceFilter:[filterSearch, status] | paginate: {itemsPerPage: filterAmount, currentPage: page}">
+      *ngFor="let invoice of invoices | invoiceFilter:[filterSearch, status] | invoiceSort | paginate: {itemsPerPage: filterAmount, currentPage: page}">
       <td>
                 <span *ngIf="invoice.invoice_number">
                     {{ invoice.invoice_number }}

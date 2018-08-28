@@ -140,6 +140,8 @@ import {ButtonPrimaryComponent} from './shared/components/button-primary/button-
 import {InsideComponentLoadingSpinnerComponent} from './shared/components/inside-component-loading-spinner/inside-component-loading-spinner.component';
 import {ReportService} from './shared/services/report/report.service';
 import {ReportModalComponent} from './shared/components/reportmodal/report-modal.component';
+import {SortService} from './shared/services/utils/sort.service';
+import {InvoiceSortPipe} from './invoices/pipes/invoice-sort.pipe';
 // AoT requires an exported function for factories
 export function CreateTranslateLoader(http: HttpClient) {
     return new TranslateHttpLoader(http, '../assets/i18n/', '.json');
@@ -159,6 +161,7 @@ export function CreateTranslateLoader(http: HttpClient) {
       InvoiceOverviewComponent,
       InvoiceFilterPipe,
       InvoiceComponent,
+      InvoiceSortPipe,
       LivestockOverviewComponent,
       LivestockDetailComponent,
       AnimalDetailsCardComponent,
@@ -307,6 +310,7 @@ export function CreateTranslateLoader(http: HttpClient) {
       GoogleLineChartService,
       ReportService,
     Settings,
+    SortService,
     Constants,
     MatSnackBar
   ],
