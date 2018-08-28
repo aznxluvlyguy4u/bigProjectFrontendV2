@@ -136,7 +136,7 @@
               {{invoice_rule_selection.invoice_rule.price_excl_vat | localNumberFormat:3 }}
             </td>
             <td class="text-right">
-              {{invoice_rule_selection.amount}}
+              {{invoice_rule_selection.amount | localNumberFormat:2}}
             </td>
             <td class="text-right">
               {{(invoice_rule_selection.invoice_rule.price_excl_vat * invoice_rule_selection.amount) |
