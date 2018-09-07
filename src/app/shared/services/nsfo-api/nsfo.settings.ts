@@ -115,5 +115,8 @@ export const API_URI_GET_FERTILIZER_ACCOUNTING_REPORT = '/v1/reports/fertilizer-
 // GENDER
 export const API_URI_ANIMAL_GENDER = '/v1/animals-gender';
 
+// NICKNAME
+export const API_URI_ANIMAL_NICKNAME = '/v1/animals-nickname';
+
 // COLLAR Colors
 export const API_URI_GET_COLLAR_COLORS = '/v1/collars';

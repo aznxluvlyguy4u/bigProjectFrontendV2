@@ -5,6 +5,7 @@ import {Mate} from './nsfo-declare.model';
 import {BreedValues} from './breedvalues.model';
 
 export class Animal {
+  public id: string;
   public uln_country_code: string;
   public uln_number: string;
   public uln: string;
@@ -16,6 +17,7 @@ export class Animal {
   public collar_color: number;
   public collar_number: number;
   public name: string;
+  public nickname: string;
   public date_of_birth: string;
   public dd_mm_yyyy_date_of_birth: string;
   public birth_progress: string;
