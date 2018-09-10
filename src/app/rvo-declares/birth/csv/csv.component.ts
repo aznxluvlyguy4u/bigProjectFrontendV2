@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { LivestockAnimal, LIVESTOCK_GENDER_FILTER_OPTIONS } from '../../../shared/models/animal.model';
 import { BirthRequest, Child, CandidateFathersRequest, CandidateSurrogatesRequest, BIRTH_PROGRESS_TYPES } from '../birth.model';
 import { PapaParseService, PapaParseConfig } from 'ngx-papaparse';
@@ -35,10 +35,15 @@ class ExtendedBirthRequest extends BirthRequest {
   selector: 'app-csv',
   templateUrl: './csv.component.html'
 })
-export class CsvComponent implements OnInit {
+export class CsvComponent implements OnInit, OnDestroy {
+
+  public country_code_list = [];
+  private countryCodeObs;
+  private suggestedCandidateFathersIsLoadings;
 
   private birth_progress_types = BIRTH_PROGRESS_TYPES;
 
+  isPreLoadingCandidateFathers = false;
   isLoadingCandidateSurrogates = false;
   isLoadingCandidateMothers = false;
   isLoadingCandidateFathers = false;
@@ -68,9 +73,16 @@ export class CsvComponent implements OnInit {
   ngOnInit() {
     this.suggestedCandidateFathers = [];
     this.candidateSurrogates = [];
+    this.suggestedCandidateFathersIsLoadings = [];
+
+    this.countryCodeObs = this.settingService.getCountryList()
+      .subscribe(countryCodeList => {
+        this.country_code_list = countryCodeList[0];
+      });
   }
 
   handleFileInput(files: FileList) {
+    this.birthRequests = [];
     const config: PapaParseConfig = {};
     config.delimiter = ',';
 
@@ -83,7 +95,6 @@ export class CsvComponent implements OnInit {
       }
     });
   }
-
 
   toRows(rows: any) {
     rows.shift();
@@ -127,6 +138,7 @@ export class CsvComponent implements OnInit {
 
       birthRequest.is_aborted = false;
       birthRequest.is_pseudo_pregnancy = false;
+      birthRequest.suggestedCandidateFathersIsLoading = false;
 
       if ( csvRow.date_of_birth && !csvRow.birth_progress ) {
         // we have a mother.
@@ -143,9 +155,9 @@ export class CsvComponent implements OnInit {
           mother.uln_number = ulnUnProcessed[1];
           mother.uln = mother.uln_country_code + mother.uln_number;
         } else {
-          mother.uln_country_code = 'NL';
+          // mother.uln_country_code = 'NL';
           mother.uln_number = ulnUnProcessed[0];
-          mother.uln = mother.uln_country_code + mother.uln_number;
+          // mother.uln = mother.uln_country_code + mother.uln_number;
         }
 
         // Still born count
@@ -165,23 +177,45 @@ export class CsvComponent implements OnInit {
         // Born alive count
         birthRequest.born_alive_count = birthRequest.children ? birthRequest.children.length : 0;
 
+        this.addStillborn(birthRequest);
+
         this.birthRequests.push(birthRequest);
+
+        this.setCandidateFathers(birthRequest);
+
       }
       index++;
     });
+
+    // forkJoin(this.suggestedCandidateFathersIsLoadings).subscribe(
+    //   res => {
+    //     console.log('res');
+    //     console.log(res);
+    //   }
+    // );
   }
 
   selectFather(father) {
     this.selectedBirthRequest.father = father;
   }
 
-
+  addStillborn(birthRequest) {
+    birthRequest.stillBorns = [];
+    if (birthRequest.stillborn_count > 0) {
+      for (let i = 0; i < birthRequest.stillborn_count; i++ ) {
+        const stillBorn = new Child();
+        stillBorn.is_alive = false;
+        birthRequest.stillBorns.push(stillBorn);
+      }
+    }
+  }
   resolveChildren(index: number, date_of_birth: string, birthRequest: BirthRequest) {
     let nextMother = false;
     const children: Child[] = [];
 
     // create a shallow copy of the csvRows array
     const tmpCsvRows: CsvRow[] = this.csvRows.slice(index + 1);
+
 
     tmpCsvRows.forEach((tmpCsvRow) => {
       if (tmpCsvRow.date_of_birth) {
@@ -190,16 +224,7 @@ export class CsvComponent implements OnInit {
 
       if (tmpCsvRow.electronicId) {
         const child = new Child();
-
         switch (tmpCsvRow.birth_progress) {
-           case 'Anders': {
-            child.birth_progress = BIRTH_PROGRESS_TYPES[0];
-            break;
-          }
-          case 'Minder': {
-            child.birth_progress = BIRTH_PROGRESS_TYPES[1];
-            break;
-          }
           case 'Normaal': {
             child.birth_progress = BIRTH_PROGRESS_TYPES[2];
             break;
@@ -234,7 +259,10 @@ export class CsvComponent implements OnInit {
           // }
         }
 
-        child.birth_weight = Number(tmpCsvRow.birth_weight);
+        // only fill in weight if it is available
+        if (tmpCsvRow.birth_weight !== '') {
+          child.birth_weight = Number(tmpCsvRow.birth_weight);
+        }
 
         switch (tmpCsvRow.gender) {
 
@@ -261,12 +289,16 @@ export class CsvComponent implements OnInit {
         child.uln_country_code = this.countryNumberToCountryIdentifier(ulnUnProcessed[0]);
         child.uln_number = ulnUnProcessed[1];
 
-        if (tmpCsvRow.hasLambar) {
+        // child.lamBar = null;
+        if (tmpCsvRow.hasLambar === 'Ja') {
           child.has_lambar = true;
+        } else if (!tmpCsvRow.hasLambar || tmpCsvRow.hasLambar === 'Nee') {
+          child.has_lambar = false;
         }
 
         // only push the child if we have not encountered another mother
         if (nextMother === false) {
+          console.log(child);
           children.push(child);
         }
       }
@@ -275,6 +307,71 @@ export class CsvComponent implements OnInit {
     nextMother = false;
     return children;
   }
+
+  setCandidateFathers(birthRequest) {
+    // let loading = of(true);
+
+    // this.selectedBirthRequest = birthRequest;
+    birthRequest.suggestedCandidateFathersIsLoading = true;
+
+    // this.suggestedCandidateFathersIsLoadings.push(of(loading));
+
+    this.isPreLoadingCandidateFathers = true;
+    this.isLoadingCandidateFathers = true;
+
+    this.candidateFathersRequest.date_of_birth = moment(birthRequest.date_of_birth).format(this.settings.MODEL_DATETIME_FORMAT);
+    this.candidateFathersRequest.date_of_birth = moment(birthRequest.date_of_birth).format(this.settings.MODEL_DATETIME_FORMAT);
+
+    this.apiService
+      .doPostRequest(API_URI_DECLARE_BIRTH + '/' + birthRequest.mother.uln + '/candidate-fathers', this.candidateFathersRequest)
+      .subscribe(
+          (res: JsonResponseModel) => {
+
+          const suggestedCandidateFathers = <LivestockAnimal[]> res.result.suggested_candidate_fathers;
+          const otherCandidateFathers = <LivestockAnimal[]> res.result.other_candidate_fathers;
+
+          for (const animal of suggestedCandidateFathers) {
+            animal.suggested = true;
+            if (animal.uln_country_code && animal.uln_number) {
+
+              animal.uln = animal.uln_country_code + animal.uln_number;
+              animal.ulnLastFive = animal.uln_number.substr(animal.uln_number.length - 5);
+            }
+            if (animal.pedigree_country_code && animal.pedigree_number) {
+              animal.pedigree = animal.pedigree_country_code + animal.pedigree_number;
+            }
+          }
+
+          for (const animal of otherCandidateFathers) {
+            if (animal.uln_country_code && animal.uln_number) {
+
+              animal.uln = animal.uln_country_code + animal.uln_number;
+              animal.ulnLastFive = animal.uln_number.substr(animal.uln_number.length - 5);
+            }
+            if (animal.pedigree_country_code && animal.pedigree_number) {
+              animal.pedigree = animal.pedigree_country_code + animal.pedigree_number;
+            }
+          }
+
+          if (suggestedCandidateFathers.length === 1) {
+            birthRequest.father = suggestedCandidateFathers[0];
+          }
+          birthRequest.suggestedCandidateFathersIsLoading = false;
+          // loading.pipe(of(false));
+          // const ssuggestedCandidateFathers = suggestedCandidateFathers.concat(otherCandidateFathers);
+          // this.isLoadingCandidateFathers = false;
+          // birthRequest.suggestedCandidateFathers = ssuggestedCandidateFathers;
+        },
+        err => {
+          birthRequest.suggestedCandidateFathersIsLoading = false;
+          // let error = err;
+          // this.errorMessage = error.result.message;
+          // this.openModal();
+          // this.isLoadingCandidateFathers = false;
+        }
+      );
+  }
+
 
   getCandidateFathers(birthRequest: ExtendedBirthRequest) {
 
@@ -386,9 +483,14 @@ export class CsvComponent implements OnInit {
       }
     });
   }
+
   preventKeyPress(event) {
     event.cancelBubble = true;
     event.preventDefault();
     return false;
+  }
+
+  ngOnDestroy() {
+    this.countryCodeObs.unsubscribe();
   }
 }
