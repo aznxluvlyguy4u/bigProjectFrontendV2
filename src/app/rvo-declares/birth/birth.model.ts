@@ -55,6 +55,7 @@ export class BirthRequest {
   public declareStatus: boolean;
   public isSubmitting: boolean;
   public errorMessage: string;
+  public suggestedCandidateFathersIsLoading: boolean;
   constructor() {
     this.declareStatus = null;
   }

@@ -5,6 +5,7 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
+    "deploy:reader": "ng build --configuration=staging && gulp deploy:reader",
     "deploy:staging": "ng build --configuration=staging && gulp deploy:staging",
     "deploy:prod": "ng build --configuration=production && gulp deploy:prod",
     "deploy:staging:maintenance": "gulp deploy:staging:maintenance",
