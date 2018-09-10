@@ -387,7 +387,7 @@ export class LivestockDetailComponent implements OnInit {
     };
 
     this.apiService
-      .doPostRequest(API_URI_ANIMAL_NICKNAME + '/' + this.animal.id, request)
+      .doPutRequest(API_URI_ANIMAL_NICKNAME + '/' + this.animal.id, request)
       .subscribe(
         res => {
           this.changed_animal_info = true;
