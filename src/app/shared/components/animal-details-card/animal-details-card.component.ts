@@ -71,15 +71,7 @@ export class AnimalDetailsCardComponent implements OnInit {
       return true;
     }
 
-    if (this.inputAnimal.is_own_historic_animal) {
-      return true;
-    }
-
-    if (!this.inputAnimal.is_own_historic_animal && !this.settingsService.getCurrentUser().public_live_stock) {
-        return false;
-    }
-
-    return this.inputAnimal.is_public;
+    return this.inputAnimal.is_user_allowed_to_access_animal_details === true;
   }
 
 }

@@ -54,6 +54,7 @@ export class Animal {
   public measurement: MeasurementOutput = new MeasurementOutput();
   public declare_log: any[];
   public is_public: boolean;
+  public is_user_allowed_to_access_animal_details: boolean;
   public ubn: string;
   public breed_code: string;
   public last_mate: Mate;
