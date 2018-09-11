@@ -215,11 +215,7 @@ export class DownloadService {
   doInvoicePdfGetRequest(invoice: Invoice) {
     // const download = this.getNewDownloadRequest(INVOICE_PDF, PDF, 0, null);
     const uri = API_URI_INVOICES + '/' + invoice.id + '/pdf';
-<<<<<<< Updated upstream
     this.doDownloadGetWithImmediateDownload(uri, true);
-=======
-    this.doDownloadGetRequestByReportWorker(uri);
->>>>>>> Stashed changes
   }
 
   private getNextId(): number {
@@ -286,19 +282,11 @@ export class DownloadService {
     this.nsfo.doPostRequest(uri, request)
       .subscribe(
         (res: JsonResponseModel) => {
-<<<<<<< Updated upstream
           download.url = res.result;
           this.completeDownloadPreparation(download);
         },
         error => {
           this.failDownload(download, error);
-=======
-          const downloadUrl = res.result;
-          this.completeDownloadPreparation(download);
-        },
-        error => {
-          alert(this.nsfo.getErrorMessage(error));
->>>>>>> Stashed changes
         }
       );
   }
@@ -314,7 +302,6 @@ export class DownloadService {
     this.nsfo.doGetRequest(uri)
       .subscribe(
         (res: JsonResponseModel) => {
-<<<<<<< Updated upstream
           download.url = res.result;
           this.completeDownloadPreparation(download);
         },
@@ -357,9 +344,6 @@ export class DownloadService {
       .subscribe(
         (res: JsonResponseModel) => {
           win.location.href = res.result;
-=======
-          this.reportService.fetchReports();
->>>>>>> Stashed changes
         },
         error => {
           alert(this.nsfo.getErrorMessage(error));
