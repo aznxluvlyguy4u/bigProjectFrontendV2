@@ -75,6 +75,10 @@ export class InvoiceOverviewComponent implements OnInit, OnDestroy {
     return Math.floor(duration.asDays());
   }
 
+  navigateToInvoiceView(invoiceId: number): void {
+    this.router.navigate(['/main/invoices/details', invoiceId]);
+  }
+
   private navigateTo(url: string) {
     this.router.navigate([url]);
   }

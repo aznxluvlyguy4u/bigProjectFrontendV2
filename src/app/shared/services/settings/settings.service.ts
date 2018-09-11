@@ -19,6 +19,7 @@ export class SettingsService {
   private modelDateFormat = 'YYYY-MM-DD';
 
   constructor(private apiService: NSFOService) {
+    this.getCurrentUser();
   }
 
   public static getDateString_YYYY_MM_DD_fromDate(date: Date = new Date()) {
@@ -37,7 +38,6 @@ export class SettingsService {
           }
         );
     }
-
     return this.currentUser;
   }
 

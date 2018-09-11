@@ -88,10 +88,12 @@ export class LivestockDetailComponent implements OnInit {
   public isLoadingCollarColorList: boolean;
   isLoading: boolean;
 
+  public animalHistory: string[] = [];
+
   constructor(private route: ActivatedRoute,
               private router: Router,
               private apiService: NSFOService,
-              private settings: SettingsService,
+              public settings: SettingsService,
               private fb: FormBuilder,
               private translate: TranslateService,
               private downloadService: DownloadService) {
@@ -104,8 +106,6 @@ export class LivestockDetailComponent implements OnInit {
     this.animal.mother = '';
     this.animal.father = '';
     this.animal.uln = '';
-
-
     this.form = fb.group({
       date_of_birth: new FormControl('', Validators.compose([Validators.required, DateValidator.validateDateFormat])),
       pedigree_country_code: new FormControl('NL'),
@@ -117,6 +117,10 @@ export class LivestockDetailComponent implements OnInit {
     route.params.subscribe(value => {
       this.ngOnInit();
     });
+  }
+
+  public updateHistory(event: string) {
+      this.animalHistory.push(this.animal.uln);
   }
 
   startLoading() {
@@ -245,7 +249,7 @@ export class LivestockDetailComponent implements OnInit {
               }
 
 
-              this.changeEnabled = true;
+              this.changeEnabled = false;
               this.temp_animal = _.clone(this.animal);
 
               // this.getExteriorKinds();
@@ -303,9 +307,13 @@ export class LivestockDetailComponent implements OnInit {
               for (const child of this.children) {
                 child.litter_size = child.n_ling ? child.n_ling.toString() : undefined;
               }
-
               // window.scrollTo(0, 0);
               this.isLoadingAnimalDetails = false;
+
+              if (this.isAdmin || (!this.isAdmin && this.animal.is_own_animal)) {
+                this.changeEnabled = true;
+              }
+
               this.updateLoadingStatus();
             },
             error => {
@@ -317,6 +325,10 @@ export class LivestockDetailComponent implements OnInit {
       });
   }
 
+  animalExists(animal: Animal): boolean {
+    return !!animal && (!!animal.uln || (!!animal.uln_country_code && !!animal.uln_number));
+  }
+
   hasWeights(): boolean {
     return this.animal.weights.length > 0;
   }
@@ -326,6 +338,9 @@ export class LivestockDetailComponent implements OnInit {
   }
 
   public sendGenderChangeRequest() {
+    if (!this.animal.is_own_animal && !this.isAdmin) {
+      return;
+    }
     this.changeEnabled = false;
     this.gender_edit_mode = false;
     this.changed_animal_info = false;
@@ -354,6 +369,9 @@ export class LivestockDetailComponent implements OnInit {
   }
 
   public sendChangeRequest() {
+    if (!this.animal.is_own_animal && !this.isAdmin) {
+      return;
+    }
     this.changeEnabled = false;
     this.edit_mode = false;
     this.changed_animal_info = false;
@@ -402,6 +420,9 @@ export class LivestockDetailComponent implements OnInit {
 
 
   public toggleGenderEditMode() {
+    if (!this.animal.is_own_animal && !this.isAdmin) {
+      return;
+    }
     this.gender_edit_mode = !this.gender_edit_mode;
 
     if (!this.gender_edit_mode) {
@@ -410,17 +431,26 @@ export class LivestockDetailComponent implements OnInit {
   }
 
   public toggleEditMode() {
+    if (!this.animal.is_own_animal && !this.isAdmin) {
+      return;
+    }
     this.edit_mode = !this.edit_mode;
 
     if (!this.edit_mode) {
-
       this.animal = _.clone(this.temp_animal);
-
     }
   }
 
   public goBack() {
-    this.router.navigate(['/main/livestock/overview']);
+    if (this.animalHistory.length === 0) {
+        this.router.navigate(['/main/livestock/overview']);
+    } else {
+        const animalUln = this.animalHistory.pop();
+        if (this.animal.uln === animalUln) {
+            this.goBack();
+        }
+        this.router.navigate(['/main/livestock/details/' + animalUln]);
+    }
   }
 
   public stringAsViewDate(date) {

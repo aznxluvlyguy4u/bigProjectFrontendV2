@@ -127,7 +127,6 @@ import {EartagErrorRowComponent} from './rvo-declares/eartag/errors/eartag.error
 import {HttpModule} from '@angular/http';
 import {LiveSearchComponent} from './shared/components/livesearch/livesearch.component';
 import {CacheService} from './shared/services/settings/cache.service';
-import {Ng2GoogleChartsModule} from 'ng2-google-charts';
 import {BarComponent} from './shared/components/googlechart/bar.component';
 import {GoogleChartsBaseService} from './shared/services/google/googlechartsbase.service';
 import {GoogleColumnChartService} from './shared/services/google/googlecolumnchart.service';
@@ -141,6 +140,10 @@ import {ButtonPrimaryComponent} from './shared/components/button-primary/button-
 import {InsideComponentLoadingSpinnerComponent} from './shared/components/inside-component-loading-spinner/inside-component-loading-spinner.component';
 import { CsvComponent } from './rvo-declares/birth/csv/csv.component';
 import { PapaParseModule } from 'ngx-papaparse';
+import {ReportService} from './shared/services/report/report.service';
+import {ReportModalComponent} from './shared/components/reportmodal/report-modal.component';
+import {SortService} from './shared/services/utils/sort.service';
+import {InvoiceSortPipe} from './invoices/pipes/invoice-sort.pipe';
 
 // AoT requires an exported function for factories
 export function CreateTranslateLoader(http: HttpClient) {
@@ -161,6 +164,7 @@ export function CreateTranslateLoader(http: HttpClient) {
       InvoiceOverviewComponent,
       InvoiceFilterPipe,
       InvoiceComponent,
+      InvoiceSortPipe,
       LivestockOverviewComponent,
       LivestockDetailComponent,
       AnimalDetailsCardComponent,
@@ -266,14 +270,14 @@ export function CreateTranslateLoader(http: HttpClient) {
     ArrivalHistoryFilterPipe,
     TagReplacementHistoryFilterPipe,
     MateHistoryPipe,
-      BarComponent,
+    BarComponent,
     PageLoadingSpinnerComponent,
     InsideComponentLoadingSpinnerComponent,
     ButtonPrimaryComponent,
-    CsvComponent
+    CsvComponent,
+    ReportModalComponent
   ],
   imports: [
-      Ng2GoogleChartsModule,
     BrowserAnimationsModule,
     BrowserModule,
     HttpModule,
@@ -309,7 +313,9 @@ export function CreateTranslateLoader(http: HttpClient) {
       GoogleChartsBaseService,
       GoogleColumnChartService,
       GoogleLineChartService,
+      ReportService,
     Settings,
+    SortService,
     Constants,
     MatSnackBar
   ],

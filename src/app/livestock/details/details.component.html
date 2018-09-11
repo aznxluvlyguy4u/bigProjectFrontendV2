@@ -160,10 +160,10 @@
             </button>
             <button type="button" *ngIf="!gender_edit_mode" [disabled]="!changeEnabled" (click)="toggleGenderEditMode()"
                     class="tiny primary button pull-right">
-                            <span *ngIf="!changeEnabled">
+                            <span *ngIf="isLoading">
                                 <i class="fa fa-gear fa-spin fa-fw"></i>
                             </span>
-              <span *ngIf="changeEnabled">
+              <span *ngIf="!isLoading">
                                 {{ 'CHANGE' | translate }}
                             </span>
             </button>
@@ -480,18 +480,23 @@
         </div>
         <div class="row">
           <div class="large-12 columns">
-            <div class="large-6 columns info-body">
+            <span *ngIf="!animalExists(fatherAnimal) && !animalExists(motherAnimal)" class="large-6 columns info-body">
+              {{'NO PARENT DATA AVAILABLE' | translate}}
+            </span>
+
+            <div *ngIf="animalExists(fatherAnimal)" class="large-6 columns info-body">
               <app-animal-details-card
+                (historyUpdate)="updateHistory($event)"
                 [inputAnimal]="fatherAnimal"
                 [mainAnimalGender]="'parents'"
               ></app-animal-details-card>
             </div>
-            <div class="large-6 columns info-body">
+            <div *ngIf="animalExists(motherAnimal)" class="large-6 columns info-body">
               <app-animal-details-card
+                (historyUpdate)="updateHistory($event)"
                 [inputAnimal]="motherAnimal"
                 [mainAnimalGender]="'parents'"
               >
-
               </app-animal-details-card>
             </div>
           </div>
@@ -581,10 +586,11 @@
           <div class="large-12 columns">
             <div class="large-6 columns info-body" *ngFor="let child of children">
               <app-animal-details-card
+                (historyUpdate)="updateHistory($event)"
+                [offSpring]="true"
                 [inputAnimal]="child"
                 [mainAnimalGender]="animal.gender"
               >
-
               </app-animal-details-card>
             </div>
           </div>
@@ -672,10 +678,10 @@
 <ng-template #changeButton>
   <button type="button" *ngIf="!edit_mode" [disabled]="!changeEnabled" (click)="toggleEditMode()"
           class="tiny primary button">
-                    <span *ngIf="!changeEnabled">
+                    <span *ngIf="isLoading">
                         <i class="fa fa-gear fa-spin fa-fw"></i>
                     </span>
-    <span *ngIf="changeEnabled">
+    <span *ngIf="!isLoading">
                         {{ 'CHANGE' | translate }}
                     </span>
   </button>

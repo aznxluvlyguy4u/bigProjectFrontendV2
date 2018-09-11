@@ -17,4 +17,5 @@ export class Message {
   public is_hidden: string;
   public success_indicator: string;
   public sender: string;
+  public url: string;
 }
