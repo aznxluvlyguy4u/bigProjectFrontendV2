@@ -193,6 +193,8 @@ export class CsvComponent implements OnInit, OnDestroy {
     //     console.log(res);
     //   }
     // );
+    console.log(this.birthRequests);
+
   }
 
   selectFather(father) {
@@ -298,7 +300,6 @@ export class CsvComponent implements OnInit, OnDestroy {
 
         // only push the child if we have not encountered another mother
         if (nextMother === false) {
-          console.log(child);
           children.push(child);
         }
       }
@@ -464,8 +465,13 @@ export class CsvComponent implements OnInit, OnDestroy {
       );
   }
 
+  onMotherUlnCountryCodeChange(birthRequest: ExtendedBirthRequest, countryCode) {
+    birthRequest.mother.uln_country_code = countryCode;
+  }
+
   submitBirthRequests() {
     this.birthRequests.forEach((birthRequest) => {
+      console.log(birthRequest);
       if (birthRequest.declareStatus !== true) {
         birthRequest.isSubmitting = true;
         this.apiService.doPostRequest(API_URI_DECLARE_BIRTH, birthRequest)
