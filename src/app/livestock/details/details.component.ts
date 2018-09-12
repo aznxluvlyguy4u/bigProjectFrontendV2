@@ -89,8 +89,12 @@ export class LivestockDetailComponent {
   public model_date_format: string;
 
   public isLoadingAnimalDetails: boolean;
+  public isLoadingChildren: boolean;
+  public hasLoadedChildren: boolean;
   public isLoadingCollarColorList: boolean;
   isLoading: boolean;
+
+  public displayChildren = false;
 
   public animalHistory: string[] = [];
 
@@ -136,6 +140,9 @@ export class LivestockDetailComponent {
     this.isLoading = true;
     this.isLoadingAnimalDetails = true;
     this.isLoadingCollarColorList = true;
+    this.displayChildren = false;
+    this.hasLoadedChildren = false;
+    this.children = [];
   }
 
   updateLoadingStatus() {
@@ -312,10 +319,7 @@ export class LivestockDetailComponent {
             this.motherAnimal.gender = 'FEMALE';
             this.motherAnimal.litter_size = res.result.parent_mother.n_ling;
           }
-          this.children = res.result.children;
-          for (const child of this.children) {
-            child.litter_size = child.n_ling ? child.n_ling.toString() : undefined;
-          }
+
           // window.scrollTo(0, 0);
           this.isLoadingAnimalDetails = false;
 
@@ -329,6 +333,38 @@ export class LivestockDetailComponent {
           alert(this.apiService.getErrorMessage(error));
           this.isLoadingAnimalDetails = false;
           this.updateLoadingStatus();
+        }
+      );
+  }
+
+  toggleDisplayChildren() {
+    this.displayChildren = !this.displayChildren;
+    this.getChildren();
+  }
+
+  public getChildren() {
+    if (!this.hasLoadedChildren && !this.isLoadingChildren) {
+      this.doGetChildren();
+    }
+  }
+
+  public doGetChildren() {
+    this.isLoadingChildren = true;
+    this.apiService
+      .doGetRequest(API_URI_GET_ANIMAL_DETAILS + '/' + this.selectedUln + '/children')
+      .subscribe(
+        (res: JsonResponseModel) => {
+          this.children = res.result;
+          for (const child of this.children) {
+            child.litter_size = child.n_ling ? child.n_ling.toString() : undefined;
+          }
+          this.hasLoadedChildren = true;
+        },
+        error => {
+          alert(this.apiService.getErrorMessage(error));
+        },
+        () => {
+          this.isLoadingChildren = false;
         }
       );
   }

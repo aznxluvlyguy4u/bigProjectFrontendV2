@@ -71,6 +71,7 @@ export class Animal {
   public is_own_animal: boolean;
   public production: string;
   public general_appearance: number;
+  public child_count: number;
 }
 
 export class Ewe extends Animal {
