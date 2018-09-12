@@ -33,7 +33,8 @@ interface CsvRow {
 class ExtendedBirthRequest extends BirthRequest {
   suggested_candidate_fathers: LivestockAnimal[];
   suggested_other_fathers: LivestockAnimal[];
-  motherUlnCountryCodeHasChanged = false;
+  motherUlnCountryCodeOnlyHasChanged = false;
+  motherHasChanged = false;
 }
 
 @Component({
@@ -205,6 +206,7 @@ export class CsvComponent implements OnInit, OnDestroy {
 
   selectMother(mother: Animal) {
     this.selectedBirthRequest.mother = mother;
+    this.selectedBirthRequest.motherHasChanged = true;
   }
 
   selectFather(father) {
@@ -529,16 +531,27 @@ export class CsvComponent implements OnInit, OnDestroy {
       );
   }
 
-  onMotherUlnCountryCodeChange(birthRequest: ExtendedBirthRequest, countryCode: string) {
-    birthRequest.motherUlnCountryCodeHasChanged = true;
+  selectMotherUlnCountryCode(birthRequest: ExtendedBirthRequest, countryCode: string) {
+    birthRequest.motherUlnCountryCodeOnlyHasChanged = true;
     birthRequest.mother.uln_country_code = countryCode;
     birthRequest.mother.uln = countryCode + birthRequest.mother.uln_number;
   }
 
   resetMotherUlnCountryCode(birthRequest: ExtendedBirthRequest) {
-    birthRequest.motherUlnCountryCodeHasChanged = false;
-    birthRequest.mother.uln_country_code = null;
-    birthRequest.mother.uln = null;
+    birthRequest.motherUlnCountryCodeOnlyHasChanged = false;
+    birthRequest.mother.uln_country_code = '';
+    birthRequest.mother.uln = '';
+  }
+
+  resetMother(birthRequest: ExtendedBirthRequest) {
+    const mother = {
+      uln_country_code: '',
+      uln_number: '',
+      uln: ''
+    };
+
+    birthRequest.motherHasChanged = false;
+    birthRequest.mother = mother;
   }
 
   submitBirthRequests() {
