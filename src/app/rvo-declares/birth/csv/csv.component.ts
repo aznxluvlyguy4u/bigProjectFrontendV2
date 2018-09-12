@@ -207,6 +207,7 @@ export class CsvComponent implements OnInit, OnDestroy {
   selectMother(mother: Animal) {
     this.selectedBirthRequest.mother = mother;
     this.selectedBirthRequest.motherHasChanged = true;
+    this.setCandidateFathers(this.selectedBirthRequest);
   }
 
   selectFather(father) {
@@ -535,6 +536,7 @@ export class CsvComponent implements OnInit, OnDestroy {
     birthRequest.motherUlnCountryCodeOnlyHasChanged = true;
     birthRequest.mother.uln_country_code = countryCode;
     birthRequest.mother.uln = countryCode + birthRequest.mother.uln_number;
+    this.setCandidateFathers(birthRequest);
   }
 
   resetMotherUlnCountryCode(birthRequest: ExtendedBirthRequest) {
