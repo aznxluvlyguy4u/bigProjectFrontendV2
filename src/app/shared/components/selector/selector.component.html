@@ -57,7 +57,7 @@
           </div>
         </div>
       </div>
-      <table>
+      <table *ngIf="filteredList.length > 0">
         <thead>
         <tr>
           <td *ngFor="let column of columns">
@@ -67,30 +67,30 @@
         </tr>
         </thead>
         <tbody>
-        <tr
-          *ngFor="let item of filteredList | selectorFilter:[searchValue.value, filter] | paginate: {itemsPerPage: 10, currentPage: page}">
-          <td>{{ item.uln }}</td>
-          <td *ngIf="columns.length > 1">
-                        <span *ngIf="item.pedigree">
-                            {{ item.pedigree }}
-                        </span>
-            <span *ngIf="!item.pedigree">
-                            --
-                        </span>
-          </td>
-          <td>
-            <span class="success label" *ngIf="item.suggested">{{ SUGGESTION_LABEL | translate }}</span>
-          </td>
-          <td>
-                        <span class="pull-right">
-                            <button class="tiny primary button"
-                                    (click)="selectItem(item)"> {{ 'SELECT' | translate }} </button>
-                        </span>
-          </td>
-        </tr>
+          <tr
+            *ngFor="let item of filteredList | selectorFilter:[searchValue.value, filter] | paginate: {itemsPerPage: 10, currentPage: page}">
+            <td>{{ item.uln }}</td>
+            <td *ngIf="columns.length > 1">
+                          <span *ngIf="item.pedigree">
+                              {{ item.pedigree }}
+                          </span>
+              <span *ngIf="!item.pedigree">
+                              --
+                          </span>
+            </td>
+            <td>
+              <span class="success label" *ngIf="item.suggested">{{ SUGGESTION_LABEL | translate }}</span>
+            </td>
+            <td>
+                          <span class="pull-right">
+                              <button class="tiny primary button"
+                                      (click)="selectItem(item)"> {{ 'SELECT' | translate }} </button>
+                          </span>
+            </td>
+          </tr>
         </tbody>
+        <pagination-controls (pageChange)="page = $event"></pagination-controls>
       </table>
-      <pagination-controls (pageChange)="page = $event"></pagination-controls>
     </div>
   </div>
 </div>
