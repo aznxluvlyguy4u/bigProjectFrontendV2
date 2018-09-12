@@ -374,13 +374,13 @@ export class CsvComponent implements OnInit, OnDestroy {
 
 
   getCandidateFathers(birthRequest: ExtendedBirthRequest) {
-
     this.selectedBirthRequest = birthRequest;
 
     this.isLoadingCandidateFathers = true;
 
     this.candidateFathersRequest.date_of_birth = moment(birthRequest.date_of_birth).format(this.settings.MODEL_DATETIME_FORMAT);
     this.candidateFathersRequest.date_of_birth = moment(birthRequest.date_of_birth).format(this.settings.MODEL_DATETIME_FORMAT);
+    this.suggestedCandidateFathers = [];
 
     this.apiService
       .doPostRequest(API_URI_DECLARE_BIRTH + '/' + birthRequest.mother.uln + '/candidate-fathers', this.candidateFathersRequest)
