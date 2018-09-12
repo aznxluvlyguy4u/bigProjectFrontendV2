@@ -594,22 +594,30 @@
     <div class="large-12 columns">
       <div class="info-container">
         <div class="info-header">
-          <!--<span><label>{{ "CHILDREN" | translate }}</label></span>-->
-          <button class="button expanded" [ngClass]="{'toggled': displayChildren, 'secondary': displayChildren}"
+          <label *ngIf="animal.child_count === 0">{{ "CHILDREN" | translate }}</label>
+
+          <button *ngIf="animal.child_count > 0"
+                  class="button expanded" [ngClass]="{'toggled': displayChildren, 'secondary': displayChildren}"
                   (click)="toggleDisplayChildren()"
-                  style="font-size: 1rem"
           >
             <i *ngIf="!displayChildren" class="fa fa-caret-right fa-fw fa-2x" aria-hidden="true"></i>
             <i *ngIf="displayChildren" class="fa fa-caret-down fa-fw fa-2x" aria-hidden="true"></i>
-            <span *ngIf="!displayChildren"> {{ 'DISPLAY CHILDREN' | translate }} </span>
-            <span *ngIf="displayChildren"> {{ 'CHILDREN' | translate }} </span>
-            <span *ngIf="animal !== null && animal.child_count > 0" class="badge" style="font-size: 0.8rem">{{animal.child_count}}</span>
+            <span *ngIf="!displayChildren" style="font-size: 1rem"> {{ 'DISPLAY CHILDREN' | translate }} </span>
+            <span *ngIf="displayChildren" style="font-size: 1rem"> {{ 'CHILDREN' | translate }} </span>
+            <span *ngIf="animal.child_count > 0" class="badge" style="font-size: 0.8rem">{{animal.child_count}}</span>
           </button>
+        </div>
+
+        <div class="info-body" *ngIf="animal.child_count === 0">
+          <p>{{'THIS ANIMAL HAS NO CHILDREN' | translate }}</p>
         </div>
 
         <div class="row" *ngIf="displayChildren && !isLoadingChildren">
           <div class="large-12 columns">
-            <div class="large-6 columns info-body" *ngFor="let child of children">
+
+            <pagination-controls (pageChange)="childrenPage = $event"></pagination-controls>
+
+            <div class="large-6 columns info-body" *ngFor="let child of children | paginate: {itemsPerPage: 10, currentPage: childrenPage};">
               <app-animal-details-card
                 (historyUpdate)="updateHistory($event)"
                 [offSpring]="true"
@@ -618,6 +626,8 @@
               >
               </app-animal-details-card>
             </div>
+
+            <pagination-controls (pageChange)="childrenPage = $event"></pagination-controls>
           </div>
         </div>
 

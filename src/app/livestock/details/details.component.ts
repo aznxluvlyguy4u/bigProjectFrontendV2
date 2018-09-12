@@ -26,9 +26,11 @@ import {JsonResponseModel} from '../../shared/models/json-response.model';
 import {GoogleChartConfigModel} from '../../shared/models/google.chart.config.model';
 import {BreedValues} from '../../shared/models/breedvalues.model';
 import {TranslateService} from '@ngx-translate/core';
+import {NgxPaginationModule} from 'ngx-pagination';
 
 @Component({
   templateUrl: './details.component.html',
+  providers: [NgxPaginationModule],
 })
 
 export class LivestockDetailComponent {
@@ -95,6 +97,7 @@ export class LivestockDetailComponent {
   isLoading: boolean;
 
   public displayChildren = false;
+  public childrenPage = 1;
 
   public animalHistory: string[] = [];
 
@@ -143,6 +146,7 @@ export class LivestockDetailComponent {
     this.displayChildren = false;
     this.hasLoadedChildren = false;
     this.children = [];
+    this.childrenPage = 1;
   }
 
   updateLoadingStatus() {
@@ -359,6 +363,7 @@ export class LivestockDetailComponent {
             child.litter_size = child.n_ling ? child.n_ling.toString() : undefined;
           }
           this.hasLoadedChildren = true;
+          this.childrenPage = 1;
         },
         error => {
           alert(this.apiService.getErrorMessage(error));
