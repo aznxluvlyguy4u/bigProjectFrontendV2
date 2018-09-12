@@ -103,6 +103,8 @@ export class LivestockDetailComponent {
 
   private selectedUln: string;
 
+  private maxChildrenCountToDisplayChildDetails = 2000;
+
   constructor(private route: ActivatedRoute,
               private router: Router,
               private apiService: NSFOService,
@@ -342,8 +344,12 @@ export class LivestockDetailComponent {
   }
 
   toggleDisplayChildren() {
-    this.displayChildren = !this.displayChildren;
-    this.getChildren();
+    if (this.animal.child_count > this.maxChildrenCountToDisplayChildDetails) {
+      alert(this.getMaxAnimalErrorMessage());
+    } else {
+      this.displayChildren = !this.displayChildren;
+      this.getChildren();
+    }
   }
 
   public getChildren() {
@@ -352,7 +358,13 @@ export class LivestockDetailComponent {
     }
   }
 
-  public doGetChildren() {
+  private getMaxAnimalErrorMessage(): string {
+    return this.translate.instant('THIS ANIMAL HAS TOO MANY CHILDREN TO DISPLAY THE DETAILS FOR.') + ' ' +
+    this.translate.instant('LIMIT') + ': ' + this.maxChildrenCountToDisplayChildDetails + ' ' +
+    this.translate.instant('CHILDREN');
+  }
+
+  private doGetChildren() {
     this.isLoadingChildren = true;
     this.apiService
       .doGetRequest(API_URI_GET_ANIMAL_DETAILS + '/' + this.selectedUln + '/children')

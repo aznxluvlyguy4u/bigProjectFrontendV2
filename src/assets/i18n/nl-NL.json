@@ -355,6 +355,7 @@
   "ECONOMICAL": "Bedrijfseconomisch",
   "FORMAT": "Formaat",
   "REPORT TYPE": "Rapportage type",
+  "LIMIT": "Limiet",
   "LIMITED": "Beperkt",
   "EXTENSIVE": "Uitgebreid",
   "REPORT": "Rapportage",
@@ -664,6 +665,7 @@
   "NO PARENT DATA AVAILABLE": "Geen ouder gegevens beschikbaar",
   "NICKNAME": "Naam",
   "Animal does not belong to this ubn, or is not a Historic Animal that was made public": "Het dier staat niet of heeft nooit op uw UBN gestaan en er is geen toestemming verleend om de gegevens van dit dier publiekelijk te maken.",
-  "nickname: Deze waarde is te lang. Hij mag maximaal 20 tekens bevatten.": "De naam is te lang. Hij mag maximaal 20 tekens bevatten."
+  "nickname: Deze waarde is te lang. Hij mag maximaal 20 tekens bevatten.": "De naam is te lang. Hij mag maximaal 20 tekens bevatten.",
+  "THIS ANIMAL HAS TOO MANY CHILDREN TO DISPLAY THE DETAILS FOR.": "Dit dier heeft teveel nakomelingen voor het tonen van hun details."
 }
 
