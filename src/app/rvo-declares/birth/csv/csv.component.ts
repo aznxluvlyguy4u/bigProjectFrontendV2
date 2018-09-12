@@ -29,6 +29,7 @@ interface CsvRow {
 class ExtendedBirthRequest extends BirthRequest {
   suggested_candidate_fathers: LivestockAnimal[];
   suggested_other_fathers: LivestockAnimal[];
+  motherUlnCountryCodeHasChanged = false;
 }
 
 @Component({
@@ -193,8 +194,6 @@ export class CsvComponent implements OnInit, OnDestroy {
     //     console.log(res);
     //   }
     // );
-    console.log(this.birthRequests);
-
   }
 
   selectFather(father) {
@@ -465,13 +464,20 @@ export class CsvComponent implements OnInit, OnDestroy {
       );
   }
 
-  onMotherUlnCountryCodeChange(birthRequest: ExtendedBirthRequest, countryCode) {
+  onMotherUlnCountryCodeChange(birthRequest: ExtendedBirthRequest, countryCode: string) {
+    birthRequest.motherUlnCountryCodeHasChanged = true;
     birthRequest.mother.uln_country_code = countryCode;
+    birthRequest.mother.uln = countryCode + birthRequest.mother.uln_number;
+  }
+
+  resetMotherUlnCountryCode(birthRequest: ExtendedBirthRequest) {
+    birthRequest.motherUlnCountryCodeHasChanged = false;
+    birthRequest.mother.uln_country_code = null;
+    birthRequest.mother.uln = null;
   }
 
   submitBirthRequests() {
     this.birthRequests.forEach((birthRequest) => {
-      console.log(birthRequest);
       if (birthRequest.declareStatus !== true) {
         birthRequest.isSubmitting = true;
         this.apiService.doPostRequest(API_URI_DECLARE_BIRTH, birthRequest)

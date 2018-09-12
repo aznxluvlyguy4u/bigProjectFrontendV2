@@ -33,32 +33,34 @@
         <label>{{ 'MOTHER' | translate }}</label>
 
         <!--Missing country code but has a uln number-->
-        <div class="row collapse" *ngIf="!birthRequest?.mother?.uln_country_code && birthRequest?.mother?.uln_number">
-          <span class="medium-4 columns">
-            <select [ngModel]="birthRequest?.mother?.uln_country_code" (change)="onMotherUlnCountryCodeChange(birthRequest, $event.target.value)" style="height:100%">
-              <option *ngFor="let country_code of country_code_list" [value]="country_code.code">{{ country_code.code }}
-              </option>
-            </select>
-          </span>
-          <span class="medium-8 columns">
-            {{birthRequest?.mother?.uln_number}}
-          </span>
+        <div class="uid-input-group" *ngIf="!birthRequest?.mother?.uln_country_code && birthRequest?.mother?.uln_number">
+          <select [ngModel]="birthRequest?.mother?.uln_country_code" (change)="onMotherUlnCountryCodeChange(birthRequest, $event.target.value)">
+            <option *ngFor="let country_code of country_code_list" [value]="country_code.code">
+              {{ country_code.code }}
+            </option>
+          </select>
+          <input type="text" disabled [value]="birthRequest?.mother?.uln_number">
         </div>
 
         <!--Both country code and uln number are present-->
-        <span *ngIf="birthRequest?.mother?.uln_country_code && birthRequest?.mother?.uln_number">{{birthRequest?.mother?.uln_country_code}} {{birthRequest?.mother?.uln_number}}</span>
+        <div class="row collapse" *ngIf="birthRequest?.mother?.uln_country_code && birthRequest?.mother?.uln_number">
+          <span class="medium-9 columns">{{birthRequest?.mother?.uln_country_code}} {{birthRequest?.mother?.uln_number}}</span>
+          <button class="tiny button medium-3 columns" *ngIf="birthRequest?.motherUlnCountryCodeHasChanged" (click)="resetMotherUlnCountryCode(birthRequest)">{{'CHANGE' | translate}}</button>
+        </div>
+
       </div>
 
       <div class="medium-3 columns">
         <label>{{ 'FATHER' |translate }}</label>
         <i *ngIf="birthRequest.suggestedCandidateFathersIsLoading" class="fa fa-spinner fa-pulse fa-fw"></i>
+
         <div class="row collapse" *ngIf="birthRequest?.father">
-            <span class="medium-9 columns">
-              {{birthRequest?.father?.uln_country_code}} {{birthRequest?.father?.uln_number}}
-            </span>
-            <span class="medium-3 columns">
-              <button class="tiny button" (click)="birthRequest.father = null">{{'REMOVE' | translate}}</button>
-            </span>
+          <span class="medium-9 columns">
+            {{birthRequest?.father?.uln_country_code}} {{birthRequest?.father?.uln_number}}
+          </span>
+          <span class="medium-3 columns">
+            <button class="tiny button" (click)="birthRequest.father = null">{{'REMOVE' | translate}}</button>
+          </span>
         </div>
 
         <ng-container *ngIf="!birthRequest?.father && birthRequest.suggestedCandidateFathersIsLoading === false">
