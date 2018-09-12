@@ -158,7 +158,8 @@ export class LivestockOverviewComponent implements OnInit, OnDestroy {
 
         let updateLastMateValue = false;
 
-        if (currentAnimal.last_mate === null) {
+        if (currentAnimal.last_mate === null || currentAnimal.last_mate === undefined ||
+          currentAnimal.last_mate.end_date === undefined) {
             updateLastMateValue = true;
         } else {
             const newEndDateMoment = moment(declareResult.end_date, this.settings.VIEW_DATE_FORMAT);

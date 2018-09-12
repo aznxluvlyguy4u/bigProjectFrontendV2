@@ -105,6 +105,31 @@
             </div>
           </div>
 
+          <!-- NICKNAME -->
+          <div class="row">
+            <div class="medium-6 columns">
+              <label class="middle">{{ 'NICKNAME' | translate }}</label>
+            </div>
+            <div class="medium-6 columns">
+              <input type="text" [(ngModel)]="animal.nickname" [disabled]="!nickname_edit_mode">
+            </div>
+            <button type="button" *ngIf="nickname_edit_mode" (click)="toggleNicknameEditMode()"
+                    class="tiny alert button pull-right">{{ 'CANCEL' | translate }}
+            </button>
+            <button type="button" *ngIf="nickname_edit_mode" (click)="sendNicknameChangeRequest()"
+                    class="tiny primary button pull-right">{{ 'SAVE' | translate }}
+            </button>
+            <button type="button" *ngIf="!nickname_edit_mode" [disabled]="!changeEnabled" (click)="toggleNicknameEditMode()"
+                    class="tiny primary button pull-right">
+                            <span *ngIf="isLoading">
+                                <i class="fa fa-gear fa-spin fa-fw"></i>
+                            </span>
+              <span *ngIf="!isLoading">
+                                {{ 'CHANGE' | translate }}
+                            </span>
+            </button>
+          </div>
+
           <!-- WORK NUMBER -->
           <div class="row">
             <div class="medium-6 columns">
@@ -179,6 +204,15 @@
             </div>
           </div>
 
+          <div class="row">
+            <div class="medium-6 columns">
+              <label class="middle">{{ 'PRODUCTION' | translate }}</label>
+            </div>
+            <div class="medium-6 columns">
+              <input type="text" disabled value="{{ animal.production }}">
+            </div>
+          </div>
+
           <!--&lt;!&ndash; INBREEDING INDEX &ndash;&gt;-->
           <!--<div class="row">-->
           <!--<div class="medium-6 columns">-->
@@ -188,26 +222,6 @@
           <!--<input type="text" [(ngModel)]="animal.inbreeding_index" [disabled]="true">-->
           <!--</div>-->
           <!--</div>-->
-
-          <!-- FATHER -->
-          <div class="row">
-            <div class="medium-6 columns">
-              <label class="middle">{{ 'FATHER' | translate }}</label>
-            </div>
-            <div class="medium-6 columns">
-              <input type="text" [disabled]="true" [(ngModel)]="animal.father">
-            </div>
-          </div>
-
-          <!-- MOTHER -->
-          <div class="row">
-            <div class="medium-6 columns">
-              <label class="middle">{{ 'MOTHER' | translate }}</label>
-            </div>
-            <div class="medium-6 columns">
-              <input type="text" [disabled]="true" [(ngModel)]="animal.mother">
-            </div>
-          </div>
 
           <!--&lt;!&ndash; REARING &ndash;&gt;-->
           <!--<div class="row">-->

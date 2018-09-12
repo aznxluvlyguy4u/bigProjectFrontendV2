@@ -7,6 +7,7 @@ import {LIVESTOCK_BREED_OPTIONS, LIVESTOCK_GENDER_OPTIONS} from '../livestock.mo
 import {NSFOService} from '../../shared/services/nsfo-api/nsfo.service';
 import {
   API_URI_ANIMAL_GENDER,
+  API_URI_ANIMAL_NICKNAME,
   API_URI_CHANGE_ANIMAL_DETAILS,
   API_URI_GET_ANIMAL_DETAILS,
   API_URI_GET_COLLAR_COLORS,
@@ -54,14 +55,17 @@ export class LivestockDetailComponent implements OnInit {
   public livestock_breed_options = LIVESTOCK_BREED_OPTIONS;
   public edit_mode = false;
   public gender_edit_mode = false;
+  public nickname_edit_mode = false;
   public changeEnabled = false;
   public changed_animal_info = false;
   public changed_animal_info_error = false;
   public gender_changed_animal_info_error = false;
+  public nickname_changed_animal_info_error = false;
   public in_progress = false;
   public sub: any;
   public error_message = 'AN ERROR OCCURRED WHILE SAVING';
   public gender_change_error = '';
+  public nickname_change_error = '';
   public measurementDates: string[] = [];
   public measurementWeights: number[] = [];
   public logs: DeclareLog[] = [];
@@ -368,6 +372,37 @@ export class LivestockDetailComponent implements OnInit {
       );
   }
 
+  public sendNicknameChangeRequest() {
+    if (!this.animal.is_own_animal && !this.isAdmin) {
+      return;
+    }
+    this.changeEnabled = false;
+    this.nickname_edit_mode = false;
+    this.changed_animal_info = false;
+    this.changed_animal_info_error = false;
+
+    const request = {
+      'nickname': this.animal.nickname,
+      'id': this.animal.id
+    };
+
+    this.apiService
+      .doPutRequest(API_URI_ANIMAL_NICKNAME + '/' + this.animal.id, request)
+      .subscribe(
+        res => {
+          this.changed_animal_info = true;
+          this.changeEnabled = true;
+        },
+        err => {
+          this.nickname_changed_animal_info_error = true;
+          this.changeEnabled = true;
+          this.nickname_change_error = this.apiService.getErrorMessage(err);
+          this.animal.nickname = this.temp_animal.nickname;
+          alert(this.nickname_change_error);
+        }
+      );
+  }
+
   public sendChangeRequest() {
     if (!this.animal.is_own_animal && !this.isAdmin) {
       return;
@@ -426,6 +461,17 @@ export class LivestockDetailComponent implements OnInit {
     this.gender_edit_mode = !this.gender_edit_mode;
 
     if (!this.gender_edit_mode) {
+      this.animal = _.clone(this.temp_animal);
+    }
+  }
+
+  public toggleNicknameEditMode() {
+    if (!this.animal.is_own_animal && !this.isAdmin) {
+      return;
+    }
+    this.nickname_edit_mode = !this.nickname_edit_mode;
+
+    if (!this.nickname_edit_mode) {
       this.animal = _.clone(this.temp_animal);
     }
   }
