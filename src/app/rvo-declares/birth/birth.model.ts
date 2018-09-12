@@ -29,6 +29,7 @@ export class Child {
   public tail_length: number;
   public surrogate_mother: SurrogateMotherByUln | Animal;
   public date_of_birth: string;
+  public date_scanned: string;
   public has_lambar: boolean;
 }
 
@@ -56,6 +57,7 @@ export class BirthRequest {
   public isSubmitting: boolean;
   public errorMessage: string;
   public suggestedCandidateFathersIsLoading: boolean;
+  public suggestedCandidateMothersIsLoading: boolean;
   constructor() {
     this.declareStatus = null;
   }

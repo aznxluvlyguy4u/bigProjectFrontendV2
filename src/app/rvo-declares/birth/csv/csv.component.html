@@ -48,6 +48,13 @@
           <button class="tiny button medium-3 columns" *ngIf="birthRequest?.motherUlnCountryCodeHasChanged" (click)="resetMotherUlnCountryCode(birthRequest)">{{'CHANGE' | translate}}</button>
         </div>
 
+        <!--Both country code and uln number are missing-->
+        <ng-container *ngIf="!birthRequest?.mother?.uln_country_code && !birthRequest?.mother?.uln_number && !birthRequest.suggestedCandidateMothersIsLoading">
+          <input (keyup)="preventKeyPress($event)" (keydown)="preventKeyPress($event)"
+                 (keypress)="preventKeyPress($event)" type="text" name="uid_number_mother"
+                 (focus)="getCandidateMothers(birthRequest); motherSelector.openModal()">
+        </ng-container>
+
       </div>
 
       <div class="medium-3 columns">
@@ -161,8 +168,31 @@
     </div>
   <!-- </ng-container> -->
 </div>
-  <selector #fatherSelector [columns]="['ULN', 'PEDIGREE NUMBER']" [list]="suggestedCandidateFathers" [filter]="'MALES'"
-            [SUGGESTION_LABEL]="'POSSIBLE FATHER'" [isLoading]="isLoadingCandidateFathers"
-            (selection)="selectFather($event)"></selector>
+  <selector
+    #motherSelector
+    [columns]="['ULN', 'PEDIGREE NUMBER']"
+    [list]="suggestedCandidateMothers"
+    [filter]="'FEMALES'"
+    [SUGGESTION_LABEL]="'POSSIBLE MOTHER'"
+    [isLoading]="isLoadingCandidateMothers"
+    (selection)="selectMother($event)">
+  </selector>
 
-  <selector #surrogateMotherSelector [columns]="['ULN', 'PEDIGREE NUMBER']" [list]="candidateSurrogates" [filter]="'FEMALES'" [SUGGESTION_LABEL]="'POSSIBLE SURROGATE MOTHER'" (selection)="selectSurrogateMother($event)"></selector>
+  <selector
+    #fatherSelector
+    [columns]="['ULN', 'PEDIGREE NUMBER']"
+    [list]="suggestedCandidateFathers"
+    [filter]="'MALES'"
+    [SUGGESTION_LABEL]="'POSSIBLE FATHER'"
+    [isLoading]="isLoadingCandidateFathers"
+    (selection)="selectFather($event)">
+  </selector>
+
+  <selector
+    #surrogateMotherSelector
+    [columns]="['ULN', 'PEDIGREE NUMBER']"
+    [list]="candidateSurrogates"
+    [filter]="'FEMALES'"
+    [SUGGESTION_LABEL]="'POSSIBLE SURROGATE MOTHER'"
+    (selection)="selectSurrogateMother($event)">
+  </selector>

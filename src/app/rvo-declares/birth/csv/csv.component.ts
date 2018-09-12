@@ -1,6 +1,9 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { LivestockAnimal, LIVESTOCK_GENDER_FILTER_OPTIONS } from '../../../shared/models/animal.model';
-import { BirthRequest, Child, CandidateFathersRequest, CandidateSurrogatesRequest, BIRTH_PROGRESS_TYPES } from '../birth.model';
+import {LivestockAnimal, LIVESTOCK_GENDER_FILTER_OPTIONS, Animal} from '../../../shared/models/animal.model';
+import {
+  BirthRequest, Child, CandidateFathersRequest, CandidateSurrogatesRequest, BIRTH_PROGRESS_TYPES,
+  CandidateMothersRequest
+} from '../birth.model';
 import { PapaParseService, PapaParseConfig } from 'ngx-papaparse';
 import { Settings } from '../../../shared/variables/settings';
 import {
@@ -10,10 +13,11 @@ import { NSFOService } from '../../../shared/services/nsfo-api/nsfo.service';
 import * as moment from 'moment';
 import { JsonResponseModel } from '../../../shared/models/json-response.model';
 import { SettingsService } from '../../../shared/services/settings/settings.service';
+import {LitterValidator} from '../../../shared/validation/nsfo-validation';
 
 interface CsvRow {
   electronicId: string;
-  mother: string;
+  tag: string;
   currentAdg: string;
   note: string;
   date_scanned: string;
@@ -50,12 +54,14 @@ export class CsvComponent implements OnInit, OnDestroy {
   isLoadingCandidateFathers = false;
 
   suggestedCandidateFathers = <LivestockAnimal[]>[];
+  suggestedCandidateMothers = <LivestockAnimal[]>[];
   candidateSurrogates = <LivestockAnimal[]>[];
 
   private selectedBirthRequest: ExtendedBirthRequest;
   private selectedChild;
 
   private candidateFathersRequest = new CandidateFathersRequest();
+  private candidateMothersRequest = new CandidateMothersRequest();
   private candidateSurrogatesRequest = new CandidateSurrogatesRequest();
 
   parsedResults: any;
@@ -105,7 +111,7 @@ export class CsvComponent implements OnInit, OnDestroy {
       // if (row.length > 1) {
         const csvRow: CsvRow = {
           electronicId: row[0], // Electronic ID // A
-          mother: row[1], // Tag // B
+          tag: row[1], // Tag // B
           currentAdg: row[2], // Current ADG // C
           note: row[3], // Note // D
           date_scanned: row[4], // Scanned Date // E
@@ -140,6 +146,7 @@ export class CsvComponent implements OnInit, OnDestroy {
       birthRequest.is_aborted = false;
       birthRequest.is_pseudo_pregnancy = false;
       birthRequest.suggestedCandidateFathersIsLoading = false;
+      birthRequest.suggestedCandidateMothersIsLoading = false;
 
       if ( csvRow.date_of_birth && !csvRow.birth_progress ) {
         // we have a mother.
@@ -194,6 +201,10 @@ export class CsvComponent implements OnInit, OnDestroy {
     //     console.log(res);
     //   }
     // );
+  }
+
+  selectMother(mother: Animal) {
+    this.selectedBirthRequest.mother = mother;
   }
 
   selectFather(father) {
@@ -282,7 +293,7 @@ export class CsvComponent implements OnInit, OnDestroy {
         // Use scan date if date of birth is empty
         if (date_of_birth) {
           child.date_of_birth = date_of_birth;
-          child.date_of_birth = tmpCsvRow.date_scanned;
+          child.date_scanned = tmpCsvRow.date_scanned;
         }
 
         // uln
@@ -370,6 +381,60 @@ export class CsvComponent implements OnInit, OnDestroy {
           // this.isLoadingCandidateFathers = false;
         }
       );
+  }
+
+  getCandidateMothers(birthRequest: ExtendedBirthRequest) {
+    this.selectedBirthRequest = birthRequest;
+    this.isLoadingCandidateMothers = true;
+    this.candidateMothersRequest.date_of_birth = moment(birthRequest.date_of_birth).format(this.settings.MODEL_DATETIME_FORMAT);
+    if (!this.candidateMothersRequest.date_of_birth) {
+      return;
+    }
+    this.suggestedCandidateMothers = [];
+
+    return new Promise((resolve, reject) => {
+      this.apiService
+        .doPostRequest(API_URI_DECLARE_BIRTH + '/candidate-mothers', this.candidateMothersRequest)
+        .toPromise()
+        .then(
+          (res: JsonResponseModel) => {
+            const suggestedCandidateMothers = <LivestockAnimal[]> res.result.suggested_candidate_mothers;
+
+            suggestedCandidateMothers.forEach(animal => {
+              animal.suggested = true;
+              if (animal.uln_country_code && animal.uln_number) {
+
+                animal.uln = animal.uln_country_code + animal.uln_number;
+                animal.ulnLastFive = animal.uln_number.substr(animal.uln_number.length - 5);
+              }
+              if (animal.pedigree_country_code && animal.pedigree_number) {
+                animal.pedigree = animal.pedigree_country_code + animal.pedigree_number;
+              }
+            });
+
+            // otherCandidateMothers.forEach(animal =>{
+            //     if(animal.uln_country_code && animal.uln_number) {
+            //         animal.uln = animal.uln_country_code + animal.uln_number;
+            //         animal.ulnLastFive = animal.uln_number.substr(animal.uln_number.length - 5);
+            //     }
+            //     if(animal.pedigree_country_code && animal.pedigree_number) {
+            //         animal.pedigree = animal.pedigree_country_code + animal.pedigree_number;
+            //     }
+            // });
+            // this.suggestedCandidateMothers = suggestedCandidateMothers.concat(otherCandidateMothers);
+            this.suggestedCandidateMothers = suggestedCandidateMothers;
+            this.isLoadingCandidateMothers = false;
+            resolve();
+          },
+          err => {
+            // let error = err;
+            // this.errorMessage = error.result.message;
+            // this.openModal();
+            this.isLoadingCandidateMothers = false;
+            reject(err);
+          }
+        );
+    });
   }
 
 
