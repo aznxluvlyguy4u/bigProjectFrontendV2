@@ -223,7 +223,17 @@ export class LivestockDetailComponent {
           if (this.animal.exteriors.length > 0) {
             this.selectedExterior = this.animal.exteriors[0];
             this.selectedExteriorDate = this.animal.exteriors[0].measurement_date;
+          } else {
+            this.selectedExterior = new Exterior();
+            this.selectedExteriorDate = '';
           }
+
+          this.animal.exteriors.forEach((item) => {
+            if (!item.hasOwnProperty('inspector')) {
+              item.inspector = new Inspector();
+            }
+          });
+
 
           // WEIGHTS CHART DATA
           this.animal.weights = _.orderBy(this.animal.weights, ['measurement_date'], ['asc']);
@@ -234,14 +244,7 @@ export class LivestockDetailComponent {
             const weightMeasurement = Number(weight.weight);
             this.measurementDates.push(weightDate);
             this.measurementWeights.push(weightMeasurement);
-
           }
-
-          this.animal.exteriors.forEach((item) => {
-            if (!item.hasOwnProperty('inspector')) {
-              item.inspector = new Inspector();
-            }
-          });
 
 
           if (this.animal.weights.length === 1) {
@@ -251,10 +254,7 @@ export class LivestockDetailComponent {
 
 
           // LOGS
-          if (this.animal.declare_log.length > 0) {
-            this.logs = this.animal.declare_log;
-          }
-
+          this.logs = this.animal.declare_log.length > 0 ? this.animal.declare_log : [];
 
           this.changeEnabled = false;
           this.temp_animal = _.clone(this.animal);
@@ -296,6 +296,7 @@ export class LivestockDetailComponent {
             this.weightData.push([date, weight.weight]);
           });
 
+          this.fatherAnimal = undefined;
           if  (res.result.parent_father) {
             this.fatherAnimal = res.result.parent_father;
             this.fatherAnimal.pedigree = res.result.parent_father.stn;
@@ -303,6 +304,7 @@ export class LivestockDetailComponent {
             this.fatherAnimal.gender = 'MALE';
             this.fatherAnimal.litter_size = res.result.parent_father.n_ling;
           }
+          this.motherAnimal = undefined;
           if (res.result.parent_mother) {
             this.motherAnimal = res.result.parent_mother;
             this.motherAnimal.pedigree = res.result.parent_mother.stn;
