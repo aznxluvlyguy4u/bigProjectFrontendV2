@@ -138,7 +138,10 @@ export class NSFOService {
               return message;
             }
           } else {
-            const dataPart = !!result.data ? ' (' + this.translate.instant(result.data) + ') ' : '';
+            let dataPart = '';
+            if (!(result.data instanceof Array)) {
+              dataPart = !!result.data ? ' (' + this.translate.instant(result.data) + ') ' : '';
+            }
             return this.getTranslatedMessage(result.message) + dataPart;
           }
         }
