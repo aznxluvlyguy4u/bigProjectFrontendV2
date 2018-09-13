@@ -348,8 +348,6 @@ export class CsvComponent implements OnInit, OnDestroy {
           child.surrogate_mother = surrogateMother;
         }
 
-        // child.surrogate_mother = surrogateMother;
-
         // only push the child if we have not encountered another mother
         if (nextMother === false) {
           children.push(child);
@@ -362,9 +360,11 @@ export class CsvComponent implements OnInit, OnDestroy {
   }
 
   setCandidateFathers(birthRequest) {
-    // let loading = of(true);
 
-    // this.selectedBirthRequest = birthRequest;
+    if (!birthRequest.mother.uln) {
+      return;
+    }
+
     birthRequest.suggestedCandidateFathersIsLoading = true;
 
     // this.suggestedCandidateFathersIsLoadings.push(of(loading));
@@ -613,6 +613,7 @@ export class CsvComponent implements OnInit, OnDestroy {
         .subscribe(
           res => {
             birthRequest.isSubmitting = false;
+            birthRequest.errorMessage = null;
             birthRequest.declareStatus = true;
           },
           err => {
