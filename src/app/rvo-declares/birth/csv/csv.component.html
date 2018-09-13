@@ -39,7 +39,7 @@
               {{ country_code.code }}
             </option>
           </select>
-          <input type="text" disabled [value]="birthRequest?.mother?.uln_number">
+          <input type="text" [disabled]="birthRequest?.mother?.uln_number" [value]="birthRequest?.mother?.uln_number">
         </div>
 
         <!--Both country code and uln number are present-->
@@ -144,7 +144,7 @@
                         {{ country_code.code }}
                       </option>
                     </select>
-                    <input type="text" disabled [value]="child?.surrogate_mother?.uln_number" style="font-size:0.7rem;max-width:100%">
+                    <input type="text" [disabled]="child?.surrogate_mother?.uln_number" [value]="child?.surrogate_mother?.uln_number" style="font-size:0.7rem;max-width:100%">
                   </div>
 
                   <!--Both country code and uln number are missing and lambar is false-->
