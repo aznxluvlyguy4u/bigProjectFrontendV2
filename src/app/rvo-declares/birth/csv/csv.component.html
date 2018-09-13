@@ -136,14 +136,33 @@
                   <span *ngIf="child?.has_lambar">Ja</span>
                   <span *ngIf="!child?.has_lambar">Nee</span>
                 <td>
-                  <ng-container *ngIf="child?.surrogate_mother">
-                    {{child?.surrogate_mother?.uln_country_code }} {{child?.surrogate_mother?.uln_number }}  <button class="tiny button" (click)="child.surrogate_mother = null">{{'REMOVE' | translate}}</button>
-                  </ng-container>
-                  <ng-container *ngIf="!child?.surrogate_mother">
+
+                  <!--Missing country code but has a uln number and lambar is false-->
+                  <div class="uid-input-group" *ngIf="!child?.surrogate_mother?.uln_country_code && child?.surrogate_mother?.uln_number && !child?.has_lambar">
+                    <select [ngModel]="child?.surrogate_mother?.uln_country_code" (change)="selectSurrogateMotherUlnCountryCode(child, $event.target.value)" style="height:2.4375rem">
+                      <option *ngFor="let country_code of country_code_list" [value]="country_code.code">
+                        {{ country_code.code }}
+                      </option>
+                    </select>
+                    <input type="text" disabled [value]="child?.surrogate_mother?.uln_number" style="font-size:0.7rem;max-width:100%">
+                  </div>
+
+                  <!--Both country code and uln number are missing and lambar is false-->
+                  <ng-container *ngIf="!child?.surrogate_mother?.uln_country_code && !child?.surrogate_mother?.uln_number && !child?.has_lambar">
                     <input (keyup)="preventKeyPress($event)" (keydown)="preventKeyPress($event)"
-                      (keypress)="preventKeyPress($event)" type="text" name="uid_number_father"
-                      (focus)="getCandidateSurrogates(birthRequest, child); surrogateMotherSelector.openModal()">
+                           (keypress)="preventKeyPress($event)" type="text" name="uid_number_surrogate_mother"
+                           (focus)="getCandidateSurrogates(birthRequest, child); surrogateMotherSelector.openModal()">
                   </ng-container>
+
+                  <!--Both country code and uln number are present and lambar is false-->
+                  <div class="row collapse" *ngIf="child?.surrogate_mother?.uln_country_code && child?.surrogate_mother?.uln_number && !child?.has_lambar">
+                    <span class="medium-9 columns">{{child?.surrogate_mother?.uln_country_code}} {{child?.surrogate_mother?.uln_number}}</span>
+                    <button class="tiny button medium-3 columns" (click)="resetSurrogateMotherUlnCountryCode(child)">{{'CHANGE' | translate}}</button>
+                  </div>
+
+                  <span *ngIf="child?.has_lambar">
+                    n.v.t.
+                  </span>
                 </td>
               </tr>
 

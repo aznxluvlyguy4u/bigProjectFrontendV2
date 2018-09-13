@@ -27,7 +27,7 @@ export class Child {
   public birth_progress: string;
   public birth_weight: number;
   public tail_length: number;
-  public surrogate_mother: SurrogateMotherByUln | Animal;
+  public surrogate_mother: any;
   public date_of_birth: string;
   public date_scanned: string;
   public has_lambar: boolean;

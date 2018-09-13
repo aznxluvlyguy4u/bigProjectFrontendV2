@@ -150,23 +150,44 @@ export class CsvComponent implements OnInit, OnDestroy {
       birthRequest.suggestedCandidateMothersIsLoading = false;
 
       if ( csvRow.date_of_birth && !csvRow.birth_progress ) {
-        // we have a mother.
+        // Determine mother
         const ulnUnProcessed = csvRow.electronicId.split(' ');
+
         const mother = {
           uln_country_code: '',
           uln_number: '',
           uln: ''
         };
 
-        if (ulnUnProcessed !== undefined && ulnUnProcessed.length === 2) {
-          const ulnNumber = ulnUnProcessed[1];
-          mother.uln_country_code = this.countryNumberToCountryIdentifier(ulnUnProcessed[0]),
+        // if electronicId consists of 2 parts: 3 digits country number and 12 digits tag number
+        // and there is no tag in csv or tag in csv is the same as electronicId tag
+        if (
+          ulnUnProcessed.length === 2
+          && ulnUnProcessed[0].length === 3
+          && ulnUnProcessed[1].length === 12
+          && /^\d+$/.test(ulnUnProcessed[1])
+          && (!csvRow.tag || csvRow.tag === ulnUnProcessed[1])
+        ) {
+          mother.uln_country_code = this.countryNumberToCountryIdentifier(ulnUnProcessed[0]);
           mother.uln_number = ulnUnProcessed[1];
           mother.uln = mother.uln_country_code + mother.uln_number;
-        } else {
-          // mother.uln_country_code = 'NL';
+        // if electronicId consists of only 1 part: 12 digits tag number and the country number is missing
+        // and there is no tag in csv or tag in csv is the same as electronicId tag
+        } else if (
+          ulnUnProcessed.length === 1
+          && ulnUnProcessed[0].length === 12
+          && /^\d+$/.test(ulnUnProcessed[0])
+          && (!csvRow.tag || csvRow.tag === ulnUnProcessed[0])
+        ) {
           mother.uln_number = ulnUnProcessed[0];
-          // mother.uln = mother.uln_country_code + mother.uln_number;
+        // if electronicId is missing but csv has tag and is 12 digits long
+        } else if (
+          ulnUnProcessed.length === 1
+          && ulnUnProcessed[0] === ''
+          && csvRow.tag.length === 12
+          && /^\d+$/.test(csvRow.tag)
+        ) {
+          mother.uln_number = csvRow.tag;
         }
 
         // Still born count
@@ -310,6 +331,24 @@ export class CsvComponent implements OnInit, OnDestroy {
         } else if (!tmpCsvRow.hasLambar || tmpCsvRow.hasLambar === 'Nee') {
           child.has_lambar = false;
         }
+
+        // Determine child surrogate mother
+        const surrogateMother = {
+          uln_country_code: '',
+          uln_number: '',
+          uln: ''
+        };
+
+        if (
+          tmpCsvRow.surrogate_mother.length === 12
+          && /^\d+$/.test(tmpCsvRow.surrogate_mother)
+          && !child.has_lambar
+        ) {
+          surrogateMother.uln_number = tmpCsvRow.surrogate_mother;
+          child.surrogate_mother = surrogateMother;
+        }
+
+        // child.surrogate_mother = surrogateMother;
 
         // only push the child if we have not encountered another mother
         if (nextMother === false) {
@@ -539,10 +578,20 @@ export class CsvComponent implements OnInit, OnDestroy {
     this.setCandidateFathers(birthRequest);
   }
 
+  selectSurrogateMotherUlnCountryCode(child: Child, countryCode: string) {
+    child.surrogate_mother.uln_country_code = countryCode;
+    child.surrogate_mother.uln = countryCode + child.surrogate_mother.uln_number;
+  }
+
   resetMotherUlnCountryCode(birthRequest: ExtendedBirthRequest) {
     birthRequest.motherUlnCountryCodeOnlyHasChanged = false;
     birthRequest.mother.uln_country_code = '';
     birthRequest.mother.uln = '';
+  }
+
+  resetSurrogateMotherUlnCountryCode(child: Child) {
+    child.surrogate_mother.uln_country_code = '';
+    child.surrogate_mother.uln = '';
   }
 
   resetMother(birthRequest: ExtendedBirthRequest) {
