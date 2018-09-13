@@ -67,7 +67,7 @@
                 <i class="fas fa-tachometer-alt fa-fw" aria-hidden="true"></i>
                 {{ 'DASHBOARD' | translate }}
             </li>
-            <li (click)="navigateTo('/main/livestock'); isActiveSideMenu = false" [class.active]="isActiveRoute('/main/livestock/overview')" class="link">
+            <li (click)="navigateTo('/main/livestock/overview'); isActiveSideMenu = false" [class.active]="isActiveRoute('/main/livestock/overview')" class="link">
                 <i class="fa fa-list fa-fw" aria-hidden="true"></i>
                 {{ 'LIVESTOCK' | translate }}
             </li>

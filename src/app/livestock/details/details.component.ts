@@ -26,12 +26,14 @@ import {JsonResponseModel} from '../../shared/models/json-response.model';
 import {GoogleChartConfigModel} from '../../shared/models/google.chart.config.model';
 import {BreedValues} from '../../shared/models/breedvalues.model';
 import {TranslateService} from '@ngx-translate/core';
+import {NgxPaginationModule} from 'ngx-pagination';
 
 @Component({
   templateUrl: './details.component.html',
+  providers: [NgxPaginationModule],
 })
 
-export class LivestockDetailComponent implements OnInit {
+export class LivestockDetailComponent {
 
     public breedValueData: any[];
     public breedValueConfig: GoogleChartConfigModel;
@@ -89,10 +91,19 @@ export class LivestockDetailComponent implements OnInit {
   public model_date_format: string;
 
   public isLoadingAnimalDetails: boolean;
+  public isLoadingChildren: boolean;
+  public hasLoadedChildren: boolean;
   public isLoadingCollarColorList: boolean;
   isLoading: boolean;
 
+  public displayChildren = false;
+  public childrenPage = 1;
+
   public animalHistory: string[] = [];
+
+  private selectedUln: string;
+
+  private maxChildrenCountToDisplayChildDetails = 2000;
 
   constructor(private route: ActivatedRoute,
               private router: Router,
@@ -119,7 +130,10 @@ export class LivestockDetailComponent implements OnInit {
 
     // Recreate component if the route is navigated to again. Usually with for a different animal
     route.params.subscribe(value => {
-      this.ngOnInit();
+      if (this.selectedUln !== value.uln) {
+        this.selectedUln = value.uln;
+        this.loadingData();
+      }
     });
   }
 
@@ -131,13 +145,17 @@ export class LivestockDetailComponent implements OnInit {
     this.isLoading = true;
     this.isLoadingAnimalDetails = true;
     this.isLoadingCollarColorList = true;
+    this.displayChildren = false;
+    this.hasLoadedChildren = false;
+    this.children = [];
+    this.childrenPage = 1;
   }
 
   updateLoadingStatus() {
     this.isLoading = this.isLoadingAnimalDetails || this.isLoadingCollarColorList;
   }
 
-  ngOnInit() {
+  public loadingData() {
     this.startLoading();
 
     this.breedValueElementId = 'breed-value';
@@ -145,33 +163,33 @@ export class LivestockDetailComponent implements OnInit {
     this.getCollarColorList();
     this.getAnimalDetails();
 
-      this.breedValueConfig = new GoogleChartConfigModel({
-          // title: this.translate.instant('BREED VALUES'),
-          animation: {
-          duration: 1000,
-          easing: 'out'},
-          bar: {
-                  groupWidth: '75%'
-              },
-          legend: {position: 'none'},
-          chartArea: {
-            width: '90%',
-            height: '90%',
-          },
-          vAxis: {
-              baseline: 100,
-              ticks: [60, 80, 100, 120, 140],
-              viewWindow: {
-                  min: 60,
-                  max: 140
-              },
-          }
-      });
-      this.weightConfig = new GoogleChartConfigModel({
-          title: 'Gewichten',
-          pointSize: 10,
-          legend: {position: 'none'},
-      });
+    this.breedValueConfig = new GoogleChartConfigModel({
+      // title: this.translate.instant('BREED VALUES'),
+      animation: {
+        duration: 1000,
+        easing: 'out'},
+      bar: {
+        groupWidth: '75%'
+      },
+      legend: {position: 'none'},
+      chartArea: {
+        width: '90%',
+        height: '90%',
+      },
+      vAxis: {
+        baseline: 100,
+        ticks: [60, 80, 100, 120, 140],
+        viewWindow: {
+          min: 60,
+          max: 140
+        },
+      }
+    });
+    this.weightConfig = new GoogleChartConfigModel({
+      title: 'Gewichten',
+      pointSize: 10,
+      legend: {position: 'none'},
+    });
   }
 
   public genderType(gender: string): string {
@@ -202,131 +220,170 @@ export class LivestockDetailComponent implements OnInit {
   }
 
   public getAnimalDetails() {
-    this.route.params
-      .subscribe(params => {
-        this.apiService
-          .doGetRequest(API_URI_GET_ANIMAL_DETAILS + '/' + params.uln)
-          .subscribe((res: JsonResponseModel) => {
-              this.animal = res.result;
-              this.animal.uln = this.animal.uln_country_code + this.animal.uln_number;
-              this.animal.date_of_birth = moment(this.animal.date_of_birth).format(this.settings.getViewDateFormat());
-              this.form.get('date_of_birth').setValue(this.animal.date_of_birth);
+    this.apiService
+      .doGetRequest(API_URI_GET_ANIMAL_DETAILS + '/' + this.selectedUln)
+      .subscribe((res: JsonResponseModel) => {
+          this.animal = res.result;
+          this.animal.uln = this.animal.uln_country_code + this.animal.uln_number;
+          this.animal.date_of_birth = moment(this.animal.date_of_birth).format(this.settings.getViewDateFormat());
+          this.form.get('date_of_birth').setValue(this.animal.date_of_birth);
 
-              if (!(!!this.animal.pedigree_country_code && !!this.animal.pedigree_number)) {
-                this.form.get('pedigree_country_code').setValue('NL');
-              }
+          if (!(!!this.animal.pedigree_country_code && !!this.animal.pedigree_number)) {
+            this.form.get('pedigree_country_code').setValue('NL');
+          }
 
-              // EXTERIORS
-              if (this.animal.exteriors.length > 0) {
-                this.selectedExterior = this.animal.exteriors[0];
-                this.selectedExteriorDate = this.animal.exteriors[0].measurement_date;
-              }
+          // EXTERIORS
+          if (this.animal.exteriors.length > 0) {
+            this.selectedExterior = this.animal.exteriors[0];
+            this.selectedExteriorDate = this.animal.exteriors[0].measurement_date;
+          } else {
+            this.selectedExterior = new Exterior();
+            this.selectedExteriorDate = '';
+          }
 
-              // WEIGHTS CHART DATA
-              this.animal.weights = _.orderBy(this.animal.weights, ['measurement_date'], ['asc']);
-              this.measurementDates = [];
-              this.measurementWeights = [];
-              for (const weight of this.animal.weights) {
-                const weightDate = this.stringAsViewDate(weight.measurement_date);
-                const weightMeasurement = Number(weight.weight);
-                this.measurementDates.push(weightDate);
-                this.measurementWeights.push(weightMeasurement);
-
-              }
-
-              this.animal.exteriors.forEach((item) => {
-                if (!item.hasOwnProperty('inspector')) {
-                  item.inspector = new Inspector();
-                }
-              });
-
-
-              if (this.animal.weights.length === 1) {
-                this.measurementDates.push(moment().format(this.settings.getViewDateFormat()));
-                this.measurementWeights.push(null);
-              }
-
-
-              // LOGS
-              if (this.animal.declare_log.length > 0) {
-                this.logs = this.animal.declare_log;
-              }
-
-
-              this.changeEnabled = false;
-              this.temp_animal = _.clone(this.animal);
-
-              // this.getExteriorKinds();
-              // this.getInspectors();
-
-              this.breedValueData = [
-                  ['Year', 'Fokwaarde',  {role: 'annotation'}, {role: 'tooltip'}, {role: 'style'}],
-              ];
-              this.breedValues = [];
-
-              this.animal.breed_values.forEach((breedValue) => {
-                  if (breedValue.has_data) {
-                      this.breedValues.push(breedValue);
-                      const value = breedValue.normalized_value;
-                      const tooltipValue = breedValue.prioritize_normalized_values_in_table ?
-                        breedValue.normalized_value.toString() : breedValue.value.toString();
-                      this.breedValueData.push(
-                          [
-                              '',
-                              value,
-                              breedValue.ordinal.toString(),
-                              breedValue.chart_label + ' ' + tooltipValue + ' / ' + breedValue.accuracy.toString() + '%',
-                              'color: ' + breedValue.chart_color + ';'
-                          ]
-                      );
-                  }
-              });
-
-              this.weightData = [];
-              this.weightData = [[
-                this.translate.instant('YEAR'),
-                this.translate.instant('WEIGHT')
-              ]];
-
-              this.animal.weights.forEach((weight) => {
-                  const date = moment(weight.measurement_date).format('DD-MM-YYYY');
-                 this.weightData.push([date, weight.weight]);
-              });
-
-              if  (res.result.parent_father) {
-                this.fatherAnimal = res.result.parent_father;
-                this.fatherAnimal.pedigree = res.result.parent_father.stn;
-                this.fatherAnimal.dd_mm_yyyy_date_of_birth = res.result.parent_father.dd_mm_yyyy_date_of_birth;
-                this.fatherAnimal.gender = 'MALE';
-                this.fatherAnimal.litter_size = res.result.parent_father.n_ling;
-              }
-              if (res.result.parent_mother) {
-                this.motherAnimal = res.result.parent_mother;
-                this.motherAnimal.pedigree = res.result.parent_mother.stn;
-                this.motherAnimal.dd_mm_yyyy_date_of_birth = res.result.parent_mother.dd_mm_yyyy_date_of_birth;
-                this.motherAnimal.gender = 'FEMALE';
-                this.motherAnimal.litter_size = res.result.parent_mother.n_ling;
-              }
-              this.children = res.result.children;
-              for (const child of this.children) {
-                child.litter_size = child.n_ling ? child.n_ling.toString() : undefined;
-              }
-              // window.scrollTo(0, 0);
-              this.isLoadingAnimalDetails = false;
-
-              if (this.isAdmin || (!this.isAdmin && this.animal.is_own_animal)) {
-                this.changeEnabled = true;
-              }
-
-              this.updateLoadingStatus();
-            },
-            error => {
-              alert(this.apiService.getErrorMessage(error));
-              this.isLoadingAnimalDetails = false;
-              this.updateLoadingStatus();
+          this.animal.exteriors.forEach((item) => {
+            if (!item.hasOwnProperty('inspector')) {
+              item.inspector = new Inspector();
             }
-          );
-      });
+          });
+
+
+          // WEIGHTS CHART DATA
+          this.animal.weights = _.orderBy(this.animal.weights, ['measurement_date'], ['asc']);
+          this.measurementDates = [];
+          this.measurementWeights = [];
+          for (const weight of this.animal.weights) {
+            const weightDate = this.stringAsViewDate(weight.measurement_date);
+            const weightMeasurement = Number(weight.weight);
+            this.measurementDates.push(weightDate);
+            this.measurementWeights.push(weightMeasurement);
+          }
+
+
+          if (this.animal.weights.length === 1) {
+            this.measurementDates.push(moment().format(this.settings.getViewDateFormat()));
+            this.measurementWeights.push(null);
+          }
+
+
+          // LOGS
+          this.logs = this.animal.declare_log.length > 0 ? this.animal.declare_log : [];
+
+          this.changeEnabled = false;
+          this.temp_animal = _.clone(this.animal);
+
+          // this.getExteriorKinds();
+          // this.getInspectors();
+
+          this.breedValueData = [
+            ['Year', 'Fokwaarde',  {role: 'annotation'}, {role: 'tooltip'}, {role: 'style'}],
+          ];
+          this.breedValues = [];
+
+          this.animal.breed_values.forEach((breedValue) => {
+            if (breedValue.has_data) {
+              this.breedValues.push(breedValue);
+              const value = breedValue.normalized_value;
+              const tooltipValue = breedValue.prioritize_normalized_values_in_table ?
+                breedValue.normalized_value.toString() : breedValue.value.toString();
+              this.breedValueData.push(
+                [
+                  '',
+                  value,
+                  breedValue.ordinal.toString(),
+                  breedValue.chart_label + ' ' + tooltipValue + ' / ' + breedValue.accuracy.toString() + '%',
+                  'color: ' + breedValue.chart_color + ';'
+                ]
+              );
+            }
+          });
+
+          this.weightData = [];
+          this.weightData = [[
+            this.translate.instant('YEAR'),
+            this.translate.instant('WEIGHT')
+          ]];
+
+          this.animal.weights.forEach((weight) => {
+            const date = moment(weight.measurement_date).format('DD-MM-YYYY');
+            this.weightData.push([date, weight.weight]);
+          });
+
+          this.fatherAnimal = undefined;
+          if  (res.result.parent_father) {
+            this.fatherAnimal = res.result.parent_father;
+            this.fatherAnimal.pedigree = res.result.parent_father.stn;
+            this.fatherAnimal.dd_mm_yyyy_date_of_birth = res.result.parent_father.dd_mm_yyyy_date_of_birth;
+            this.fatherAnimal.gender = 'MALE';
+            this.fatherAnimal.litter_size = res.result.parent_father.n_ling;
+          }
+          this.motherAnimal = undefined;
+          if (res.result.parent_mother) {
+            this.motherAnimal = res.result.parent_mother;
+            this.motherAnimal.pedigree = res.result.parent_mother.stn;
+            this.motherAnimal.dd_mm_yyyy_date_of_birth = res.result.parent_mother.dd_mm_yyyy_date_of_birth;
+            this.motherAnimal.gender = 'FEMALE';
+            this.motherAnimal.litter_size = res.result.parent_mother.n_ling;
+          }
+
+          // window.scrollTo(0, 0);
+          this.isLoadingAnimalDetails = false;
+
+          if (this.isAdmin || (!this.isAdmin && this.animal.is_own_animal)) {
+            this.changeEnabled = true;
+          }
+
+          this.updateLoadingStatus();
+        },
+        error => {
+          alert(this.apiService.getErrorMessage(error));
+          this.isLoadingAnimalDetails = false;
+          this.updateLoadingStatus();
+        }
+      );
+  }
+
+  toggleDisplayChildren() {
+    if (this.animal.child_count > this.maxChildrenCountToDisplayChildDetails) {
+      alert(this.getMaxAnimalErrorMessage());
+    } else {
+      this.displayChildren = !this.displayChildren;
+      this.getChildren();
+    }
+  }
+
+  public getChildren() {
+    if (!this.hasLoadedChildren && !this.isLoadingChildren) {
+      this.doGetChildren();
+    }
+  }
+
+  private getMaxAnimalErrorMessage(): string {
+    return this.translate.instant('THIS ANIMAL HAS TOO MANY CHILDREN TO DISPLAY THE DETAILS FOR.') + ' ' +
+    this.translate.instant('LIMIT') + ': ' + this.maxChildrenCountToDisplayChildDetails + ' ' +
+    this.translate.instant('CHILDREN');
+  }
+
+  private doGetChildren() {
+    this.isLoadingChildren = true;
+    this.apiService
+      .doGetRequest(API_URI_GET_ANIMAL_DETAILS + '/' + this.selectedUln + '/children')
+      .subscribe(
+        (res: JsonResponseModel) => {
+          this.children = res.result;
+          for (const child of this.children) {
+            child.litter_size = child.n_ling ? child.n_ling.toString() : undefined;
+          }
+          this.hasLoadedChildren = true;
+          this.childrenPage = 1;
+        },
+        error => {
+          alert(this.apiService.getErrorMessage(error));
+        },
+        () => {
+          this.isLoadingChildren = false;
+        }
+      );
   }
 
   animalExists(animal: Animal): boolean {
