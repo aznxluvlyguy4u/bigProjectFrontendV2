@@ -133,14 +133,14 @@
               {{invoice_rule_selection.invoice_rule.vat_percentage_rate}}%
             </td>
             <td class="text-right">
-              {{invoice_rule_selection.invoice_rule.price_excl_vat | localNumberFormat:3 }}
+              {{invoice_rule_selection.invoice_rule.price_excl_vat | localNumberFormat:2 }}
             </td>
             <td class="text-right">
               {{invoice_rule_selection.amount | localNumberFormat:2}}
             </td>
             <td class="text-right">
               {{(invoice_rule_selection.invoice_rule.price_excl_vat * invoice_rule_selection.amount) |
-              localNumberFormat:3 }}
+              localNumberFormat:2 }}
             </td>
           </tr>
           </tbody>
