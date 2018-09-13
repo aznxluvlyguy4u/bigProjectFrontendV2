@@ -8,8 +8,9 @@
 
 <div class="row" *ngIf="birthRequests.length > 0">
   <div class="columns">
-    <button (click)="submitBirthRequests()" class="small primary button">Melden  <span class="badge">{{birthRequests.length}}</span></button>
+    <button [disabled]="loadingStatesCount !== 0" (click)="submitBirthRequests()" class="small primary button">Melden  <span class="badge">{{birthRequests.length}}</span></button>
   </div>
+  <app-page-loading-spinner *ngIf="loadingStatesCount !== 0"></app-page-loading-spinner>
 </div>
 
 <div *ngFor="let birthRequest of birthRequests" class="csv_birthrequest" [class.success]="birthRequest.declareStatus === true" [class.error]="birthRequest.declareStatus === false">

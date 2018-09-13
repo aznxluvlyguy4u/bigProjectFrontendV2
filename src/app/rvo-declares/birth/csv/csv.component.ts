@@ -45,11 +45,10 @@ export class CsvComponent implements OnInit, OnDestroy {
 
   public country_code_list = [];
   private countryCodeObs;
-  private suggestedCandidateFathersIsLoadings;
 
   private birth_progress_types = BIRTH_PROGRESS_TYPES;
 
-  isPreLoadingCandidateFathers = false;
+  loadingStatesCount = 0;
   isLoadingCandidateSurrogates = false;
   isLoadingCandidateMothers = false;
   isLoadingCandidateFathers = false;
@@ -81,7 +80,6 @@ export class CsvComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.suggestedCandidateFathers = [];
     this.candidateSurrogates = [];
-    this.suggestedCandidateFathersIsLoadings = [];
 
     this.countryCodeObs = this.settingService.getCountryList()
       .subscribe(countryCodeList => {
@@ -216,13 +214,6 @@ export class CsvComponent implements OnInit, OnDestroy {
       }
       index++;
     });
-
-    // forkJoin(this.suggestedCandidateFathersIsLoadings).subscribe(
-    //   res => {
-    //     console.log('res');
-    //     console.log(res);
-    //   }
-    // );
   }
 
   selectMother(mother: Animal) {
@@ -366,10 +357,8 @@ export class CsvComponent implements OnInit, OnDestroy {
     }
 
     birthRequest.suggestedCandidateFathersIsLoading = true;
+    this.loadingStatesCount++;
 
-    // this.suggestedCandidateFathersIsLoadings.push(of(loading));
-
-    this.isPreLoadingCandidateFathers = true;
     this.isLoadingCandidateFathers = true;
 
     this.candidateFathersRequest.date_of_birth = moment(birthRequest.date_of_birth).format(this.settings.MODEL_DATETIME_FORMAT);
@@ -410,17 +399,13 @@ export class CsvComponent implements OnInit, OnDestroy {
             birthRequest.father = suggestedCandidateFathers[0];
           }
           birthRequest.suggestedCandidateFathersIsLoading = false;
-          // loading.pipe(of(false));
-          // const ssuggestedCandidateFathers = suggestedCandidateFathers.concat(otherCandidateFathers);
-          // this.isLoadingCandidateFathers = false;
-          // birthRequest.suggestedCandidateFathers = ssuggestedCandidateFathers;
+          this.loadingStatesCount--;
+          this.isLoadingCandidateFathers = false;
         },
         err => {
           birthRequest.suggestedCandidateFathersIsLoading = false;
-          // let error = err;
-          // this.errorMessage = error.result.message;
-          // this.openModal();
-          // this.isLoadingCandidateFathers = false;
+          this.loadingStatesCount--;
+          this.isLoadingCandidateFathers = false;
         }
       );
   }
@@ -428,6 +413,7 @@ export class CsvComponent implements OnInit, OnDestroy {
   getCandidateMothers(birthRequest: ExtendedBirthRequest) {
     this.selectedBirthRequest = birthRequest;
     this.isLoadingCandidateMothers = true;
+    this.loadingStatesCount++;
     this.candidateMothersRequest.date_of_birth = moment(birthRequest.date_of_birth).format(this.settings.MODEL_DATETIME_FORMAT);
     if (!this.candidateMothersRequest.date_of_birth) {
       return;
@@ -466,13 +452,12 @@ export class CsvComponent implements OnInit, OnDestroy {
             // this.suggestedCandidateMothers = suggestedCandidateMothers.concat(otherCandidateMothers);
             this.suggestedCandidateMothers = suggestedCandidateMothers;
             this.isLoadingCandidateMothers = false;
+            this.loadingStatesCount--;
             resolve();
           },
           err => {
-            // let error = err;
-            // this.errorMessage = error.result.message;
-            // this.openModal();
             this.isLoadingCandidateMothers = false;
+            this.loadingStatesCount++;
             reject(err);
           }
         );
@@ -484,6 +469,7 @@ export class CsvComponent implements OnInit, OnDestroy {
     this.selectedBirthRequest = birthRequest;
 
     this.isLoadingCandidateFathers = true;
+    this.loadingStatesCount++;
 
     this.candidateFathersRequest.date_of_birth = moment(birthRequest.date_of_birth).format(this.settings.MODEL_DATETIME_FORMAT);
     this.candidateFathersRequest.date_of_birth = moment(birthRequest.date_of_birth).format(this.settings.MODEL_DATETIME_FORMAT);
@@ -522,12 +508,11 @@ export class CsvComponent implements OnInit, OnDestroy {
 
           this.suggestedCandidateFathers = suggestedCandidateFathers.concat(otherCandidateFathers);
           this.isLoadingCandidateFathers = false;
+          this.loadingStatesCount--;
         },
         err => {
-          // let error = err;
-          // this.errorMessage = error.result.message;
-          // this.openModal();
           this.isLoadingCandidateFathers = false;
+          this.loadingStatesCount--;
         }
       );
   }
@@ -548,6 +533,8 @@ export class CsvComponent implements OnInit, OnDestroy {
       .format(this.settings.MODEL_DATETIME_FORMAT);
 
     this.isLoadingCandidateSurrogates = true;
+    this.loadingStatesCount++;
+
     const uri = API_URI_DECLARE_BIRTH + '/' + birthRequest.mother.uln + '/candidate-surrogates';
     this.apiService.doPostRequest(uri, this.candidateSurrogatesRequest)
       .subscribe(
@@ -567,6 +554,11 @@ export class CsvComponent implements OnInit, OnDestroy {
           }
           this.candidateSurrogates = candidateSurrogates;
           this.isLoadingCandidateSurrogates = false;
+          this.loadingStatesCount--;
+        },
+        err => {
+          this.isLoadingCandidateSurrogates = false;
+          this.loadingStatesCount--;
         }
       );
   }
