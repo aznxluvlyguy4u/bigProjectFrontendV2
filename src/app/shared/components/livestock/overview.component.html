@@ -299,7 +299,7 @@
       </tr>
       </tbody>
     </table>
-    <pagination-controls (pageChange)="page = $event"></pagination-controls>
+    <pagination-controls *ngIf="!isLoading" (pageChange)="page = $event"></pagination-controls>
   </div>
 </div>
 
