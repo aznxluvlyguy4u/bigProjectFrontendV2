@@ -256,34 +256,25 @@ export class CsvComponent implements OnInit, OnDestroy {
             child.birth_progress = BIRTH_PROGRESS_TYPES[2];
             break;
           }
-
-          // case 'Zonder hulp': {
-          //   child.birth_progress = BIRTH_PROGRESS_TYPES[0];
-          //   break;
-          // }
-          // case 'Licht met hulp': {
-          //   child.birth_progress = BIRTH_PROGRESS_TYPES[1];
-          //   break;
-          // }
-          // case 'Normaal met hulp': {
-          //   child.birth_progress = BIRTH_PROGRESS_TYPES[2];
-          //   break;
-          // }
-          // case 'Zwaar met hulp': {
-          //   child.birth_progress = BIRTH_PROGRESS_TYPES[3];
-          //   break;
-          // }
-          // case 'Keizersnede (lam te groot)': {
-          //   child.birth_progress = BIRTH_PROGRESS_TYPES[4];
-          //   break;
-          // }
-          // case 'Keizersnede (onvoldoende ontsluiting)': {
-          //   child.birth_progress = BIRTH_PROGRESS_TYPES[5];
-          //   break;
-          // }
-          // default: {
-          //   child.birth_progress = tmpCsvRow.birth_progress;
-          // }
+          case 'Zonder': {
+            child.birth_progress = BIRTH_PROGRESS_TYPES[0];
+            break;
+          }
+          case 'Licht': {
+            child.birth_progress = BIRTH_PROGRESS_TYPES[1];
+            break;
+          }
+          case 'Zwaar': {
+            child.birth_progress = BIRTH_PROGRESS_TYPES[3];
+            break;
+          }
+          case 'Keizersn': {
+            child.birth_progress = BIRTH_PROGRESS_TYPES[4];
+            break;
+          }
+          default: {
+            child.birth_progress = tmpCsvRow.birth_progress;
+          }
         }
 
         // only fill in weight if it is available
