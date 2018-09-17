@@ -13,7 +13,6 @@ import { NSFOService } from '../../../shared/services/nsfo-api/nsfo.service';
 import * as moment from 'moment';
 import { JsonResponseModel } from '../../../shared/models/json-response.model';
 import { SettingsService } from '../../../shared/services/settings/settings.service';
-import {LitterValidator} from '../../../shared/validation/nsfo-validation';
 
 interface CsvRow {
   electronicId: string;
