@@ -38,7 +38,8 @@ class ExtendedBirthRequest extends BirthRequest {
 
 @Component({
   selector: 'app-csv',
-  templateUrl: './csv.component.html'
+  templateUrl: './csv.component.html',
+  styleUrls: ['./csv.component.sass']
 })
 export class CsvComponent implements OnInit, OnDestroy {
 
@@ -362,6 +363,7 @@ export class CsvComponent implements OnInit, OnDestroy {
           const suggestedCandidateFathers = <LivestockAnimal[]> res.result.suggested_candidate_fathers;
           const otherCandidateFathers = <LivestockAnimal[]> res.result.other_candidate_fathers;
 
+          // Prepare father data
           for (const animal of suggestedCandidateFathers) {
             animal.suggested = true;
             if (animal.uln_country_code && animal.uln_number) {
@@ -385,12 +387,17 @@ export class CsvComponent implements OnInit, OnDestroy {
             }
           }
 
+          // Set birthRequest father data
           if (suggestedCandidateFathers.length === 1) {
             birthRequest.father = suggestedCandidateFathers[0];
           }
+          birthRequest.suggested_candidate_fathers = suggestedCandidateFathers;
+
+          // Trigger loading states
           birthRequest.suggestedCandidateFathersIsLoading = false;
           this.loadingStatesCount--;
           this.isLoadingCandidateFathers = false;
+          console.log(birthRequest);
         },
         err => {
           birthRequest.suggestedCandidateFathersIsLoading = false;
@@ -585,6 +592,22 @@ export class CsvComponent implements OnInit, OnDestroy {
 
     birthRequest.motherHasChanged = false;
     birthRequest.mother = mother;
+  }
+
+  birthRequestHasWarning(birthRequest: ExtendedBirthRequest): boolean {
+    const hasWarning = false;
+    if ((birthRequest.suggested_candidate_fathers && birthRequest.suggested_candidate_fathers.length > 1 && !birthRequest.father && birthRequest.declareStatus !== false)
+      || (!birthRequest.mother.uln_country_code && birthRequest.mother.uln_number && birthRequest.declareStatus !== false)) {
+      hasWarning = true;
+    }
+
+    for (const child of birthRequest.children) {
+      if (child.surrogate_mother && !child.surrogate_mother.uln_country_code && child.surrogate_mother.uln_number && !child.has_lambar) {
+        hasWarning = true;
+      }
+    }
+
+    return hasWarning;
   }
 
   submitBirthRequests() {

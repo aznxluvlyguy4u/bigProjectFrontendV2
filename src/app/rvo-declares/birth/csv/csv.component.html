@@ -13,7 +13,7 @@
   <app-page-loading-spinner *ngIf="loadingStatesCount !== 0"></app-page-loading-spinner>
 </div>
 
-<div *ngFor="let birthRequest of birthRequests" class="csv_birthrequest" [class.success]="birthRequest.declareStatus === true" [class.error]="birthRequest.declareStatus === false">
+<div *ngFor="let birthRequest of birthRequests" class="csv_birthrequest" [class.success]="birthRequest.declareStatus === true" [class.error]="birthRequest.declareStatus === false" [class.warning]="birthRequestHasWarning(birthRequest)">
   <!-- <ng-container *ngIf="birthRequest.declareStatus === null || birthRequest.declareStatus === false"> -->
     <div class="row">
       <div class="columns">
@@ -31,7 +31,12 @@
         {{birthRequest.litter_size}}
       </div>
       <div class="medium-3 columns">
-        <label>{{ 'MOTHER' | translate }}</label>
+        <div class="row">
+          <label class="medium-3 columns">{{ 'MOTHER' | translate }}</label>
+          <label class="medium-9 columns" *ngIf="!birthRequest?.mother?.uln_country_code && birthRequest?.mother?.uln_number" style="color:#ff0000;">
+            <small>{{ 'CHOOSE COUNTRY CODE' | translate }}</small>
+          </label>
+        </div>
 
         <!--Missing country code but has a uln number-->
         <div class="uid-input-group" *ngIf="!birthRequest?.mother?.uln_country_code && birthRequest?.mother?.uln_number">
@@ -60,7 +65,12 @@
       </div>
 
       <div class="medium-3 columns">
-        <label>{{ 'FATHER' |translate }}</label>
+        <div class="row">
+          <label class="medium-3 columns">{{ 'FATHER' |translate }}</label>
+          <label class="medium-9 columns" *ngIf="birthRequest.suggested_candidate_fathers?.length > 1" style="color:#ff0000;">
+            <small>{{ 'MULTIPLE FATHER CANDIDATES' | translate }}</small>
+          </label>
+        </div>
         <i *ngIf="birthRequest.suggestedCandidateFathersIsLoading" class="fa fa-spinner fa-pulse fa-fw"></i>
 
         <div class="row collapse" *ngIf="birthRequest?.father">
@@ -139,13 +149,17 @@
                 <td>
 
                   <!--Missing country code but has a uln number and lambar is false-->
-                  <div class="uid-input-group" *ngIf="!child?.surrogate_mother?.uln_country_code && child?.surrogate_mother?.uln_number && !child?.has_lambar">
-                    <select [ngModel]="child?.surrogate_mother?.uln_country_code" (change)="selectSurrogateMotherUlnCountryCode(child, $event.target.value)" style="height:2.4375rem">
-                      <option *ngFor="let country_code of country_code_list" [value]="country_code.code">
-                        {{ country_code.code }}
-                      </option>
-                    </select>
-                    <input type="text" [disabled]="child?.surrogate_mother?.uln_number" [value]="child?.surrogate_mother?.uln_number" style="font-size:0.7rem;max-width:100%">
+                  <div *ngIf="!child?.surrogate_mother?.uln_country_code && child?.surrogate_mother?.uln_number && !child?.has_lambar">
+                    <label style="color:#ff0000;"><small>{{ 'CHOOSE COUNTRY CODE' | translate }}</small></label>
+                    <div class="uid-input-group">
+                      <select [ngModel]="child?.surrogate_mother?.uln_country_code" (change)="selectSurrogateMotherUlnCountryCode(child, $event.target.value)" style="height:2.4375rem">
+                        <option *ngFor="let country_code of country_code_list" [value]="country_code.code">
+                          {{ country_code.code }}
+                        </option>
+                      </select>
+                      <input type="text" [disabled]="child?.surrogate_mother?.uln_number" [value]="child?.surrogate_mother?.uln_number" style="font-size:0.7rem;max-width:100%">
+                    </div>
+
                   </div>
 
                   <!--Both country code and uln number are missing and lambar is false-->
