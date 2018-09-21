@@ -602,7 +602,7 @@ export class CsvComponent implements OnInit, OnDestroy {
   }
 
   birthRequestHasWarning(birthRequest: ExtendedBirthRequest): boolean {
-    const hasWarning = false;
+    let hasWarning = false;
     if ((birthRequest.suggested_candidate_fathers && birthRequest.suggested_candidate_fathers.length > 1 && !birthRequest.father && birthRequest.declareStatus !== false)
       || (!birthRequest.mother.uln_country_code && birthRequest.mother.uln_number && birthRequest.declareStatus !== false)) {
       hasWarning = true;
