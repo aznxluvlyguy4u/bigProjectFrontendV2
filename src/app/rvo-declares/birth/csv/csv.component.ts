@@ -72,6 +72,8 @@ export class CsvComponent implements OnInit, OnDestroy {
   modalDisplay = 'none';
 
   loadingStatesCount = 0;
+  birthRequestWarningsCount = 0;
+  multipleCandidateFatherBirthRequests = <ExtendedBirthRequest[]>[];
   isLoadingCandidateSurrogates = false;
   isLoadingCandidateMothers = false;
   isLoadingCandidateFathers = false;
@@ -195,7 +197,7 @@ export class CsvComponent implements OnInit, OnDestroy {
 
         this.setCandidateFathers(birthRequest);
 
-        birthRequest.validate();
+        this.validateBirthRequest(birthRequest);
 
       }
       index++;
@@ -206,18 +208,18 @@ export class CsvComponent implements OnInit, OnDestroy {
     this.selectedBirthRequest.mother = mother;
     this.selectedBirthRequest.motherHasChanged = true;
     this.selectedBirthRequest.motherMissingUlnCountryCode = false;
-    this.selectedBirthRequest.validate();
+    this.validateBirthRequest(this.selectedBirthRequest);
     this.setCandidateFathers(this.selectedBirthRequest);
   }
 
   selectFather(father) {
     this.selectedBirthRequest.father = father;
-    this.selectedBirthRequest.validate();
+    this.validateBirthRequest(this.selectedBirthRequest);
   }
 
   removeFather(birthRequest: ExtendedBirthRequest) {
     birthRequest.father = null;
-    birthRequest.validate();
+    this.validateBirthRequest(birthRequest);
   }
 
   addStillborn(birthRequest) {
@@ -445,13 +447,13 @@ export class CsvComponent implements OnInit, OnDestroy {
 
           // Trigger loading states
           birthRequest.suggestedCandidateFathersIsLoading = false;
-          birthRequest.validate();
+          this.validateBirthRequest(birthRequest);
           this.loadingStatesCount--;
           this.isLoadingCandidateFathers = false;
         },
         err => {
           birthRequest.suggestedCandidateFathersIsLoading = false;
-          birthRequest.validate();
+          this.validateBirthRequest(birthRequest);
           this.loadingStatesCount--;
           this.isLoadingCandidateFathers = false;
         }
@@ -617,14 +619,14 @@ export class CsvComponent implements OnInit, OnDestroy {
     birthRequest.mother.uln_country_code = countryCode;
     birthRequest.mother.uln = countryCode + birthRequest.mother.uln_number;
     this.setCandidateFathers(birthRequest);
-    birthRequest.validate();
+    this.validateBirthRequest(birthRequest);
   }
 
   selectSurrogateMotherUlnCountryCode(child: Child, countryCode: string, birthRequest: ExtendedBirthRequest) {
     child.surrogate_mother.uln_country_code = countryCode;
     child.surrogate_mother.uln = countryCode + child.surrogate_mother.uln_number;
     child.surrogateMotherMissingUlnCountryCode = false;
-    birthRequest.validate();
+    this.validateBirthRequest(birthRequest);
   }
 
   resetMotherUlnCountryCode(birthRequest: ExtendedBirthRequest) {
@@ -632,14 +634,14 @@ export class CsvComponent implements OnInit, OnDestroy {
     birthRequest.motherMissingUlnCountryCode = true;
     birthRequest.mother.uln_country_code = '';
     birthRequest.mother.uln = '';
-    birthRequest.validate();
+    this.validateBirthRequest(birthRequest);
   }
 
   resetSurrogateMotherUlnCountryCode(child: Child, birthRequest: ExtendedBirthRequest) {
     child.surrogate_mother.uln_country_code = '';
     child.surrogate_mother.uln = '';
     child.surrogateMotherMissingUlnCountryCode = true;
-    birthRequest.validate();
+    this.validateBirthRequest(birthRequest);
   }
 
   resetMother(birthRequest: ExtendedBirthRequest) {
@@ -652,28 +654,72 @@ export class CsvComponent implements OnInit, OnDestroy {
     birthRequest.motherHasChanged = false;
     birthRequest.mother = mother;
     birthRequest.motherMissingUlnCountryCode = true;
-    birthRequest.validate();
+    this.validateBirthRequest(birthRequest);
+  }
+
+  validateBirthRequest(birthRequest: ExtendedBirthRequest) {
+    const hadWarnings = birthRequest.hasWarnings;
+    let hasMultipleCandidateFathers = false;
+    birthRequest.hasWarnings = false;
+
+    if (birthRequest.hasMultipleCandidateFathers && !birthRequest.father && birthRequest.declareStatus !== false) {
+      hasMultipleCandidateFathers = true;
+      birthRequest.hasWarnings = true;
+    }
+
+    if (birthRequest.motherMissingUlnCountryCode && birthRequest.declareStatus !== false) {
+      birthRequest.hasWarnings = true;
+    }
+
+    for (const child of <Child[]>birthRequest.children) {
+      if (child.surrogateMotherMissingUlnCountryCode && birthRequest.declareStatus !== false) {
+        birthRequest.hasWarnings = true;
+      }
+    }
+
+    if (!hadWarnings && birthRequest.hasWarnings) {
+      this.birthRequestWarningsCount++;
+    } else if (hadWarnings && !birthRequest.hasWarnings) {
+      this.birthRequestWarningsCount--;
+    }
+
+    if (!hadWarnings && hasMultipleCandidateFathers) {
+      this.multipleCandidateFatherBirthRequests.push(birthRequest);
+      console.log(this.multipleCandidateFatherBirthRequests);
+    } else if (hadWarnings && !hasMultipleCandidateFathers) {
+      // this.multipleCandidateFatherBirthRequests.
+      this.multipleCandidateFatherBirthRequests = this.multipleCandidateFatherBirthRequests.filter(function( obj ) {
+        return obj.children !== birthRequest.children;
+      });
+
+      console.log(this.multipleCandidateFatherBirthRequests);
+    }
+    console.log(this.birthRequestWarningsCount);
   }
 
   submitBirthRequests() {
-    this.birthRequests.forEach((birthRequest) => {
-      if (birthRequest.declareStatus !== true) {
-        birthRequest.isSubmitting = true;
-        this.apiService.doPostRequest(API_URI_DECLARE_BIRTH, birthRequest)
-        .subscribe(
-          res => {
-            birthRequest.isSubmitting = false;
-            birthRequest.errorMessage = null;
-            birthRequest.declareStatus = true;
-          },
-          err => {
-            birthRequest.isSubmitting = false;
-            birthRequest.errorMessage = err.error.result.message;
-            birthRequest.declareStatus = false;
-          }
-        );
-      }
-    });
+    if (this.birthRequestWarningsCount > 0) {
+      this.toggleModal();
+    } else {
+      this.birthRequests.forEach((birthRequest) => {
+        if (birthRequest.declareStatus !== true) {
+          birthRequest.isSubmitting = true;
+          this.apiService.doPostRequest(API_URI_DECLARE_BIRTH, birthRequest)
+            .subscribe(
+              res => {
+                birthRequest.isSubmitting = false;
+                birthRequest.errorMessage = null;
+                birthRequest.declareStatus = true;
+              },
+              err => {
+                birthRequest.isSubmitting = false;
+                birthRequest.errorMessage = err.error.result.message;
+                birthRequest.declareStatus = false;
+              }
+            );
+        }
+      });
+    }
   }
 
   preventKeyPress(event) {
