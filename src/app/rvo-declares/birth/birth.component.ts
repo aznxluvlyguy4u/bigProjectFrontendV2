@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {Location} from '@angular/common';
 import {Router} from '@angular/router';
+import {IS_CSV_IMPORT_BIRTHS_ACTIVE} from '../../shared/variables/feature.activation';
 
 
 @Component({
@@ -9,6 +10,7 @@ import {Router} from '@angular/router';
 
 export class BirthComponent implements OnInit {
   public selectedRoute: string;
+  public isCsvImportActive = IS_CSV_IMPORT_BIRTHS_ACTIVE;
 
   constructor(private router: Router, private location: Location) {
   }
