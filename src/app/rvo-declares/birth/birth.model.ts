@@ -31,6 +31,7 @@ export class Child {
   public date_of_birth: string;
   public date_scanned: string;
   public has_lambar: boolean;
+  public surrogateMotherMissingUlnCountryCode = false;
 }
 
 
@@ -47,6 +48,7 @@ export class BirthRequest {
   public mother: any;
   public father: any;
   public children: Array<Child | StillBorn>;
+  public stillBorns: Array<StillBorn>;
   public date_of_birth: string;
   public is_aborted: boolean;
   public is_pseudo_pregnancy: boolean;

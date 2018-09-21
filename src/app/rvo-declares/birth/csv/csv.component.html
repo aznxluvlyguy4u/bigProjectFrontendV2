@@ -10,10 +10,13 @@
   <div class="columns">
     <button [disabled]="loadingStatesCount !== 0" (click)="submitBirthRequests()" class="small primary button">Melden  <span class="badge">{{birthRequests.length}}</span></button>
   </div>
+
+  <button type="button" class="small primary button" (click)="toggleModal()">asdf</button>
+
   <app-page-loading-spinner *ngIf="loadingStatesCount !== 0"></app-page-loading-spinner>
 </div>
 
-<div *ngFor="let birthRequest of birthRequests" class="csv_birthrequest" [class.success]="birthRequest.declareStatus === true" [class.error]="birthRequest.declareStatus === false" [class.warning]="birthRequestHasWarning(birthRequest)">
+<div *ngFor="let birthRequest of birthRequests" class="csv_birthrequest" [class.success]="birthRequest.declareStatus === true" [class.error]="birthRequest.declareStatus === false" [class.warning]="birthRequest.hasWarnings">
   <!-- <ng-container *ngIf="birthRequest.declareStatus === null || birthRequest.declareStatus === false"> -->
     <div class="row">
       <div class="columns">
@@ -35,6 +38,9 @@
           <label class="medium-3 columns">{{ 'MOTHER' | translate }}</label>
           <label class="medium-9 columns" *ngIf="!birthRequest?.mother?.uln_country_code && birthRequest?.mother?.uln_number" style="color:#ff0000;">
             <small>{{ 'CHOOSE COUNTRY CODE' | translate }}</small>
+          </label>
+          <label class="medium-9 columns" *ngIf="!birthRequest?.mother?.uln_country_code && !birthRequest?.mother?.uln_number" style="color:#ff0000;">
+            <small>{{ 'MOTHER IS MISSING' | translate }}</small>
           </label>
         </div>
 
@@ -67,7 +73,7 @@
       <div class="medium-3 columns">
         <div class="row">
           <label class="medium-3 columns">{{ 'FATHER' |translate }}</label>
-          <label class="medium-9 columns" *ngIf="birthRequest.suggested_candidate_fathers?.length > 1" style="color:#ff0000;">
+          <label class="medium-9 columns" *ngIf="birthRequest.suggested_candidate_fathers?.length > 1 && !birthRequest?.father" style="color:#ff0000;">
             <small>{{ 'MULTIPLE FATHER CANDIDATES' | translate }}</small>
           </label>
         </div>
@@ -78,7 +84,7 @@
             {{birthRequest?.father?.uln_country_code}} {{birthRequest?.father?.uln_number}}
           </span>
           <span class="medium-3 columns">
-            <button class="tiny button" (click)="birthRequest.father = null">{{'REMOVE' | translate}}</button>
+            <button class="tiny button" (click)="removeFather(birthRequest)">{{'REMOVE' | translate}}</button>
           </span>
         </div>
 
@@ -152,7 +158,7 @@
                   <div *ngIf="!child?.surrogate_mother?.uln_country_code && child?.surrogate_mother?.uln_number && !child?.has_lambar">
                     <label style="color:#ff0000;"><small>{{ 'CHOOSE COUNTRY CODE' | translate }}</small></label>
                     <div class="uid-input-group">
-                      <select [ngModel]="child?.surrogate_mother?.uln_country_code" (change)="selectSurrogateMotherUlnCountryCode(child, $event.target.value)" style="height:2.4375rem">
+                      <select [ngModel]="child?.surrogate_mother?.uln_country_code" (change)="selectSurrogateMotherUlnCountryCode(child, $event.target.value, birthRequest)" style="height:2.4375rem">
                         <option *ngFor="let country_code of country_code_list" [value]="country_code.code">
                           {{ country_code.code }}
                         </option>
@@ -172,7 +178,7 @@
                   <!--Both country code and uln number are present and lambar is false-->
                   <div class="row collapse" *ngIf="child?.surrogate_mother?.uln_country_code && child?.surrogate_mother?.uln_number && !child?.has_lambar">
                     <span class="medium-9 columns">{{child?.surrogate_mother?.uln_country_code}} {{child?.surrogate_mother?.uln_number}}</span>
-                    <button class="tiny button medium-3 columns" (click)="resetSurrogateMotherUlnCountryCode(child)">{{'CHANGE' | translate}}</button>
+                    <button class="tiny button medium-3 columns" (click)="resetSurrogateMotherUlnCountryCode(child, birthRequest)">{{'CHANGE' | translate}}</button>
                   </div>
 
                   <span *ngIf="child?.has_lambar">
@@ -231,3 +237,39 @@
     [SUGGESTION_LABEL]="'POSSIBLE SURROGATE MOTHER'"
     (selection)="selectSurrogateMother($event)">
   </selector>
+
+
+<div class="reveal-overlay" [ngStyle]="{'display': modalDisplay}">
+  <div class="reveal tiny" [ngStyle]="{'display': modalDisplay}">
+
+    <div class="modal-header">
+      {{ title | translate }}
+      <button type="button" class="pull-right" aria-label="Close modal" (click)="toggleModal()">
+        <i class="fa fa-times" aria-hidden="true"></i>
+      </button>
+    </div>
+
+    <div class="modal-body">
+      <p>{{ 'THERE ARE NO DOWNLOADS READY FOR DOWNLOAD YET' | translate }}</p>
+    </div>
+
+    <div class="modal-footer">
+      <button
+              type="button"
+              class="button alert pull-right"
+              aria-label="Clear list"
+              (click)="toggleModal()">
+        {{ 'REMOVE FAILED FILES' | translate }}
+      </button>
+
+      <button
+              type="button"
+              class="button alert pull-right"
+              aria-label="Clear list"
+              (click)="toggleModal()">
+        {{ 'REMOVE FAILED FILES' | translate }}
+      </button>
+    </div>
+
+  </div>
+</div>
