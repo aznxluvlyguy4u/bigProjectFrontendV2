@@ -603,13 +603,15 @@ export class CsvComponent implements OnInit, OnDestroy {
 
   birthRequestHasWarning(birthRequest: ExtendedBirthRequest): boolean {
     let hasWarning = false;
-    if ((birthRequest.suggested_candidate_fathers && birthRequest.suggested_candidate_fathers.length > 1 && !birthRequest.father && birthRequest.declareStatus !== false)
+    if ((birthRequest.suggested_candidate_fathers && birthRequest.suggested_candidate_fathers.length > 1 &&
+      !birthRequest.father && birthRequest.declareStatus !== false)
       || (!birthRequest.mother.uln_country_code && birthRequest.mother.uln_number && birthRequest.declareStatus !== false)) {
       hasWarning = true;
     }
 
     for (const child of birthRequest.children) {
-      if (child.surrogate_mother && !child.surrogate_mother.uln_country_code && child.surrogate_mother.uln_number && !child.has_lambar) {
+      if (child instanceof Child && child.surrogate_mother &&
+        !child.surrogate_mother.uln_country_code && child.surrogate_mother.uln_number && !child.has_lambar) {
         hasWarning = true;
       }
     }
