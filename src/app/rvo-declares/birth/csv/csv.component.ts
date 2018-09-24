@@ -654,6 +654,7 @@ export class CsvComponent implements OnInit, OnDestroy {
       return obj.children !== birthRequest.children;
     });
     const hadWarnings = birthRequest.hasWarnings;
+    let missingSurrogateMother = false;
     birthRequest.hasWarnings = false;
 
     // Determine warning types
@@ -669,9 +670,13 @@ export class CsvComponent implements OnInit, OnDestroy {
 
     for (const child of <Child[]>birthRequest.children) {
       if (child.surrogateMotherMissingUlnCountryCode && birthRequest.declareStatus !== false) {
-        this.missingSurrogateMotherBirthRequests.push(birthRequest);
         birthRequest.hasWarnings = true;
+        missingSurrogateMother = true;
       }
+    }
+
+    if (missingSurrogateMother) {
+      this.missingSurrogateMotherBirthRequests.push(birthRequest);
     }
 
     if (!hadWarnings && birthRequest.hasWarnings) {
@@ -685,24 +690,7 @@ export class CsvComponent implements OnInit, OnDestroy {
     if (this.birthRequestWarningsCount > 0) {
       this.toggleWarningModal();
     } else {
-      this.birthRequests.forEach((birthRequest) => {
-        if (birthRequest.declareStatus !== true) {
-          birthRequest.isSubmitting = true;
-          this.apiService.doPostRequest(API_URI_DECLARE_BIRTH, birthRequest)
-            .subscribe(
-              res => {
-                birthRequest.isSubmitting = false;
-                birthRequest.errorMessage = null;
-                birthRequest.declareStatus = true;
-              },
-              err => {
-                birthRequest.isSubmitting = false;
-                birthRequest.errorMessage = err.error.result.message;
-                birthRequest.declareStatus = false;
-              }
-            );
-        }
-      });
+      this.doSubmitBirthRequests();
     }
   }
 
@@ -722,5 +710,26 @@ export class CsvComponent implements OnInit, OnDestroy {
     } else {
       this.warningModalDisplay = 'none';
     }
+  }
+
+  doSubmitBirthRequests() {
+    this.birthRequests.forEach((birthRequest) => {
+      if (birthRequest.declareStatus !== true) {
+        birthRequest.isSubmitting = true;
+        this.apiService.doPostRequest(API_URI_DECLARE_BIRTH, birthRequest)
+          .subscribe(
+            res => {
+              birthRequest.isSubmitting = false;
+              birthRequest.errorMessage = null;
+              birthRequest.declareStatus = true;
+            },
+            err => {
+              birthRequest.isSubmitting = false;
+              birthRequest.errorMessage = err.error.result.message;
+              birthRequest.declareStatus = false;
+            }
+          );
+      }
+    });
   }
 }

@@ -16,7 +16,7 @@
   <app-page-loading-spinner *ngIf="loadingStatesCount !== 0"></app-page-loading-spinner>
 </div>
 
-<div *ngFor="let birthRequest of birthRequests" class="csv_birthrequest" [class.success]="birthRequest.declareStatus === true" [class.error]="birthRequest.declareStatus === false" [class.warning]="birthRequest.hasWarnings">
+<div *ngFor="let birthRequest of birthRequests" class="csv_birthrequest" [class.success]="birthRequest.declareStatus === true" [class.error]="birthRequest.declareStatus === false" [class.warning]="birthRequest.hasWarnings && birthRequest.declareStatus !== false">
   <!-- <ng-container *ngIf="birthRequest.declareStatus === null || birthRequest.declareStatus === false"> -->
     <div class="row">
       <div class="columns">
@@ -243,7 +243,7 @@
   <div class="reveal tiny" [ngStyle]="{'display': warningModalDisplay}">
 
     <div class="modal-header">
-      {{ title | translate }}
+      {{ "WARNING" | translate }}
       <button type="button" class="pull-right" aria-label="Close modal" (click)="toggleWarningModal()">
         <i class="fa fa-times" aria-hidden="true"></i>
       </button>
@@ -251,7 +251,7 @@
 
     <div class="modal-body">
       <!--BirthRequests with multiple fathers-->
-      <div *ngIf="multipleCandidateFatherBirthRequests.length > 0">
+      <div *ngIf="multipleCandidateFatherBirthRequests.length > 0" class="callout warning">
         <p>{{ 'THE FOLLOWING LAMBS HAVE MULTIPLE CANDIDATE FATHERS BUT NONE CHOSEN' | translate }}</p>
 
         <div>
@@ -265,7 +265,7 @@
       </div>
 
       <!--BirthRequests with missing mother details-->
-      <div *ngIf="missingMotherBirthRequests.length > 0">
+      <div *ngIf="missingMotherBirthRequests.length > 0" class="callout warning">
         <p>{{ 'THE FOLLOWING LAMBS ARE MISSING MOTHER DETAILS' | translate }}</p>
 
         <div>
@@ -279,7 +279,7 @@
       </div>
 
       <!--BirthRequests with missing surrogate mother details-->
-      <div *ngIf="missingSurrogateMotherBirthRequests.length > 0">
+      <div *ngIf="missingSurrogateMotherBirthRequests.length > 0" class="callout warning">
         <p>{{ 'THE FOLLOWING LAMBS ARE MISSING SURROGATE MOTHER DETAILS' | translate }}</p>
 
         <div>
@@ -290,6 +290,10 @@
           </ng-container>
         </div>
 
+      </div>
+
+      <div>
+        <p><b>{{ "STILL CONTINUE WITH DECLARATION?" | translate }}</b></p>
       </div>
 
     </div>
@@ -307,7 +311,7 @@
               type="button"
               class="button pull-right success"
               aria-label="Clear list"
-              (click)="toggleWarningModal()">
+              (click)="doSubmitBirthRequests(); toggleWarningModal();">
         {{ 'DECLARE' | translate }}
       </button>
     </div>
