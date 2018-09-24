@@ -670,6 +670,7 @@
   "nickname: Deze waarde is te lang. Hij mag maximaal 20 tekens bevatten.": "De naam is te lang. Hij mag maximaal 20 tekens bevatten.",
   "THIS ANIMAL HAS TOO MANY CHILDREN TO DISPLAY THE DETAILS FOR.": "Dit dier heeft teveel nakomelingen voor het tonen van hun details.",
   "MULTIPLE FATHER CANDIDATES": "Meerdere vaders mogelijk",
-  "CHOOSE COUNTRY CODE": "Kies een landcode"
+  "CHOOSE COUNTRY CODE": "Kies een landcode",
+  "NO RAM SELECTED": "Geen ram geselecteerd"
 }
 
