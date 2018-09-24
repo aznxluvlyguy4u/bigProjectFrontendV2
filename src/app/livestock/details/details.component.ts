@@ -232,21 +232,7 @@ export class LivestockDetailComponent {
             this.form.get('pedigree_country_code').setValue('NL');
           }
 
-          // EXTERIORS
-          if (this.animal.exteriors.length > 0) {
-            this.selectedExterior = this.animal.exteriors[0];
-            this.selectedExteriorDate = this.animal.exteriors[0].measurement_date;
-          } else {
-            this.selectedExterior = new Exterior();
-            this.selectedExteriorDate = '';
-          }
-
-          this.animal.exteriors.forEach((item) => {
-            if (!item.hasOwnProperty('inspector')) {
-              item.inspector = new Inspector();
-            }
-          });
-
+          this.formatRetrievedExteriors();
 
           // WEIGHTS CHART DATA
           this.animal.weights = _.orderBy(this.animal.weights, ['measurement_date'], ['asc']);
@@ -341,6 +327,33 @@ export class LivestockDetailComponent {
           this.updateLoadingStatus();
         }
       );
+  }
+
+  private formatRetrievedExteriors(resetSelectedExterior = true) {
+    // EXTERIORS
+    if (this.animal.exteriors.length > 0) {
+      if (resetSelectedExterior) {
+        this.selectedExterior = this.animal.exteriors[0];
+      }
+      if (this.selectedExterior) {
+        this.selectedExteriorDate = this.selectedExterior.measurement_date;
+      }
+
+    } else {
+      this.selectedExterior = new Exterior();
+      this.selectedExteriorDate = '';
+    }
+
+    this.animal.exteriors.forEach((item) => {
+      if (!item.hasOwnProperty('inspector')) {
+        item.inspector = new Inspector();
+      }
+    });
+  }
+
+  public setLatestExteriors(exteriors: Exterior[]) {
+    this.animal.exteriors = exteriors;
+    this.formatRetrievedExteriors(false);
   }
 
   toggleDisplayChildren() {

@@ -22,9 +22,11 @@ export class ExteriorComponent implements OnInit, AfterViewInit, OnChanges {
 
   @Input() exteriors: Exterior[] = [];
   @Input() uln: string;
-  @Output() getAnimalDetails = new EventEmitter();
+  @Output() latestExteriors = new EventEmitter<Exterior[]>();
 
   public inspectors: User[] = [];
+
+  private fullOutputQuery = '?full_output=true';
 
   public showExteriorModal = false;
   public exteriorForm: FormGroup;
@@ -73,6 +75,7 @@ export class ExteriorComponent implements OnInit, AfterViewInit, OnChanges {
     if (this.exteriors.length > 0) {
       this.selectedExterior = this.exteriors[0];
       this.initDate = this.stringAsViewDate(this.selectedExterior.measurement_date);
+      this.selectedDate = this.selectedExterior.measurement_date;
     }
 
     this.exteriorForm.valueChanges.subscribe(
@@ -141,18 +144,16 @@ export class ExteriorComponent implements OnInit, AfterViewInit, OnChanges {
 
     this.tempExterior.measurement_date = this.exteriorForm.get('measurement_date').value;
 
-    if (!this.tempExterior.kind) {
-      delete(this.tempExterior.kind);
-    }
+    this.replaceEmptyStringsInTempExterior();
 
     const body = this.tempExterior;
 
     if (this.exteriorForm.valid && !this.invalidMeasurementDate) {
-      this.apiService.doPostRequest(API_URI_MEASUREMENTS + '/' + this.uln + '/exteriors', body)
+      this.apiService.doPostRequest(API_URI_MEASUREMENTS + '/' + this.uln + '/exteriors' + this.fullOutputQuery, body)
         .subscribe(
           res => {
             this.isRequestingExterior = false;
-            this.getAnimalDetails.emit({});
+            this.updateLocalValues(res);
             this.closeExteriorModal();
           },
           err => {
@@ -164,6 +165,23 @@ export class ExteriorComponent implements OnInit, AfterViewInit, OnChanges {
       this.isValidExteriorForm = false;
       this.isRequestingExterior = false;
     }
+  }
+
+  private updateLocalValues(res: any, useLatestAsSelected = false) {
+    this.exteriors = res.result.full_output;
+    this.latestExteriors.emit(this.exteriors);
+
+    if (useLatestAsSelected) {
+      if (this.exteriors.length > 0) {
+        this.selectedExterior = this.exteriors[0];
+      } else {
+        this.selectedExterior = new Exterior();
+      }
+    } else {
+      this.selectedExterior = res.result.selected;
+    }
+
+    this.selectedDate = this.selectedExterior.measurement_date;
   }
 
   public openConfirmDeleteModal() {
@@ -183,24 +201,12 @@ export class ExteriorComponent implements OnInit, AfterViewInit, OnChanges {
       'is_active': false
     };
 
-    this.apiService.doPutRequest(API_URI_MEASUREMENTS + '/' + this.uln + '/exteriors/' + date, body)
+    this.apiService.doPutRequest(API_URI_MEASUREMENTS + '/' + this.uln + '/exteriors/' + date + this.fullOutputQuery, body)
       .subscribe(
         res => {
           this.isRequestingExterior = false;
-          this.getAnimalDetails.emit({});
+          this.updateLocalValues(res, true);
           this.closeConfirmDeleteModal();
-          const existingDate = moment(this.selectedExterior.measurement_date).format(this.settings.getViewDateFormat());
-
-          _.remove(this.exteriors, {
-            measurement_date: this.selectedExterior.measurement_date
-          });
-
-
-          if (this.exteriors.length > 0) {
-            this.selectedExterior = this.exteriors[0];
-          } else {
-            this.selectedExterior = new Exterior();
-          }
         },
         err => {
           this.isRequestingExterior = false;
@@ -216,13 +222,7 @@ export class ExteriorComponent implements OnInit, AfterViewInit, OnChanges {
     this.hasServerError = false;
     this.tempExterior.measurement_date = this.exteriorForm.get('measurement_date').value;
 
-    if (!this.tempExterior.inspector) {
-      delete(this.tempExterior.inspector);
-    }
-
-    if (this.tempExterior.kind === '') {
-      delete(this.tempExterior.kind);
-    }
+    this.replaceEmptyStringsInTempExterior();
 
     const body = this.tempExterior;
 
@@ -230,12 +230,11 @@ export class ExteriorComponent implements OnInit, AfterViewInit, OnChanges {
 
       const date = this.stringAsModelDate(this.selectedExterior.measurement_date);
 
-      this.apiService.doPutRequest(API_URI_MEASUREMENTS + '/' + this.uln + '/exteriors/' + date, body)
+      this.apiService.doPutRequest(API_URI_MEASUREMENTS + '/' + this.uln + '/exteriors/' + date + this.fullOutputQuery, body)
         .subscribe(
             (res: JsonResponseModel) => {
             this.isRequestingExterior = false;
-            // this.getAnimalDetails.emit({});
-            this.selectedExterior = res.result;
+            this.updateLocalValues(res);
             this.closeExteriorModal();
           },
           err => {
@@ -246,6 +245,64 @@ export class ExteriorComponent implements OnInit, AfterViewInit, OnChanges {
     } else {
       this.isValidExteriorForm = false;
       this.isRequestingExterior = false;
+    }
+  }
+
+  private replaceEmptyStringsInTempExterior() {
+    if (!this.tempExterior.inspector || !this.tempExterior.inspector.person_id) {
+      delete(this.tempExterior.inspector);
+    }
+
+    if (this.tempExterior.kind === '') {
+      delete(this.tempExterior.kind);
+    }
+
+    if (this.tempExterior.skull == null) {
+      this.tempExterior.skull = 0;
+    }
+
+    if (this.tempExterior.progress == null) {
+      this.tempExterior.progress = 0;
+    }
+
+    if (this.tempExterior.muscularity == null) {
+      this.tempExterior.muscularity = 0;
+    }
+
+    if (this.tempExterior.proportion == null) {
+      this.tempExterior.proportion = 0;
+    }
+
+    if (this.tempExterior.exterior_type == null) {
+      this.tempExterior.exterior_type = 0;
+    }
+
+    if (this.tempExterior.leg_work == null) {
+      this.tempExterior.leg_work = 0;
+    }
+
+    if (this.tempExterior.fur == null) {
+      this.tempExterior.fur = 0;
+    }
+
+    if (this.tempExterior.general_appearance == null) {
+      this.tempExterior.general_appearance = 0;
+    }
+
+    if (this.tempExterior.height == null) {
+      this.tempExterior.height = 0;
+    }
+
+    if (this.tempExterior.torso_length == null) {
+      this.tempExterior.torso_length = 0;
+    }
+
+    if (this.tempExterior.breast_depth == null) {
+      this.tempExterior.breast_depth = 0;
+    }
+
+    if (this.tempExterior.markings == null) {
+      this.tempExterior.markings = 0;
     }
   }
 
@@ -271,6 +328,9 @@ export class ExteriorComponent implements OnInit, AfterViewInit, OnChanges {
     if (editMode) {
       this.kinds = [];
       this.tempExterior = _.clone(this.selectedExterior);
+      if (!this.tempExterior.inspector) {
+        this.tempExterior.inspector = new Inspector();
+      }
       this.initDate = moment(this.selectedExterior.measurement_date).format(this.settings.getViewDateFormat());
       this.getExteriorKindsForEdit(this.initDate);
     }
@@ -313,4 +373,26 @@ export class ExteriorComponent implements OnInit, AfterViewInit, OnChanges {
   public stringAsModelDate(date: string): string {
     return moment(date).format(this.settings.getModelDateFormat());
   }
+
+  public getSelectedInspectorName(): string {
+    return this.getInspectorName(this.selectedExterior);
+  }
+
+  private getInspectorName(exterior: Exterior): string {
+    if (!this.hasInspectorName(exterior)) {
+      return '';
+    }
+    if (exterior.inspector.first_name === undefined) {
+      return exterior.inspector.last_name;
+    }
+    return exterior.inspector.first_name + ' ' + exterior.inspector.last_name;
+  }
+
+  private hasInspectorName(exterior: Exterior): boolean {
+    if (!exterior || !exterior.inspector) {
+      return false;
+    }
+    return exterior.inspector.first_name !== undefined || exterior.inspector.last_name !== undefined;
+  }
+
 }
