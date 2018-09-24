@@ -44,7 +44,7 @@
         </div>
       </form>
 
-      <form #form_forgot_pw="ngForm" *ngIf="enable_forgot_pw" class="ng-animate forgot-pw">
+      <form [formGroup]="form_forgot_pw" *ngIf="enable_forgot_pw" class="ng-animate forgot-pw">
         <h5>{{ 'FORGOT PASSWORD?' | translate }}</h5>
         <p>
           {{ 'ENTER YOUR EMAIL ADDRESS TO RESET YOUR PASSWORD.' | translate }}
