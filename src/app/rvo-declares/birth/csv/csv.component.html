@@ -11,7 +11,7 @@
     <button [disabled]="loadingStatesCount !== 0" (click)="submitBirthRequests()" class="small primary button">Melden  <span class="badge">{{birthRequests.length}}</span></button>
   </div>
 
-  <button type="button" class="small primary button" (click)="toggleModal()">asdf</button>
+  <button type="button" class="small primary button" (click)="toggleWarningModal()">asdf</button>
 
   <app-page-loading-spinner *ngIf="loadingStatesCount !== 0"></app-page-loading-spinner>
 </div>
@@ -239,18 +239,59 @@
   </selector>
 
 
-<div class="reveal-overlay" [ngStyle]="{'display': modalDisplay}">
-  <div class="reveal tiny" [ngStyle]="{'display': modalDisplay}">
+<div class="reveal-overlay" [ngStyle]="{'display': warningModalDisplay}">
+  <div class="reveal tiny" [ngStyle]="{'display': warningModalDisplay}">
 
     <div class="modal-header">
       {{ title | translate }}
-      <button type="button" class="pull-right" aria-label="Close modal" (click)="toggleModal()">
+      <button type="button" class="pull-right" aria-label="Close modal" (click)="toggleWarningModal()">
         <i class="fa fa-times" aria-hidden="true"></i>
       </button>
     </div>
 
     <div class="modal-body">
-      <p>{{ 'THERE ARE NO DOWNLOADS READY FOR DOWNLOAD YET' | translate }}</p>
+      <!--BirthRequests with multiple fathers-->
+      <div *ngIf="multipleCandidateFatherBirthRequests.length > 0">
+        <p>{{ 'THE FOLLOWING LAMBS HAVE MULTIPLE CANDIDATE FATHERS BUT NONE CHOSEN' | translate }}</p>
+
+        <div>
+          <ng-container *ngFor="let warningBirthRequest of multipleCandidateFatherBirthRequests">
+            <p *ngFor="let child of warningBirthRequest.children">
+              {{ child.uln_country_code + child.uln_number}}
+            </p>
+          </ng-container>
+        </div>
+
+      </div>
+
+      <!--BirthRequests with missing mother details-->
+      <div *ngIf="missingMotherBirthRequests.length > 0">
+        <p>{{ 'THE FOLLOWING LAMBS ARE MISSING MOTHER DETAILS' | translate }}</p>
+
+        <div>
+          <ng-container *ngFor="let warningBirthRequest of missingMotherBirthRequests">
+            <p *ngFor="let child of warningBirthRequest.children">
+              {{ child.uln_country_code + child.uln_number}}
+            </p>
+          </ng-container>
+        </div>
+
+      </div>
+
+      <!--BirthRequests with missing surrogate mother details-->
+      <div *ngIf="missingSurrogateMotherBirthRequests.length > 0">
+        <p>{{ 'THE FOLLOWING LAMBS ARE MISSING SURROGATE MOTHER DETAILS' | translate }}</p>
+
+        <div>
+          <ng-container *ngFor="let warningBirthRequest of missingSurrogateMotherBirthRequests">
+            <ng-container *ngFor="let child of warningBirthRequest.children">
+              <p *ngIf="child.surrogateMotherMissingUlnCountryCode">{{ child.uln_country_code + child.uln_number}}</p>
+            </ng-container>
+          </ng-container>
+        </div>
+
+      </div>
+
     </div>
 
     <div class="modal-footer">
@@ -258,16 +299,16 @@
               type="button"
               class="button alert pull-right"
               aria-label="Clear list"
-              (click)="toggleModal()">
-        {{ 'REMOVE FAILED FILES' | translate }}
+              (click)="toggleWarningModal()">
+        {{ 'CANCEL' | translate }}
       </button>
 
       <button
               type="button"
-              class="button alert pull-right"
+              class="button pull-right success"
               aria-label="Clear list"
-              (click)="toggleModal()">
-        {{ 'REMOVE FAILED FILES' | translate }}
+              (click)="toggleWarningModal()">
+        {{ 'DECLARE' | translate }}
       </button>
     </div>
 

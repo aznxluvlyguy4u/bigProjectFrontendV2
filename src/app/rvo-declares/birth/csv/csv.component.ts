@@ -38,23 +38,6 @@ class ExtendedBirthRequest extends BirthRequest {
   motherMissingUlnCountryCode = true;
   surrogateMotherMissingUlnCountryCode = false;
   hasWarnings = false;
-
-  public validate() {
-    this.hasWarnings = false;
-    if (this.hasMultipleCandidateFathers && !this.father && this.declareStatus !== false) {
-      this.hasWarnings = true;
-    }
-
-    if (this.motherMissingUlnCountryCode && this.declareStatus !== false) {
-      this.hasWarnings = true;
-    }
-
-    for (const child of <Child[]>this.children) {
-      if (child.surrogateMotherMissingUlnCountryCode && this.declareStatus !== false) {
-        this.hasWarnings = true;
-      }
-    }
-  }
 }
 
 @Component({
@@ -69,11 +52,13 @@ export class CsvComponent implements OnInit, OnDestroy {
 
   private birth_progress_types = BIRTH_PROGRESS_TYPES;
 
-  modalDisplay = 'none';
+  warningModalDisplay = 'none';
 
   loadingStatesCount = 0;
   birthRequestWarningsCount = 0;
   multipleCandidateFatherBirthRequests = <ExtendedBirthRequest[]>[];
+  missingMotherBirthRequests = <ExtendedBirthRequest[]>[];
+  missingSurrogateMotherBirthRequests = <ExtendedBirthRequest[]>[];
   isLoadingCandidateSurrogates = false;
   isLoadingCandidateMothers = false;
   isLoadingCandidateFathers = false;
@@ -658,21 +643,33 @@ export class CsvComponent implements OnInit, OnDestroy {
   }
 
   validateBirthRequest(birthRequest: ExtendedBirthRequest) {
+    // reset warnings first
+    this.multipleCandidateFatherBirthRequests = this.multipleCandidateFatherBirthRequests.filter(function( obj ) {
+      return obj.children !== birthRequest.children;
+    });
+    this.missingMotherBirthRequests = this.missingMotherBirthRequests.filter(function( obj ) {
+      return obj.children !== birthRequest.children;
+    });
+    this.missingSurrogateMotherBirthRequests = this.missingSurrogateMotherBirthRequests.filter(function( obj ) {
+      return obj.children !== birthRequest.children;
+    });
     const hadWarnings = birthRequest.hasWarnings;
-    let hasMultipleCandidateFathers = false;
     birthRequest.hasWarnings = false;
 
+    // Determine warning types
     if (birthRequest.hasMultipleCandidateFathers && !birthRequest.father && birthRequest.declareStatus !== false) {
-      hasMultipleCandidateFathers = true;
+      this.multipleCandidateFatherBirthRequests.push(birthRequest);
       birthRequest.hasWarnings = true;
     }
 
     if (birthRequest.motherMissingUlnCountryCode && birthRequest.declareStatus !== false) {
+      this.missingMotherBirthRequests.push(birthRequest);
       birthRequest.hasWarnings = true;
     }
 
     for (const child of <Child[]>birthRequest.children) {
       if (child.surrogateMotherMissingUlnCountryCode && birthRequest.declareStatus !== false) {
+        this.missingSurrogateMotherBirthRequests.push(birthRequest);
         birthRequest.hasWarnings = true;
       }
     }
@@ -682,24 +679,11 @@ export class CsvComponent implements OnInit, OnDestroy {
     } else if (hadWarnings && !birthRequest.hasWarnings) {
       this.birthRequestWarningsCount--;
     }
-
-    if (!hadWarnings && hasMultipleCandidateFathers) {
-      this.multipleCandidateFatherBirthRequests.push(birthRequest);
-      console.log(this.multipleCandidateFatherBirthRequests);
-    } else if (hadWarnings && !hasMultipleCandidateFathers) {
-      // this.multipleCandidateFatherBirthRequests.
-      this.multipleCandidateFatherBirthRequests = this.multipleCandidateFatherBirthRequests.filter(function( obj ) {
-        return obj.children !== birthRequest.children;
-      });
-
-      console.log(this.multipleCandidateFatherBirthRequests);
-    }
-    console.log(this.birthRequestWarningsCount);
   }
 
   submitBirthRequests() {
     if (this.birthRequestWarningsCount > 0) {
-      this.toggleModal();
+      this.toggleWarningModal();
     } else {
       this.birthRequests.forEach((birthRequest) => {
         if (birthRequest.declareStatus !== true) {
@@ -732,11 +716,11 @@ export class CsvComponent implements OnInit, OnDestroy {
     this.countryCodeObs.unsubscribe();
   }
 
-  toggleModal() {
-    if (this.modalDisplay === 'none') {
-      this.modalDisplay = 'block';
+  toggleWarningModal() {
+    if (this.warningModalDisplay === 'none') {
+      this.warningModalDisplay = 'block';
     } else {
-      this.modalDisplay = 'none';
+      this.warningModalDisplay = 'none';
     }
   }
 }
