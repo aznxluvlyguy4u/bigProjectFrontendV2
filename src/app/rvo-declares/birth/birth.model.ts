@@ -32,6 +32,8 @@ export class Child {
   public date_scanned: string;
   public has_lambar: boolean;
   public surrogateMotherMissingUlnCountryCode = false;
+  public surrogateMotherUlnCountryCodeOnlyHasChanged = false;
+  public surrogateMotherHasChanged = false;
 }
 
 

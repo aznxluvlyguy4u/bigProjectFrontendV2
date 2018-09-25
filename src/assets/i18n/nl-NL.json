@@ -675,6 +675,7 @@
   "THE FOLLOWING LAMBS HAVE MULTIPLE CANDIDATE FATHERS BUT NONE CHOSEN": "Bij de volgende lammeren zijn meerdere vaders mogelijk, maar is er geen een ingevuld:",
   "THE FOLLOWING LAMBS ARE MISSING MOTHER DETAILS": "Bij de volgende lammeren zijn de gegevens van de moeder incompleet:",
   "THE FOLLOWING LAMBS ARE MISSING SURROGATE MOTHER DETAILS": "Bij de volgende lammeren zijn de gegevens van de pleegmoeder incompleet:",
-  "STILL CONTINUE WITH DECLARATION?": "Weet u zeker dat u wilt doorgaan? De lammeren worden in dat geval geregistreerd zonder vader of moeder."
+  "STILL CONTINUE WITH DECLARATION?": "Weet u zeker dat u wilt doorgaan? De lammeren worden in dat geval geregistreerd zonder vader of moeder.",
+  "WORK NUMBER IS NOT UNIQUE, CHOOSE A SURROGATE MOTHER MANUALLY": "Werknummer is niet uniek, kies handmatig een pleegmoeder"
 }
 

@@ -8,10 +8,8 @@
 
 <div class="row" *ngIf="birthRequests.length > 0">
   <div class="columns">
-    <button [disabled]="loadingStatesCount !== 0" (click)="submitBirthRequests()" class="small primary button">Melden  <span class="badge">{{birthRequests.length}}</span></button>
+    <button [disabled]="loadingStatesCount !== 0" (click)="submitBirthRequests()" class="small primary button">{{ "DECLARE" | translate }}  <span class="badge">{{birthRequests.length}}</span></button>
   </div>
-
-  <button type="button" class="small primary button" (click)="toggleWarningModal()">asdf</button>
 
   <app-page-loading-spinner *ngIf="loadingStatesCount !== 0"></app-page-loading-spinner>
 </div>
@@ -139,6 +137,9 @@
               <th>
                 {{ 'ULN' | translate }} ({{ 'SURROGATE' | translate }})
               </th>
+              <th>
+                {{ 'WORK NUMBER' | translate }} ({{ 'SURROGATE' | translate }})
+              </th>
             </thead>
             <tbody>
               <tr *ngFor="let child of birthRequest.children; let i = index">
@@ -165,11 +166,18 @@
                       </select>
                       <input type="text" [disabled]="child?.surrogate_mother?.uln_number" [value]="child?.surrogate_mother?.uln_number" style="font-size:0.7rem;max-width:100%">
                     </div>
-
                   </div>
 
-                  <!--Both country code and uln number are missing and lambar is false-->
-                  <ng-container *ngIf="!child?.surrogate_mother?.uln_country_code && !child?.surrogate_mother?.uln_number && !child?.has_lambar">
+                  <!--Both country code and uln number and work_number are missing and lambar is false-->
+                  <ng-container *ngIf="!child?.surrogate_mother?.uln_country_code && !child?.surrogate_mother?.uln_number && child?.surrogate_mother?.work_number && !child?.has_lambar">
+                    <label style="color:#ff0000;"><small>{{ 'WORK NUMBER IS NOT UNIQUE, CHOOSE A SURROGATE MOTHER MANUALLY' | translate }}</small></label>
+                    <input (keyup)="preventKeyPress($event)" (keydown)="preventKeyPress($event)" [value]="child?.surrogate_mother?.work_number"
+                           (keypress)="preventKeyPress($event)" type="text" name="uid_number_surrogate_mother"
+                           (focus)="getCandidateSurrogates(birthRequest, child); surrogateMotherSelector.openModal()">
+                  </ng-container>
+
+                  <!--Both country code and uln number are missing, but has work_number and lambar is false-->
+                  <ng-container *ngIf="!child?.surrogate_mother?.uln_country_code && !child?.surrogate_mother?.uln_number && !child?.surrogate_mother?.work_number && !child?.has_lambar">
                     <input (keyup)="preventKeyPress($event)" (keydown)="preventKeyPress($event)"
                            (keypress)="preventKeyPress($event)" type="text" name="uid_number_surrogate_mother"
                            (focus)="getCandidateSurrogates(birthRequest, child); surrogateMotherSelector.openModal()">
@@ -178,11 +186,19 @@
                   <!--Both country code and uln number are present and lambar is false-->
                   <div class="row collapse" *ngIf="child?.surrogate_mother?.uln_country_code && child?.surrogate_mother?.uln_number && !child?.has_lambar">
                     <span class="medium-9 columns">{{child?.surrogate_mother?.uln_country_code}} {{child?.surrogate_mother?.uln_number}}</span>
-                    <button class="tiny button medium-3 columns" (click)="resetSurrogateMotherUlnCountryCode(child, birthRequest)">{{'CHANGE' | translate}}</button>
+                    <button class="tiny button medium-3 columns" *ngIf="child?.surrogateMotherUlnCountryCodeOnlyHasChanged" (click)="resetSurrogateMotherUlnCountryCode(child, birthRequest)">{{'CHANGE' | translate}}</button>
+                    <button class="tiny button medium-3 columns" *ngIf="child?.surrogateMotherHasChanged" (click)="resetSurrogateMother(child, birthRequest)">{{'CHANGE' | translate}}</button>
                   </div>
 
                   <span *ngIf="child?.has_lambar">
                     {{ 'DOES NOT APPLY' | translate }}
+                  </span>
+
+                </td>
+
+                <td>
+                  <span *ngIf="child?.surrogate_mother?.work_number && !child?.has_lambar">
+                    {{ child?.surrogate_mother?.work_number }}
                   </span>
                 </td>
               </tr>
@@ -233,7 +249,6 @@
     #surrogateMotherSelector
     [columns]="['ULN', 'PEDIGREE NUMBER']"
     [list]="candidateSurrogates"
-    [filter]="'FEMALES'"
     [SUGGESTION_LABEL]="'POSSIBLE SURROGATE MOTHER'"
     (selection)="selectSurrogateMother($event)">
   </selector>

@@ -66,6 +66,7 @@ export class CsvComponent implements OnInit, OnDestroy {
   suggestedCandidateFathers = <LivestockAnimal[]>[];
   suggestedCandidateMothers = <LivestockAnimal[]>[];
   candidateSurrogates = <LivestockAnimal[]>[];
+  parsedMothers = <LivestockAnimal[]>[];
 
   private selectedBirthRequest: ExtendedBirthRequest;
   private selectedChild;
@@ -99,6 +100,8 @@ export class CsvComponent implements OnInit, OnDestroy {
 
   handleFileInput(files: FileList) {
     this.birthRequests = [];
+    this.parsedMothers = [];
+
     const config: PapaParseConfig = {};
     config.delimiter = ',';
 
@@ -184,27 +187,11 @@ export class CsvComponent implements OnInit, OnDestroy {
 
         this.validateBirthRequest(birthRequest);
 
+        this.parsedMothers.push(birthRequest.mother);
       }
+      console.log(this.parsedMothers);
       index++;
     });
-  }
-
-  selectMother(mother: Animal) {
-    this.selectedBirthRequest.mother = mother;
-    this.selectedBirthRequest.motherHasChanged = true;
-    this.selectedBirthRequest.motherMissingUlnCountryCode = false;
-    this.validateBirthRequest(this.selectedBirthRequest);
-    this.setCandidateFathers(this.selectedBirthRequest);
-  }
-
-  selectFather(father) {
-    this.selectedBirthRequest.father = father;
-    this.validateBirthRequest(this.selectedBirthRequest);
-  }
-
-  removeFather(birthRequest: ExtendedBirthRequest) {
-    birthRequest.father = null;
-    this.validateBirthRequest(birthRequest);
   }
 
   addStillborn(birthRequest) {
@@ -347,7 +334,8 @@ export class CsvComponent implements OnInit, OnDestroy {
         const surrogateMother = {
           uln_country_code: '',
           uln_number: '',
-          uln: ''
+          uln: '',
+          work_number: ''
         };
 
         if (
@@ -356,6 +344,15 @@ export class CsvComponent implements OnInit, OnDestroy {
           && !child.has_lambar
         ) {
           surrogateMother.uln_number = tmpCsvRow.surrogate_mother;
+          child.surrogate_mother = surrogateMother;
+          child.surrogateMotherMissingUlnCountryCode = true;
+          birthRequest.surrogateMotherMissingUlnCountryCode = true;
+        } else if (
+          tmpCsvRow.surrogate_mother.length === 5
+          && /^\d+$/.test(tmpCsvRow.surrogate_mother)
+          && !child.has_lambar
+        ) {
+          surrogateMother.work_number = tmpCsvRow.surrogate_mother;
           child.surrogate_mother = surrogateMother;
           child.surrogateMotherMissingUlnCountryCode = true;
           birthRequest.surrogateMotherMissingUlnCountryCode = true;
@@ -400,7 +397,9 @@ export class CsvComponent implements OnInit, OnDestroy {
             if (animal.uln_country_code && animal.uln_number) {
 
               animal.uln = animal.uln_country_code + animal.uln_number;
-              animal.ulnLastFive = animal.uln_number.substr(animal.uln_number.length - 5);
+              if (!animal.work_number) {
+                animal.work_number = animal.uln_number.substr(animal.uln_number.length - 5);
+              }
             }
             if (animal.pedigree_country_code && animal.pedigree_number) {
               animal.pedigree = animal.pedigree_country_code + animal.pedigree_number;
@@ -411,7 +410,9 @@ export class CsvComponent implements OnInit, OnDestroy {
             if (animal.uln_country_code && animal.uln_number) {
 
               animal.uln = animal.uln_country_code + animal.uln_number;
-              animal.ulnLastFive = animal.uln_number.substr(animal.uln_number.length - 5);
+              if (!animal.work_number) {
+                animal.work_number = animal.uln_number.substr(animal.uln_number.length - 5);
+              }
             }
             if (animal.pedigree_country_code && animal.pedigree_number) {
               animal.pedigree = animal.pedigree_country_code + animal.pedigree_number;
@@ -468,7 +469,9 @@ export class CsvComponent implements OnInit, OnDestroy {
               if (animal.uln_country_code && animal.uln_number) {
 
                 animal.uln = animal.uln_country_code + animal.uln_number;
-                animal.ulnLastFive = animal.uln_number.substr(animal.uln_number.length - 5);
+                if (!animal.work_number) {
+                  animal.work_number = animal.uln_number.substr(animal.uln_number.length - 5);
+                }
               }
               if (animal.pedigree_country_code && animal.pedigree_number) {
                 animal.pedigree = animal.pedigree_country_code + animal.pedigree_number;
@@ -523,7 +526,9 @@ export class CsvComponent implements OnInit, OnDestroy {
             if (animal.uln_country_code && animal.uln_number) {
 
               animal.uln = animal.uln_country_code + animal.uln_number;
-              animal.ulnLastFive = animal.uln_number.substr(animal.uln_number.length - 5);
+              if (!animal.work_number) {
+                animal.work_number = animal.uln_number.substr(animal.uln_number.length - 5);
+              }
             }
             if (animal.pedigree_country_code && animal.pedigree_number) {
               animal.pedigree = animal.pedigree_country_code + animal.pedigree_number;
@@ -534,7 +539,9 @@ export class CsvComponent implements OnInit, OnDestroy {
             if (animal.uln_country_code && animal.uln_number) {
 
               animal.uln = animal.uln_country_code + animal.uln_number;
-              animal.ulnLastFive = animal.uln_number.substr(animal.uln_number.length - 5);
+              if (!animal.work_number) {
+                animal.work_number = animal.uln_number.substr(animal.uln_number.length - 5);
+              }
             }
             if (animal.pedigree_country_code && animal.pedigree_number) {
               animal.pedigree = animal.pedigree_country_code + animal.pedigree_number;
@@ -542,6 +549,7 @@ export class CsvComponent implements OnInit, OnDestroy {
           }
 
           this.suggestedCandidateFathers = suggestedCandidateFathers.concat(otherCandidateFathers);
+          console.log(this.suggestedCandidateFathers);
           this.isLoadingCandidateFathers = false;
           this.loadingStatesCount--;
         },
@@ -550,10 +558,6 @@ export class CsvComponent implements OnInit, OnDestroy {
           this.loadingStatesCount--;
         }
       );
-  }
-
-  selectSurrogateMother(surrogateMother) {
-    this.selectedChild.surrogate_mother = surrogateMother;
   }
 
   getCandidateSurrogates(birthRequest, child) {
@@ -574,13 +578,20 @@ export class CsvComponent implements OnInit, OnDestroy {
     this.apiService.doPostRequest(uri, this.candidateSurrogatesRequest)
       .subscribe(
           (res: JsonResponseModel) => {
-          const candidateSurrogates = <LivestockAnimal[]> res.result.suggested_candidate_surrogates;
+          let candidateSurrogates = res.result.suggested_candidate_surrogates;
+          candidateSurrogates = candidateSurrogates.concat(this.parsedMothers);
+
+          console.log('wtf');
+          console.log(this.parsedMothers);
+          console.log(candidateSurrogates);
 
           for (const animal of candidateSurrogates) {
             animal.suggested = true;
             if (animal.uln_country_code && animal.uln_number) {
               animal.uln = animal.uln_country_code + animal.uln_number;
-              animal.ulnLastFive = animal.uln_number.substr(animal.uln_number.length - 5);
+              if (!animal.work_number) {
+                animal.work_number = animal.uln_number.substr(animal.uln_number.length - 5);
+              }
             }
 
             if (animal.pedigree_country_code && animal.pedigree_number) {
@@ -588,6 +599,7 @@ export class CsvComponent implements OnInit, OnDestroy {
             }
           }
           this.candidateSurrogates = candidateSurrogates;
+          console.log(this.candidateSurrogates);
           this.isLoadingCandidateSurrogates = false;
           this.loadingStatesCount--;
         },
@@ -596,6 +608,25 @@ export class CsvComponent implements OnInit, OnDestroy {
           this.loadingStatesCount--;
         }
       );
+  }
+
+
+  selectMother(mother: Animal) {
+    this.selectedBirthRequest.mother = mother;
+    this.selectedBirthRequest.motherHasChanged = true;
+    this.selectedBirthRequest.motherMissingUlnCountryCode = false;
+    this.validateBirthRequest(this.selectedBirthRequest);
+    this.setCandidateFathers(this.selectedBirthRequest);
+  }
+
+  selectFather(father) {
+    this.selectedBirthRequest.father = father;
+    this.validateBirthRequest(this.selectedBirthRequest);
+  }
+
+  removeFather(birthRequest: ExtendedBirthRequest) {
+    birthRequest.father = null;
+    this.validateBirthRequest(birthRequest);
   }
 
   selectMotherUlnCountryCode(birthRequest: ExtendedBirthRequest, countryCode: string) {
@@ -607,9 +638,16 @@ export class CsvComponent implements OnInit, OnDestroy {
     this.validateBirthRequest(birthRequest);
   }
 
+  selectSurrogateMother(surrogateMother) {
+    this.selectedChild.surrogate_mother = surrogateMother;
+    this.selectedChild.surrogateMotherHasChanged = true;
+    this.selectedChild.surrogateMotherMissingUlnCountryCode = false;
+  }
+
   selectSurrogateMotherUlnCountryCode(child: Child, countryCode: string, birthRequest: ExtendedBirthRequest) {
     child.surrogate_mother.uln_country_code = countryCode;
     child.surrogate_mother.uln = countryCode + child.surrogate_mother.uln_number;
+    child.surrogateMotherUlnCountryCodeOnlyHasChanged = true;
     child.surrogateMotherMissingUlnCountryCode = false;
     this.validateBirthRequest(birthRequest);
   }
@@ -625,6 +663,7 @@ export class CsvComponent implements OnInit, OnDestroy {
   resetSurrogateMotherUlnCountryCode(child: Child, birthRequest: ExtendedBirthRequest) {
     child.surrogate_mother.uln_country_code = '';
     child.surrogate_mother.uln = '';
+    child.surrogateMotherUlnCountryCodeOnlyHasChanged = false;
     child.surrogateMotherMissingUlnCountryCode = true;
     this.validateBirthRequest(birthRequest);
   }
@@ -639,6 +678,19 @@ export class CsvComponent implements OnInit, OnDestroy {
     birthRequest.motherHasChanged = false;
     birthRequest.mother = mother;
     birthRequest.motherMissingUlnCountryCode = true;
+    this.validateBirthRequest(birthRequest);
+  }
+
+  resetSurrogateMother(child: Child, birthRequest: ExtendedBirthRequest) {
+    const surrogateMother = {
+      uln_country_code: '',
+      uln_number: '',
+      uln: '',
+      work_number: ''
+    };
+
+    child.surrogateMotherHasChanged = false;
+    child.surrogate_mother = surrogateMother;
     this.validateBirthRequest(birthRequest);
   }
 
