@@ -9,7 +9,7 @@ import {NSFOService} from '../../../shared/services/nsfo-api/nsfo.service';
 import {API_URI_MEASUREMENTS} from '../../../shared/services/nsfo-api/nsfo.settings';
 import {ExteriorMeasurementsValidator} from '../../../shared/validation/nsfo-validation';
 import {Exterior} from '../../../shared/models/measurement.model';
-import {User} from '../../../shared/models/person.model';
+import {Inspector, User} from '../../../shared/models/person.model';
 import {JsonResponseModel} from '../../../shared/models/json-response.model';
 
 
