@@ -12,6 +12,7 @@ import {AnimalsOverviewSelection} from '../../shared/components/livestock/animal
 import {FormBuilder, FormControl, FormGroup} from '@angular/forms';
 import {Animal, LivestockAnimal} from '../../shared/models/animal.model';
 import {JsonResponseModel} from '../../shared/models/json-response.model';
+import {TranslateService} from '@ngx-translate/core';
 
 @Component({
     templateUrl: './report.inbreedingCoefficient.html',
@@ -28,7 +29,8 @@ export class ReportInbreedingCoefficientComponent {
         private nsfo: NSFOService,
         private fb: FormBuilder,
         private queryParamsService: QueryParamsService,
-        private downloadService: DownloadService
+        private downloadService: DownloadService,
+        private translate: TranslateService,
     ) {
         this.form = fb.group({
             uln: new FormControl(''),
@@ -63,6 +65,10 @@ export class ReportInbreedingCoefficientComponent {
     }
 
     public generateReport(event: AnimalsOverviewSelection) {
+        if (!this.selectedRam || !this.selectedRam.uln_number || !this.selectedRam.uln_country_code) {
+          alert(this.translate.instant('NO RAM SELECTED'));
+          return;
+        }
         this.downloadService.doInbreedingCoefficientReportPostRequest(this.selectedRam, event.animals, event.fileType);
     }
 

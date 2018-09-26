@@ -680,6 +680,7 @@
   "MISSING MOTHER DETAILS": "De gegevens van de moeder is incompleet",
   "MISSING SURROGATE MOTHER DETAILS": "De gegevens van een pleegmoeder is incompleet",
   "STILL CONTINUE WITH DECLARATION?": "Weet u zeker dat u wilt doorgaan? De lammeren worden in dat geval geregistreerd zonder vader of moeder.",
-  "WORK NUMBER IS NOT FOUND IN LIVESTOCK": "Werknummer is niet gevonden in de stallijst"
+  "WORK NUMBER IS NOT FOUND IN LIVESTOCK": "Werknummer is niet gevonden in de stallijst",
+  "NO RAM SELECTED": "Geen ram geselecteerd"
 }
 
