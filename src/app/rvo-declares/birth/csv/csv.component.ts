@@ -873,7 +873,6 @@ export class CsvComponent implements OnInit, OnDestroy {
     child.surrogate_mother.uln = '';
 
     child.surrogate_mother = surrogateMother;
-    console.log(child);
     child.surrogateMotherHasChanged = false;
     this.validateBirthRequest(birthRequest);
   }
