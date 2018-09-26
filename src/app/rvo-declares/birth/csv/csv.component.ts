@@ -17,6 +17,7 @@ import { JsonResponseModel } from '../../../shared/models/json-response.model';
 import { SettingsService } from '../../../shared/services/settings/settings.service';
 import {IS_CSV_IMPORT_BIRTHS_ACTIVE} from '../../../shared/variables/feature.activation';
 import {Router} from '@angular/router';
+import {SortOrder, SortService} from '../../../shared/services/utils/sort.service';
 
 interface CsvRow {
   electronicId: string;
@@ -66,6 +67,8 @@ export class CsvComponent implements OnInit, OnDestroy {
   isLoadingCandidateSurrogates = false;
   isLoadingCandidateMothers = false;
   isLoadingCandidateFathers = false;
+  ewesLoaded = false;
+  historicEwesLoaded = false;
 
   multipleCandidateFatherBirthRequests = <ExtendedBirthRequest[]>[];
   missingMotherBirthRequests = <ExtendedBirthRequest[]>[];
@@ -95,7 +98,8 @@ export class CsvComponent implements OnInit, OnDestroy {
     private settings: Settings,
     private apiService: NSFOService,
     private settingService: SettingsService,
-    private router: Router
+    private router: Router,
+    private sort: SortService
   ) { }
 
   ngOnInit() {
@@ -506,7 +510,8 @@ export class CsvComponent implements OnInit, OnDestroy {
       .subscribe(
         (res: JsonResponseModel) => {
           this.ewesInLivestock = this.ewesInLivestock.concat(<LivestockAnimal[]>res.result);
-
+          this.ewesLoaded = true;
+          this.sortEwes();
         },
         err => {
           alert(this.apiService.getErrorMessage(err));
@@ -518,11 +523,24 @@ export class CsvComponent implements OnInit, OnDestroy {
       .subscribe(
         (res: JsonResponseModel) => {
           this.ewesInLivestock = this.ewesInLivestock.concat(<LivestockAnimal[]>res.result);
+          this.historicEwesLoaded = true;
+          this.sortEwes();
         },
         err => {
           alert(this.apiService.getErrorMessage(err));
         }
       );
+  }
+
+  sortEwes() {
+    if (this.ewesLoaded && this.historicEwesLoaded) {
+      const sortOrder: SortOrder = {
+        variableName: 'worker_number',
+        ascending: true,
+        isDate: false // it is date string, not a date
+      };
+      this.ewesInLivestock = this.sort.sort(this.ewesInLivestock, [sortOrder]);
+    }
   }
 
   setMother(birthRequest: ExtendedBirthRequest) {
