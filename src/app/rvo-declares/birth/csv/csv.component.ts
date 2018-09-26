@@ -15,6 +15,8 @@ import { NSFOService } from '../../../shared/services/nsfo-api/nsfo.service';
 import * as moment from 'moment';
 import { JsonResponseModel } from '../../../shared/models/json-response.model';
 import { SettingsService } from '../../../shared/services/settings/settings.service';
+import {IS_CSV_IMPORT_BIRTHS_ACTIVE} from '../../../shared/variables/feature.activation';
+import {Router} from '@angular/router';
 
 interface CsvRow {
   electronicId: string;
@@ -91,10 +93,15 @@ export class CsvComponent implements OnInit, OnDestroy {
     private papa: PapaParseService,
     private settings: Settings,
     private apiService: NSFOService,
-    private settingService: SettingsService
+    private settingService: SettingsService,
+    private router: Router
   ) { }
 
   ngOnInit() {
+    if (!IS_CSV_IMPORT_BIRTHS_ACTIVE) {
+      this.router.navigate(['/main/birth/declare']);
+    }
+
     this.suggestedCandidateFathers = [];
     this.candidateSurrogates = [];
 
