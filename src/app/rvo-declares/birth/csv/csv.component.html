@@ -19,7 +19,7 @@
     <div class="row">
       <div class="columns">
         <i *ngIf="birthRequest.isSubmitting" class="fa fa-spinner fa-pulse fa-fw"></i>
-        <p style="color:#ff0000;">
+        <p class="alert">
           {{birthRequest.errorMessage}}
         </p>
       </div>
@@ -34,13 +34,13 @@
       <div class="medium-3 columns">
         <div class="row">
           <label class="medium-3 columns">{{ 'MOTHER' | translate }}</label>
-          <label class="medium-9 columns" *ngIf="!birthRequest?.mother?.uln_country_code && birthRequest?.mother?.uln_number" style="color:#ff0000;">
+          <label class="medium-9 columns warning-text" *ngIf="!birthRequest?.mother?.uln_country_code && birthRequest?.mother?.uln_number">
             <small>{{ 'CHOOSE COUNTRY CODE' | translate }}</small>
           </label>
-          <label class="medium-9 columns" *ngIf="!birthRequest?.mother?.uln_country_code && !birthRequest?.mother?.uln_number && !birthRequest?.mother?.worker_number" style="color:#ff0000;">
+          <label class="medium-9 columns warning-text" *ngIf="!birthRequest?.mother?.uln_country_code && !birthRequest?.mother?.uln_number && !birthRequest?.mother?.worker_number">
             <small>{{ 'MOTHER IS MISSING' | translate }}</small>
           </label>
-          <label class="medium-9 columns" *ngIf="!birthRequest?.mother?.uln_country_code && !birthRequest?.mother?.uln_number && birthRequest?.mother?.worker_number" style="color:#ff0000;">
+          <label class="medium-9 columns warning-text" *ngIf="!birthRequest?.mother?.uln_country_code && !birthRequest?.mother?.uln_number && birthRequest?.mother?.worker_number">
             <small>{{ 'WORK NUMBER IS NOT FOUND IN LIVESTOCK' | translate }}</small>
           </label>
         </div>
@@ -81,7 +81,7 @@
       <div class="medium-3 columns">
         <div class="row">
           <label class="medium-3 columns">{{ 'FATHER' |translate }}</label>
-          <label class="medium-9 columns" *ngIf="birthRequest.suggested_candidate_fathers?.length > 1 && !birthRequest?.father" style="color:#ff0000;">
+          <label class="medium-9 columns warning-text" *ngIf="birthRequest.suggested_candidate_fathers?.length > 1 && !birthRequest?.father">
             <small>{{ 'MULTIPLE FATHER CANDIDATES' | translate }}</small>
           </label>
         </div>
@@ -167,7 +167,7 @@
 
                   <!--Missing country code but has a uln number and lambar is false-->
                   <div *ngIf="!child?.surrogate_mother?.uln_country_code && child?.surrogate_mother?.uln_number && !child?.has_lambar">
-                    <label style="color:#ff0000;"><small>{{ 'CHOOSE COUNTRY CODE' | translate }}</small></label>
+                    <label class="warning-text"><small>{{ 'CHOOSE COUNTRY CODE' | translate }}</small></label>
                     <div class="uid-input-group">
                       <select [ngModel]="child?.surrogate_mother?.uln_country_code" (change)="selectSurrogateMotherUlnCountryCode(child, $event.target.value, birthRequest)" style="height:2.4375rem">
                         <option *ngFor="let country_code of country_code_list" [value]="country_code.code">
@@ -180,7 +180,7 @@
 
                   <!--Both country code and uln number are missing, but has worker_number and lambar is false-->
                   <ng-container *ngIf="!child?.surrogate_mother?.uln_country_code && !child?.surrogate_mother?.uln_number && child?.surrogate_mother?.worker_number && !child?.has_lambar">
-                    <label style="color:#ff0000;"><small>{{ 'WORK NUMBER IS NOT FOUND IN LIVESTOCK' | translate }}</small></label>
+                    <label class="warning-text"><small>{{ 'WORK NUMBER IS NOT FOUND IN LIVESTOCK' | translate }}</small></label>
                     <input (keyup)="preventKeyPress($event)" (keydown)="preventKeyPress($event)" [value]="child?.surrogate_mother?.worker_number"
                            (keypress)="preventKeyPress($event)" type="text" name="uid_number_surrogate_mother"
                            (focus)="getCandidateSurrogates(birthRequest, child); surrogateMotherSelector.openModal()">
