@@ -9,7 +9,7 @@ import { Settings } from '../../../shared/variables/settings';
 import {
   API_URI_DECLARE_BIRTH,
   API_URI_GET_EWES_IN_LIVESTOCK,
-  API_URI_GET_HISTORIC_EWES_IN_LIVESTOCK
+  API_URI_GET_HISTORIC_EWES_IN_LIVESTOCK,
 } from '../../../shared/services/nsfo-api/nsfo.settings';
 import { NSFOService } from '../../../shared/services/nsfo-api/nsfo.service';
 import * as moment from 'moment';
@@ -29,6 +29,7 @@ interface CsvRow {
   hasLambar: string;
   gender: string;
   surrogate_mother: string; // uln
+  tmpMother: any;
 }
 
 class ExtendedBirthRequest extends BirthRequest {
@@ -140,7 +141,7 @@ export class CsvComponent implements OnInit, OnDestroy {
           hasLambar: row[9], // Lambar // J
           gender: row[10], // O/R // K
           surrogate_mother: row[11], // Pleegm // L
-          mother: ''
+          tmpMother: ''
         };
         this.resolveCsvRowMother(csvRow);
         this.csvRows.push(csvRow);
@@ -199,6 +200,7 @@ export class CsvComponent implements OnInit, OnDestroy {
       }
       index++;
     });
+
   }
 
   addStillborn(birthRequest) {
@@ -254,14 +256,14 @@ export class CsvComponent implements OnInit, OnDestroy {
         mother.uln_number = csvRow.tag;
       }
 
-      csvRow.mother = mother;
+      csvRow.tmpMother = mother;
 
-      this.parsedMothers.push(csvRow.mother);
+      this.parsedMothers.push(csvRow.tmpMother);
     }
   }
 
   resolveBirthRequestMother(csvRow, birthRequest: ExtendedBirthRequest) {
-    birthRequest.mother = csvRow.mother;
+    birthRequest.mother = csvRow.tmpMother;
     // // Determine mother
     // const ulnUnProcessed = csvRow.electronicId.split(' ');
     //
@@ -397,6 +399,8 @@ export class CsvComponent implements OnInit, OnDestroy {
         ) {
           surrogateMother.work_number = tmpCsvRow.surrogate_mother;
           child.surrogate_mother = surrogateMother;
+          this.setCandidateSurrogates(child, birthRequest);
+
           child.surrogateMotherMissingUlnCountryCode = true;
           birthRequest.surrogateMotherMissingUlnCountryCode = true;
         }
@@ -490,16 +494,33 @@ export class CsvComponent implements OnInit, OnDestroy {
   }
 
   getEwesInLivestock() {
+    // let ewes = <LivestockAnimal[]>[];
+    // let historicEwes = <LivestockAnimal[]>[];
+
     this.apiService
       .doGetRequest(API_URI_GET_EWES_IN_LIVESTOCK)
       .subscribe(
         (res: JsonResponseModel) => {
-          this.ewesInLivestock = <LivestockAnimal[]>res.result;
+          this.ewesInLivestock = this.ewesInLivestock.concat(<LivestockAnimal[]>res.result);
+
         },
         err => {
           alert(this.apiService.getErrorMessage(err));
         }
       );
+
+    this.apiService
+      .doGetRequest(API_URI_GET_HISTORIC_EWES_IN_LIVESTOCK)
+      .subscribe(
+        (res: JsonResponseModel) => {
+          this.ewesInLivestock = this.ewesInLivestock.concat(<LivestockAnimal[]>res.result);
+        },
+        err => {
+          alert(this.apiService.getErrorMessage(err));
+        }
+      );
+
+    console.log(this.ewesInLivestock);
   }
 
   getCandidateMothers(birthRequest: ExtendedBirthRequest) {
@@ -684,6 +705,97 @@ export class CsvComponent implements OnInit, OnDestroy {
     //   );
   }
 
+  setCandidateSurrogates(child, birthRequest) {
+
+    this.selectedChild = child;
+
+    if (!birthRequest.mother.uln) {
+      return;
+    }
+
+    this.isLoadingCandidateSurrogates = true;
+    this.loadingStatesCount++;
+
+    this.candidateSurrogates = this.ewesInLivestock;
+
+    for (const animal of this.candidateSurrogates) {
+      animal.suggested = true;
+      if (animal.uln_country_code && animal.uln_number) {
+        animal.uln = animal.uln_country_code + animal.uln_number;
+        if (!animal.work_number) {
+          animal.work_number = animal.uln_number.substr(animal.uln_number.length - 5);
+        }
+      }
+
+      if (animal.pedigree_country_code && animal.pedigree_number) {
+        animal.pedigree = animal.pedigree_country_code + animal.pedigree_number;
+      }
+    }
+
+    console.log(this.candidateSurrogates);
+
+    this.candidateSurrogates = this.candidateSurrogates.filter(function( ewe ) {
+      return ewe.work_number === child.surrogate_mother.work_number;
+    });
+
+    if (this.candidateSurrogates.length === 1) {
+      this.selectedChild.surrogate_mother = this.candidateSurrogates[0];
+    }
+
+    console.log(this.selectedChild);
+
+    // child.surrogate_mother.uln_country_code = countryCode;
+    // child.surrogate_mother.uln = countryCode + child.surrogate_mother.uln_number;
+    this.selectedChild.surrogateMotherUlnCountryCodeOnlyHasChanged = true;
+    this.selectedChild.surrogateMotherMissingUlnCountryCode = false;
+    this.validateBirthRequest(birthRequest);
+
+
+    console.log(this.selectedChild.surrogate_mother);
+    console.log(this.selectedChild);
+
+    this.selectedChild.surrogateMotherHasChanged = true;
+    this.selectedChild.surrogateMotherMissingUlnCountryCode = false;
+
+    this.isLoadingCandidateSurrogates = false;
+    this.loadingStatesCount--;
+    //
+    // const uri = API_URI_DECLARE_BIRTH + '/' + birthRequest.mother.uln + '/candidate-surrogates';
+    // this.apiService.doPostRequest(uri, this.candidateSurrogatesRequest)
+    //   .subscribe(
+    //       (res: JsonResponseModel) => {
+    //       let candidateSurrogates = res.result.suggested_candidate_surrogates;
+    //       candidateSurrogates = candidateSurrogates.concat(this.parsedMothers);
+    //
+    //       console.log('wtf');
+    //       console.log(this.parsedMothers);
+    //       console.log(candidateSurrogates);
+    //
+    //       for (const animal of candidateSurrogates) {
+    //         animal.suggested = true;
+    //         if (animal.uln_country_code && animal.uln_number) {
+    //           animal.uln = animal.uln_country_code + animal.uln_number;
+    //           if (!animal.work_number) {
+    //             animal.work_number = animal.uln_number.substr(animal.uln_number.length - 5);
+    //           }
+    //         }
+    //
+    //         if (animal.pedigree_country_code && animal.pedigree_number) {
+    //           animal.pedigree = animal.pedigree_country_code + animal.pedigree_number;
+    //         }
+    //       }
+    //       this.candidateSurrogates = candidateSurrogates;
+    //       console.log(this.candidateSurrogates);
+    //       this.isLoadingCandidateSurrogates = false;
+    //       this.loadingStatesCount--;
+    //     },
+    //     err => {
+    //       this.isLoadingCandidateSurrogates = false;
+    //       this.loadingStatesCount--;
+    //     }
+    //   );
+  }
+
 
   selectMother(mother: Animal) {
     this.selectedBirthRequest.mother = mother;
@@ -763,8 +875,12 @@ export class CsvComponent implements OnInit, OnDestroy {
       work_number: ''
     };
 
+    child.surrogate_mother.uln_country_code = '';
+    child.surrogate_mother.uln_number = '';
+    child.surrogate_mother.uln = '';
+
+    console.log(child);
     child.surrogateMotherHasChanged = false;
-    child.surrogate_mother = surrogateMother;
     this.validateBirthRequest(birthRequest);
   }
 
@@ -848,11 +964,13 @@ export class CsvComponent implements OnInit, OnDestroy {
               birthRequest.isSubmitting = false;
               birthRequest.errorMessage = null;
               birthRequest.declareStatus = true;
+              console.log(birthRequest);
             },
             err => {
               birthRequest.isSubmitting = false;
               birthRequest.errorMessage = err.error.result.message;
               birthRequest.declareStatus = false;
+              console.log(birthRequest);
             }
           );
       }
