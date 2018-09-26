@@ -8,17 +8,18 @@
 
 <div class="row" *ngIf="birthRequests.length > 0">
   <div class="columns">
-    <button [disabled]="loadingStatesCount !== 0" (click)="submitBirthRequests()" class="small primary button">Melden  <span class="badge">{{birthRequests.length}}</span></button>
+    <button [disabled]="loadingStatesCount !== 0" (click)="submitBirthRequests()" class="small success button">{{ "DECLARE ALL BIRTHS" | translate }}  <span class="badge">{{birthRequests.length}}</span></button>
   </div>
+
   <app-page-loading-spinner *ngIf="loadingStatesCount !== 0"></app-page-loading-spinner>
 </div>
 
-<div *ngFor="let birthRequest of birthRequests" class="csv_birthrequest" [class.success]="birthRequest.declareStatus === true" [class.error]="birthRequest.declareStatus === false" [class.warning]="birthRequestHasWarning(birthRequest)">
+<div *ngFor="let birthRequest of birthRequests" class="csv_birthrequest" [class.success]="birthRequest.declareStatus === true" [class.error]="birthRequest.declareStatus === false" [class.warning]="birthRequest.hasWarnings && birthRequest.declareStatus === null">
   <!-- <ng-container *ngIf="birthRequest.declareStatus === null || birthRequest.declareStatus === false"> -->
     <div class="row">
       <div class="columns">
         <i *ngIf="birthRequest.isSubmitting" class="fa fa-spinner fa-pulse fa-fw"></i>
-        <p style="color:#ff0000;">
+        <p class="alert">
           {{birthRequest.errorMessage}}
         </p>
       </div>
@@ -33,8 +34,14 @@
       <div class="medium-3 columns">
         <div class="row">
           <label class="medium-3 columns">{{ 'MOTHER' | translate }}</label>
-          <label class="medium-9 columns" *ngIf="!birthRequest?.mother?.uln_country_code && birthRequest?.mother?.uln_number" style="color:#ff0000;">
+          <label class="medium-9 columns warning-text" *ngIf="!birthRequest?.mother?.uln_country_code && birthRequest?.mother?.uln_number">
             <small>{{ 'CHOOSE COUNTRY CODE' | translate }}</small>
+          </label>
+          <label class="medium-9 columns warning-text" *ngIf="!birthRequest?.mother?.uln_country_code && !birthRequest?.mother?.uln_number && !birthRequest?.mother?.worker_number">
+            <small>{{ 'MOTHER IS MISSING' | translate }}</small>
+          </label>
+          <label class="medium-9 columns warning-text" *ngIf="!birthRequest?.mother?.uln_country_code && !birthRequest?.mother?.uln_number && birthRequest?.mother?.worker_number">
+            <small>{{ 'WORK NUMBER IS NOT FOUND IN LIVESTOCK' | translate }}</small>
           </label>
         </div>
 
@@ -55,9 +62,16 @@
           <button class="tiny button medium-3 columns" *ngIf="birthRequest?.motherHasChanged" (click)="resetMother(birthRequest)">{{'CHANGE' | translate}}</button>
         </div>
 
-        <!--Both country code and uln number are missing-->
-        <ng-container *ngIf="!birthRequest?.mother?.uln_country_code && !birthRequest?.mother?.uln_number && !birthRequest.suggestedCandidateMothersIsLoading">
+        <!--Both country code and uln number and work_number are missing-->
+        <ng-container *ngIf="!birthRequest?.mother?.uln_country_code && !birthRequest?.mother?.uln_number && !birthRequest?.mother?.worker_number && !birthRequest.suggestedCandidateMothersIsLoading">
           <input (keyup)="preventKeyPress($event)" (keydown)="preventKeyPress($event)"
+                 (keypress)="preventKeyPress($event)" type="text" name="uid_number_mother"
+                 (focus)="getCandidateMothers(birthRequest); motherSelector.openModal()">
+        </ng-container>
+
+        <!--Both country code and uln number are missing but has work_number-->
+        <ng-container *ngIf="!birthRequest?.mother?.uln_country_code && !birthRequest?.mother?.uln_number && birthRequest?.mother?.worker_number && !birthRequest.suggestedCandidateMothersIsLoading">
+          <input (keyup)="preventKeyPress($event)" (keydown)="preventKeyPress($event)" [value]="birthRequest?.mother?.worker_number"
                  (keypress)="preventKeyPress($event)" type="text" name="uid_number_mother"
                  (focus)="getCandidateMothers(birthRequest); motherSelector.openModal()">
         </ng-container>
@@ -67,7 +81,7 @@
       <div class="medium-3 columns">
         <div class="row">
           <label class="medium-3 columns">{{ 'FATHER' |translate }}</label>
-          <label class="medium-9 columns" *ngIf="birthRequest.suggested_candidate_fathers?.length > 1" style="color:#ff0000;">
+          <label class="medium-9 columns warning-text" *ngIf="birthRequest.suggested_candidate_fathers?.length > 1 && !birthRequest?.father">
             <small>{{ 'MULTIPLE FATHER CANDIDATES' | translate }}</small>
           </label>
         </div>
@@ -78,7 +92,7 @@
             {{birthRequest?.father?.uln_country_code}} {{birthRequest?.father?.uln_number}}
           </span>
           <span class="medium-3 columns">
-            <button class="tiny button" (click)="birthRequest.father = null">{{'REMOVE' | translate}}</button>
+            <button class="tiny button" (click)="removeFather(birthRequest)">{{'REMOVE' | translate}}</button>
           </span>
         </div>
 
@@ -133,6 +147,9 @@
               <th>
                 {{ 'ULN' | translate }} ({{ 'SURROGATE' | translate }})
               </th>
+              <th>
+                {{ 'WORK NUMBER' | translate }} ({{ 'SURROGATE' | translate }})
+              </th>
             </thead>
             <tbody>
               <tr *ngFor="let child of birthRequest.children; let i = index">
@@ -150,20 +167,27 @@
 
                   <!--Missing country code but has a uln number and lambar is false-->
                   <div *ngIf="!child?.surrogate_mother?.uln_country_code && child?.surrogate_mother?.uln_number && !child?.has_lambar">
-                    <label style="color:#ff0000;"><small>{{ 'CHOOSE COUNTRY CODE' | translate }}</small></label>
+                    <label class="warning-text"><small>{{ 'CHOOSE COUNTRY CODE' | translate }}</small></label>
                     <div class="uid-input-group">
-                      <select [ngModel]="child?.surrogate_mother?.uln_country_code" (change)="selectSurrogateMotherUlnCountryCode(child, $event.target.value)" style="height:2.4375rem">
+                      <select [ngModel]="child?.surrogate_mother?.uln_country_code" (change)="selectSurrogateMotherUlnCountryCode(child, $event.target.value, birthRequest)" style="height:2.4375rem">
                         <option *ngFor="let country_code of country_code_list" [value]="country_code.code">
                           {{ country_code.code }}
                         </option>
                       </select>
                       <input type="text" [disabled]="child?.surrogate_mother?.uln_number" [value]="child?.surrogate_mother?.uln_number" style="font-size:0.7rem;max-width:100%">
                     </div>
-
                   </div>
 
-                  <!--Both country code and uln number are missing and lambar is false-->
-                  <ng-container *ngIf="!child?.surrogate_mother?.uln_country_code && !child?.surrogate_mother?.uln_number && !child?.has_lambar">
+                  <!--Both country code and uln number are missing, but has worker_number and lambar is false-->
+                  <ng-container *ngIf="!child?.surrogate_mother?.uln_country_code && !child?.surrogate_mother?.uln_number && child?.surrogate_mother?.worker_number && !child?.has_lambar">
+                    <label class="warning-text"><small>{{ 'WORK NUMBER IS NOT FOUND IN LIVESTOCK' | translate }}</small></label>
+                    <input (keyup)="preventKeyPress($event)" (keydown)="preventKeyPress($event)" [value]="child?.surrogate_mother?.worker_number"
+                           (keypress)="preventKeyPress($event)" type="text" name="uid_number_surrogate_mother"
+                           (focus)="getCandidateSurrogates(birthRequest, child); surrogateMotherSelector.openModal()">
+                  </ng-container>
+
+                  <!--Both country code and uln number and worker_number are missing and lambar is false-->
+                  <ng-container *ngIf="!child?.surrogate_mother?.uln_country_code && !child?.surrogate_mother?.uln_number && !child?.surrogate_mother?.worker_number && !child?.has_lambar">
                     <input (keyup)="preventKeyPress($event)" (keydown)="preventKeyPress($event)"
                            (keypress)="preventKeyPress($event)" type="text" name="uid_number_surrogate_mother"
                            (focus)="getCandidateSurrogates(birthRequest, child); surrogateMotherSelector.openModal()">
@@ -172,11 +196,19 @@
                   <!--Both country code and uln number are present and lambar is false-->
                   <div class="row collapse" *ngIf="child?.surrogate_mother?.uln_country_code && child?.surrogate_mother?.uln_number && !child?.has_lambar">
                     <span class="medium-9 columns">{{child?.surrogate_mother?.uln_country_code}} {{child?.surrogate_mother?.uln_number}}</span>
-                    <button class="tiny button medium-3 columns" (click)="resetSurrogateMotherUlnCountryCode(child)">{{'CHANGE' | translate}}</button>
+                    <button class="tiny button medium-3 columns" *ngIf="child?.surrogateMotherUlnCountryCodeOnlyHasChanged" (click)="resetSurrogateMotherUlnCountryCode(child, birthRequest)">{{'CHANGE' | translate}}</button>
+                    <button class="tiny button medium-3 columns" *ngIf="child?.surrogateMotherHasChanged" (click)="resetSurrogateMother(child, birthRequest)">{{'CHANGE' | translate}}</button>
                   </div>
 
                   <span *ngIf="child?.has_lambar">
                     {{ 'DOES NOT APPLY' | translate }}
+                  </span>
+
+                </td>
+
+                <td>
+                  <span *ngIf="child?.surrogate_mother?.worker_number && !child?.has_lambar">
+                    {{ child?.surrogate_mother?.worker_number }}
                   </span>
                 </td>
               </tr>
@@ -199,6 +231,11 @@
             </tbody>
           </table>
         </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="columns clearfix">
+        <button [disabled]="loadingStatesCount !== 0" (click)="submitSingleBirthRequest(birthRequest)" class="float-right small success button">{{ "DECLARE" | translate }}</button>
       </div>
     </div>
   <!-- </ng-container> -->
@@ -227,7 +264,116 @@
     #surrogateMotherSelector
     [columns]="['ULN', 'PEDIGREE NUMBER']"
     [list]="candidateSurrogates"
-    [filter]="'FEMALES'"
     [SUGGESTION_LABEL]="'POSSIBLE SURROGATE MOTHER'"
     (selection)="selectSurrogateMother($event)">
   </selector>
+
+
+<div class="reveal-overlay" [ngStyle]="{'display': warningModalDisplay}">
+  <div class="reveal tiny" [ngStyle]="{'display': warningModalDisplay}">
+
+    <div class="modal-header">
+      {{ "WARNING" | translate }}
+      <button type="button" class="pull-right" aria-label="Close modal" (click)="toggleAllWarningsModal()">
+        <i class="fa fa-times" aria-hidden="true"></i>
+      </button>
+    </div>
+
+    <div class="modal-body" *ngIf="warningModalMode === 'single'">
+      <!--BirthRequests with multiple fathers-->
+      <div class="callout warning">
+        <p *ngIf="selectedBirthRequest.hasMultipleCandidateFathers">
+          {{ 'MULTIPLE CANDIDATE FATHERS, BUT NONE CHOSEN' | translate }}
+        </p>
+
+        <p *ngIf="selectedBirthRequest.motherMissingUlnCountryCode">
+          {{ 'MISSING MOTHER DETAILS' | translate }}
+        </p>
+
+        <p *ngIf="selectedBirthRequest.surrogateMotherMissingUlnCountryCode">
+          {{ 'MISSING SURROGATE MOTHER DETAILS' | translate }}
+        </p>
+      </div>
+
+      <div>
+        <p><b>{{ "STILL CONTINUE WITH DECLARATION?" | translate }}</b></p>
+      </div>
+    </div>
+
+    <div class="modal-body" *ngIf="warningModalMode === 'all'">
+      <!--BirthRequests with multiple fathers-->
+      <div *ngIf="multipleCandidateFatherBirthRequests.length > 0" class="callout warning">
+        <p>{{ 'THE FOLLOWING LAMBS HAVE MULTIPLE CANDIDATE FATHERS BUT NONE CHOSEN' | translate }}</p>
+
+        <div>
+          <ng-container *ngFor="let warningBirthRequest of multipleCandidateFatherBirthRequests">
+            <p *ngFor="let child of warningBirthRequest.children">
+              {{ child.uln_country_code + child.uln_number}}
+            </p>
+          </ng-container>
+        </div>
+
+      </div>
+
+      <!--BirthRequests with missing mother details-->
+      <div *ngIf="missingMotherBirthRequests.length > 0" class="callout warning">
+        <p>{{ 'THE FOLLOWING LAMBS ARE MISSING MOTHER DETAILS' | translate }}</p>
+
+        <div>
+          <ng-container *ngFor="let warningBirthRequest of missingMotherBirthRequests">
+            <p *ngFor="let child of warningBirthRequest.children">
+              {{ child.uln_country_code + child.uln_number}}
+            </p>
+          </ng-container>
+        </div>
+
+      </div>
+
+      <!--BirthRequests with missing surrogate mother details-->
+      <div *ngIf="missingSurrogateMotherBirthRequests.length > 0" class="callout warning">
+        <p>{{ 'THE FOLLOWING LAMBS ARE MISSING SURROGATE MOTHER DETAILS' | translate }}</p>
+
+        <div>
+          <ng-container *ngFor="let warningBirthRequest of missingSurrogateMotherBirthRequests">
+            <ng-container *ngFor="let child of warningBirthRequest.children">
+              <p *ngIf="child.surrogateMotherMissingUlnCountryCode">{{ child.uln_country_code + child.uln_number}}</p>
+            </ng-container>
+          </ng-container>
+        </div>
+
+      </div>
+
+      <div>
+        <p><b>{{ "STILL CONTINUE WITH DECLARATION?" | translate }}</b></p>
+      </div>
+
+    </div>
+
+    <div class="modal-footer">
+      <button
+              type="button"
+              class="button alert pull-right"
+              aria-label="Clear list"
+              (click)="toggleAllWarningsModal()">
+        {{ 'CANCEL' | translate }}
+      </button>
+
+      <button *ngIf="warningModalMode === 'all'"
+              type="button"
+              class="button pull-right success"
+              aria-label="Clear list"
+              (click)="doSubmitBirthRequests(); toggleAllWarningsModal();">
+        {{ 'DECLARE' | translate }}
+      </button>
+
+      <button *ngIf="warningModalMode === 'single'"
+              type="button"
+              class="button pull-right success"
+              aria-label="Clear list"
+              (click)="doSubmitSingleBirthRequests(selectedBirthRequest); toggleAllWarningsModal();">
+        {{ 'DECLARE' | translate }}
+      </button>
+    </div>
+
+  </div>
+</div>

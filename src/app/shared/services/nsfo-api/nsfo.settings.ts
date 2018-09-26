@@ -21,6 +21,8 @@ export const API_URI_GET_ANIMAL_DETAILS = '/v1/animals-details';
 export const API_URI_CHANGE_ANIMAL_DETAILS = '/v1/animals-details';
 export const API_URI_SYNC_ANIMALS = '/v1/animals-sync';
 export const API_URI_SYNC_ANIMALS_RVO_LEADING = '/v1/animals-sync/rvo-leading';
+export const API_URI_GET_EWES_IN_LIVESTOCK = '/v1/animals-livestock?gender=female';
+export const API_URI_GET_HISTORIC_EWES_IN_LIVESTOCK = '/v1/animals-historic-livestock?gender=female';
 
 // MEASUREMENTS
 export const API_URI_MEASUREMENTS = '/v1/measurements';
