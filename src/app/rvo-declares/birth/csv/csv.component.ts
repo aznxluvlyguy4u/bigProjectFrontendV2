@@ -427,6 +427,21 @@ export class CsvComponent implements OnInit, OnDestroy {
     return children;
   }
 
+  prepareAnimal(animal: LivestockAnimal, isSuggested = false) {
+    animal.suggested = isSuggested;
+
+    if (animal.uln_country_code && animal.uln_number) {
+
+      animal.uln = animal.uln_country_code + animal.uln_number;
+      if (!animal.worker_number) {
+        animal.worker_number = animal.uln_number.substr(animal.uln_number.length - 5);
+      }
+    }
+    if (animal.pedigree_country_code && animal.pedigree_number) {
+      animal.pedigree = animal.pedigree_country_code + animal.pedigree_number;
+    }
+  }
+
   setCandidateFathers(birthRequest) {
 
     if (!birthRequest.mother.uln) {
@@ -451,30 +466,11 @@ export class CsvComponent implements OnInit, OnDestroy {
 
           // Prepare father data
           for (const animal of suggestedCandidateFathers) {
-            animal.suggested = true;
-            if (animal.uln_country_code && animal.uln_number) {
-
-              animal.uln = animal.uln_country_code + animal.uln_number;
-              if (!animal.worker_number) {
-                animal.worker_number = animal.uln_number.substr(animal.uln_number.length - 5);
-              }
-            }
-            if (animal.pedigree_country_code && animal.pedigree_number) {
-              animal.pedigree = animal.pedigree_country_code + animal.pedigree_number;
-            }
+            this.prepareAnimal(animal, true);
           }
 
           for (const animal of otherCandidateFathers) {
-            if (animal.uln_country_code && animal.uln_number) {
-
-              animal.uln = animal.uln_country_code + animal.uln_number;
-              if (!animal.worker_number) {
-                animal.worker_number = animal.uln_number.substr(animal.uln_number.length - 5);
-              }
-            }
-            if (animal.pedigree_country_code && animal.pedigree_number) {
-              animal.pedigree = animal.pedigree_country_code + animal.pedigree_number;
-            }
+            this.prepareAnimal(animal);
           }
 
           // Set birthRequest father data
@@ -552,17 +548,7 @@ export class CsvComponent implements OnInit, OnDestroy {
     this.suggestedCandidateMothers = this.ewesInLivestock;
 
     for (const animal of this.suggestedCandidateMothers) {
-      animal.suggested = true;
-      if (animal.uln_country_code && animal.uln_number) {
-        animal.uln = animal.uln_country_code + animal.uln_number;
-        if (!animal.worker_number) {
-          animal.worker_number = animal.uln_number.substr(animal.uln_number.length - 5);
-        }
-      }
-
-      if (animal.pedigree_country_code && animal.pedigree_number) {
-        animal.pedigree = animal.pedigree_country_code + animal.pedigree_number;
-      }
+      this.prepareAnimal(animal);
     }
 
     this.suggestedCandidateMothers = this.suggestedCandidateMothers.filter(function( ewe ) {
@@ -605,17 +591,7 @@ export class CsvComponent implements OnInit, OnDestroy {
           const suggestedCandidateMothers = <LivestockAnimal[]> res.result.suggested_candidate_mothers;
 
           suggestedCandidateMothers.forEach(animal => {
-            animal.suggested = true;
-            if (animal.uln_country_code && animal.uln_number) {
-
-              animal.uln = animal.uln_country_code + animal.uln_number;
-              if (!animal.worker_number) {
-                animal.worker_number = animal.uln_number.substr(animal.uln_number.length - 5);
-              }
-            }
-            if (animal.pedigree_country_code && animal.pedigree_number) {
-              animal.pedigree = animal.pedigree_country_code + animal.pedigree_number;
-            }
+            this.prepareAnimal(animal, true);
           });
 
           this.suggestedCandidateMothers = suggestedCandidateMothers;
@@ -654,30 +630,11 @@ export class CsvComponent implements OnInit, OnDestroy {
           const otherCandidateFathers = <LivestockAnimal[]> res.result.other_candidate_fathers;
 
           for (const animal of suggestedCandidateFathers) {
-            animal.suggested = true;
-            if (animal.uln_country_code && animal.uln_number) {
-
-              animal.uln = animal.uln_country_code + animal.uln_number;
-              if (!animal.worker_number) {
-                animal.worker_number = animal.uln_number.substr(animal.uln_number.length - 5);
-              }
-            }
-            if (animal.pedigree_country_code && animal.pedigree_number) {
-              animal.pedigree = animal.pedigree_country_code + animal.pedigree_number;
-            }
+            this.prepareAnimal(animal, true);
           }
 
           for (const animal of otherCandidateFathers) {
-            if (animal.uln_country_code && animal.uln_number) {
-
-              animal.uln = animal.uln_country_code + animal.uln_number;
-              if (!animal.worker_number) {
-                animal.worker_number = animal.uln_number.substr(animal.uln_number.length - 5);
-              }
-            }
-            if (animal.pedigree_country_code && animal.pedigree_number) {
-              animal.pedigree = animal.pedigree_country_code + animal.pedigree_number;
-            }
+            this.prepareAnimal(animal);
           }
 
           this.suggestedCandidateFathers = suggestedCandidateFathers.concat(otherCandidateFathers);
@@ -708,17 +665,7 @@ export class CsvComponent implements OnInit, OnDestroy {
     this.candidateSurrogates = this.ewesInLivestock;
 
     for (const animal of this.candidateSurrogates) {
-      animal.suggested = true;
-      if (animal.uln_country_code && animal.uln_number) {
-        animal.uln = animal.uln_country_code + animal.uln_number;
-        if (!animal.worker_number) {
-          animal.worker_number = animal.uln_number.substr(animal.uln_number.length - 5);
-        }
-      }
-
-      if (animal.pedigree_country_code && animal.pedigree_number) {
-        animal.pedigree = animal.pedigree_country_code + animal.pedigree_number;
-      }
+      this.prepareAnimal(animal, true);
     }
 
     this.isLoadingCandidateSurrogates = false;
@@ -774,17 +721,7 @@ export class CsvComponent implements OnInit, OnDestroy {
     this.candidateSurrogates = this.ewesInLivestock;
 
     for (const animal of this.candidateSurrogates) {
-      animal.suggested = true;
-      if (animal.uln_country_code && animal.uln_number) {
-        animal.uln = animal.uln_country_code + animal.uln_number;
-        if (!animal.worker_number) {
-          animal.worker_number = animal.uln_number.substr(animal.uln_number.length - 5);
-        }
-      }
-
-      if (animal.pedigree_country_code && animal.pedigree_number) {
-        animal.pedigree = animal.pedigree_country_code + animal.pedigree_number;
-      }
+      this.prepareAnimal(animal);
     }
 
     this.candidateSurrogates = this.candidateSurrogates.filter(function( ewe ) {
