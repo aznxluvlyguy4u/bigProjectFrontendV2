@@ -37,8 +37,11 @@
           <label class="medium-9 columns" *ngIf="!birthRequest?.mother?.uln_country_code && birthRequest?.mother?.uln_number" style="color:#ff0000;">
             <small>{{ 'CHOOSE COUNTRY CODE' | translate }}</small>
           </label>
-          <label class="medium-9 columns" *ngIf="!birthRequest?.mother?.uln_country_code && !birthRequest?.mother?.uln_number" style="color:#ff0000;">
+          <label class="medium-9 columns" *ngIf="!birthRequest?.mother?.uln_country_code && !birthRequest?.mother?.uln_number && !birthRequest?.mother?.worker_number" style="color:#ff0000;">
             <small>{{ 'MOTHER IS MISSING' | translate }}</small>
+          </label>
+          <label class="medium-9 columns" *ngIf="!birthRequest?.mother?.uln_country_code && !birthRequest?.mother?.uln_number && birthRequest?.mother?.worker_number" style="color:#ff0000;">
+            <small>{{ 'WORK NUMBER IS NOT FOUND IN LIVESTOCK' | translate }}</small>
           </label>
         </div>
 
@@ -59,9 +62,16 @@
           <button class="tiny button medium-3 columns" *ngIf="birthRequest?.motherHasChanged" (click)="resetMother(birthRequest)">{{'CHANGE' | translate}}</button>
         </div>
 
-        <!--Both country code and uln number are missing-->
-        <ng-container *ngIf="!birthRequest?.mother?.uln_country_code && !birthRequest?.mother?.uln_number && !birthRequest.suggestedCandidateMothersIsLoading">
+        <!--Both country code and uln number and work_number are missing-->
+        <ng-container *ngIf="!birthRequest?.mother?.uln_country_code && !birthRequest?.mother?.uln_number && !birthRequest?.mother?.worker_number && !birthRequest.suggestedCandidateMothersIsLoading">
           <input (keyup)="preventKeyPress($event)" (keydown)="preventKeyPress($event)"
+                 (keypress)="preventKeyPress($event)" type="text" name="uid_number_mother"
+                 (focus)="getCandidateMothers(birthRequest); motherSelector.openModal()">
+        </ng-container>
+
+        <!--Both country code and uln number are missing but has work_number-->
+        <ng-container *ngIf="!birthRequest?.mother?.uln_country_code && !birthRequest?.mother?.uln_number && birthRequest?.mother?.worker_number && !birthRequest.suggestedCandidateMothersIsLoading">
+          <input (keyup)="preventKeyPress($event)" (keydown)="preventKeyPress($event)" [value]="birthRequest?.mother?.worker_number"
                  (keypress)="preventKeyPress($event)" type="text" name="uid_number_mother"
                  (focus)="getCandidateMothers(birthRequest); motherSelector.openModal()">
         </ng-container>
@@ -168,16 +178,16 @@
                     </div>
                   </div>
 
-                  <!--Both country code and uln number and work_number are missing and lambar is false-->
-                  <ng-container *ngIf="!child?.surrogate_mother?.uln_country_code && !child?.surrogate_mother?.uln_number && child?.surrogate_mother?.work_number && !child?.has_lambar">
-                    <label style="color:#ff0000;"><small>{{ 'WORK NUMBER IS NOT UNIQUE, CHOOSE A SURROGATE MOTHER MANUALLY' | translate }}</small></label>
-                    <input (keyup)="preventKeyPress($event)" (keydown)="preventKeyPress($event)" [value]="child?.surrogate_mother?.work_number"
+                  <!--Both country code and uln number are missing, but has worker_number and lambar is false-->
+                  <ng-container *ngIf="!child?.surrogate_mother?.uln_country_code && !child?.surrogate_mother?.uln_number && child?.surrogate_mother?.worker_number && !child?.has_lambar">
+                    <label style="color:#ff0000;"><small>{{ 'WORK NUMBER IS NOT FOUND IN LIVESTOCK' | translate }}</small></label>
+                    <input (keyup)="preventKeyPress($event)" (keydown)="preventKeyPress($event)" [value]="child?.surrogate_mother?.worker_number"
                            (keypress)="preventKeyPress($event)" type="text" name="uid_number_surrogate_mother"
                            (focus)="getCandidateSurrogates(birthRequest, child); surrogateMotherSelector.openModal()">
                   </ng-container>
 
-                  <!--Both country code and uln number are missing, but has work_number and lambar is false-->
-                  <ng-container *ngIf="!child?.surrogate_mother?.uln_country_code && !child?.surrogate_mother?.uln_number && !child?.surrogate_mother?.work_number && !child?.has_lambar">
+                  <!--Both country code and uln number and worker_number are missing and lambar is false-->
+                  <ng-container *ngIf="!child?.surrogate_mother?.uln_country_code && !child?.surrogate_mother?.uln_number && !child?.surrogate_mother?.worker_number && !child?.has_lambar">
                     <input (keyup)="preventKeyPress($event)" (keydown)="preventKeyPress($event)"
                            (keypress)="preventKeyPress($event)" type="text" name="uid_number_surrogate_mother"
                            (focus)="getCandidateSurrogates(birthRequest, child); surrogateMotherSelector.openModal()">
@@ -197,8 +207,8 @@
                 </td>
 
                 <td>
-                  <span *ngIf="child?.surrogate_mother?.work_number && !child?.has_lambar">
-                    {{ child?.surrogate_mother?.work_number }}
+                  <span *ngIf="child?.surrogate_mother?.worker_number && !child?.has_lambar">
+                    {{ child?.surrogate_mother?.worker_number }}
                   </span>
                 </td>
               </tr>

@@ -676,6 +676,6 @@
   "THE FOLLOWING LAMBS ARE MISSING MOTHER DETAILS": "Bij de volgende lammeren zijn de gegevens van de moeder incompleet:",
   "THE FOLLOWING LAMBS ARE MISSING SURROGATE MOTHER DETAILS": "Bij de volgende lammeren zijn de gegevens van de pleegmoeder incompleet:",
   "STILL CONTINUE WITH DECLARATION?": "Weet u zeker dat u wilt doorgaan? De lammeren worden in dat geval geregistreerd zonder vader of moeder.",
-  "WORK NUMBER IS NOT UNIQUE, CHOOSE A SURROGATE MOTHER MANUALLY": "Werknummer is niet uniek, kies handmatig een pleegmoeder"
+  "WORK NUMBER IS NOT FOUND IN LIVESTOCK": "Werknummer is niet gevonden in de stallijst"
 }
 
