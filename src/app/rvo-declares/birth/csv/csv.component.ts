@@ -4,7 +4,7 @@ import {
   BirthRequest, Child, CandidateFathersRequest, CandidateSurrogatesRequest, BIRTH_PROGRESS_TYPES,
   CandidateMothersRequest
 } from '../birth.model';
-import { PapaParseService, PapaParseConfig } from 'ngx-papaparse';
+import { PapaParseService } from 'ngx-papaparse';
 import { Settings } from '../../../shared/variables/settings';
 import {
   API_URI_DECLARE_BIRTH,
@@ -59,6 +59,7 @@ export class CsvComponent implements OnInit, OnDestroy {
   private birth_progress_types = BIRTH_PROGRESS_TYPES;
 
   warningModalDisplay = 'none';
+  warningModalMode = 'all';
 
   loadingStatesCount = 0;
   birthRequestWarningsCount = 0;
@@ -117,10 +118,8 @@ export class CsvComponent implements OnInit, OnDestroy {
     this.birthRequests = [];
     this.parsedMothers = [];
 
-    const config: PapaParseConfig = {};
-    config.delimiter = ',';
-
     this.papa.parse(files.item(0), {
+      delimiter: ',',
       complete: (results, file) => {
         this.parsedResults = results;
         this.parsedFile = file;
@@ -400,7 +399,6 @@ export class CsvComponent implements OnInit, OnDestroy {
           surrogateMother.uln_number = tmpCsvRow.surrogate_mother;
           child.surrogate_mother = surrogateMother;
           child.surrogateMotherMissingUlnCountryCode = true;
-          birthRequest.surrogateMotherMissingUlnCountryCode = true;
         } else if (
           tmpCsvRow.surrogate_mother.length === 5
           && /^\d+$/.test(tmpCsvRow.surrogate_mother)
@@ -409,7 +407,6 @@ export class CsvComponent implements OnInit, OnDestroy {
           surrogateMother.worker_number = tmpCsvRow.surrogate_mother;
           child.surrogate_mother = surrogateMother;
           child.surrogateMotherMissingUlnCountryCode = true;
-          birthRequest.surrogateMotherMissingUlnCountryCode = true;
 
           this.setSurrogateMother(child, birthRequest);
 
@@ -851,7 +848,7 @@ export class CsvComponent implements OnInit, OnDestroy {
       uln_country_code: '',
       uln_number: '',
       uln: '',
-      worker_number: birthRequest.mother.worker_number
+      worker_number: ''
     };
 
     birthRequest.motherHasChanged = false;
@@ -895,20 +892,21 @@ export class CsvComponent implements OnInit, OnDestroy {
     birthRequest.hasWarnings = false;
 
     // Determine warning types
-    if (birthRequest.hasMultipleCandidateFathers && !birthRequest.father && birthRequest.declareStatus !== false) {
+    if (birthRequest.hasMultipleCandidateFathers && !birthRequest.father) {
       this.multipleCandidateFatherBirthRequests.push(birthRequest);
       birthRequest.hasWarnings = true;
     }
 
-    if (birthRequest.motherMissingUlnCountryCode && birthRequest.declareStatus !== false) {
+    if (birthRequest.motherMissingUlnCountryCode) {
       this.missingMotherBirthRequests.push(birthRequest);
       birthRequest.hasWarnings = true;
     }
 
     if (birthRequest.children !== undefined) {
       for (const child of <Child[]>birthRequest.children) {
-        if (child.surrogateMotherMissingUlnCountryCode && birthRequest.declareStatus !== false) {
+        if (child.surrogateMotherMissingUlnCountryCode) {
           birthRequest.hasWarnings = true;
+          birthRequest.surrogateMotherMissingUlnCountryCode = true;
           missingSurrogateMother = true;
         }
       }
@@ -927,9 +925,18 @@ export class CsvComponent implements OnInit, OnDestroy {
 
   submitBirthRequests() {
     if (this.birthRequestWarningsCount > 0) {
-      this.toggleWarningModal();
+      this.toggleAllWarningsModal();
     } else {
       this.doSubmitBirthRequests();
+    }
+  }
+
+  submitSingleBirthRequest(birthRequest: ExtendedBirthRequest) {
+    this.selectedBirthRequest = birthRequest;
+    if (this.selectedBirthRequest.hasWarnings) {
+      this.toggleSingleWarningModal();
+    } else {
+      this.doSubmitSingleBirthRequest(birthRequest);
     }
   }
 
@@ -943,7 +950,17 @@ export class CsvComponent implements OnInit, OnDestroy {
     this.countryCodeObs.unsubscribe();
   }
 
-  toggleWarningModal() {
+  toggleAllWarningsModal() {
+    this.warningModalMode = 'all';
+    if (this.warningModalDisplay === 'none') {
+      this.warningModalDisplay = 'block';
+    } else {
+      this.warningModalDisplay = 'none';
+    }
+  }
+
+  toggleSingleWarningModal() {
+    this.warningModalMode = 'single';
     if (this.warningModalDisplay === 'none') {
       this.warningModalDisplay = 'block';
     } else {
@@ -970,5 +987,24 @@ export class CsvComponent implements OnInit, OnDestroy {
           );
       }
     });
+  }
+
+  doSubmitSingleBirthRequest(birthRequest: ExtendedBirthRequest) {
+    if (birthRequest.declareStatus !== true) {
+      birthRequest.isSubmitting = true;
+      this.apiService.doPostRequest(API_URI_DECLARE_BIRTH, birthRequest)
+        .subscribe(
+          res => {
+            birthRequest.isSubmitting = false;
+            birthRequest.errorMessage = null;
+            birthRequest.declareStatus = true;
+          },
+          err => {
+            birthRequest.isSubmitting = false;
+            birthRequest.errorMessage = err.error.result.message;
+            birthRequest.declareStatus = false;
+          }
+        );
+    }
   }
 }
