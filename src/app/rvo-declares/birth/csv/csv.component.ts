@@ -18,6 +18,7 @@ import { SettingsService } from '../../../shared/services/settings/settings.serv
 import {IS_CSV_IMPORT_BIRTHS_ACTIVE} from '../../../shared/variables/feature.activation';
 import {Router} from '@angular/router';
 import {SortOrder, SortService} from '../../../shared/services/utils/sort.service';
+import {TranslateService} from '@ngx-translate/core';
 
 interface CsvRow {
   electronicId: string;
@@ -64,6 +65,7 @@ export class CsvComponent implements OnInit, OnDestroy {
 
   loadingStatesCount = 0;
   birthRequestWarningsCount = 0;
+  csvFormatError = false;
   isLoadingCandidateSurrogates = false;
   isLoadingCandidateMothers = false;
   isLoadingCandidateFathers = false;
@@ -99,7 +101,8 @@ export class CsvComponent implements OnInit, OnDestroy {
     private apiService: NSFOService,
     private settingService: SettingsService,
     private router: Router,
-    private sort: SortService
+    private sort: SortService,
+    private translate: TranslateService
   ) { }
 
   ngOnInit() {
@@ -123,12 +126,18 @@ export class CsvComponent implements OnInit, OnDestroy {
     this.parsedMothers = [];
 
     this.papa.parse(files.item(0), {
-      delimiter: ',',
       complete: (results, file) => {
-        this.parsedResults = results;
-        this.parsedFile = file;
-        const rows = this.toRows(this.parsedResults.data);
-        this.toBirthRequest(rows);
+        if (this.isValidCsv(results)) {
+          this.parsedResults = results;
+          this.parsedFile = file;
+          const rows = this.toRows(this.parsedResults.data);
+          this.toBirthRequest(rows);
+        } else {
+          alert(this.translate.instant('CSV FORMAT ERROR'));
+        }
+      },
+      error: (error, file) => {
+        alert(error);
       }
     });
   }
@@ -138,28 +147,45 @@ export class CsvComponent implements OnInit, OnDestroy {
 
     this.csvRows = [];
     rows.forEach((row: any) => {
-      // if (row.length > 1) {
-        const csvRow: CsvRow = {
-          electronicId: row[0], // Electronic ID // A
-          tag: row[1], // Tag // B
-          currentAdg: row[2], // Current ADG // C
-          note: row[3], // Note // D
-          date_scanned: row[4], // Scanned Date // E
-          stillborn_count: row[5], // Aant Dood // F
-          birth_weight: row[6], // Gebgew // G
-          date_of_birth: row[7], // Gebdat // H
-          birth_progress: row[8], // Gebverloop // I
-          hasLambar: row[9], // Lambar // J
-          gender: row[10], // O/R // K
-          surrogate_mother: row[11], // Pleegm // L
-          tmpMother: ''
-        };
-        this.resolveCsvRowMother(csvRow);
-        this.csvRows.push(csvRow);
-      // }
+      const csvRow: CsvRow = {
+        electronicId: row[0], // Electronic ID // A
+        tag: row[1], // Tag // B
+        currentAdg: row[2], // Current ADG // C
+        note: row[3], // Note // D
+        date_scanned: row[4], // Scanned Date // E
+        stillborn_count: row[5], // Aant Dood // F
+        birth_weight: row[6], // Gebgew // G
+        date_of_birth: row[7], // Gebdat // H
+        birth_progress: row[8], // Gebverloop // I
+        hasLambar: row[9], // Lambar // J
+        gender: row[10], // O/R // K
+        surrogate_mother: row[11], // Pleegm // L
+        tmpMother: ''
+      };
+      this.resolveCsvRowMother(csvRow);
+      this.csvRows.push(csvRow);
     });
 
     return this.csvRows;
+  }
+
+  isValidCsv(csvResults) {
+    this.csvFormatError = csvResults.meta.delimiter !== ',';
+
+    // make a deep clone of the result array
+    const tmpCsvResults = JSON.parse(JSON.stringify(csvResults.data));
+    tmpCsvResults.shift();
+    tmpCsvResults.forEach((row: any) => {
+      if (
+        row.length === 12
+        && row[7]
+        && !moment(row[7]).isValid()
+      ) {
+        this.csvFormatError = true;
+      }
+    });
+
+    return !this.csvFormatError;
   }
 
   countryNumberToCountryIdentifier(iso: string) {
