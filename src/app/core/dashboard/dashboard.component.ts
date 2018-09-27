@@ -60,18 +60,24 @@ export class DashboardComponent implements OnInit, OnDestroy {
   }
 
   private syncLivestock() {
-    if (this.cache.getAccessToken() === undefined) { return; }
-    this.apiService.doPostRequest(API_URI_SYNC_ANIMALS, {})
-      .subscribe(() => {
-      });
+    // check current ubn only if NL
+    if (this.cache.getLocation().country_code === 'NL') {
+      if (this.cache.getAccessToken() === undefined) { return; }
+      this.apiService.doPostRequest(API_URI_SYNC_ANIMALS, {})
+        .subscribe(() => {
+        });
+    }
   }
 
   private syncEartags() {
-    if (this.cache.getAccessToken() === undefined) { return; }
-    this.apiService
-      .doPostRequest(API_URI_SYNC_EARTAGS, {})
-      .subscribe(() => {
-      });
+    // check current ubn only if NL
+    if (this.cache.getLocation().country_code === 'NL') {
+      if (this.cache.getAccessToken() === undefined) { return; }
+      this.apiService
+        .doPostRequest(API_URI_SYNC_EARTAGS, {})
+        .subscribe(() => {
+        });
+    }
   }
 
   private navigateTo(route: string) {

@@ -2,12 +2,12 @@
 export const UBN_TOKEN_NAMESPACE = 'ubn_token';
 export const ACCESS_TOKEN_NAMESPACE = 'access_token';
 export const GHOST_TOKEN_NAMESPACE = 'ghost_token';
+export const UBN_LOCATION_NAMESPACE = 'location_token';
 export const API_URI_GET_USER_INFO = '/v1/components/menu-bar';
 export const API_URI_GET_COUNTRY_CODES = '/v1/countries?continent=europe';
 export const API_URI_GET_STATE_CODES = '/v1/countries/nl/provinces';
 export const API_URI_REVOKE_DECLARATION = '/v1/revokes';
 export const API_URI_HIDE_ERROR = '/v1/errors';
-
 // GHOST LOGIN
 export const API_URI_VERIFY_GHOST_TOKEN = '/v1/admins/verify-ghost-token';
 

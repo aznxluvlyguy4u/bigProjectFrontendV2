@@ -39,8 +39,11 @@ export class NSFOService {
     if (this.cache.getAccessToken() !== undefined) {
       headers = headers.set(this.access_token, this.cache.getAccessToken());
     }
-    if (this.cache.getUbn() !== undefined) {
-      headers = headers.set(this.ubn, this.cache.getUbn());
+    // if (this.cache.getUbn() !== undefined) {
+    //   headers = headers.set(this.ubn, this.cache.getUbn());
+    // }
+    if (this.cache.getLocation().ubn !== undefined) {
+      headers = headers.set(this.ubn, this.cache.getLocation().ubn);
     }
 
     if (this.cache.getGhostToken() !== undefined) {

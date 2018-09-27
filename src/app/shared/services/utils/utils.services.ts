@@ -51,6 +51,10 @@ export class UtilsService {
     this.currentUBN.next(currentUBN);
   }
 
+  public setCurrentLocation(currentLocation) {
+    this.cache.setLocation(currentLocation);
+  }
+
   public getCurrentUBN() {
     return this.currentUBN.asObservable();
   }

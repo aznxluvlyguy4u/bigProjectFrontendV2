@@ -33,9 +33,11 @@ export class HomeComponent implements OnInit, OnDestroy, AfterContentChecked {
   public menuMessages = <Message[]> [];
   public messages = <Message[]> [];
   public is_logged_in = false;
-  public ubnList: string[] = [];
+  // public ubnList: string[] = [];
+  public locationList: any = [];
   public currentUser: User = new User();
   public currentUBNValue: string;
+  public currentLocation: any;
   public userInfo$;
   public currentUBN$;
   public isAdmin = false;
@@ -57,7 +59,6 @@ export class HomeComponent implements OnInit, OnDestroy, AfterContentChecked {
       .subscribe(
         res => {
           this.is_logged_in = true;
-
           this.getUserInfo();
           this.getCountryCodeList();
           this.utils.initUserInfo();
@@ -76,7 +77,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterContentChecked {
   }
 
   ngOnDestroy() {
-    //this.userInfo$.unsubscribe();
+    this.userInfo$.unsubscribe();
     this.recheckMessages = false;
   }
 
@@ -88,18 +89,22 @@ export class HomeComponent implements OnInit, OnDestroy, AfterContentChecked {
           this.currentUser.first_name = res.first_name;
           this.currentUser.last_name = res.last_name;
 
-          this.ubnList = res.ubns;
-          if (!!this.cache.getUbn()) {
-            this.currentUBNValue = this.ubnList[0];
-            const savedUBN = this.cache.getUbn();
+          this.locationList = res.locations;
 
-            for (const ubn of this.ubnList) {
-              if (ubn === savedUBN) {
+          if (!!this.cache.getLocation()) {
+            this.currentUBNValue = this.locationList[0].ubn;
+            this.currentLocation = this.locationList[0];
+            const savedUBN = this.cache.getLocation().ubn;
+
+            for (const location of this.locationList) {
+              if (location.ubn === savedUBN) {
                 this.currentUBNValue = savedUBN;
+                this.currentLocation = location;
               }
             }
           } else {
-            this.currentUBNValue = this.ubnList[0];
+            this.currentUBNValue = this.locationList[0].ubn;
+            this.currentLocation = this.locationList[0];
           }
         });
   }
@@ -168,8 +173,8 @@ export class HomeComponent implements OnInit, OnDestroy, AfterContentChecked {
   }
 
   public selectUBN() {
-    if (this.currentUBNValue !== undefined) {
-      this.utils.setCurrentUBN(this.currentUBNValue);
+    if (this.currentLocation !== undefined) {
+      this.utils.setCurrentLocation(this.currentLocation);
     }
   }
 
@@ -227,13 +232,13 @@ export class HomeComponent implements OnInit, OnDestroy, AfterContentChecked {
     this.isActiveDeclareItemsModal = false;
   }
 
-    toggleReportModal() {
-      this.reportService.toggleReportModal();
-        this.isActiveMessageMenu = false;
-        this.isActiveUserMenu = false;
-        this.isActiveSideMenu = false;
-        this.isActiveDeclareItemsModal = false;
-    }
+  toggleReportModal() {
+    this.reportService.toggleReportModal();
+      this.isActiveMessageMenu = false;
+      this.isActiveUserMenu = false;
+      this.isActiveSideMenu = false;
+      this.isActiveDeclareItemsModal = false;
+  }
 
   toggleDeclareItemsModal() {
     this.declareManagerService.toggleDeclareItemsModal();
@@ -255,9 +260,9 @@ export class HomeComponent implements OnInit, OnDestroy, AfterContentChecked {
     return this.downloadService.isModalEmpty();
   }
 
-    isReportModalEmpty(): boolean {
-        return this.reportService.isModalEmpty();
-    }
+  isReportModalEmpty(): boolean {
+      return this.reportService.isModalEmpty();
+  }
 
   declareItemsCount(): number {
     return this.declareManagerService.getDeclaresInModalCount();
