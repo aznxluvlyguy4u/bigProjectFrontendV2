@@ -13,6 +13,7 @@ export class Animal {
   public pedigree_number: string;
   public stn: string;
   public work_number: string;
+  public worker_number: string;
   public collar: Collar = new Collar();
   public collar_color: number;
   public collar_number: number;

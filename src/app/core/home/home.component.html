@@ -112,7 +112,7 @@
             <li (click)="navigateTo('/main/profile'); isActiveSideMenu = false" [class.active]="isActiveRoute('/main/profile/company') || isActiveRoute('/main/profile/login')" class="item link">
                 {{ 'PROFILE' | translate }}
             </li>
-            <li (click)="navigateTo('/main/invoices'); isActiveSideMenu = false" [class.active]="isActiveRoute('/main/invoices/overview')" class="item link">
+            <li *ngIf="isInvoicesActive" (click)="navigateTo('/main/invoices'); isActiveSideMenu = false" [class.active]="isActiveRoute('/main/invoices/overview')" class="item link">
                 {{'INVOICES' | translate}}
             </li>
 

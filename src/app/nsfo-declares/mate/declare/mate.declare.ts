@@ -16,6 +16,7 @@ import {MateAnimalWithStatus} from './mate-animal-with-status.model';
 import {AnimalsOverviewSelection} from '../../../shared/components/livestock/animals-overview-selection.model';
 import {ErrorMessage} from '../../../shared/models/error-message.model';
 import {JsonResponseModel} from '../../../shared/models/json-response.model';
+import {HttpErrorResponse} from '@angular/common/http';
 
 @Component({
   providers: [NSFOService, Constants],
@@ -163,9 +164,8 @@ export class MateDeclareComponent implements OnInit, OnDestroy {
                 }
               }, this.successDurationSeconds * 1000);
             },
-            err => {
-              const error = err;
-
+            (err: HttpErrorResponse) => {
+              const error = err.error;
               if (error.result.length === 0) {
                 const errorMessage = {
                   code: 403,
