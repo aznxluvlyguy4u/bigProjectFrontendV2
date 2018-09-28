@@ -42,7 +42,7 @@ export class NSFOService {
     // if (this.cache.getUbn() !== undefined) {
     //   headers = headers.set(this.ubn, this.cache.getUbn());
     // }
-    if (this.cache.getLocation().ubn !== undefined) {
+    if (this.cache.getLocation() !== undefined) {
       headers = headers.set(this.ubn, this.cache.getLocation().ubn);
     }
 
@@ -107,6 +107,14 @@ export class NSFOService {
       {
         headers: this.getDefaultHeaders(),
         observe: 'body', // returning full response, default = body
+        responseType: 'json', // response will be treated as this, default = json
+      });
+  }
+
+  doDeleteRequest(uri: string, id) {
+    return this.httpClient.delete(this.apiUrl + uri + '/' + id,
+      {
+        headers: this.getDefaultHeaders(),
         responseType: 'json', // response will be treated as this, default = json
       });
   }

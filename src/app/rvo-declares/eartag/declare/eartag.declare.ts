@@ -393,4 +393,30 @@ export class EartagDeclareComponent implements OnInit, OnDestroy {
         }
       );
   }
+
+  removeEarTag(id: number) {
+    this.apiService
+      .doDeleteRequest(API_URI_GET_EARTAGS, id)
+      .subscribe(
+        (res: JsonResponseModel) => {
+          const eartags = res.result;
+          this.eartags_list = [];
+
+          for (const eartag of eartags) {
+            eartag.uln = eartag.uln_country_code + eartag.uln_number;
+            eartag.ulnLastFive = eartag.uln_number.substr(eartag.uln_number.length - 5);
+            this.eartags_list.push(eartag);
+          }
+          this.eartags_list = _.orderBy(this.eartags_list, ['ulnLastFive']);
+          this.isLoading = false;
+
+          this.closeEartagPlainTextModal();
+        },
+        error => {
+          alert(this.apiService.getErrorMessage(error));
+          this.closeEartagPlainTextModal();
+          this.isLoading = false;
+        }
+      );
+  }
 }

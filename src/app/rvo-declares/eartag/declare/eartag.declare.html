@@ -101,6 +101,7 @@
             {{ 'TRANSFER ALL' | translate}}
           </button>
         </th>
+        <th *ngIf="!cache.getLocation().use_rvo_logic"></th>
       </tr>
       </thead>
       <tbody>
@@ -116,6 +117,12 @@
                   class="tiny primary button pull-right">{{ 'TRANSFER' | translate }}
           </button>
         </td>
+
+        <td *ngIf="!cache.getLocation().use_rvo_logic">
+            <button type="button" [disabled]="sync_in_progress" (click)="removeEarTag(eartag.id)"
+                    class="tiny alert button pull-right">{{ 'REMOVE' | translate }}
+            </button>
+          </td>
       </tr>
       </tbody>
     </table>
