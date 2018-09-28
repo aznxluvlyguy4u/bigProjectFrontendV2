@@ -379,8 +379,12 @@
 
       <!-- EXTERIOR -->
       <div class="info-container">
-        <app-exterior-component *ngIf="animal.uln != ''" (getAnimalDetails)="getAnimalDetails()" [uln]="animal.uln"
-                            [exteriors]="animal.exteriors"></app-exterior-component>
+        <app-exterior-component
+          *ngIf="animal.uln != ''"
+          (latestExteriors)="setLatestExteriors($event)"
+          [uln]="animal.uln"
+          [exteriors]="animal.exteriors"
+        ></app-exterior-component>
 
         <!-- PREDICATES AND STATUSES -->
         <div class="info-container">

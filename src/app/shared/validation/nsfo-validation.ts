@@ -154,7 +154,7 @@ export class PasswordValidator {
 
 export class ExteriorMeasurementsValidator {
   static validateMeasurementValue(control: FormControl): ValidationResult {
-    if ((control.value >= 69 && control.value <= 99) || control.value === 0) {
+    if ( ExteriorMeasurementsValidator.isEmpty(control.value, false) || (control.value >= 69 && control.value <= 99)) {
       return null;
     }
 
@@ -162,11 +162,15 @@ export class ExteriorMeasurementsValidator {
   }
 
   static validateMeasurementValueBetween0And99(control: FormControl): ValidationResult {
-    if ((control.value > 0 && control.value <= 99) || control.value === 0) {
+    if ( ExteriorMeasurementsValidator.isEmpty(control.value, false) || (control.value > 0 && control.value <= 99)) {
       return null;
     }
 
     return {'invalidExteriorMeasurementBetween0And99': true};
+  }
+
+  static isEmpty(value: any, allowEmptyString = true): boolean {
+    return value === undefined || value === null || value === 0 || (value === '' && allowEmptyString);
   }
 }
 
