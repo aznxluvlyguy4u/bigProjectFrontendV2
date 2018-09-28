@@ -8,8 +8,10 @@ export class CacheService {
   private ghostToken: string;
   private ubn: string;
   private location: any;
-
-  public constructor() { }
+  private initialLocation: any;
+  public constructor() {
+    this.initialLocation = { ubn: '', country_code: '', use_rvo_logic: null};
+  }
 
   public getAccessToken(): string {
     const localToken = localStorage.getItem(ACCESS_TOKEN_NAMESPACE);
@@ -80,7 +82,7 @@ export class CacheService {
   }
 
   public deleteLocation() {
-    this.location = undefined;
+    this.location = this.initialLocation;
     sessionStorage.removeItem(UBN_LOCATION_NAMESPACE);
   }
 
