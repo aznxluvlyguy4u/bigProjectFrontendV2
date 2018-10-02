@@ -166,7 +166,7 @@ export class ArrivalDeclareComponent implements OnInit, OnDestroy, AfterViewInit
               }
             },
             err => {
-              const error = err;
+              const error = err.error.result;
               this.error_message = error.message;
               this.error_number = error.pedigree;
               this.error_number = error.uln;

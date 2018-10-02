@@ -93,7 +93,7 @@ export class LossDeclareComponent implements OnInit {
               }
             },
             err => {
-              const error = err;
+              const error = err.error.result;
               this.errorMessage = error.message;
 
               if (!this.errorMessage) {
