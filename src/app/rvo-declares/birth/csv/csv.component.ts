@@ -75,12 +75,17 @@ export class CsvComponent implements OnInit, OnDestroy {
   multipleCandidateFatherBirthRequests = <ExtendedBirthRequest[]>[];
   missingMotherBirthRequests = <ExtendedBirthRequest[]>[];
   missingSurrogateMotherBirthRequests = <ExtendedBirthRequest[]>[];
+  birthRequests: ExtendedBirthRequest[] = [];
 
   suggestedCandidateFathers = <LivestockAnimal[]>[];
   suggestedCandidateMothers = <LivestockAnimal[]>[];
-  ewesInLivestock = <LivestockAnimal[]>[];
   candidateSurrogates = <LivestockAnimal[]>[];
   parsedMothers = <LivestockAnimal[]>[];
+  ewesInLivestock = <LivestockAnimal[]>[];
+
+  csvRows: CsvRow[] = [];
+  parsedResults: any;
+  parsedFile: any;
 
   private selectedBirthRequest: ExtendedBirthRequest;
   private selectedChild;
@@ -88,12 +93,6 @@ export class CsvComponent implements OnInit, OnDestroy {
   private candidateFathersRequest = new CandidateFathersRequest();
   private candidateMothersRequest = new CandidateMothersRequest();
   private candidateSurrogatesRequest = new CandidateSurrogatesRequest();
-
-  parsedResults: any;
-  parsedFile: any;
-
-  private csvRows: CsvRow[] = [];
-  birthRequests: ExtendedBirthRequest[] = [];
 
   constructor(
     private papa: PapaParseService,
@@ -110,9 +109,6 @@ export class CsvComponent implements OnInit, OnDestroy {
       this.router.navigate(['/main/birth/declare']);
     }
 
-    this.suggestedCandidateFathers = [];
-    this.candidateSurrogates = [];
-
     this.countryCodeObs = this.settingService.getCountryList()
       .subscribe(countryCodeList => {
         this.country_code_list = countryCodeList[0];
@@ -121,10 +117,25 @@ export class CsvComponent implements OnInit, OnDestroy {
     this.getEwesInLivestock();
   }
 
-  handleFileInput(files: FileList) {
+  resetPrivateVariables() {
+    this.birthRequestWarningsCount = 0;
     this.birthRequests = [];
     this.parsedMothers = [];
+    this.multipleCandidateFatherBirthRequests = [];
+    this.missingMotherBirthRequests = [];
+    this.missingSurrogateMotherBirthRequests = [];
+    this.suggestedCandidateFathers = [];
+    this.suggestedCandidateMothers = [];
+    this.candidateSurrogates = [];
+    this.selectedBirthRequest = null;
+    this.selectedChild = null;
+    this.csvRows = [];
+    this.parsedResults = null;
+    this.parsedFile = null;
+  }
 
+  handleFileInput(files: FileList) {
+    this.resetPrivateVariables();
     this.papa.parse(files.item(0), {
       complete: (results, file) => {
         if (this.isValidCsv(results)) {
