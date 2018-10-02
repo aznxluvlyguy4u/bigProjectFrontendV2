@@ -1,7 +1,7 @@
 <form class="form-declare">
   <div class="row">
       <div class="medium-2 columns">
-        <input #csv (change)="handleFileInput($event.target.files)" type="file" id="csv" name="file" accept=".csv">
+        <input #csv (change)="handleFileInput($event.target.files)" type="file" id="csv" name="file" accept=".csv" [disabled]="loadingStatesCount !== 0">
       </div>
   </div>
 </form>
