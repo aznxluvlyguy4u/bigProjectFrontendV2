@@ -1,12 +1,12 @@
 <div class="large-12 columns">
 
-  <div *ngIf="!cache.getLocation().use_rvo_logic" class="row table-search">
+  <div *ngIf="!cache.useRvoLogic()" class="row table-search">
     <div class="large-2 columns retrieve-button">
         <button (click)="openEartagPlainTextModal()" class="button expanded" type="button">Toevoegen </button>
     </div>
   </div>
 
-  <div *ngIf="cache.getLocation().use_rvo_logic" class="row table-search">
+  <div *ngIf="cache.useRvoLogic()" class="row table-search">
     <div *ngIf="statusHasBeenRetrieved" class="large-2 columns retrieve-button">
       <button *ngIf="areBirthsInProgress"
               type="button"
@@ -101,7 +101,7 @@
             {{ 'TRANSFER ALL' | translate}}
           </button>
         </th>
-        <th *ngIf="!cache.getLocation().use_rvo_logic"></th>
+        <th *ngIf="!cache.useRvoLogic()"></th>
       </tr>
       </thead>
       <tbody>
@@ -118,7 +118,7 @@
           </button>
         </td>
 
-        <td *ngIf="!cache.getLocation().use_rvo_logic">
+        <td *ngIf="!cache.useRvoLogic()">
             <button type="button" [disabled]="sync_in_progress" (click)="removeEarTag(eartag.id)"
                     class="tiny alert button pull-right">{{ 'REMOVE' | translate }}
             </button>
