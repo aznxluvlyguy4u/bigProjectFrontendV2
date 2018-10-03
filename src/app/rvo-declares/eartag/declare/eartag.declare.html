@@ -113,7 +113,7 @@
         <td>{{ eartag.uln_country_code + eartag.uln_number }}</td>
         <td>{{ eartag.tag_status | translate }}</td>
         <td>
-          <button type="button" [disabled]="sync_in_progress" (click)="selected_eartag = eartag; openModal()"
+          <button *ngIf="cache.getLocation().use_rvo_logic" type="button" [disabled]="sync_in_progress" (click)="selected_eartag = eartag; openModal()"
                   class="tiny primary button pull-right">{{ 'TRANSFER' | translate }}
           </button>
         </td>
