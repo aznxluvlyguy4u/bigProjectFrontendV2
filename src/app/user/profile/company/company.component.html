@@ -271,7 +271,7 @@
           <div class="form-group">
             <div class="row">
               <div class="large-6 columns">
-                <label class="middle"> {{ 'COUNTRY' | translate }} * </label>
+                  <label class="middle"> {{ 'COUNTRY' | translate }}</label>
               </div>
               <div class="large-6 columns">
                 <input readonly
@@ -286,7 +286,7 @@
           <div class="form-group">
             <div class="row">
             <div class="large-6 columns">
-              <label class="middle"> {{ 'STATE' | translate }} * </label>
+              <label class="middle"> {{ 'STATE' | translate }} <ng-container *ngIf="company.address.country.code === 'NL'">*</ng-container> </label>
             </div>
             <div class="large-6 columns">
               <select
@@ -397,7 +397,7 @@
           <div class="form-group">
             <div class="row">
               <div class="large-6 columns">
-                <label class="middle"> {{ 'COUNTRY' | translate }} * </label>
+                <label class="middle"> {{ 'COUNTRY' | translate }} <ng-container *ngIf="company.address.country.code === 'NL'">*</ng-container> </label>
               </div>
               <div class="large-6 columns">
                 <input readonly
@@ -413,7 +413,7 @@
           <div class="form-group">
             <div class="row">
               <div class="large-6 columns">
-                <label class="middle"> {{ 'STATE' | translate }} </label>
+                <label class="middle"> {{ 'STATE' | translate }} <ng-container *ngIf="company.address.country.code === 'NL'">*</ng-container> </label>
               </div>
               <div class="large-6 columns">
                 <select
