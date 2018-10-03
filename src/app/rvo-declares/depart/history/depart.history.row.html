@@ -102,7 +102,7 @@
     <span
       [hidden]="editMode || depart.request_state == 'OPEN' || depart.request_state == 'REVOKING' ||  depart.request_state == 'REVOKED'">
         <button *ngIf="false" class="tiny primary button" (click)="enableEditing()">{{ 'EDIT' | translate }}</button>
-        <app-revoke-button [isActive]="depart.message_number" (click)="sendRevokeRequest()"></app-revoke-button>
+        <app-revoke-button [hasMessageNumber]="depart.message_number" (click)="sendRevokeRequest()"></app-revoke-button>
     </span>
 
   <span [hidden]="!editMode">

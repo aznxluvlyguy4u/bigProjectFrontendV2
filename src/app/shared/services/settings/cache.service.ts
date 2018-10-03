@@ -81,6 +81,10 @@ export class CacheService {
     return this.location;
   }
 
+  public useRvoLogic(): boolean {
+    return this.getLocation().use_rvo_logic !== undefined && this.getLocation().use_rvo_logic;
+  }
+
   public deleteLocation() {
     this.location = this.initialLocation;
     sessionStorage.removeItem(UBN_LOCATION_NAMESPACE);

@@ -61,7 +61,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   private syncLivestock() {
     // check current ubn only if NL
-    if (this.cache.getLocation().use_rvo_logic !== undefined && this.cache.getLocation().use_rvo_logic) {
+    if (this.cache.useRvoLogic()) {
       if (this.cache.getAccessToken() === undefined) { return; }
       this.apiService.doPostRequest(API_URI_SYNC_ANIMALS, {})
         .subscribe(() => {
@@ -71,7 +71,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   private syncEartags() {
     // check current ubn only if NL
-    if (this.cache.getLocation().use_rvo_logic !== undefined && this.cache.getLocation().use_rvo_logic) {
+    if (this.cache.useRvoLogic()) {
       if (this.cache.getAccessToken() === undefined) { return; }
       this.apiService
         .doPostRequest(API_URI_SYNC_EARTAGS, {})
