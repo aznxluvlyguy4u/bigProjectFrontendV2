@@ -1,12 +1,12 @@
 <button
-  *ngIf="isActive"
+  *ngIf="!isRepeatedDeclare()"
   class="tiny alert button"
   (click)="sendRevokeRequest()"
 >
   {{ 'REVOKE' | translate }}
 </button>
 <button
-  *ngIf="!isActive"
+  *ngIf="isRepeatedDeclare()"
   class="tiny secondary button disabled"
   [disabled]="true"
   title="{{ 'THIS IS A REPEATED DECLARE. THEREFORE IT HAS NO MESSAGE NUMBER WHICH IS NECESSARY TO REVOKE IT.' |  translate }} {{ 'ONLY THE ORIGINAL DECLARE CAN BE REVOKED.' | translate }}"
