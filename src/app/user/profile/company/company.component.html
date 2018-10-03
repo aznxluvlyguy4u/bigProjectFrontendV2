@@ -267,6 +267,22 @@
           </div>
           </div>
 
+          <!-- COUNTRY -->
+          <div class="form-group">
+            <div class="row">
+              <div class="large-6 columns">
+                <label class="middle"> {{ 'COUNTRY' | translate }} * </label>
+              </div>
+              <div class="large-6 columns">
+                <input readonly
+                  formControlName="address_country"
+                  id="address_country"
+                  type="text"
+                >
+              </div>
+            </div>
+          </div>
+
           <div class="form-group">
             <div class="row">
             <div class="large-6 columns">
@@ -277,6 +293,7 @@
                 formControlName="address_state"
                 id="address_state"
                 [ngClass]="{'input-error-border': form.get('address_state').invalid && form.invalid}"
+                [disabled]="company.address.country.code !== 'NL'"
               >
                 <option value="">--</option>
                 <option *ngFor="let state of stateList" value="{{ state.code }}">{{ state.name }}</option>
@@ -375,6 +392,23 @@
             </div>
           </div>
           </div>
+
+          <!-- COUNTRY -->
+          <div class="form-group">
+            <div class="row">
+              <div class="large-6 columns">
+                <label class="middle"> {{ 'COUNTRY' | translate }} * </label>
+              </div>
+              <div class="large-6 columns">
+                <input readonly
+                  formControlName="billing_address_country"
+                  id="billing_address_country"
+                  type="text"
+                >
+              </div>
+            </div>
+          </div>
+
 
           <div class="form-group">
             <div class="row">

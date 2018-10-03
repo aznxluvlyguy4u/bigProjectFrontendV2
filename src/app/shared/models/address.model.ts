@@ -1,3 +1,5 @@
+import { Country } from './country.model';
+
 export class Address {
   public street_name: string;
   public address_number: string;
@@ -6,5 +8,5 @@ export class Address {
   public postal_code: string;
   public city: string;
   public state: string;
-  public country: string;
+  public country: Country;
 }
