@@ -79,8 +79,8 @@ export class EartagHistoryComponent implements OnInit {
   }
 
   public revokeEartag() {
-    const originalRequestState = this.selected_eartag;
-    this.selected_eartag = 'REVOKING';
+    const originalRequestState = this.selected_eartag.request_state;
+    this.selected_eartag.request_state = 'REVOKING';
     this.apiService
       .doPostRequest(API_URI_REVOKE_DECLARATION, this.selected_eartag)
       .subscribe(
@@ -88,7 +88,7 @@ export class EartagHistoryComponent implements OnInit {
           this.selected_eartag.request_state = this.cache.useRvoLogic() ? 'REVOKING' : 'REVOKED';
         },
         error => {
-          this.selected_eartag = originalRequestState;
+          this.selected_eartag.request_state = originalRequestState;
           alert(this.apiService.getErrorMessage(error));
         }
       );

@@ -69,7 +69,7 @@ export class TagReplacementHistoryComponent implements OnInit {
   }
 
   public revokeTagReplacement() {
-    const originalRequestState = this.selectedTagReplacement;
+    const originalRequestState = this.selectedTagReplacement.request_state;
     this.selectedTagReplacement.request_state = 'REVOKING';
     this.nsfo
       .doPostRequest(API_URI_REVOKE_DECLARATION, this.selectedTagReplacement)
@@ -78,7 +78,7 @@ export class TagReplacementHistoryComponent implements OnInit {
           this.selectedTagReplacement.request_state = this.cache.useRvoLogic() ? 'REVOKING' : 'REVOKED';
         },
         error => {
-          this.selectedTagReplacement = originalRequestState;
+          this.selectedTagReplacement.request_state = originalRequestState;
           alert(this.nsfo.getErrorMessage(error));
         }
       );

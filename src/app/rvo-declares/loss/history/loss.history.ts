@@ -69,7 +69,7 @@ export class LossHistoryComponent implements OnInit {
   }
 
   public revokeLoss() {
-    const originalRequestState = this.selected_loss;
+    const originalRequestState = this.selected_loss.request_state;
     this.selected_loss.request_state = 'REVOKING';
     this.apiService
       .doPostRequest(API_URI_REVOKE_DECLARATION, this.selected_loss)
@@ -78,7 +78,7 @@ export class LossHistoryComponent implements OnInit {
           this.selected_loss.request_state = this.cache.useRvoLogic() ? 'REVOKING' : 'REVOKED';
         },
         error => {
-          this.selected_loss = originalRequestState;
+          this.selected_loss.request_state = originalRequestState;
           alert(this.apiService.getErrorMessage(error));
         }
       );

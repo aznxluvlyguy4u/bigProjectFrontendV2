@@ -75,8 +75,8 @@ export class DepartHistoryComponent implements OnInit {
   }
 
   public revokeDepart() {
-    const originalRequestState = this.selected_depart;
-    this.selected_depart = 'REVOKING';
+    const originalRequestState = this.selected_depart.request_state;
+    this.selected_depart.request_state = 'REVOKING';
     this.apiService
       .doPostRequest(API_URI_REVOKE_DECLARATION, this.selected_depart)
       .subscribe(
@@ -84,7 +84,7 @@ export class DepartHistoryComponent implements OnInit {
           this.selected_depart.request_state = this.cache.useRvoLogic() ? 'REVOKING' : 'REVOKED';
         },
         error => {
-          this.selected_depart = originalRequestState;
+          this.selected_depart.request_state = originalRequestState;
           alert(this.apiService.getErrorMessage(error));
         }
       );

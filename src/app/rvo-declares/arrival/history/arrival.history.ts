@@ -90,8 +90,8 @@ export class ArrivalHistoryComponent implements OnInit {
   }
 
   public revokeArrival() {
-    const originalRequestState = this.selected_arrival;
-    this.selected_arrival = 'REVOKING';
+    const originalRequestState = this.selected_arrival.request_state;
+    this.selected_arrival.request_state = 'REVOKING';
     this.apiService
       .doPostRequest(API_URI_REVOKE_DECLARATION, this.selected_arrival)
       .subscribe(
@@ -99,7 +99,7 @@ export class ArrivalHistoryComponent implements OnInit {
           this.selected_arrival.request_state = this.cache.useRvoLogic() ? 'REVOKING' : 'REVOKED';
         },
         error => {
-          this.selected_arrival = originalRequestState;
+          this.selected_arrival.request_state = originalRequestState;
           alert(this.apiService.getErrorMessage(error));
         }
       );
