@@ -9,6 +9,7 @@ import {API_URI_GET_ARRIVALS_HISTORY, API_URI_REVOKE_DECLARATION} from '../../..
 import {Settings} from '../../../shared/variables/settings';
 import {NgxPaginationModule} from 'ngx-pagination';
 import {JsonResponseModel} from '../../../shared/models/json-response.model';
+import {CacheService} from '../../../shared/services/settings/cache.service';
 
 @Component({
   providers: [NgxPaginationModule],
@@ -26,7 +27,7 @@ export class ArrivalHistoryComponent implements OnInit {
   public isLoading = true;
   public page: number;
 
-  constructor(private apiService: NSFOService, private settings: Settings) {
+  constructor(private apiService: NSFOService, private settings: Settings, private cache: CacheService) {
   }
 
   ngOnInit() {
@@ -89,13 +90,16 @@ export class ArrivalHistoryComponent implements OnInit {
   }
 
   public revokeArrival() {
+    const originalRequestState = this.selected_arrival;
+    this.selected_arrival = 'REVOKING';
     this.apiService
       .doPostRequest(API_URI_REVOKE_DECLARATION, this.selected_arrival)
       .subscribe(
         () => {
-          this.selected_arrival.request_state = 'REVOKING';
+          this.selected_arrival.request_state = this.cache.useRvoLogic() ? 'REVOKING' : 'REVOKED';
         },
         error => {
+          this.selected_arrival = originalRequestState;
           alert(this.apiService.getErrorMessage(error));
         }
       );

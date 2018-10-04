@@ -7,6 +7,7 @@ import {API_URI_GET_DEPARTS_HISTORY, API_URI_REVOKE_DECLARATION} from '../../../
 import {Settings} from '../../../shared/variables/settings';
 import {NgxPaginationModule} from 'ngx-pagination';
 import {JsonResponseModel} from '../../../shared/models/json-response.model';
+import {CacheService} from '../../../shared/services/settings/cache.service';
 
 @Component({
   providers: [NgxPaginationModule],
@@ -21,7 +22,7 @@ export class DepartHistoryComponent implements OnInit {
   public page: number;
   public searchValue: string;
 
-  constructor(private apiService: NSFOService, private settings: Settings) {
+  constructor(private apiService: NSFOService, private settings: Settings, private cache: CacheService) {
   }
 
   ngOnInit() {
@@ -74,13 +75,16 @@ export class DepartHistoryComponent implements OnInit {
   }
 
   public revokeDepart() {
+    const originalRequestState = this.selected_depart;
+    this.selected_depart = 'REVOKING';
     this.apiService
       .doPostRequest(API_URI_REVOKE_DECLARATION, this.selected_depart)
       .subscribe(
         () => {
-          this.selected_depart.request_state = 'REVOKING';
+          this.selected_depart.request_state = this.cache.useRvoLogic() ? 'REVOKING' : 'REVOKED';
         },
         error => {
+          this.selected_depart = originalRequestState;
           alert(this.apiService.getErrorMessage(error));
         }
       );

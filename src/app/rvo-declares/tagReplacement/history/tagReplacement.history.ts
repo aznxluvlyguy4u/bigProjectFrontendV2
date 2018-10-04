@@ -11,6 +11,7 @@ import {API_URI_GET_TAG_REPLACEMENT_HISTORY, API_URI_REVOKE_DECLARATION} from '.
 import {TagReplacementHistoryRowComponent} from './tagReplacement.history.row';
 import {NgxPaginationModule} from 'ngx-pagination';
 import {JsonResponseModel} from '../../../shared/models/json-response.model';
+import {CacheService} from '../../../shared/services/settings/cache.service';
 
 @Component({
   providers: [NgxPaginationModule],
@@ -25,7 +26,7 @@ export class TagReplacementHistoryComponent implements OnInit {
   public page: number;
   public searchValue: string;
 
-  constructor(private nsfo: NSFOService, private settings: SettingsService) {
+  constructor(private nsfo: NSFOService, private settings: SettingsService, private cache: CacheService) {
   }
 
   ngOnInit() {
@@ -68,13 +69,16 @@ export class TagReplacementHistoryComponent implements OnInit {
   }
 
   public revokeTagReplacement() {
+    const originalRequestState = this.selectedTagReplacement;
+    this.selectedTagReplacement.request_state = 'REVOKING';
     this.nsfo
       .doPostRequest(API_URI_REVOKE_DECLARATION, this.selectedTagReplacement)
       .subscribe(
         () => {
-          this.selectedTagReplacement.request_state = 'REVOKING';
+          this.selectedTagReplacement.request_state = this.cache.useRvoLogic() ? 'REVOKING' : 'REVOKED';
         },
         error => {
+          this.selectedTagReplacement = originalRequestState;
           alert(this.nsfo.getErrorMessage(error));
         }
       );

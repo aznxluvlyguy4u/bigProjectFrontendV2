@@ -6,6 +6,7 @@ import {SettingsService} from '../../../shared/services/settings/settings.servic
 import {API_URI_GET_EARTAGS_HISTORY, API_URI_REVOKE_DECLARATION} from '../../../shared/services/nsfo-api/nsfo.settings';
 import {NgxPaginationModule} from 'ngx-pagination';
 import {JsonResponseModel} from '../../../shared/models/json-response.model';
+import {CacheService} from '../../../shared/services/settings/cache.service';
 
 @Component({
   providers: [NgxPaginationModule],
@@ -23,7 +24,7 @@ export class EartagHistoryComponent implements OnInit {
   public isLoading = true;
   public page: number;
 
-  constructor(private apiService: NSFOService, private settings: SettingsService) {
+  constructor(private apiService: NSFOService, private settings: SettingsService, private cache: CacheService) {
   }
 
   ngOnInit() {
@@ -78,13 +79,16 @@ export class EartagHistoryComponent implements OnInit {
   }
 
   public revokeEartag() {
+    const originalRequestState = this.selected_eartag;
+    this.selected_eartag = 'REVOKING';
     this.apiService
       .doPostRequest(API_URI_REVOKE_DECLARATION, this.selected_eartag)
       .subscribe(
         () => {
-          this.selected_eartag.request_state = 'REVOKING';
+          this.selected_eartag.request_state = this.cache.useRvoLogic() ? 'REVOKING' : 'REVOKED';
         },
         error => {
+          this.selected_eartag = originalRequestState;
           alert(this.apiService.getErrorMessage(error));
         }
       );
