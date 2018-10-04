@@ -79,7 +79,11 @@ export class EartagDeclareComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.getCountryCodeList();
     this.getEartagsList();
-    this.getEartagsSyncStatusOverview();
+
+    if (this.cache.useRvoLogic()) {
+      this.getEartagsSyncStatusOverview();
+    }
+
     this.areRecurrentApiCallsActivated = true;
     this.birthDeclaresInProgress = 0;
     this.birthRevokesInProgress = 0;
