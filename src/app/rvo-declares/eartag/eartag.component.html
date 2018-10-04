@@ -12,7 +12,10 @@
   <div class="row hide-for-small-only">
     <ul class="tabs">
       <li [class.active]="isActiveRoute('/main/eartag/declare')" class="tabs-title">
-        <a (click)="navigateTo('/main/eartag/declare')">{{ 'TRANSFER EARTAG' | translate }}</a>
+        <a (click)="navigateTo('/main/eartag/declare')">
+          <span *ngIf="useRvoLogic()">{{ 'TRANSFER EARTAG' | translate }}</span>
+          <span *ngIf="!useRvoLogic()">{{ 'EARTAG ADMINISTRATION' | translate }}</span>
+        </a>
       </li>
       <!--<li [class.active]="isActiveRoute('/main/eartag/history')" class="tabs-title">-->
       <!--<a (click)="navigateTo('/main/eartag/history')">{{ 'HISTORY' | translate }}</a>-->

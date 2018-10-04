@@ -3,6 +3,7 @@ import {Location} from '@angular/common';
 import {Router} from '@angular/router';
 
 import {NSFOService} from '../../shared/services/nsfo-api/nsfo.service';
+import {CacheService} from '../../shared/services/settings/cache.service';
 
 @Component({
   templateUrl: './eartag.component.html',
@@ -12,7 +13,7 @@ export class EartagComponent implements OnInit {
   public errorAmount = 0;
   public selectedRoute: string;
 
-  constructor(private apiService: NSFOService, private router: Router, private location: Location) {
+  constructor(private apiService: NSFOService, private router: Router, private location: Location, private cache: CacheService) {
   }
 
   ngOnInit() {
@@ -21,6 +22,10 @@ export class EartagComponent implements OnInit {
       this.router.navigate(['/main/eartag/declare']);
     }
     this.getEartagErrorList();
+  }
+
+  public useRvoLogic(): boolean {
+    return this.cache.useRvoLogic();
   }
 
   public getEartagErrorList() {
