@@ -74,6 +74,9 @@ export class TagReplacementDeclareComponent {
 
           this.selectedAnimal = null;
           this.selectedTag = null;
+        },
+        error => {
+          alert(this.nsfo.getErrorMessage(error));
         }
       );
   }
