@@ -275,8 +275,7 @@ export class EartagDeclareComponent implements OnInit, OnDestroy {
             this.closeModal();
           },
           err => {
-            const error = err;
-            this.error_message = error.message;
+            this.error_message = this.apiService.getErrorMessage(err);
             this.eartag_in_progress = false;
           }
         );
