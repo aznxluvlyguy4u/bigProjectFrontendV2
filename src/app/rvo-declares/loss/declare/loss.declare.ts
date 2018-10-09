@@ -93,12 +93,7 @@ export class LossDeclareComponent implements OnInit {
               }
             },
             err => {
-              const error = err.error.result;
-              this.errorMessage = error.message;
-
-              if (!this.errorMessage) {
-                this.errorMessage = 'SOMETHING WENT WRONG! TRY AGAIN AT LATER TIME!';
-              }
+              this.errorMessage = this.nsfo.getErrorMessage(err);
               this.openModal();
               animal.successful = false;
               animal.sending = false;

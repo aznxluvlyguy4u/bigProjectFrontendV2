@@ -166,7 +166,7 @@ export class ArrivalDeclareComponent implements OnInit, OnDestroy, AfterViewInit
               }
             },
             err => {
-              const error = err.error.result;
+              const error = err.error ? err.error.result : undefined;
 
               if (!error || !error.message) {
                 this.error_message = 'SOMETHING WENT WRONG! TRY AGAIN AT LATER TIME!';
