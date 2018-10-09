@@ -40,7 +40,7 @@ export class LossDeclareComponent implements OnInit {
     this.form = fb.group({
       loss_date: new FormControl('', Validators.compose([Validators.required, DateValidator.validateDateFormat])),
       ubn_processor: new FormControl('2486574', Validators.compose(
-        [Validators.required, UBNValidator.validateWithSevenTest])),
+        [Validators.required, UBNValidator.validateUbn])),
       reason_loss: new FormControl('')
     });
   }

@@ -40,7 +40,7 @@ export class DepartHistoryRowComponent {
 
     this.form = fb.group({
       depart_date: new FormControl('', Validators.compose([Validators.required, DateValidator.validateDateFormat])),
-      ubn_new_owner: new FormControl('', UBNValidator.validateWithSevenTest),
+      ubn_new_owner: new FormControl('', UBNValidator.validateUbn),
       reason_of_depart: new FormControl(''),
       certificate_number: new FormControl('')
     });

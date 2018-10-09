@@ -31,7 +31,7 @@ export class ArrivalDeclareComponent implements OnInit, OnDestroy, AfterViewInit
 
     public import_animal: FormGroup = new FormGroup({
         import_flag: new FormControl(this.constants.NO),
-        ubn_previous_owner: new FormControl('', UBNValidator.validateWithSevenTest),
+        ubn_previous_owner: new FormControl('', UBNValidator.validateUbn),
         certificate_number: new FormControl(''),
     });
 
@@ -54,7 +54,7 @@ export class ArrivalDeclareComponent implements OnInit, OnDestroy, AfterViewInit
 
     this.import_animal = new FormGroup({
       import_flag: new FormControl(constants.NO),
-      ubn_previous_owner: new FormControl('', UBNValidator.validateWithSevenTest),
+      ubn_previous_owner: new FormControl('', UBNValidator.validateUbn),
       certificate_number: new FormControl(''),
     });
     this.import_animal.validator = UBNValidator.isImportAnimal;

@@ -68,11 +68,11 @@ export class EartagDeclareComponent implements OnInit, OnDestroy {
               private settings: SettingsService,
               public cache: CacheService) {
     this.form = fb.group({
-      ubn_new_owner: new FormControl('', Validators.compose([UBNValidator.validateWithSevenTest, Validators.required]))
+      ubn_new_owner: new FormControl('', Validators.compose([UBNValidator.validateUbn, Validators.required]))
     });
 
     this.form_single_tag = fb.group({
-      ubn_new_owner: new FormControl('', Validators.compose([UBNValidator.validateWithSevenTest, Validators.required]))
+      ubn_new_owner: new FormControl('', Validators.compose([UBNValidator.validateUbn, Validators.required]))
     });
   }
 

@@ -1,5 +1,7 @@
 import * as moment from 'moment';
 import {FormControl, FormGroup} from '@angular/forms';
+import {AlgorithmService} from '../services/utils/algorithm.service';
+import {StringFormatter} from '../services/utils/string-formatter.service';
 
 interface ValidationResult {
   [key: string]: boolean;
@@ -37,32 +39,19 @@ export class UBNValidator {
     return {'isNotExportAnimal': true};
   }
 
-  static validateWithSevenTest(control: FormControl): ValidationResult {
+  static validateUbn(control: FormControl): ValidationResult {
     let ubn_number = '';
 
     if (control.value) {
       ubn_number = control.value;
     }
 
-    if (ubn_number.length === 7) {
-      const chars = ubn_number.split('');
-      const calc_values = [1, 7, 3, 1, 7, 3, 1];
-      let sum = 0;
+    const isValid =
+      StringFormatter.firstChar(ubn_number) === '9' || // non-NL UBNs
+      AlgorithmService.isValidSevenTestNumber(ubn_number) // NL UBNs
+    ;
 
-      for (let i = 0; i < chars.length; i++) {
-        sum = sum + (parseInt(chars[i], null) * calc_values[i]);
-      }
-
-      if ((sum / 10) % 1 === 0) {
-        return null;
-      }
-    }
-
-    if (ubn_number.length === 0) {
-      return null;
-    }
-
-    return {'validateWithSevenTest': true};
+    return isValid ? {'validateWithSevenTest': true} : null;
   }
 }
 

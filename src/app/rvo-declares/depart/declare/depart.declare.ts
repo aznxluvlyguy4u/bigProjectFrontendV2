@@ -38,7 +38,7 @@ export class DepartDeclareComponent {
 
     this.export_animal = new FormGroup({
       export_flag: new FormControl(this.constants.NO),
-      ubn_new_owner: new FormControl('', UBNValidator.validateWithSevenTest),
+      ubn_new_owner: new FormControl('', UBNValidator.validateUbn),
       certificate_number: new FormControl('')
     });
     this.export_animal.validator = UBNValidator.isExportAnimal;

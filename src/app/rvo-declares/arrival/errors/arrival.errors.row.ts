@@ -41,7 +41,7 @@ export class ArrivalErrorRowComponent implements OnInit, AfterViewChecked {
 
     this.form = fb.group({
       arrival_date: new FormControl('', Validators.compose([Validators.required, DateValidator.validateDateFormat])),
-      ubn_previous_owner: new FormControl('', UBNValidator.validateWithSevenTest),
+      ubn_previous_owner: new FormControl('', UBNValidator.validateUbn),
       certificate_number: new FormControl('')
     });
   }
