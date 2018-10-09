@@ -167,12 +167,13 @@ export class ArrivalDeclareComponent implements OnInit, OnDestroy, AfterViewInit
             },
             err => {
               const error = err.error.result;
-              this.error_message = error.message;
-              this.error_number = error.pedigree;
-              this.error_number = error.uln;
 
-              if (!this.error_message) {
+              if (!error || !error.message) {
                 this.error_message = 'SOMETHING WENT WRONG! TRY AGAIN AT LATER TIME!';
+              } else {
+                this.error_message = error.message;
+                this.error_number = error.pedigree;
+                this.error_number = error.uln;
               }
 
               this.openModal();
