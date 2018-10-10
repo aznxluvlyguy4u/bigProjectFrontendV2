@@ -82,6 +82,9 @@ export class CacheService {
   }
 
   public useRvoLogic(): boolean {
+    if (!this.getLocation()) {
+      return false;
+    }
     return this.getLocation().use_rvo_logic !== undefined && this.getLocation().use_rvo_logic;
   }
 
