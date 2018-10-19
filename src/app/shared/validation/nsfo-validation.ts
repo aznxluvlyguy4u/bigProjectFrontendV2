@@ -2,12 +2,16 @@ import * as moment from 'moment';
 import {FormControl, FormGroup} from '@angular/forms';
 import {AlgorithmService} from '../services/utils/algorithm.service';
 import {StringFormatter} from '../services/utils/string-formatter.service';
+import {NumberValidator} from './number.validation';
 
 interface ValidationResult {
   [key: string]: boolean;
 }
 
 export class UBNValidator {
+  public static minUbnLength = 2;
+  public static maxUbnLength = 7;
+
   static isImportAnimal(group: FormGroup): ValidationResult {
     if (group.controls['import_flag'].value === 'NO') {
       if (group.controls['ubn_previous_owner'].value.trim() !== '') {
@@ -47,11 +51,30 @@ export class UBNValidator {
     }
 
     const isValid =
-      StringFormatter.firstChar(ubn_number) === '9' || // non-NL UBNs
-      AlgorithmService.isValidSevenTestNumber(ubn_number) // NL UBNs
+      UBNValidator.isValidNonDutchUbn(ubn_number) ||
+      UBNValidator.isValidDutchUbn(ubn_number)
     ;
 
-    return isValid ? {'validateWithSevenTest': true} : null;
+    return !isValid ? {'validateWithSevenTest': true} : null;
+  }
+
+  static isValidNonDutchUbn(ubn: string): boolean {
+    return NumberValidator.isNumber(ubn) && this.hasValidUbnLength(ubn) &&
+      (
+        StringFormatter.firstChar(ubn) === '9' ||
+        AlgorithmService.isValidSevenTestNumber(ubn)
+      );
+  }
+
+  static isValidDutchUbn(ubn: string): boolean {
+    return this.hasValidUbnLength(ubn) && AlgorithmService.isValidSevenTestNumber(ubn);
+  }
+
+  static hasValidUbnLength(ubn: string): boolean {
+    if (!ubn) {
+      return false;
+    }
+    return this.minUbnLength <= ubn.length && ubn.length <= this.maxUbnLength;
   }
 }
 
