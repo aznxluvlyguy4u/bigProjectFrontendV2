@@ -95,7 +95,7 @@
         </th>
         <th>{{ 'STATUS' | translate}}</th>
         <th>
-          <button *ngIf="cache.getLocation().use_rvo_logic" type="button" [disabled]="!(selected_eartags_list.length > 0) || sync_in_progress"
+          <button *ngIf="cache.useRvoLogic()" type="button" [disabled]="!(selected_eartags_list.length > 0) || sync_in_progress"
                   (click)="openModalAll()" class="tiny primary button pull-right">
             <span class="badge">{{ selected_eartags_list.length }}</span>
             {{ 'TRANSFER ALL' | translate}}
