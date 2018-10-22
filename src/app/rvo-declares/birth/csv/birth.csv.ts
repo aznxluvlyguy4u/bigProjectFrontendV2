@@ -50,10 +50,10 @@ class ExtendedBirthRequest extends BirthRequest {
 
 @Component({
   selector: 'app-csv',
-  templateUrl: './csv.component.html',
-  styleUrls: ['./csv.component.sass']
+  templateUrl: './birth.csv.html',
+  styleUrls: ['./birth.csv.sass']
 })
-export class CsvComponent implements OnInit, OnDestroy {
+export class BirthCsvComponent implements OnInit, OnDestroy {
 
   public country_code_list = [];
   private countryCodeObs;

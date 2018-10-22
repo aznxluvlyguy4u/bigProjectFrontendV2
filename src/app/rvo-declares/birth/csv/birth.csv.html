@@ -15,7 +15,6 @@
 </div>
 
 <div *ngFor="let birthRequest of birthRequests" class="csv_birthrequest" [class.success]="birthRequest.declareStatus === true" [class.error]="birthRequest.declareStatus === false" [class.warning]="birthRequest.hasWarnings && birthRequest.declareStatus === null">
-  <!-- <ng-container *ngIf="birthRequest.declareStatus === null || birthRequest.declareStatus === false"> -->
     <div class="row">
       <div class="columns">
         <i *ngIf="birthRequest.isSubmitting" class="fa fa-spinner fa-pulse fa-fw"></i>
@@ -212,21 +211,6 @@
                   </span>
                 </td>
               </tr>
-
-              <!-- <tr *ngFor="let child of birthRequest.stillBorns; let i = index">
-                <td>{{ 'STILLBORN' | translate}}</td>
-                <td>{{child?.gender }}</td>
-                <td>{{child?.birth_progress }}</td>
-                <td>{{child?.birth_weight }}</td>
-                <td>{{child?.date_of_birth }}</td>
-                <td>{{child?.date_scanned }}</td>
-                <td>{{child?.tail_length }}</td>
-                <td>{{child?.nurture_type }}</td>
-                <td></td>
-                <td>
-                </td>
-              </tr> -->
-
 
             </tbody>
           </table>
