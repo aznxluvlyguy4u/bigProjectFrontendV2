@@ -9,6 +9,7 @@ import {ArrivalComponent} from './rvo-declares/arrival/arrival.component';
 import {ArrivalDeclareComponent} from './rvo-declares/arrival/declare/arrival.declare';
 import {ArrivalHistoryComponent} from './rvo-declares/arrival/history/arrival.history';
 import {ArrivalErrorsComponent} from './rvo-declares/arrival/errors/arrival.errors';
+import {ArrivalCsvComponent} from './rvo-declares/arrival/csv/arrival.csv';
 import {DepartComponent} from './rvo-declares/depart/depart.component';
 import {DepartDeclareComponent} from './rvo-declares/depart/declare/depart.declare';
 import {DepartHistoryComponent} from './rvo-declares/depart/history/depart.history';
@@ -20,6 +21,7 @@ import {BirthComponent} from './rvo-declares/birth/birth.component';
 import {BirthDeclareComponent} from './rvo-declares/birth/declare/birth.declare';
 import {BirthHistoryComponent} from './rvo-declares/birth/history/birth.history';
 import {BirthErrorsComponent} from './rvo-declares/birth/errors/birth.errors';
+import {BirthCsvComponent} from './rvo-declares/birth/csv/birth.csv';
 import {LossComponent} from './rvo-declares/loss/loss.component';
 import {LossDeclareComponent} from './rvo-declares/loss/declare/loss.declare';
 import {LossHistoryComponent} from './rvo-declares/loss/history/loss.history';
@@ -58,7 +60,6 @@ import {ReportInbreedingCoefficientComponent} from './report/inbreedingCoefficie
 import {ReportLivestockComponent} from './report/livestock/report.livestock';
 import {ReportFertilizerAccountingComponent} from './report/fertilityAccounting/report.fertilizer-accounting.component';
 import {ReportOffspringComponent} from './report/offspring/report.offspring.component';
-import { CsvComponent } from './rvo-declares/birth/csv/csv.component';
 
 // const appRoutes: Routes = [
 const appRoutes = [
@@ -77,7 +78,8 @@ const appRoutes = [
         children: [
           {path: 'declare', component: ArrivalDeclareComponent},
           {path: 'history', component: ArrivalHistoryComponent},
-          {path: 'errors', component: ArrivalErrorsComponent}
+          {path: 'errors', component: ArrivalErrorsComponent},
+          {path: 'csv', component: ArrivalCsvComponent},
         ]
       },
       {
@@ -101,7 +103,7 @@ const appRoutes = [
           {path: 'declare', component: BirthDeclareComponent},
           {path: 'history', component: BirthHistoryComponent},
           {path: 'errors', component: BirthErrorsComponent},
-          {path: 'csv', component: CsvComponent},
+          {path: 'csv', component: BirthCsvComponent},
         ]
       },
       {
