@@ -8,6 +8,8 @@ import {Constants} from '../../../shared/variables/constants';
 import {API_URI_DECLARE_ARRIVAL} from '../../../shared/services/nsfo-api/nsfo.settings';
 import {DateValidator, UBNValidator} from '../../../shared/validation/nsfo-validation';
 import {SettingsService} from '../../../shared/services/settings/settings.service';
+import {CacheService} from '../../../shared/services/settings/cache.service';
+import {TranslateService} from '@ngx-translate/core';
 
 @Component({
   templateUrl: './arrival.declare.html',
@@ -48,6 +50,8 @@ export class ArrivalDeclareComponent implements OnInit, OnDestroy, AfterViewInit
   constructor(public constants: Constants,
               private fb: FormBuilder,
               private apiService: NSFOService,
+              private cache: CacheService,
+              private translate: TranslateService,
               private settings: SettingsService) {
     this.view_date_format = settings.getViewDateFormat();
     this.model_datetime_format = settings.getModelDateTimeFormat();
@@ -100,6 +104,16 @@ export class ArrivalDeclareComponent implements OnInit, OnDestroy, AfterViewInit
   public addNewArrival() {
     if (this.form.valid) {
       this.form_valid = true;
+
+      if (this.import_animal.controls['import_flag'].value === this.constants.NO) {
+        const ubnPreviousOwner = this.import_animal.controls['ubn_previous_owner'].value;
+        console.log(ubnPreviousOwner, this.cache.getUbn());
+        if (ubnPreviousOwner === this.cache.getUbn()) {
+          this.error_message = this.translate.instant('UBN OF DEPARTURE AND ARRIVAL ARE IDENTICAL');
+          this.openModal();
+          return;
+        }
+      }
 
       const arrival = new ArrivalRequest();
       const arrival_date_string = moment(this.form.get('arrival_date').value, this.settings.getViewDateFormat());

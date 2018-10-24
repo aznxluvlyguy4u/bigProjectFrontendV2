@@ -59,6 +59,16 @@ export class DepartDeclareComponent {
     if (this.form.valid) {
       this.isValidForm = true;
 
+      if (this.export_animal.controls['export_flag'].value === this.constants.NO) {
+        const ubnNewOwner = this.export_animal.controls['ubn_new_owner'].value;
+        console.log(ubnNewOwner, this.cache.getUbn());
+        if (ubnNewOwner === this.cache.getUbn()) {
+          this.errorMessage = this.translate.instant('UBN OF DEPARTURE AND ARRIVAL ARE IDENTICAL');
+          this.openModal();
+          return;
+        }
+      }
+
       const depart: DepartRequest = new DepartRequest();
 
       const depart_date_moment = moment(this.form.get('depart_date').value, this.settings.VIEW_DATE_FORMAT);
