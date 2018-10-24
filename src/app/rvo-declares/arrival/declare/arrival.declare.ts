@@ -159,9 +159,9 @@ export class ArrivalDeclareComponent implements OnInit, OnDestroy, AfterViewInit
               sessionStorage.setItem('arrival_list', JSON.stringify(this.arrival_list));
               if (this.arrival_list.length === 0) {
                 this.in_progress = false;
-                this.form.get('import_flag').setValue('NO');
-                this.form.get('ubn_previous_owner').setValue('');
-                this.form.get('certificate_number').setValue('');
+                this.import_animal.get('import_flag').setValue('NO');
+                this.import_animal.get('ubn_previous_owner').setValue('');
+                this.import_animal.get('certificate_number').setValue('');
                 this.form.get('arrival_date').setValue(this.getToday());
               }
             },
