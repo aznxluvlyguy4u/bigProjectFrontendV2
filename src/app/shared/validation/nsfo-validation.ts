@@ -43,7 +43,15 @@ export class UBNValidator {
     return {'isNotExportAnimal': true};
   }
 
+  static validateUbnAllowEmpty(control: FormControl): ValidationResult {
+    return UBNValidator.validateUbnBase(control, true);
+  }
+
   static validateUbn(control: FormControl): ValidationResult {
+    return UBNValidator.validateUbnBase(control, false);
+  }
+
+  private static validateUbnBase(control: FormControl, allowEmptyUbn: boolean): ValidationResult {
     let ubn_number = '';
 
     if (control.value) {
@@ -51,6 +59,7 @@ export class UBNValidator {
     }
 
     const isValid =
+      (allowEmptyUbn && (ubn_number === '' || ubn_number === null || ubn_number === undefined)) ||
       UBNValidator.isValidNonDutchUbn(ubn_number) ||
       UBNValidator.isValidDutchUbn(ubn_number)
     ;
