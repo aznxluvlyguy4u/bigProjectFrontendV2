@@ -50,16 +50,8 @@ export class CacheService {
   }
 
   public getUbn(): string {
-      const localToken = sessionStorage.getItem(UBN_TOKEN_NAMESPACE);
-      if (localToken) {
-          this.setUbn(localToken);
-      }
-    return this.ubn;
-  }
-
-  public setUbn(ubn: string) {
-    this.ubn = ubn;
-    sessionStorage.setItem(UBN_TOKEN_NAMESPACE, ubn);
+      const location = this.getLocation();
+      return location && location.ubn ? location.ubn : undefined;
   }
 
   deleteUbn() {
@@ -82,6 +74,9 @@ export class CacheService {
   }
 
   public useRvoLogic(): boolean {
+    if (!this.getLocation()) {
+      return false;
+    }
     return this.getLocation().use_rvo_logic !== undefined && this.getLocation().use_rvo_logic;
   }
 

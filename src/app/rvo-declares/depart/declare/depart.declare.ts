@@ -9,6 +9,7 @@ import {Settings} from '../../../shared/variables/settings';
 import {DateValidator, UBNValidator} from '../../../shared/validation/nsfo-validation';
 import {API_URI_DECLARE_DEPART} from '../../../shared/services/nsfo-api/nsfo.settings';
 import {AnimalsOverviewSelection} from '../../../shared/components/livestock/animals-overview-selection.model';
+import {CacheService} from '../../../shared/services/settings/cache.service';
 
 @Component({
   templateUrl: './depart.declare.html',
@@ -32,6 +33,7 @@ export class DepartDeclareComponent {
               private nsfo: NSFOService,
               public constants: Constants,
               private settings: Settings,
+              private cache: CacheService,
               private translate: TranslateService) {
     this.view_date_format = settings.VIEW_DATE_FORMAT;
     this.model_datetime_format = settings.MODEL_DATETIME_FORMAT;
@@ -57,6 +59,16 @@ export class DepartDeclareComponent {
     if (this.form.valid) {
       this.isValidForm = true;
 
+      if (this.export_animal.controls['export_flag'].value === this.constants.NO) {
+        const ubnNewOwner = this.export_animal.controls['ubn_new_owner'].value;
+        console.log(ubnNewOwner, this.cache.getUbn());
+        if (ubnNewOwner === this.cache.getUbn()) {
+          this.errorMessage = this.translate.instant('UBN OF DEPARTURE AND ARRIVAL ARE IDENTICAL');
+          this.openModal();
+          return;
+        }
+      }
+
       const depart: DepartRequest = new DepartRequest();
 
       const depart_date_moment = moment(this.form.get('depart_date').value, this.settings.VIEW_DATE_FORMAT);
@@ -66,6 +78,11 @@ export class DepartDeclareComponent {
         depart.is_export_animal = false;
         depart.ubn_new_owner = this.export_animal.controls['ubn_new_owner'].value;
         depart.reason_of_depart = this.form.get('reason_depart').value;
+
+        if (!this.isValidUbn(depart.ubn_new_owner)) {
+          alert(this.translate.instant('UBN IS INVALID') + ': ' + depart.ubn_new_owner);
+          return;
+        }
       }
 
       if (this.export_animal.controls['export_flag'].value === this.constants.YES) {
@@ -92,12 +109,7 @@ export class DepartDeclareComponent {
               }
             },
             err => {
-              const error = err.error.result;
-              this.errorMessage = error.message;
-
-              if (!this.errorMessage) {
-                this.errorMessage = 'SOMETHING WENT WRONG! TRY AGAIN AT LATER TIME!';
-              }
+              this.errorMessage = this.nsfo.getErrorMessage(err);
               this.openModal();
               animal.successful = false;
               animal.sending = false;
@@ -107,6 +119,13 @@ export class DepartDeclareComponent {
     } else {
       this.isValidForm = false;
     }
+  }
+
+  private isValidUbn(ubn: string): boolean {
+    if (this.cache.useRvoLogic()) {
+      return UBNValidator.isValidDutchUbn(ubn);
+    }
+    return UBNValidator.isValidNonDutchUbn(ubn);
   }
 
   public openModal() {

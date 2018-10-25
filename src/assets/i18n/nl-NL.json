@@ -693,5 +693,6 @@
   "NO RAM SELECTED": "Geen ram geselecteerd",
   "CSV FORMAT ERROR": "CSV voldoet niet aan formaat eisen",
   "COUNTRY": "Land",
-  "EARTAG ADMINISTRATION": "Oormerkbeheer"
+  "EARTAG ADMINISTRATION": "Oormerkbeheer",
+  "UBN OF DEPARTURE AND ARRIVAL ARE IDENTICAL": "UBN van vertrek en aankomst zijn identiek"
 }

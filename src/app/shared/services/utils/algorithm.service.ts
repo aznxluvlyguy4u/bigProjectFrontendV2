@@ -1,19 +1,27 @@
 import {StringFormatter} from './string-formatter.service';
+import {NumberValidator} from '../../validation/number.validation';
 
 export class AlgorithmService {
 
   public static isValidSevenTestNumber(input: any): boolean {
     let number = input + '';
 
-    if (number.length === 0 || number.length > 7) {
+    const minLength = 1;
+    const maxLength = 7;
+
+    if (!NumberValidator.isNumber(number)) {
       return false;
     }
 
-    if (number.length < 7) {
-      number = StringFormatter.padStart(number, 7, '0');
+    if (number.length < minLength || number.length > maxLength) {
+      return false;
     }
 
-    if (number.length === 7) {
+    if (number.length < maxLength) {
+      number = StringFormatter.padStart(number, maxLength, '0');
+    }
+
+    if (number.length === maxLength) {
       const chars = number.split('');
       const calc_values = [1, 7, 3, 1, 7, 3, 1];
       let sum = 0;
@@ -21,13 +29,10 @@ export class AlgorithmService {
       for (let i = 0; i < chars.length; i++) {
         sum = sum + (parseInt(chars[i], null) * calc_values[i]);
       }
-
-      if ((sum / 10) % 1 === 0) {
-        return false;
-      }
+      return sum % 10 === 0;
     }
 
-    return true;
+    return false;
   }
 
 }
