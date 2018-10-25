@@ -44,7 +44,7 @@
   <div class="large-1 columns">
     <label>{{ 'IMPORT' | translate }} &nbsp;
       <select formControlName="import_flag" (change)="clearUBNValue(); clearCertificateValue();">
-        <option value="{{ constants.YES }}">{{ constants.YES | translate }}</option>
+        <option *ngIf="allowImports()" value="{{ constants.YES }}">{{ constants.YES | translate }}</option>
         <option value="{{ constants.NO }}">{{ constants.NO | translate }}</option>
       </select>
     </label>

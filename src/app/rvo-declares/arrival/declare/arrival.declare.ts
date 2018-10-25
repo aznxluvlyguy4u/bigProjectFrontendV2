@@ -85,6 +85,10 @@ export class ArrivalDeclareComponent implements OnInit, OnDestroy, AfterViewInit
     this.countryCodeObs.unsubscribe();
   }
 
+  public allowImports(): boolean {
+    return this.cache.useRvoLogic();
+  }
+
   public getTempArrivalList() {
     if (sessionStorage['arrival_list']) {
       const arrival_list = <ArrivalRequest[]> JSON.parse(sessionStorage['arrival_list']);
