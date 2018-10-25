@@ -61,7 +61,6 @@ export class DepartDeclareComponent {
 
       if (this.animal_form.controls['export_flag'].value === this.constants.NO) {
         const ubnNewOwner = this.animal_form.controls['ubn_new_owner'].value;
-        console.log(ubnNewOwner, this.cache.getUbn());
         if (ubnNewOwner === this.cache.getUbn()) {
           this.errorMessage = this.translate.instant('UBN OF DEPARTURE AND ARRIVAL ARE IDENTICAL');
           this.openModal();
