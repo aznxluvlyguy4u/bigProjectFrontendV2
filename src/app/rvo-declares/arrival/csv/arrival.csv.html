@@ -1,0 +1,263 @@
+<form class="form-declare">
+  <div class="row">
+      <div class="medium-2 columns">
+        <input #csv (change)="handleFileInput($event.target.files)" type="file" id="csv" name="file" accept=".csv" [disabled]="loadingStatesCount !== 0">
+      </div>
+  </div>
+</form>
+
+<div class="row" *ngIf="arrivalRequests.length > 0">
+  <div class="columns">
+    <button [disabled]="loadingStatesCount !== 0" (click)="submitArrivalRequests()" class="small success button">{{ "DECLARE ALL ARRIVALS" | translate }}  <span class="badge">{{arrivalRequests.length}}</span></button>
+  </div>
+
+  <app-page-loading-spinner *ngIf="loadingStatesCount !== 0"></app-page-loading-spinner>
+</div>
+
+<div *ngFor="let arrivalRequest of arrivalRequests" class="csv_arrivalRequest" [class.success]="arrivalRequest.declareStatus === true" [class.error]="arrivalRequest.declareStatus === false" [class.warning]="arrivalRequest.hasWarnings && arrivalRequest.declareStatus === null">
+    <!--<pre>{{ arrivalRequest | json }}</pre>-->
+    <div class="row">
+      <div class="columns">
+        <i *ngIf="arrivalRequest.isSubmitting" class="fa fa-spinner fa-pulse fa-fw"></i>
+        <p class="alert">
+          {{arrivalRequest.errorMessage}}
+        </p>
+      </div>
+    </div>
+
+    <div class="row">
+
+      <div class="medium-3 columns">
+        <div class="row">
+          <label class="medium-7 columns">{{ 'IDENTIFICATION NUMBER' | translate }}</label>
+          <!-- Error messages -->
+          <label class="medium-5 columns warning-text" *ngIf="!arrivalRequest?.animal?.uln_country_code && arrivalRequest?.animal?.uln_number">
+            <small>{{ 'CHOOSE COUNTRY CODE' | translate }}</small>
+          </label>
+          <label class="medium-5 columns warning-text" *ngIf="!arrivalRequest?.animal?.uln_country_code && !arrivalRequest?.animal?.uln_number && !arrivalRequest?.animal?.worker_number">
+            <small>{{ 'MOTHER IS MISSING' | translate }}</small>
+          </label>
+          <label class="medium-5 columns warning-text" *ngIf="!arrivalRequest?.animal?.uln_country_code && !arrivalRequest?.animal?.uln_number && arrivalRequest?.animal?.worker_number">
+            <small>{{ 'WORK NUMBER IS NOT FOUND IN LIVESTOCK' | translate }}</small>
+          </label>
+        </div>
+
+        <!--Missing country code but has a uln number-->
+        <div class="uid-input-group" *ngIf="!arrivalRequest?.animal?.uln_country_code && arrivalRequest?.animal?.uln_number">
+          <select [ngModel]="arrivalRequest?.animal?.uln_country_code" (change)="selectAnimalUlnCountryCode(arrivalRequest, $event.target.value)">
+            <option *ngFor="let country_code of country_code_list" [value]="country_code.code">
+              {{ country_code.code }}
+            </option>
+          </select>
+          <input type="text" [disabled]="arrivalRequest?.animal?.uln_number" [value]="arrivalRequest?.animal?.uln_number">
+        </div>
+
+        <!--Both country code and uln number are present-->
+        <div class="row collapse" *ngIf="arrivalRequest?.animal?.uln_country_code && arrivalRequest?.animal?.uln_number">
+          <span class="medium-9 columns">{{arrivalRequest?.animal?.uln_country_code}} {{arrivalRequest?.animal?.uln_number}}</span>
+          <button class="tiny button medium-3 columns" *ngIf="arrivalRequest?.animalUlnCountryCodeOnlyHasChanged" (click)="resetAnimalUlnCountryCode(arrivalRequest)">{{'CHANGE' | translate}}</button>
+          <button class="tiny button medium-3 columns" *ngIf="arrivalRequest?.animalHasChanged" (click)="resetAnimal(arrivalRequest)">{{'CHANGE' | translate}}</button>
+        </div>
+
+      </div>
+
+      <div class="medium-3 columns">
+        <div class="row">
+          <label class="medium-12 columns">{{ 'ARRIVAL DATE' | translate }}</label>
+        </div>
+
+        <!--Both country code and uln number are present-->
+        <!--<div class="row collapse" *ngIf="arrivalRequest?.arrival_date">-->
+          <!--<span class="medium-9 columns">{{arrivalRequest?.arrival_date}}</span>-->
+        <!--</div>-->
+        <div class="row">
+          <div class="medium-9 columns">
+            <app-datepicker-v2 *ngIf="arrivalRequest?.arrival_date"
+              [dateString]='arrivalRequest?.arrival_date'
+              [disabled]='arrivalRequest?.datePickerDisabled'
+              [viewFormat]="view_date_format"
+              [activateSetNullButton]="false"
+              [activateResetButton]="false"
+              [modelFormat]="model_datetime_format">
+            </app-datepicker-v2>
+          </div>
+          <button class="tiny button medium-3 columns" (click)="toggleDatePicker(arrivalRequest)">{{'CHANGE' | translate}}</button>
+        </div>
+
+      </div>
+
+      <div class="medium-3 columns">
+        <div class="row">
+          <label class="medium-12 columns">{{ 'UBN PREVIOUS OWNER' | translate }}</label>
+        </div>
+
+        <!--Both country code and uln number are present-->
+        <div class="row collapse" *ngIf="arrivalRequest?.ubn_previous_owner">
+          <div class="medium-8 columns">
+            <input (keyup)="preventKeyPress($event)" (keydown)="preventKeyPress($event)" [value]="arrivalRequest?.ubn_previous_owner"
+                   (keypress)="preventKeyPress($event)" type="text" name="ubn_previous_owner" [disabled]="arrivalRequest?.ubnPreviousOwnerDisabled">
+          </div>
+          <button class="tiny button medium-3 columns" (click)="toggleUbnPreviousOwner(arrivalRequest)">{{'CHANGE' | translate}}</button>
+
+        </div>
+      </div>
+
+      <div class="medium-3 columns">
+        <div class="row">
+          <label class="medium-12 columns">{{ 'DATE SCANNED' | translate }}</label>
+        </div>
+
+        <!--Both country code and uln number are present-->
+        <div class="row collapse" *ngIf="arrivalRequest?.scanned_date">
+          <span class="medium-9 columns">{{arrivalRequest?.scanned_date}}</span>
+        </div>
+      </div>
+
+    </div>
+
+
+    <div class="row">
+      <div class="columns clearfix">
+        <button [disabled]="loadingStatesCount !== 0" (click)="submitSingleArrivalRequest(arrivalRequest)" class="float-right small success button">{{ "DECLARE" | translate }}</button>
+      </div>
+    </div>
+
+</div>
+
+<selector
+  #motherSelector
+  [columns]="['ULN', 'PEDIGREE NUMBER']"
+  [list]="suggestedCandidateMothers"
+  [filter]="'FEMALES'"
+  [SUGGESTION_LABEL]="'POSSIBLE MOTHER'"
+  [isLoading]="isLoadingCandidateMothers"
+  (selection)="selectMother($event)">
+</selector>
+
+<selector
+  #fatherSelector
+  [columns]="['ULN', 'PEDIGREE NUMBER']"
+  [list]="suggestedCandidateFathers"
+  [filter]="'MALES'"
+  [SUGGESTION_LABEL]="'POSSIBLE FATHER'"
+  [isLoading]="isLoadingCandidateFathers"
+  (selection)="selectFather($event)">
+</selector>
+
+<selector
+  #surrogateMotherSelector
+  [columns]="['ULN', 'PEDIGREE NUMBER']"
+  [list]="candidateSurrogates"
+  [SUGGESTION_LABEL]="'POSSIBLE SURROGATE MOTHER'"
+  (selection)="selectSurrogateMother($event)">
+</selector>
+
+
+<!--<div class="reveal-overlay" [ngStyle]="{'display': warningModalDisplay}">-->
+  <!--<div class="reveal tiny" [ngStyle]="{'display': warningModalDisplay}">-->
+
+    <!--<div class="modal-header">-->
+      <!--{{ "WARNING" | translate }}-->
+      <!--<button type="button" class="pull-right" aria-label="Close modal" (click)="toggleAllWarningsModal()">-->
+        <!--<i class="fa fa-times" aria-hidden="true"></i>-->
+      <!--</button>-->
+    <!--</div>-->
+
+    <!--<div class="modal-body" *ngIf="warningModalMode === 'single'">-->
+      <!--&lt;!&ndash;BirthRequests with multiple fathers&ndash;&gt;-->
+      <!--<div class="callout warning">-->
+        <!--<p *ngIf="selectedBirthRequest.hasMultipleCandidateFathers">-->
+          <!--{{ 'MULTIPLE CANDIDATE FATHERS, BUT NONE CHOSEN' | translate }}-->
+        <!--</p>-->
+
+        <!--<p *ngIf="selectedBirthRequest.motherMissingUlnCountryCode">-->
+          <!--{{ 'MISSING MOTHER DETAILS' | translate }}-->
+        <!--</p>-->
+
+        <!--<p *ngIf="selectedBirthRequest.surrogateMotherMissingUlnCountryCode">-->
+          <!--{{ 'MISSING SURROGATE MOTHER DETAILS' | translate }}-->
+        <!--</p>-->
+      <!--</div>-->
+
+      <!--<div>-->
+        <!--<p><b>{{ "STILL CONTINUE WITH DECLARATION?" | translate }}</b></p>-->
+      <!--</div>-->
+    <!--</div>-->
+
+    <!--<div class="modal-body" *ngIf="warningModalMode === 'all'">-->
+      <!--&lt;!&ndash;BirthRequests with multiple fathers&ndash;&gt;-->
+      <!--<div *ngIf="multipleCandidateFatherBirthRequests.length > 0" class="callout warning">-->
+        <!--<p>{{ 'THE FOLLOWING LAMBS HAVE MULTIPLE CANDIDATE FATHERS BUT NONE CHOSEN' | translate }}</p>-->
+
+        <!--<div>-->
+          <!--<ng-container *ngFor="let warningBirthRequest of multipleCandidateFatherBirthRequests">-->
+            <!--<p *ngFor="let child of warningBirthRequest.children">-->
+              <!--{{ child.uln_country_code + child.uln_number}}-->
+            <!--</p>-->
+          <!--</ng-container>-->
+        <!--</div>-->
+
+      <!--</div>-->
+
+      <!--&lt;!&ndash;BirthRequests with missing mother details&ndash;&gt;-->
+      <!--<div *ngIf="missingAnimalArrivalRequests.length > 0" class="callout warning">-->
+        <!--<p>{{ 'THE FOLLOWING LAMBS ARE MISSING MOTHER DETAILS' | translate }}</p>-->
+
+        <!--<div>-->
+          <!--<ng-container *ngFor="let warningBirthRequest of missingAnimalArrivalRequests">-->
+            <!--<p *ngFor="let child of warningBirthRequest.children">-->
+              <!--{{ child.uln_country_code + child.uln_number}}-->
+            <!--</p>-->
+          <!--</ng-container>-->
+        <!--</div>-->
+
+      <!--</div>-->
+
+      <!--&lt;!&ndash;BirthRequests with missing surrogate mother details&ndash;&gt;-->
+      <!--<div *ngIf="missingSurrogateMotherBirthRequests.length > 0" class="callout warning">-->
+        <!--<p>{{ 'THE FOLLOWING LAMBS ARE MISSING SURROGATE MOTHER DETAILS' | translate }}</p>-->
+
+        <!--<div>-->
+          <!--<ng-container *ngFor="let warningBirthRequest of missingSurrogateMotherBirthRequests">-->
+            <!--<ng-container *ngFor="let child of warningBirthRequest.children">-->
+              <!--<p *ngIf="child.surrogateMotherMissingUlnCountryCode">{{ child.uln_country_code + child.uln_number}}</p>-->
+            <!--</ng-container>-->
+          <!--</ng-container>-->
+        <!--</div>-->
+
+      <!--</div>-->
+
+      <!--<div>-->
+        <!--<p><b>{{ "STILL CONTINUE WITH DECLARATION?" | translate }}</b></p>-->
+      <!--</div>-->
+
+    <!--</div>-->
+
+    <!--<div class="modal-footer">-->
+      <!--<button-->
+              <!--type="button"-->
+              <!--class="button alert pull-right"-->
+              <!--aria-label="Clear list"-->
+              <!--(click)="toggleAllWarningsModal()">-->
+        <!--{{ 'CANCEL' | translate }}-->
+      <!--</button>-->
+
+      <!--<button *ngIf="warningModalMode === 'all'"-->
+              <!--type="button"-->
+              <!--class="button pull-right success"-->
+              <!--aria-label="Clear list"-->
+              <!--(click)="doSubmitBirthRequests(); toggleAllWarningsModal();">-->
+        <!--{{ 'DECLARE' | translate }}-->
+      <!--</button>-->
+
+      <!--<button *ngIf="warningModalMode === 'single'"-->
+              <!--type="button"-->
+              <!--class="button pull-right success"-->
+              <!--aria-label="Clear list"-->
+              <!--(click)="doSubmitSingleBirthRequests(selectedBirthRequest); toggleAllWarningsModal();">-->
+        <!--{{ 'DECLARE' | translate }}-->
+      <!--</button>-->
+    <!--</div>-->
+
+  <!--</div>-->
+<!--</div>-->

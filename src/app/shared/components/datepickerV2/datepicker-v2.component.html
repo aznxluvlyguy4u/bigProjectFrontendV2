@@ -38,7 +38,7 @@
                 title="{{'SET DATE' | translate}}"
         ><i class="fa fa-plus-circle" aria-hidden="true"></i></button>
 
-    <button *ngIf="!disabled"
+    <button *ngIf="!disabled && activateResetButton"
             type="submit"
             (click)="reset()"
             class="button secondary reset"
