@@ -58,7 +58,7 @@ export class ArrivalDeclareComponent implements OnInit, OnDestroy, AfterViewInit
 
     this.import_animal = new FormGroup({
       import_flag: new FormControl(constants.NO),
-      ubn_previous_owner: new FormControl('', UBNValidator.validateUbn),
+      ubn_previous_owner: new FormControl('', UBNValidator.validateUbnAllowEmpty),
       certificate_number: new FormControl(''),
     });
     this.import_animal.validator = UBNValidator.isImportAnimal;
@@ -85,6 +85,10 @@ export class ArrivalDeclareComponent implements OnInit, OnDestroy, AfterViewInit
     this.countryCodeObs.unsubscribe();
   }
 
+  public allowImports(): boolean {
+    return this.cache.useRvoLogic();
+  }
+
   public getTempArrivalList() {
     if (sessionStorage['arrival_list']) {
       const arrival_list = <ArrivalRequest[]> JSON.parse(sessionStorage['arrival_list']);
@@ -107,9 +111,13 @@ export class ArrivalDeclareComponent implements OnInit, OnDestroy, AfterViewInit
 
       if (this.import_animal.controls['import_flag'].value === this.constants.NO) {
         const ubnPreviousOwner = this.import_animal.controls['ubn_previous_owner'].value;
-        console.log(ubnPreviousOwner, this.cache.getUbn());
         if (ubnPreviousOwner === this.cache.getUbn()) {
           this.error_message = this.translate.instant('UBN OF DEPARTURE AND ARRIVAL ARE IDENTICAL');
+          this.openModal();
+          return;
+        }
+        if (!this.isValidUbn(ubnPreviousOwner)) {
+          this.error_message = this.translate.instant('UBN IS INVALID') + ': ' + ubnPreviousOwner;
           this.openModal();
           return;
         }
@@ -219,5 +227,12 @@ export class ArrivalDeclareComponent implements OnInit, OnDestroy, AfterViewInit
 
   public getToday() {
     moment().format(this.settings.getViewDateFormat());
+  }
+
+  private isValidUbn(ubn: string): boolean {
+    if (this.cache.useRvoLogic()) {
+      return UBNValidator.isValidDutchUbn(ubn);
+    }
+    return UBNValidator.isValidNonDutchUbn(ubn);
   }
 }
