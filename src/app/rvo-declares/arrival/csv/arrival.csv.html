@@ -9,6 +9,7 @@
 <div class="row" *ngIf="arrivalRequests.length > 0">
   <div class="columns">
     <button [disabled]="loadingStatesCount !== 0" (click)="submitArrivalRequests()" class="small success button">{{ "DECLARE ALL ARRIVALS" | translate }}  <span class="badge">{{arrivalRequests.length}}</span></button>
+    <!--{{ loadingStatesCount, arrivalRequestWarningsCount }}-->
   </div>
 
   <app-page-loading-spinner *ngIf="loadingStatesCount !== 0"></app-page-loading-spinner>
@@ -204,7 +205,7 @@
               type="button"
               class="button pull-right success"
               aria-label="Clear list"
-              (click)="doSubmitSingleArrivalRequest(selectedBirthRequest); toggleAllWarningsModal();">
+              (click)="doSubmitSingleArrivalRequest(selectedArrivalRequest); toggleAllWarningsModal();">
         {{ 'DECLARE' | translate }}
       </button>
     </div>

@@ -1,9 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import {LivestockAnimal, LIVESTOCK_GENDER_FILTER_OPTIONS, Animal} from '../../../shared/models/animal.model';
-import {
-  Child, CandidateFathersRequest, CandidateSurrogatesRequest, BIRTH_PROGRESS_TYPES,
-  CandidateMothersRequest
-} from '../../birth/birth.model';
+import {LivestockAnimal, Animal} from '../../../shared/models/animal.model';
 import {Animal} from '../../../shared/models/animal.model';
 import { PapaParseService } from 'ngx-papaparse';
 import { Settings } from '../../../shared/variables/settings';
@@ -12,7 +8,6 @@ import {
 } from '../../../shared/services/nsfo-api/nsfo.settings';
 import { NSFOService } from '../../../shared/services/nsfo-api/nsfo.service';
 import * as moment from 'moment';
-import { JsonResponseModel } from '../../../shared/models/json-response.model';
 import { SettingsService } from '../../../shared/services/settings/settings.service';
 import {Router} from '@angular/router';
 import {TranslateService} from '@ngx-translate/core';
@@ -62,7 +57,6 @@ export class ArrivalCsvComponent implements OnInit, OnDestroy {
 
   public country_code_list = [];
   private countryCodeObs;
-  private birth_progress_types = BIRTH_PROGRESS_TYPES;
 
   warningModalDisplay = 'none';
   warningModalMode = 'all';
