@@ -80,6 +80,11 @@ export class CacheService {
     return this.getLocation().use_rvo_logic !== undefined && this.getLocation().use_rvo_logic;
   }
 
+  public areLocationsLoaded(): boolean {
+    return (this.getLocation() !== null && this.getLocation() !== undefined)
+      && (this.getLocation().use_rvo_logic !== null && this.getLocation().use_rvo_logic !== undefined);
+  }
+
   public deleteLocation() {
     this.location = this.initialLocation;
     sessionStorage.removeItem(UBN_LOCATION_NAMESPACE);
