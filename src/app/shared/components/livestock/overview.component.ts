@@ -16,7 +16,7 @@ import {UtilsService} from '../../services/utils/utils.services';
 import {DownloadService} from '../../services/download/download.service';
 import {Subscription} from 'rxjs';
 import {Subject} from 'rxjs';
-import {NgxPaginationModule} from 'ngx-pagination';
+import {PaginationService} from 'ngx-pagination';
 import {Mate, MateChangeResponse} from '../../models/nsfo-declare.model';
 import {Animal, LivestockAnimal} from '../../models/animal.model';
 import {JsonResponseModel} from '../../models/json-response.model';
@@ -27,7 +27,7 @@ export const LIVESTOCK_TYPE_MATE = 'LIVE_STOCK_TYPE_MATE';
 
 @Component({
     selector: 'app-livestock-overview',
-    providers: [NgxPaginationModule, LivestockFilterPipe],
+    providers: [PaginationService, LivestockFilterPipe],
     templateUrl: './overview.component.html',
 })
 export class LivestockOverviewComponent implements OnInit, OnDestroy {

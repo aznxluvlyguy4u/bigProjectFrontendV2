@@ -19,6 +19,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
   public loopGetDashboardInfo = true;
   public isLoading: boolean;
 
+  private retryTimeoutSeconds = 2;
+
   constructor(
       private apiService: NSFOService,
       private cache: CacheService,
@@ -61,23 +63,45 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   private syncLivestock() {
     // check current ubn only if NL
-    if (this.cache.useRvoLogic()) {
-      if (this.cache.getAccessToken() === undefined) { return; }
-      this.apiService.doPostRequest(API_URI_SYNC_ANIMALS, {})
-        .subscribe(() => {
-        });
+    if (this.cache.areLocationsLoaded()) {
+
+      if (this.cache.useRvoLogic()) {
+        if (this.cache.getAccessToken() === undefined) { return; }
+        this.apiService.doPostRequest(API_URI_SYNC_ANIMALS, {})
+          .subscribe(() => {
+          });
+      }
+
+    } else {
+
+      setTimeout(() => {
+        this.syncLivestock();
+      }, this.retryTimeoutSeconds * 1000);
+
     }
+
   }
 
   private syncEartags() {
     // check current ubn only if NL
-    if (this.cache.useRvoLogic()) {
-      if (this.cache.getAccessToken() === undefined) { return; }
-      this.apiService
-        .doPostRequest(API_URI_SYNC_EARTAGS, {})
-        .subscribe(() => {
-        });
+    if (this.cache.areLocationsLoaded()) {
+
+      if (this.cache.useRvoLogic()) {
+        if (this.cache.getAccessToken() === undefined) { return; }
+        this.apiService
+          .doPostRequest(API_URI_SYNC_EARTAGS, {})
+          .subscribe(() => {
+          });
+      }
+
+    } else {
+
+      setTimeout(() => {
+        this.syncEartags();
+      }, this.retryTimeoutSeconds * 1000);
+
     }
+
   }
 
   private navigateTo(route: string) {

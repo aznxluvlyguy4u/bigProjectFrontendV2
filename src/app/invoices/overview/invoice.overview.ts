@@ -7,11 +7,11 @@ import {SettingsService} from '../../shared/services/settings/settings.service';
 import {Router} from '@angular/router';
 import {API_URI_INVOICE_PAYMENT, API_URI_INVOICES} from '../../shared/services/nsfo-api/nsfo.settings';
 import {DownloadService} from '../../shared/services/download/download.service';
-import {NgxPaginationModule} from 'ngx-pagination';
+import {PaginationService} from 'ngx-pagination';
 import {JsonResponseModel} from '../../shared/models/json-response.model';
 
 @Component({
-  providers: [NgxPaginationModule],
+  providers: [PaginationService],
   templateUrl: './invoice.overview.html',
 })
 
