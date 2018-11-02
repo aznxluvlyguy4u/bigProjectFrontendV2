@@ -8,19 +8,17 @@ import {Animal} from '../../../shared/models/animal.model';
 import { PapaParseService } from 'ngx-papaparse';
 import { Settings } from '../../../shared/variables/settings';
 import {
-  API_URI_DECLARE_ARRIVAL,
-  API_URI_DECLARE_BIRTH,
-  API_URI_GET_EWES_IN_LIVESTOCK,
-  API_URI_GET_HISTORIC_EWES_IN_LIVESTOCK,
+  API_URI_DECLARE_ARRIVAL
 } from '../../../shared/services/nsfo-api/nsfo.settings';
 import { NSFOService } from '../../../shared/services/nsfo-api/nsfo.service';
 import * as moment from 'moment';
 import { JsonResponseModel } from '../../../shared/models/json-response.model';
 import { SettingsService } from '../../../shared/services/settings/settings.service';
 import {Router} from '@angular/router';
-import {SortOrder, SortService} from '../../../shared/services/utils/sort.service';
 import {TranslateService} from '@ngx-translate/core';
 import {ArrivalRequest} from '../arrival.model';
+import {UBNValidator} from '../../../shared/validation/nsfo-validation';
+import {CacheService} from '../../../shared/services/settings/cache.service';
 
 interface ArrivalCsvRow {
   index: number;
@@ -40,10 +38,9 @@ class ExtendedArrivalRequest extends ArrivalRequest {
   public scanned_date: string;
   public animalUlnCountryCodeOnlyHasChanged = false;
   public animalHasChanged = false;
-  // public hasMultipleCandidateFathers = false;
   public animalMissingUlnCountryCode = true;
   public animalHasOnlyWorkerNumber = false;
-  // surrogateMotherMissingUlnCountryCode = false;
+  public invalidUbnPreviousOwner = false;
   public datePickerDisabled = true;
   public ubnPreviousOwnerDisabled = true;
   public hasWarnings = false;
@@ -76,20 +73,11 @@ export class ArrivalCsvComponent implements OnInit, OnDestroy {
   // isLoadingCandidateSurrogates = false;
   // isLoadingCandidateMothers = false;
   // isLoadingCandidateFathers = false;
-  ewesLoaded = false;
-  historicEwesLoaded = false;
 
-  multipleCandidateFatherBirthRequests = <ExtendedArrivalRequest[]>[];
   missingAnimalArrivalRequests = <ExtendedArrivalRequest[]>[];
-  missingSurrogateMotherBirthRequests = <ExtendedArrivalRequest[]>[];
+  invalidUbnPreviousOwnerArrivalRequests = <ExtendedArrivalRequest[]>[];
   arrivalRequests: ArrivalRequest[] = [];
-
-  suggestedCandidateFathers = <LivestockAnimal[]>[];
-  suggestedCandidateMothers = <LivestockAnimal[]>[];
-  candidateSurrogates = <LivestockAnimal[]>[];
   parsedAnimals = <LivestockAnimal[]>[];
-  ewesInLivestock = <LivestockAnimal[]>[];
-
   csvRows: ArrivalCsvRow[] = [];
   parsedResults: any;
   parsedFile: any;
@@ -97,11 +85,6 @@ export class ArrivalCsvComponent implements OnInit, OnDestroy {
   public model_datetime_format;
 
   private selectedArrivalRequest: ExtendedArrivalRequest;
-  private selectedChild;
-
-  private candidateFathersRequest = new CandidateFathersRequest();
-  private candidateMothersRequest = new CandidateMothersRequest();
-  private candidateSurrogatesRequest = new CandidateSurrogatesRequest();
 
   constructor(
     private papa: PapaParseService,
@@ -109,8 +92,8 @@ export class ArrivalCsvComponent implements OnInit, OnDestroy {
     private apiService: NSFOService,
     private settingService: SettingsService,
     private router: Router,
-    private sort: SortService,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private cache: CacheService
   ) {
     this.view_date_format = settingService.getViewDateFormat();
     this.model_datetime_format = settingService.getModelDateTimeFormat();
@@ -121,20 +104,15 @@ export class ArrivalCsvComponent implements OnInit, OnDestroy {
       .subscribe(countryCodeList => {
         this.country_code_list = countryCodeList[0];
       });
-
-    // this.getEwesInLivestock();
   }
 
   resetPrivateVariables() {
     this.arrivalRequestWarningsCount = 0;
-    // this.birthRequests = [];
+    this.arrivalRequests = [];
     this.parsedAnimals = [];
     // this.multipleCandidateFatherBirthRequests = [];
     // this.missingMotherBirthRequests = [];
     // this.missingSurrogateMotherBirthRequests = [];
-    this.suggestedCandidateFathers = [];
-    this.suggestedCandidateMothers = [];
-    this.candidateSurrogates = [];
     // this.selectedBirthRequest = null;
     this.csvRows = [];
     this.parsedResults = null;
@@ -219,19 +197,6 @@ export class ArrivalCsvComponent implements OnInit, OnDestroy {
 
       const csvRowScannedDate = moment(csvRow.scanned_date).format(this.settings.MODEL_DATE_FORMAT);
       const csvRowDateOfArrival = moment(csvRow.date_of_arrival).format(this.settings.MODEL_DATE_FORMAT);
-
-      // if (
-      //   csvRowScannedDate !== currentScannedDate
-      //   || (
-      //     csvRowDateOfArrival !== 'Invalid date'
-      //     && (currentDateOfArrival && currentDateOfArrival !== 'Invalid date')
-      //     && csvRowDateOfArrival !== currentDateOfArrival
-      //   )
-      // ) {
-      //   nextGroup = true;
-      //   currentAnimalGroup = <ArrivalCsvRow[]>[];
-      //   // console.log(csvRow);
-      // }
 
       currentScannedDate = csvRowScannedDate;
       currentDateOfArrival = (csvRowDateOfArrival && csvRowDateOfArrival !== 'Invalid date') ? csvRowDateOfArrival : currentDateOfArrival;
@@ -366,121 +331,6 @@ export class ArrivalCsvComponent implements OnInit, OnDestroy {
     arrivalRequest.ubnPreviousOwnerDisabled = !arrivalRequest.ubnPreviousOwnerDisabled;
   }
 
-  setCandidateFathers(birthRequest) {
-
-    if (!birthRequest.mother.uln) {
-      return;
-    }
-
-    birthRequest.suggestedCandidateFathersIsLoading = true;
-    this.loadingStatesCount++;
-
-    this.isLoadingCandidateFathers = true;
-
-    this.candidateFathersRequest.date_of_birth = moment(birthRequest.date_of_birth).format(this.settings.MODEL_DATETIME_FORMAT);
-    this.candidateFathersRequest.date_of_birth = moment(birthRequest.date_of_birth).format(this.settings.MODEL_DATETIME_FORMAT);
-
-    this.apiService
-      .doPostRequest(API_URI_DECLARE_BIRTH + '/' + birthRequest.mother.uln + '/candidate-fathers', this.candidateFathersRequest)
-      .subscribe(
-          (res: JsonResponseModel) => {
-
-          const suggestedCandidateFathers = <LivestockAnimal[]> res.result.suggested_candidate_fathers;
-          const otherCandidateFathers = <LivestockAnimal[]> res.result.other_candidate_fathers;
-
-          // Prepare father data
-          for (const animal of suggestedCandidateFathers) {
-            this.prepareAnimal(animal, true);
-          }
-
-          for (const animal of otherCandidateFathers) {
-            this.prepareAnimal(animal);
-          }
-
-          // Set birthRequest father data
-          if (suggestedCandidateFathers.length === 1) {
-            birthRequest.father = suggestedCandidateFathers[0];
-          }
-          birthRequest.suggested_candidate_fathers = suggestedCandidateFathers;
-
-          if (birthRequest.suggested_candidate_fathers
-          && birthRequest.suggested_candidate_fathers.length > 1
-          && !birthRequest.father) {
-            birthRequest.hasMultipleCandidateFathers = true;
-          }
-
-          // Trigger loading states
-          birthRequest.suggestedCandidateFathersIsLoading = false;
-          this.validateArrivalRequest(birthRequest);
-          this.loadingStatesCount--;
-          this.isLoadingCandidateFathers = false;
-        },
-        err => {
-          birthRequest.suggestedCandidateFathersIsLoading = false;
-          this.validateArrivalRequest(birthRequest);
-          this.loadingStatesCount--;
-          this.isLoadingCandidateFathers = false;
-        }
-      );
-  }
-
-  getEwesInLivestock() {
-    this.apiService
-      .doGetRequest(API_URI_GET_EWES_IN_LIVESTOCK)
-      .subscribe(
-        (res: JsonResponseModel) => {
-          this.ewesInLivestock = this.ewesInLivestock.concat(<LivestockAnimal[]>res.result);
-          this.ewesLoaded = true;
-          this.sortEwes();
-        },
-        err => {
-          alert(this.apiService.getErrorMessage(err));
-        }
-      );
-
-    this.apiService
-      .doGetRequest(API_URI_GET_HISTORIC_EWES_IN_LIVESTOCK)
-      .subscribe(
-        (res: JsonResponseModel) => {
-          this.ewesInLivestock = this.ewesInLivestock.concat(<LivestockAnimal[]>res.result);
-          this.historicEwesLoaded = true;
-          this.sortEwes();
-        },
-        err => {
-          alert(this.apiService.getErrorMessage(err));
-        }
-      );
-  }
-
-  sortEwes() {
-    if (this.ewesLoaded && this.historicEwesLoaded) {
-      const sortOrder: SortOrder = {
-        variableName: 'worker_number',
-        ascending: true,
-        isDate: false // it is date string, not a date
-      };
-      this.ewesInLivestock = this.sort.sort(this.ewesInLivestock, [sortOrder]);
-    }
-  }
-
-  selectMother(mother: Animal) {
-    this.selectedArrivalRequest.mother = mother;
-    this.selectedArrivalRequest.motherHasChanged = true;
-    this.selectedArrivalRequest.motherMissingUlnCountryCode = false;
-    this.validateArrivalRequest(this.selectedArrivalRequest);
-    this.setCandidateFathers(this.selectedArrivalRequest);
-  }
-
-  selectFather(father) {
-    this.selectedArrivalRequest.father = father;
-    this.validateArrivalRequest(this.selectedArrivalRequest);
-  }
-
-  removeFather(birthRequest: ExtendedBirthRequest) {
-    birthRequest.father = null;
-    this.validateArrivalRequest(birthRequest);
-  }
-
   selectAnimalUlnCountryCode(arrivalRequest: ExtendedArrivalRequest, countryCode: string) {
     arrivalRequest.animalUlnCountryCodeOnlyHasChanged = true;
     arrivalRequest.animalMissingUlnCountryCode = false;
@@ -512,25 +362,32 @@ export class ArrivalCsvComponent implements OnInit, OnDestroy {
   }
 
   validateArrivalRequest(arrivalRequest: ExtendedArrivalRequest) {
-    // reset warnings first
-    // this.multipleCandidateFatherBirthRequests = this.multipleCandidateFatherBirthRequests.filter(function( obj ) {
-    //   return obj.index !== birthRequest.index;
-    // });
-    // this.missingMotherBirthRequests = this.missingMotherBirthRequests.filter(function( obj ) {
-    //   return obj.index !== birthRequest.index;
-    // });
-    //
-    // this.missingSurrogateMotherBirthRequests = this.missingSurrogateMotherBirthRequests.filter(function( obj ) {
-    //   return (obj.index !== birthRequest.index);
-    // });
+
+    // Reset warnings first
+    this.missingAnimalArrivalRequests = this.missingAnimalArrivalRequests.filter(function( obj ) {
+      return obj.index !== arrivalRequest.index;
+    });
+    this.invalidUbnPreviousOwnerArrivalRequests = this.invalidUbnPreviousOwnerArrivalRequests.filter(function( obj ) {
+      return obj.index !== arrivalRequest.index;
+    });
 
     const hadWarnings = arrivalRequest.hasWarnings;
     arrivalRequest.hasWarnings = false;
 
     // Determine warning types
+    // Identification number missing country code
     if (arrivalRequest.animalMissingUlnCountryCode) {
       this.missingAnimalArrivalRequests.push(arrivalRequest);
       arrivalRequest.hasWarnings = true;
+    }
+
+    // UBN validation check
+    if (!this.isValidUbn(arrivalRequest.ubn_previous_owner)) {
+      this.invalidUbnPreviousOwnerArrivalRequests.push(arrivalRequest);
+      arrivalRequest.invalidUbnPreviousOwner = true;
+      arrivalRequest.hasWarnings = true;
+    } else {
+      arrivalRequest.invalidUbnPreviousOwner = false;
     }
 
     if (!hadWarnings && arrivalRequest.hasWarnings) {
@@ -540,11 +397,18 @@ export class ArrivalCsvComponent implements OnInit, OnDestroy {
     }
   }
 
+  private isValidUbn(ubn: string): boolean {
+    if (this.cache.useRvoLogic()) {
+      return UBNValidator.isValidDutchUbn(ubn);
+    }
+    return UBNValidator.isValidNonDutchUbn(ubn);
+  }
+
   submitArrivalRequests() {
     if (this.arrivalRequestWarningsCount > 0) {
       this.toggleAllWarningsModal();
     } else {
-      this.doSubmitBirthRequests();
+      this.doSubmitArrivalRequests();
     }
   }
 
@@ -553,7 +417,7 @@ export class ArrivalCsvComponent implements OnInit, OnDestroy {
     if (this.selectedArrivalRequest.hasWarnings) {
       this.toggleSingleWarningModal();
     } else {
-      this.doSubmitSingleBirthRequest(arrivalRequest);
+      this.doSubmitSingleArrivalRequest(arrivalRequest);
     }
   }
 
@@ -585,44 +449,51 @@ export class ArrivalCsvComponent implements OnInit, OnDestroy {
     }
   }
 
-  doSubmitBirthRequests() {
-    this.arrivalRequests.forEach((birthRequest) => {
-      if (birthRequest.declareStatus !== true) {
-        birthRequest.isSubmitting = true;
-        this.apiService.doPostRequest(API_URI_DECLARE_BIRTH, birthRequest)
+  updateArrivalDateString(arrivalRequest: ExtendedArrivalRequest, arrivalDateString: string) {
+    arrivalRequest.arrival_date = SettingsService.getDateString_YYYY_MM_DD_fromDate(new Date(arrivalDateString));
+    this.validateArrivalRequest(arrivalRequest);
+  }
+
+  updateUbnPreviousOwner(arrivalRequest: ExtendedArrivalRequest, UbnPreviousOwnerString: string) {
+    arrivalRequest.ubn_previous_owner = UbnPreviousOwnerString;
+    this.validateArrivalRequest(arrivalRequest);
+  }
+
+  doSubmitArrivalRequests() {
+    this.arrivalRequests.forEach((arrivalRequest: ExtendedArrivalRequest) => {
+      if (arrivalRequest.declareStatus !== true) {
+        arrivalRequest.isSubmitting = true;
+        this.apiService.doPostRequest(API_URI_DECLARE_ARRIVAL, arrivalRequest)
           .subscribe(
             res => {
-              birthRequest.isSubmitting = false;
-              birthRequest.errorMessage = null;
-              birthRequest.declareStatus = true;
+              arrivalRequest.isSubmitting = false;
+              arrivalRequest.errorMessage = null;
+              arrivalRequest.declareStatus = true;
             },
             err => {
-              birthRequest.isSubmitting = false;
-              birthRequest.errorMessage = err.error.result.message;
-              birthRequest.declareStatus = false;
+              arrivalRequest.isSubmitting = false;
+              arrivalRequest.errorMessage = err.error.result.message;
+              arrivalRequest.declareStatus = false;
             }
           );
       }
     });
   }
 
-  doSubmitSingleBirthRequest(arrivalRequest: ExtendedArrivalRequest) {
+  doSubmitSingleArrivalRequest(arrivalRequest: ExtendedArrivalRequest) {
     if (arrivalRequest.declareStatus !== true) {
       arrivalRequest.isSubmitting = true;
-      console.log(arrivalRequest);
       this.apiService.doPostRequest(API_URI_DECLARE_ARRIVAL, arrivalRequest)
         .subscribe(
           res => {
             arrivalRequest.isSubmitting = false;
             arrivalRequest.errorMessage = null;
             arrivalRequest.declareStatus = true;
-            console.log(res);
           },
           err => {
             arrivalRequest.isSubmitting = false;
             arrivalRequest.errorMessage = err.error.result.message;
             arrivalRequest.declareStatus = false;
-            console.log(err);
           }
         );
     }
