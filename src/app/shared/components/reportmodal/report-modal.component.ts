@@ -5,11 +5,11 @@ import {Subscription} from 'rxjs';
 import {ReportRequest, ReportType} from '../../services/report/report-request.model';
 import {ReportService} from '../../services/report/report.service';
 import {TranslateService} from '@ngx-translate/core';
-import {NgxPaginationModule} from 'ngx-pagination';
+import {PaginationService} from 'ngx-pagination';
 
 @Component({
   selector: 'app-report-modal',
-    providers: [NgxPaginationModule],
+    providers: [PaginationService],
     templateUrl: './report-modal.component.html'
 })
 export class ReportModalComponent implements OnInit, OnDestroy {

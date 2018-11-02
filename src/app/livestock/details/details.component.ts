@@ -26,11 +26,11 @@ import {JsonResponseModel} from '../../shared/models/json-response.model';
 import {GoogleChartConfigModel} from '../../shared/models/google.chart.config.model';
 import {BreedValues} from '../../shared/models/breedvalues.model';
 import {TranslateService} from '@ngx-translate/core';
-import {NgxPaginationModule} from 'ngx-pagination';
+import {PaginationService} from 'ngx-pagination';
 
 @Component({
   templateUrl: './details.component.html',
-  providers: [NgxPaginationModule],
+  providers: [PaginationService],
 })
 
 export class LivestockDetailComponent {

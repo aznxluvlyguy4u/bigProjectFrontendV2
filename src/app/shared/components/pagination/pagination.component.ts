@@ -127,7 +127,7 @@ export class PaginationComponent implements OnInit, OnChanges, AfterViewInit, On
 
   /**
    * Updates the page links and checks that the current page is valid. Should run whenever the
-   * NgxPaginationModule.change stream emits a value matching the current ID, or when any of the
+   * PaginationService.change stream emits a value matching the current ID, or when any of the
    * input values changes.
    */
   public updatePageLinks() {

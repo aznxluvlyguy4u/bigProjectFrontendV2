@@ -9,12 +9,12 @@ import {SettingsService} from '../../../shared/services/settings/settings.servic
 import {TagReplacementHistoryChangeResponse} from '../tagReplacement.model';
 import {API_URI_GET_TAG_REPLACEMENT_HISTORY, API_URI_REVOKE_DECLARATION} from '../../../shared/services/nsfo-api/nsfo.settings';
 import {TagReplacementHistoryRowComponent} from './tagReplacement.history.row';
-import {NgxPaginationModule} from 'ngx-pagination';
+import {PaginationService} from 'ngx-pagination';
 import {JsonResponseModel} from '../../../shared/models/json-response.model';
 import {CacheService} from '../../../shared/services/settings/cache.service';
 
 @Component({
-  providers: [NgxPaginationModule],
+  providers: [PaginationService],
   templateUrl: './tagReplacement.history.html',
 })
 

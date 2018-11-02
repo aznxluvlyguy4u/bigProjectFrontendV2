@@ -13,14 +13,14 @@ import {
   API_URI_TRANSFER_EARTAGS
 } from '../../../shared/services/nsfo-api/nsfo.settings';
 import {SettingsService} from '../../../shared/services/settings/settings.service';
-import {NgxPaginationModule} from 'ngx-pagination';
+import {PaginationService} from 'ngx-pagination';
 import {User} from '../../../shared/models/person.model';
 import {JsonResponseModel} from '../../../shared/models/json-response.model';
 import { UtilsService } from '../../../shared/services/utils/utils.services';
 import { CacheService } from '../../../shared/services/settings/cache.service';
 
 @Component({
-  providers: [NgxPaginationModule],
+  providers: [PaginationService],
   templateUrl: './eartag.declare.html',
 })
 
