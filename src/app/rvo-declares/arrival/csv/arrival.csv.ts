@@ -64,9 +64,6 @@ export class ArrivalCsvComponent implements OnInit, OnDestroy {
   loadingStatesCount = 0;
   arrivalRequestWarningsCount = 0;
   csvFormatError = false;
-  // isLoadingCandidateSurrogates = false;
-  // isLoadingCandidateMothers = false;
-  // isLoadingCandidateFathers = false;
 
   missingAnimalArrivalRequests = <ExtendedArrivalRequest[]>[];
   invalidUbnPreviousOwnerArrivalRequests = <ExtendedArrivalRequest[]>[];
@@ -75,9 +72,9 @@ export class ArrivalCsvComponent implements OnInit, OnDestroy {
   csvRows: ArrivalCsvRow[] = [];
   parsedResults: any;
   parsedFile: any;
+
   public view_date_format;
   public model_datetime_format;
-
   private selectedArrivalRequest: ExtendedArrivalRequest;
 
   constructor(
@@ -104,10 +101,9 @@ export class ArrivalCsvComponent implements OnInit, OnDestroy {
     this.arrivalRequestWarningsCount = 0;
     this.arrivalRequests = [];
     this.parsedAnimals = [];
-    // this.multipleCandidateFatherBirthRequests = [];
-    // this.missingMotherBirthRequests = [];
-    // this.missingSurrogateMotherBirthRequests = [];
-    // this.selectedBirthRequest = null;
+    this.missingAnimalArrivalRequests = [];
+    this.invalidUbnPreviousOwnerArrivalRequests = [];
+    this.selectedArrivalRequest = null;
     this.csvRows = [];
     this.parsedResults = null;
     this.parsedFile = null;
