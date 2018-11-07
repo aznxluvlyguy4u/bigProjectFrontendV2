@@ -1,6 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import {LivestockAnimal, Animal} from '../../../shared/models/animal.model';
-import {Animal} from '../../../shared/models/animal.model';
 import { PapaParseService } from 'ngx-papaparse';
 import { Settings } from '../../../shared/variables/settings';
 import {
@@ -117,13 +116,13 @@ export class ArrivalCsvComponent implements OnInit, OnDestroy {
         if (this.isValidCsv(results)) {
           this.parsedResults = results;
           this.parsedFile = file;
-          const rows = this.toRows(this.parsedResults.data);
+          this.toRows(this.parsedResults.data);
           this.toArrivalRequests();
         } else {
           alert(this.translate.instant('CSV FORMAT ERROR'));
         }
       },
-      error: (error, file) => {
+      error: (error) => {
         alert(error);
       }
     });
