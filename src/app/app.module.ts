@@ -89,6 +89,7 @@ import {BirthErrorRowComponent} from './rvo-declares/birth/errors/birth.errors.r
 import {BirthErrorsComponent} from './rvo-declares/birth/errors/birth.errors';
 import {BirthHistoryComponent} from './rvo-declares/birth/history/birth.history';
 import {BirthComponent} from './rvo-declares/birth/birth.component';
+import {DepartCsvComponent} from './rvo-declares/depart/csv/depart.csv';
 import {DepartDeclareComponent} from './rvo-declares/depart/declare/depart.declare';
 import {DepartErrorsComponent} from './rvo-declares/depart/errors/depart.errors';
 import {DepartErrorRowComponent} from './rvo-declares/depart/errors/depart.errors.row';
@@ -219,6 +220,7 @@ export function CreateTranslateLoader(http: HttpClient) {
     BirthHistoryComponent,
     BirthHistoryPipe,
     BirthComponent,
+    DepartCsvComponent,
     DepartDeclareComponent,
     DepartErrorsComponent,
     DepartErrorRowComponent,

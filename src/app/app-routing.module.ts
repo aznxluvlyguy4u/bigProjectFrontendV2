@@ -14,6 +14,7 @@ import {DepartComponent} from './rvo-declares/depart/depart.component';
 import {DepartDeclareComponent} from './rvo-declares/depart/declare/depart.declare';
 import {DepartHistoryComponent} from './rvo-declares/depart/history/depart.history';
 import {DepartErrorsComponent} from './rvo-declares/depart/errors/depart.errors';
+import {DepartCsvComponent} from './rvo-declares/depart/csv/depart.csv';
 import {MateComponent} from './nsfo-declares/mate/mate.component';
 import {MateDeclareComponent} from './nsfo-declares/mate/declare/mate.declare';
 import {MateHistoryComponent} from './nsfo-declares/mate/history/mate.history';
@@ -87,7 +88,8 @@ const appRoutes = [
         children: [
           {path: 'declare', component: DepartDeclareComponent},
           {path: 'history', component: DepartHistoryComponent},
-          {path: 'errors', component: DepartErrorsComponent}
+          {path: 'errors', component: DepartErrorsComponent},
+          {path: 'csv', component: DepartCsvComponent},
         ]
       },
       {

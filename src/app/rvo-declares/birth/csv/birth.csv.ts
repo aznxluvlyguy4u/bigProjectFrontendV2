@@ -48,7 +48,7 @@ class ExtendedBirthRequest extends BirthRequest {
 }
 
 @Component({
-  selector: 'app-csv',
+  selector: 'app-birth-csv',
   templateUrl: './birth.csv.html',
   styleUrls: ['./birth.csv.sass']
 })

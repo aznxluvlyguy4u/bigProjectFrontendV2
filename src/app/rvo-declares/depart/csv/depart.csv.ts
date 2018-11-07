@@ -3,30 +3,30 @@ import {LivestockAnimal, Animal} from '../../../shared/models/animal.model';
 import { PapaParseService } from 'ngx-papaparse';
 import { Settings } from '../../../shared/variables/settings';
 import {
-  API_URI_DECLARE_ARRIVAL
+  API_URI_DECLARE_DEPART
 } from '../../../shared/services/nsfo-api/nsfo.settings';
 import { NSFOService } from '../../../shared/services/nsfo-api/nsfo.service';
 import * as moment from 'moment';
 import { SettingsService } from '../../../shared/services/settings/settings.service';
 import {Router} from '@angular/router';
 import {TranslateService} from '@ngx-translate/core';
-import {ArrivalRequest} from '../arrival.model';
+import {DepartRequest} from '../depart.model';
 import {UBNValidator} from '../../../shared/validation/nsfo-validation';
 import {CacheService} from '../../../shared/services/settings/cache.service';
 
-interface ArrivalCsvRow {
+interface DepartCsvRow {
   index: number;
   electronicId: string;
   tag: string;
   currentAdg: string;
   note: string;
   scanned_date: string;
-  date_of_arrival: string;
+  date_of_departure: string;
   ubn_previous_owner: string;
   tmp_animal: LivestockAnimal;
 }
 
-class ExtendedArrivalRequest extends ArrivalRequest {
+class ExtendedDepartRequest extends DepartRequest {
   public index: number;
   public is_aborted: boolean;
   public scanned_date: string;
@@ -48,11 +48,11 @@ class ExtendedArrivalRequest extends ArrivalRequest {
 }
 
 @Component({
-  selector: 'app-arrival-csv',
-  templateUrl: './arrival.csv.html',
-  styleUrls: ['./arrival.csv.sass']
+  selector: 'app-depart-csv',
+  templateUrl: './depart.csv.html',
+  styleUrls: ['./depart.csv.sass']
 })
-export class ArrivalCsvComponent implements OnInit, OnDestroy {
+export class DepartCsvComponent implements OnInit, OnDestroy {
 
   public country_code_list = [];
   private countryCodeObs;
@@ -64,17 +64,17 @@ export class ArrivalCsvComponent implements OnInit, OnDestroy {
   arrivalRequestWarningsCount = 0;
   csvFormatError = false;
 
-  missingAnimalArrivalRequests = <ExtendedArrivalRequest[]>[];
-  invalidUbnPreviousOwnerArrivalRequests = <ExtendedArrivalRequest[]>[];
-  arrivalRequests: ArrivalRequest[] = [];
+  missingAnimalArrivalRequests = <ExtendedDepartRequest[]>[];
+  invalidUbnPreviousOwnerArrivalRequests = <ExtendedDepartRequest[]>[];
+  arrivalRequests: DepartRequest[] = [];
   parsedAnimals = <LivestockAnimal[]>[];
-  csvRows: ArrivalCsvRow[] = [];
+  csvRows: DepartCsvRow[] = [];
   parsedResults: any;
   parsedFile: any;
 
   public view_date_format;
   public model_datetime_format;
-  private selectedArrivalRequest: ExtendedArrivalRequest;
+  private selectedArrivalRequest: ExtendedDepartRequest;
 
   constructor(
     private papa: PapaParseService,
@@ -133,14 +133,14 @@ export class ArrivalCsvComponent implements OnInit, OnDestroy {
 
     this.csvRows = [];
     rows.forEach((row: any) => {
-      const csvRow: ArrivalCsvRow = {
+      const csvRow: DepartCsvRow = {
         index: null,
         electronicId: row[0], // Electronic ID // A
         tag: row[1], // Tag // B
         currentAdg: row[2], // Current ADG // C
         note: row[3], // Note // D
         scanned_date: row[4], // Scanned Date // E
-        date_of_arrival: row[5], // Dat aanv // F
+        date_of_departure: row[5], // Dat aanv // F
         ubn_previous_owner: row[6], // UBN // G
         tmp_animal: new LivestockAnimal(),
       };
@@ -180,12 +180,12 @@ export class ArrivalCsvComponent implements OnInit, OnDestroy {
     let currentScannedDate = null;
     let currentDateOfArrival = null;
     let currentUBN = null;
-    let currentAnimalGroup = <ArrivalCsvRow[]>[];
+    let currentAnimalGroup = <DepartCsvRow[]>[];
 
     this.csvRows.forEach((csvRow) => {
 
       const csvRowScannedDate = moment(csvRow.scanned_date).format(this.settings.MODEL_DATE_FORMAT);
-      const csvRowDateOfArrival = moment(csvRow.date_of_arrival).format(this.settings.MODEL_DATE_FORMAT);
+      const csvRowDateOfArrival = moment(csvRow.date_of_departure).format(this.settings.MODEL_DATE_FORMAT);
 
       currentScannedDate = csvRowScannedDate;
       currentDateOfArrival = (csvRowDateOfArrival && csvRowDateOfArrival !== 'Invalid date') ? csvRowDateOfArrival : currentDateOfArrival;
@@ -194,9 +194,9 @@ export class ArrivalCsvComponent implements OnInit, OnDestroy {
       currentAnimalGroup.push(csvRow);
 
       // Check if next row is of different group
-      const nextRow: ArrivalCsvRow = this.csvRows[index + 1];
+      const nextRow: DepartCsvRow = this.csvRows[index + 1];
       const nextCsvRowScannedDate = nextRow ? moment(nextRow.scanned_date).format(this.settings.MODEL_DATE_FORMAT) : null;
-      const nextCsvRowDateOfArrival = nextRow ? moment(nextRow.date_of_arrival).format(this.settings.MODEL_DATE_FORMAT) : null;
+      const nextCsvRowDateOfArrival = nextRow ? moment(nextRow.date_of_departure).format(this.settings.MODEL_DATE_FORMAT) : null;
 
       if (
         nextCsvRowScannedDate !== currentScannedDate
@@ -208,7 +208,7 @@ export class ArrivalCsvComponent implements OnInit, OnDestroy {
       ) {
         currentAnimalGroup.forEach((row) => {
           // instantiate a new ArrivalRequest
-          const arrivalRequest = new ExtendedArrivalRequest();
+          const arrivalRequest = new ExtendedDepartRequest();
           this.resolveArrivalRequestAnimal(row, arrivalRequest);
           arrivalRequest.index = row.index;
           arrivalRequest.is_aborted = false;
@@ -224,7 +224,7 @@ export class ArrivalCsvComponent implements OnInit, OnDestroy {
         });
 
         // Reset array
-        currentAnimalGroup = <ArrivalCsvRow[]>[];
+        currentAnimalGroup = <DepartCsvRow[]>[];
       }
       index++;
     });
@@ -281,7 +281,7 @@ export class ArrivalCsvComponent implements OnInit, OnDestroy {
     this.parsedAnimals.push(csvRow.tmp_animal);
   }
 
-  resolveArrivalRequestAnimal(csvRow: ArrivalCsvRow, arrivalRequest: ExtendedArrivalRequest) {
+  resolveArrivalRequestAnimal(csvRow: DepartCsvRow, arrivalRequest: ExtendedDepartRequest) {
     arrivalRequest.animal = csvRow.tmp_animal;
 
     // if electronicId consists of 2 parts: 3 digits country number and 12 digits tag number
@@ -312,15 +312,15 @@ export class ArrivalCsvComponent implements OnInit, OnDestroy {
     }
   }
 
-  toggleDatePicker(arrivalRequest: ExtendedArrivalRequest) {
+  toggleDatePicker(arrivalRequest: ExtendedDepartRequest) {
     arrivalRequest.datePickerDisabled = !arrivalRequest.datePickerDisabled;
   }
 
-  toggleUbnPreviousOwner(arrivalRequest: ExtendedArrivalRequest) {
+  toggleUbnPreviousOwner(arrivalRequest: ExtendedDepartRequest) {
     arrivalRequest.ubnPreviousOwnerDisabled = !arrivalRequest.ubnPreviousOwnerDisabled;
   }
 
-  selectAnimalUlnCountryCode(arrivalRequest: ExtendedArrivalRequest, countryCode: string) {
+  selectAnimalUlnCountryCode(arrivalRequest: ExtendedDepartRequest, countryCode: string) {
     arrivalRequest.animalUlnCountryCodeOnlyHasChanged = true;
     arrivalRequest.animalMissingUlnCountryCode = false;
     arrivalRequest.animal.uln_country_code = countryCode;
@@ -328,7 +328,7 @@ export class ArrivalCsvComponent implements OnInit, OnDestroy {
     this.validateArrivalRequest(arrivalRequest);
   }
 
-  resetAnimalUlnCountryCode(arrivalRequest: ExtendedArrivalRequest) {
+  resetAnimalUlnCountryCode(arrivalRequest: ExtendedDepartRequest) {
     arrivalRequest.animalUlnCountryCodeOnlyHasChanged = false;
     arrivalRequest.animalMissingUlnCountryCode = true;
     arrivalRequest.animal.uln_country_code = '';
@@ -336,7 +336,7 @@ export class ArrivalCsvComponent implements OnInit, OnDestroy {
     this.validateArrivalRequest(arrivalRequest);
   }
 
-  resetAnimal(arrivalRequest: ExtendedArrivalRequest) {
+  resetAnimal(arrivalRequest: ExtendedDepartRequest) {
     const animal = {
       uln_country_code: '',
       uln_number: '',
@@ -350,7 +350,7 @@ export class ArrivalCsvComponent implements OnInit, OnDestroy {
     this.validateArrivalRequest(arrivalRequest);
   }
 
-  validateArrivalRequest(arrivalRequest: ExtendedArrivalRequest) {
+  validateArrivalRequest(arrivalRequest: ExtendedDepartRequest) {
 
     // Reset warnings first
     this.missingAnimalArrivalRequests = this.missingAnimalArrivalRequests.filter(function( obj ) {
@@ -401,7 +401,7 @@ export class ArrivalCsvComponent implements OnInit, OnDestroy {
     }
   }
 
-  submitSingleArrivalRequest(arrivalRequest: ExtendedArrivalRequest) {
+  submitSingleArrivalRequest(arrivalRequest: ExtendedDepartRequest) {
     this.selectedArrivalRequest = arrivalRequest;
     if (this.selectedArrivalRequest.hasWarnings) {
       this.toggleSingleWarningModal();
@@ -438,21 +438,21 @@ export class ArrivalCsvComponent implements OnInit, OnDestroy {
     }
   }
 
-  updateArrivalDateString(arrivalRequest: ExtendedArrivalRequest, arrivalDateString: string) {
+  updateArrivalDateString(arrivalRequest: ExtendedDepartRequest, arrivalDateString: string) {
     arrivalRequest.arrival_date = SettingsService.getDateString_YYYY_MM_DD_fromDate(new Date(arrivalDateString));
     this.validateArrivalRequest(arrivalRequest);
   }
 
-  updateUbnPreviousOwner(arrivalRequest: ExtendedArrivalRequest, UbnPreviousOwnerString: string) {
+  updateUbnPreviousOwner(arrivalRequest: ExtendedDepartRequest, UbnPreviousOwnerString: string) {
     arrivalRequest.ubn_previous_owner = UbnPreviousOwnerString;
     this.validateArrivalRequest(arrivalRequest);
   }
 
   doSubmitArrivalRequests() {
-    this.arrivalRequests.forEach((arrivalRequest: ExtendedArrivalRequest) => {
+    this.arrivalRequests.forEach((arrivalRequest: ExtendedDepartRequest) => {
       if (arrivalRequest.declareStatus !== true) {
         arrivalRequest.isSubmitting = true;
-        this.apiService.doPostRequest(API_URI_DECLARE_ARRIVAL, arrivalRequest)
+        this.apiService.doPostRequest(API_URI_DECLARE_DEPART, arrivalRequest)
           .subscribe(
             res => {
               arrivalRequest.isSubmitting = false;
@@ -469,10 +469,10 @@ export class ArrivalCsvComponent implements OnInit, OnDestroy {
     });
   }
 
-  doSubmitSingleArrivalRequest(arrivalRequest: ExtendedArrivalRequest) {
+  doSubmitSingleArrivalRequest(arrivalRequest: ExtendedDepartRequest) {
     if (arrivalRequest.declareStatus !== true) {
       arrivalRequest.isSubmitting = true;
-      this.apiService.doPostRequest(API_URI_DECLARE_ARRIVAL, arrivalRequest)
+      this.apiService.doPostRequest(API_URI_DECLARE_DEPART, arrivalRequest)
         .subscribe(
           res => {
             arrivalRequest.isSubmitting = false;
