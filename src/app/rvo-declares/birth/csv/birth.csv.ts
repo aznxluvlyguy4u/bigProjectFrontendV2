@@ -39,7 +39,6 @@ interface CsvRow {
 class ExtendedBirthRequest extends BirthRequest {
   index: number;
   suggested_candidate_fathers: LivestockAnimal[];
-  suggested_other_fathers: LivestockAnimal[];
   motherUlnCountryCodeOnlyHasChanged = false;
   motherHasChanged = false;
   hasMultipleCandidateFathers = false;
@@ -57,8 +56,6 @@ export class BirthCsvComponent implements OnInit, OnDestroy {
 
   public country_code_list = [];
   private countryCodeObs;
-
-  private birth_progress_types = BIRTH_PROGRESS_TYPES;
 
   warningModalDisplay = 'none';
   warningModalMode = 'all';
@@ -142,13 +139,13 @@ export class BirthCsvComponent implements OnInit, OnDestroy {
         if (this.isValidCsv(results)) {
           this.parsedResults = results;
           this.parsedFile = file;
-          const rows = this.toRows(this.parsedResults.data);
-          this.toBirthRequest(rows);
+          this.toRows(this.parsedResults.data);
+          this.toBirthRequest();
         } else {
           alert(this.translate.instant('CSV FORMAT ERROR'));
         }
       },
-      error: (error, file) => {
+      error: (error) => {
         alert(error);
       }
     });
@@ -204,7 +201,7 @@ export class BirthCsvComponent implements OnInit, OnDestroy {
     return this.settingService.getCountryCodeByIso(iso);
   }
 
-  toBirthRequest(data: any) {
+  toBirthRequest() {
     let index = 0;
     this.csvRows.forEach((csvRow) => {
 
