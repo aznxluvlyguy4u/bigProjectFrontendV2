@@ -159,9 +159,9 @@ export class ArrivalCsvComponent implements OnInit, OnDestroy {
     tmpCsvResults.shift();
     tmpCsvResults.forEach((row: any) => {
       if (
-        row.length === 7
-        && (row[4] && !moment(row[4]).isValid())
-        && ((row[5] && !moment(row[5]).isValid()) || !row[5])
+        row.length !== 7
+        || (row[4] && !moment(row[4]).isValid())
+        || ((row[5] && !moment(row[5]).isValid()))
       ) {
         this.csvFormatError = true;
       }

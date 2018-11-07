@@ -137,6 +137,7 @@ export class BirthCsvComponent implements OnInit, OnDestroy {
   handleFileInput(files: FileList) {
     this.resetPrivateVariables();
     this.papa.parse(files.item(0), {
+      skipEmptyLines: true,
       complete: (results, file) => {
         if (this.isValidCsv(results)) {
           this.parsedResults = results;
@@ -187,10 +188,11 @@ export class BirthCsvComponent implements OnInit, OnDestroy {
     const tmpCsvResults = JSON.parse(JSON.stringify(csvResults.data));
     tmpCsvResults.shift();
     tmpCsvResults.forEach((row: any) => {
+      console.log(row.length !== 12);
+      console.log((row[7] && !moment(row[7]).isValid()));
       if (
-        row.length === 12
-        && row[7]
-        && !moment(row[7]).isValid()
+        row.length !== 12
+        || (row[7] && !moment(row[7]).isValid())
       ) {
         this.csvFormatError = true;
       }
