@@ -188,8 +188,6 @@ export class BirthCsvComponent implements OnInit, OnDestroy {
     const tmpCsvResults = JSON.parse(JSON.stringify(csvResults.data));
     tmpCsvResults.shift();
     tmpCsvResults.forEach((row: any) => {
-      console.log(row.length !== 12);
-      console.log((row[7] && !moment(row[7]).isValid()));
       if (
         row.length !== 12
         || (row[7] && !moment(row[7]).isValid())
