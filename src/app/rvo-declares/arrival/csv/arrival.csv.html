@@ -93,7 +93,7 @@
           </label>
         </div>
 
-        <div class="row collapse" *ngIf="arrivalRequest?.ubn_previous_owner">
+        <div class="row collapse">
           <div class="medium-8 columns">
             <input [value]="arrivalRequest?.ubn_previous_owner" (input)="updateUbnPreviousOwner(arrivalRequest, $event.target.value)" [disabled]="arrivalRequest?.ubnPreviousOwnerDisabled" type="text" name="ubn_previous_owner">
           </div>
@@ -147,7 +147,7 @@
       </div>
 
       <div>
-        <p><b>{{ "STILL CONTINUE WITH ARRIVAL DECLARATION?" | translate }}</b></p>
+        <p><b>{{ "STILL CONTINUE WITH DECLARATION?" | translate }}</b></p>
       </div>
     </div>
 

@@ -82,7 +82,7 @@
         </div>
       </div>
 
-      <div class="medium-2 columns">
+      <div class="medium-3 columns">
         <div class="row">
           <label class="medium-7 columns">{{ 'UBN NEW OWNER' | translate }}</label>
           <!-- Error messages -->
@@ -91,7 +91,7 @@
           </label>
         </div>
 
-        <div class="row collapse" *ngIf="departRequest?.ubn_new_owner">
+        <div class="row collapse">
           <div class="medium-8 columns">
             <input [value]="departRequest?.ubn_new_owner" (input)="updateUbnNewOwner(departRequest, $event.target.value)" [disabled]="departRequest?.ubnNewOwnerDisabled" type="text" name="ubn_new_owner">
           </div>
@@ -144,43 +144,42 @@
     </div>
 
     <div class="modal-body" *ngIf="warningModalMode === 'single'">
-      <!--BirthRequests with multiple fathers-->
       <div class="callout warning">
-        <p *ngIf="selectedArrivalRequest.animalMissingUlnCountryCode">
+        <p *ngIf="selectedDepartRequest.animalMissingUlnCountryCode">
           {{ 'MISSING COUNTRY CODE' | translate }}
         </p>
 
-        <p *ngIf="selectedArrivalRequest.invalidUbnNewOwner">
+        <p *ngIf="selectedDepartRequest.invalidUbnNewOwner">
           {{ 'UBN IS INVALID' | translate }}
         </p>
       </div>
 
       <div>
-        <p><b>{{ "STILL CONTINUE WITH ARRIVAL DECLARATION?" | translate }}</b></p>
+        <p><b>{{ "STILL CONTINUE WITH DECLARATION?" | translate }}</b></p>
       </div>
     </div>
 
     <div class="modal-body" *ngIf="warningModalMode === 'all'">
-      <!--ArrivalRequests with missing Animal details-->
+      <!--DepartRequests with missing Animal details-->
       <div *ngIf="missingAnimalDepartRequests.length > 0" class="callout warning">
-        <p>{{ 'THE FOLLOWING ARRIVAL REQUESTS HAVE IMCOMPLETE IDENTIFICATION NUMBERS' | translate }}</p>
+        <p>{{ 'THE FOLLOWING DEPART REQUESTS HAVE IMCOMPLETE IDENTIFICATION NUMBERS' | translate }}</p>
 
         <div>
-          <ng-container *ngFor="let warningArrivalRequest of missingAnimalDepartRequests">
-              <p>{{ warningArrivalRequest.animal?.uln_country_code + warningArrivalRequest.animal?.uln_number }}</p>
+          <ng-container *ngFor="let warningDepartRequest of missingAnimalDepartRequests">
+              <p>{{ warningDepartRequest.animal?.uln_country_code + warningDepartRequest.animal?.uln_number }}</p>
           </ng-container>
         </div>
 
       </div>
 
-      <!--ArrivalRequests with invalid UBN-->
+      <!--DepartRequests with invalid UBN-->
       <div *ngIf="invalidUbnNewOwnerDepartRequests.length > 0" class="callout warning">
-        <p>{{ 'THE FOLLOWING ARRIVAL REQUESTS HAVE INVALID UBN NUMBERS' | translate }}</p>
+        <p>{{ 'THE FOLLOWING DEPART REQUESTS HAVE INVALID UBN NUMBERS' | translate }}</p>
 
         <div>
-          <ng-container *ngFor="let warningArrivalRequest of invalidUbnNewOwnerDepartRequests">
-            <ng-container *ngFor="let warningArrivalRequest of invalidUbnNewOwnerDepartRequests">
-              <p>{{ warningArrivalRequest.animal?.uln_country_code + warningArrivalRequest.animal?.uln_number }}</p>
+          <ng-container *ngFor="let warningDepartRequest of invalidUbnNewOwnerDepartRequests">
+            <ng-container *ngFor="let warningDepartRequest of invalidUbnNewOwnerDepartRequests">
+              <p>{{ warningDepartRequest.animal?.uln_country_code + warningDepartRequest.animal?.uln_number }}</p>
             </ng-container>
           </ng-container>
         </div>
@@ -188,7 +187,7 @@
       </div>
 
       <div>
-        <p><b>{{ "STILL CONTINUE WITH ARRIVAL DECLARATION?" | translate }}</b></p>
+        <p><b>{{ "STILL CONTINUE WITH DECLARATION?" | translate }}</b></p>
       </div>
 
     </div>
@@ -214,7 +213,7 @@
               type="button"
               class="button pull-right primary"
               aria-label="Clear list"
-              (click)="doSubmitSingleDepartRequest(selectedArrivalRequest); toggleAllWarningsModal();">
+              (click)="doSubmitSingleDepartRequest(selectedDepartRequest); toggleAllWarningsModal();">
         {{ 'DECLARE' | translate }}
       </button>
     </div>

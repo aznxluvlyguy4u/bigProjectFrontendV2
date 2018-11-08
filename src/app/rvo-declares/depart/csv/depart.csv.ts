@@ -237,7 +237,6 @@ export class DepartCsvComponent implements OnInit, OnDestroy {
       index++;
     });
 
-    console.log(this.departRequests);
   }
 
   resolveCsvRowAnimal(csvRow) {
@@ -501,8 +500,8 @@ export class DepartCsvComponent implements OnInit, OnDestroy {
     this.validateDepartRequest(departRequest);
   }
 
-  updateUbnNewOwner(departRequest: ExtendedDepartRequest, UbnPreviousOwnerString: string) {
-    departRequest.ubn_new_owner = UbnPreviousOwnerString;
+  updateUbnNewOwner(departRequest: ExtendedDepartRequest, UbnNewOwnerString: string) {
+    departRequest.ubn_new_owner = UbnNewOwnerString;
     this.validateDepartRequest(departRequest);
   }
 
