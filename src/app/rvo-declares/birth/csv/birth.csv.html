@@ -8,7 +8,7 @@
 
 <div class="row" *ngIf="birthRequests.length > 0">
   <div class="columns">
-    <button [disabled]="loadingStatesCount !== 0" (click)="submitBirthRequests()" class="small success button">{{ "DECLARE ALL BIRTHS" | translate }}  <span class="badge">{{birthRequests.length}}</span></button>
+    <button [disabled]="loadingStatesCount !== 0" (click)="submitBirthRequests()" class="small primary button">{{ "DECLARE ALL" | translate }}  <span class="badge">{{birthRequests.length}}</span></button>
   </div>
 
   <app-page-loading-spinner *ngIf="loadingStatesCount !== 0"></app-page-loading-spinner>
@@ -219,7 +219,7 @@
     </div>
     <div class="row">
       <div class="columns clearfix">
-        <button [disabled]="loadingStatesCount !== 0" (click)="submitSingleBirthRequest(birthRequest)" class="float-right small success button">{{ "DECLARE" | translate }}</button>
+        <button [disabled]="loadingStatesCount !== 0" (click)="submitSingleBirthRequest(birthRequest)" class="float-right small primary button">{{ "DECLARE" | translate }}</button>
       </div>
     </div>
   <!-- </ng-container> -->
@@ -344,7 +344,7 @@
 
       <button *ngIf="warningModalMode === 'all'"
               type="button"
-              class="button pull-right success"
+              class="button pull-right primary"
               aria-label="Clear list"
               (click)="doSubmitBirthRequests(); toggleAllWarningsModal();">
         {{ 'DECLARE' | translate }}
@@ -352,7 +352,7 @@
 
       <button *ngIf="warningModalMode === 'single'"
               type="button"
-              class="button pull-right success"
+              class="button pull-right primary"
               aria-label="Clear list"
               (click)="doSubmitSingleBirthRequests(selectedBirthRequest); toggleAllWarningsModal();">
         {{ 'DECLARE' | translate }}

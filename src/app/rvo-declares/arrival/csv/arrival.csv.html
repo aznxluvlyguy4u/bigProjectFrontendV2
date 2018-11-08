@@ -8,7 +8,7 @@
 
 <div class="row" *ngIf="arrivalRequests.length > 0">
   <div class="columns">
-    <button [disabled]="loadingStatesCount !== 0" (click)="submitArrivalRequests()" class="small success button">{{ "DECLARE ALL ARRIVALS" | translate }}  <span class="badge">{{arrivalRequests.length}}</span></button>
+    <button [disabled]="loadingStatesCount !== 0" (click)="submitArrivalRequests()" class="small primary button">{{ "DECLARE ALL" | translate }}  <span class="badge">{{arrivalRequests.length}}</span></button>
     <!--{{ loadingStatesCount, arrivalRequestWarningsCount }}-->
   </div>
 
@@ -118,7 +118,7 @@
 
     <div class="row">
       <div class="columns clearfix">
-        <button [disabled]="loadingStatesCount !== 0" (click)="submitSingleArrivalRequest(arrivalRequest)" class="float-right small success button">{{ "DECLARE" | translate }}</button>
+        <button [disabled]="loadingStatesCount !== 0" (click)="submitSingleArrivalRequest(arrivalRequest)" class="float-right small primary button">{{ "DECLARE" | translate }}</button>
       </div>
     </div>
 

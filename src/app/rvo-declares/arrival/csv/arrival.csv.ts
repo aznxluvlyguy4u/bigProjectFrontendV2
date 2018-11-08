@@ -224,6 +224,9 @@ export class ArrivalCsvComponent implements OnInit, OnDestroy {
         });
 
         // Reset array
+        currentScannedDate = null;
+        currentDateOfArrival = null;
+        currentUBN = null;
         currentAnimalGroup = <ArrivalCsvRow[]>[];
       }
       index++;

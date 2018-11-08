@@ -1,5 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import {LivestockAnimal, Animal} from '../../../shared/models/animal.model';
+import { LivestockAnimal, Animal } from '../../../shared/models/animal.model';
+import { DEPART_REASON_OF_DEPART } from '../depart.model';
 import { PapaParseService } from 'ngx-papaparse';
 import { Settings } from '../../../shared/variables/settings';
 import {
@@ -21,8 +22,9 @@ interface DepartCsvRow {
   currentAdg: string;
   note: string;
   scanned_date: string;
-  date_of_departure: string;
-  ubn_previous_owner: string;
+  reason_of_depart: string;
+  date_of_depart: string;
+  ubn_new_owner: string;
   tmp_animal: LivestockAnimal;
 }
 
@@ -34,9 +36,9 @@ class ExtendedDepartRequest extends DepartRequest {
   public animalHasChanged = false;
   public animalMissingUlnCountryCode = true;
   public animalHasOnlyWorkerNumber = false;
-  public invalidUbnPreviousOwner = false;
+  public invalidUbnNewOwner = false;
   public datePickerDisabled = true;
-  public ubnPreviousOwnerDisabled = true;
+  public ubnNewOwnerDisabled = true;
   public hasWarnings = false;
   public declareStatus: boolean;
   public isSubmitting: boolean;
@@ -55,18 +57,19 @@ class ExtendedDepartRequest extends DepartRequest {
 export class DepartCsvComponent implements OnInit, OnDestroy {
 
   public country_code_list = [];
+  public options_reason_of_depart = DEPART_REASON_OF_DEPART;
   private countryCodeObs;
 
   warningModalDisplay = 'none';
   warningModalMode = 'all';
 
   loadingStatesCount = 0;
-  arrivalRequestWarningsCount = 0;
+  departRequestWarningsCount = 0;
   csvFormatError = false;
 
-  missingAnimalArrivalRequests = <ExtendedDepartRequest[]>[];
-  invalidUbnPreviousOwnerArrivalRequests = <ExtendedDepartRequest[]>[];
-  arrivalRequests: DepartRequest[] = [];
+  missingAnimalDepartRequests = <ExtendedDepartRequest[]>[];
+  invalidUbnNewOwnerDepartRequests = <ExtendedDepartRequest[]>[];
+  departRequests: DepartRequest[] = [];
   parsedAnimals = <LivestockAnimal[]>[];
   csvRows: DepartCsvRow[] = [];
   parsedResults: any;
@@ -74,7 +77,7 @@ export class DepartCsvComponent implements OnInit, OnDestroy {
 
   public view_date_format;
   public model_datetime_format;
-  private selectedArrivalRequest: ExtendedDepartRequest;
+  private selectedDepartRequest: ExtendedDepartRequest;
 
   constructor(
     private papa: PapaParseService,
@@ -97,12 +100,12 @@ export class DepartCsvComponent implements OnInit, OnDestroy {
   }
 
   resetPrivateVariables() {
-    this.arrivalRequestWarningsCount = 0;
-    this.arrivalRequests = [];
+    this.departRequestWarningsCount = 0;
+    this.departRequests = [];
     this.parsedAnimals = [];
-    this.missingAnimalArrivalRequests = [];
-    this.invalidUbnPreviousOwnerArrivalRequests = [];
-    this.selectedArrivalRequest = null;
+    this.missingAnimalDepartRequests = [];
+    this.invalidUbnNewOwnerDepartRequests = [];
+    this.selectedDepartRequest = null;
     this.csvRows = [];
     this.parsedResults = null;
     this.parsedFile = null;
@@ -117,7 +120,7 @@ export class DepartCsvComponent implements OnInit, OnDestroy {
           this.parsedResults = results;
           this.parsedFile = file;
           this.toRows(this.parsedResults.data);
-          this.toArrivalRequests();
+          this.toDepartRequests();
         } else {
           alert(this.translate.instant('CSV FORMAT ERROR'));
         }
@@ -140,8 +143,9 @@ export class DepartCsvComponent implements OnInit, OnDestroy {
         currentAdg: row[2], // Current ADG // C
         note: row[3], // Note // D
         scanned_date: row[4], // Scanned Date // E
-        date_of_departure: row[5], // Dat aanv // F
-        ubn_previous_owner: row[6], // UBN // G
+        reason_of_depart: row[5], // Reason of Depart // F
+        date_of_depart: row[6], // Dat aanv // G
+        ubn_new_owner: row[7], // UBN // H
         tmp_animal: new LivestockAnimal(),
       };
       this.resolveCsvRowAnimal(csvRow);
@@ -159,9 +163,9 @@ export class DepartCsvComponent implements OnInit, OnDestroy {
     tmpCsvResults.shift();
     tmpCsvResults.forEach((row: any) => {
       if (
-        row.length !== 7
+        row.length !== 8
         || (row[4] && !moment(row[4]).isValid())
-        || ((row[5] && !moment(row[5]).isValid()))
+        || ((row[6] && !moment(row[6]).isValid()))
       ) {
         this.csvFormatError = true;
       }
@@ -175,60 +179,65 @@ export class DepartCsvComponent implements OnInit, OnDestroy {
     return this.settingService.getCountryCodeByIso(iso);
   }
 
-  toArrivalRequests() {
+  toDepartRequests() {
     let index = 0;
     let currentScannedDate = null;
-    let currentDateOfArrival = null;
+    let currentDateOfDepart = null;
     let currentUBN = null;
     let currentAnimalGroup = <DepartCsvRow[]>[];
 
     this.csvRows.forEach((csvRow) => {
 
       const csvRowScannedDate = moment(csvRow.scanned_date).format(this.settings.MODEL_DATE_FORMAT);
-      const csvRowDateOfArrival = moment(csvRow.date_of_departure).format(this.settings.MODEL_DATE_FORMAT);
+      const csvRowDateOfDepart = moment(csvRow.date_of_depart).format(this.settings.MODEL_DATE_FORMAT);
 
       currentScannedDate = csvRowScannedDate;
-      currentDateOfArrival = (csvRowDateOfArrival && csvRowDateOfArrival !== 'Invalid date') ? csvRowDateOfArrival : currentDateOfArrival;
-      currentUBN = (csvRow.ubn_previous_owner) ? csvRow.ubn_previous_owner : currentUBN;
+      currentDateOfDepart = (csvRowDateOfDepart && csvRowDateOfDepart !== 'Invalid date') ? csvRowDateOfDepart : currentDateOfDepart;
+      currentUBN = (csvRow.ubn_new_owner) ? csvRow.ubn_new_owner : currentUBN;
       csvRow.index = index;
       currentAnimalGroup.push(csvRow);
 
       // Check if next row is of different group
       const nextRow: DepartCsvRow = this.csvRows[index + 1];
       const nextCsvRowScannedDate = nextRow ? moment(nextRow.scanned_date).format(this.settings.MODEL_DATE_FORMAT) : null;
-      const nextCsvRowDateOfArrival = nextRow ? moment(nextRow.date_of_departure).format(this.settings.MODEL_DATE_FORMAT) : null;
+      const nextCsvRowDateOfDepart = nextRow ? moment(nextRow.date_of_depart).format(this.settings.MODEL_DATE_FORMAT) : null;
 
       if (
         nextCsvRowScannedDate !== currentScannedDate
         || (
-          nextCsvRowDateOfArrival !== 'Invalid date'
-          && (currentDateOfArrival && currentDateOfArrival !== 'Invalid date')
-          && nextCsvRowDateOfArrival !== currentDateOfArrival
+          nextCsvRowDateOfDepart !== 'Invalid date'
+          && (currentDateOfDepart && currentDateOfDepart !== 'Invalid date')
+          && nextCsvRowDateOfDepart !== currentDateOfDepart
         )
       ) {
         currentAnimalGroup.forEach((row) => {
-          // instantiate a new ArrivalRequest
-          const arrivalRequest = new ExtendedDepartRequest();
-          this.resolveArrivalRequestAnimal(row, arrivalRequest);
-          arrivalRequest.index = row.index;
-          arrivalRequest.is_aborted = false;
-          arrivalRequest.arrival_date = currentDateOfArrival;
-          arrivalRequest.is_import_animal = false;
-          arrivalRequest.ubn_previous_owner = currentUBN;
-          arrivalRequest.animal = row.tmp_animal;
-          arrivalRequest.scanned_date = row.scanned_date;
+          // instantiate a new DepartRequest
+          const departRequest = new ExtendedDepartRequest();
+          this.resolveDepartRequestAnimal(row, departRequest);
+          this.resolveDepartRequestReasonOfDepart(row, departRequest);
+          departRequest.index = row.index;
+          departRequest.is_aborted = false;
+          departRequest.depart_date = currentDateOfDepart;
+          departRequest.is_export_animal = false;
+          departRequest.ubn_new_owner = currentUBN;
+          departRequest.animal = row.tmp_animal;
+          departRequest.scanned_date = row.scanned_date;
 
-          this.validateArrivalRequest(arrivalRequest);
+          this.validateDepartRequest(departRequest);
 
-          this.arrivalRequests.push(arrivalRequest);
+          this.departRequests.push(departRequest);
         });
 
         // Reset array
+        currentScannedDate = null;
+        currentDateOfDepart = null;
+        currentUBN = null;
         currentAnimalGroup = <DepartCsvRow[]>[];
       }
       index++;
     });
 
+    console.log(this.departRequests);
   }
 
   resolveCsvRowAnimal(csvRow) {
@@ -281,62 +290,111 @@ export class DepartCsvComponent implements OnInit, OnDestroy {
     this.parsedAnimals.push(csvRow.tmp_animal);
   }
 
-  resolveArrivalRequestAnimal(csvRow: DepartCsvRow, arrivalRequest: ExtendedDepartRequest) {
-    arrivalRequest.animal = csvRow.tmp_animal;
+  resolveDepartRequestAnimal(csvRow: DepartCsvRow, departRequest: ExtendedDepartRequest) {
+    departRequest.animal = csvRow.tmp_animal;
 
     // if electronicId consists of 2 parts: 3 digits country number and 12 digits tag number
     // and there is no tag in csv or tag in csv is the same as electronicId tag
     if (
-      arrivalRequest.animal.uln_country_code
-      && arrivalRequest.animal.uln_number
-      && arrivalRequest.animal.uln
+      departRequest.animal.uln_country_code
+      && departRequest.animal.uln_number
+      && departRequest.animal.uln
     ) {
-      arrivalRequest.animalMissingUlnCountryCode = false;
+      departRequest.animalMissingUlnCountryCode = false;
       // if electronicId consists of only 1 part: 12 digits tag number and the country number is missing
       // and there is no tag in csv or tag in csv is the same as electronicId tag
     } else if (
-      !arrivalRequest.animal.uln_country_code
-      && arrivalRequest.animal.uln_number
-      && !arrivalRequest.animal.uln
+      !departRequest.animal.uln_country_code
+      && departRequest.animal.uln_number
+      && !departRequest.animal.uln
     ) {
-      arrivalRequest.animalMissingUlnCountryCode = true;
+      departRequest.animalMissingUlnCountryCode = true;
       // if electronicId is missing but csv has tag and is 12 digits long
     } else if (
-      !arrivalRequest.animal.uln_country_code
-      && !arrivalRequest.animal.uln_number
-      && !arrivalRequest.animal.uln
-      && arrivalRequest.animal.worker_number
+      !departRequest.animal.uln_country_code
+      && !departRequest.animal.uln_number
+      && !departRequest.animal.uln
+      && departRequest.animal.worker_number
     ) {
-      arrivalRequest.animalHasOnlyWorkerNumber = true;
-      arrivalRequest.animal.uln_number = arrivalRequest.animal.worker_number;
+      departRequest.animalHasOnlyWorkerNumber = true;
+      departRequest.animal.uln_number = departRequest.animal.worker_number;
     }
   }
 
-  toggleDatePicker(arrivalRequest: ExtendedDepartRequest) {
-    arrivalRequest.datePickerDisabled = !arrivalRequest.datePickerDisabled;
+  resolveDepartRequestReasonOfDepart(csvRow: DepartCsvRow, departRequest: ExtendedDepartRequest) {
+    // DEPART_REASON_OF_DEPART
+    switch (csvRow.reason_of_depart) {
+      case 'Fok': {
+        departRequest.reason_of_depart = DEPART_REASON_OF_DEPART[1];
+        break;
+      }
+      case 'Verhuur': {
+        departRequest.reason_of_depart = DEPART_REASON_OF_DEPART[2];
+        break;
+      }
+      case 'Slacht': {
+        departRequest.reason_of_depart = DEPART_REASON_OF_DEPART[3];
+        break;
+      }
+      case 'Uier': {
+        departRequest.reason_of_depart = DEPART_REASON_OF_DEPART[4];
+        break;
+      }
+      case 'Beenw': {
+        departRequest.reason_of_depart = DEPART_REASON_OF_DEPART[5];
+        break;
+      }
+      case 'Rotkr': {
+        departRequest.reason_of_depart = DEPART_REASON_OF_DEPART[6];
+        break;
+      }
+      case 'Vrchtbh': {
+        departRequest.reason_of_depart = DEPART_REASON_OF_DEPART[7];
+        break;
+      }
+      case 'Gust': {
+        departRequest.reason_of_depart = DEPART_REASON_OF_DEPART[8];
+        break;
+      }
+      case 'Gebit': {
+        departRequest.reason_of_depart = DEPART_REASON_OF_DEPART[9];
+        break;
+      }
+      case 'Overig': {
+        departRequest.reason_of_depart = DEPART_REASON_OF_DEPART[10];
+        break;
+      }
+      default: {
+        departRequest.reason_of_depart = DEPART_REASON_OF_DEPART[0];
+      }
+    }
   }
 
-  toggleUbnPreviousOwner(arrivalRequest: ExtendedDepartRequest) {
-    arrivalRequest.ubnPreviousOwnerDisabled = !arrivalRequest.ubnPreviousOwnerDisabled;
+  toggleDatePicker(departRequest: ExtendedDepartRequest) {
+    departRequest.datePickerDisabled = !departRequest.datePickerDisabled;
   }
 
-  selectAnimalUlnCountryCode(arrivalRequest: ExtendedDepartRequest, countryCode: string) {
-    arrivalRequest.animalUlnCountryCodeOnlyHasChanged = true;
-    arrivalRequest.animalMissingUlnCountryCode = false;
-    arrivalRequest.animal.uln_country_code = countryCode;
-    arrivalRequest.animal.uln = countryCode + arrivalRequest.animal.uln_number;
-    this.validateArrivalRequest(arrivalRequest);
+  toggleUbnNewOwner(departRequest: ExtendedDepartRequest) {
+    departRequest.ubnNewOwnerDisabled = !departRequest.ubnNewOwnerDisabled;
   }
 
-  resetAnimalUlnCountryCode(arrivalRequest: ExtendedDepartRequest) {
-    arrivalRequest.animalUlnCountryCodeOnlyHasChanged = false;
-    arrivalRequest.animalMissingUlnCountryCode = true;
-    arrivalRequest.animal.uln_country_code = '';
-    arrivalRequest.animal.uln = '';
-    this.validateArrivalRequest(arrivalRequest);
+  selectAnimalUlnCountryCode(departRequest: ExtendedDepartRequest, countryCode: string) {
+    departRequest.animalUlnCountryCodeOnlyHasChanged = true;
+    departRequest.animalMissingUlnCountryCode = false;
+    departRequest.animal.uln_country_code = countryCode;
+    departRequest.animal.uln = countryCode + departRequest.animal.uln_number;
+    this.validateDepartRequest(departRequest);
   }
 
-  resetAnimal(arrivalRequest: ExtendedDepartRequest) {
+  resetAnimalUlnCountryCode(departRequest: ExtendedDepartRequest) {
+    departRequest.animalUlnCountryCodeOnlyHasChanged = false;
+    departRequest.animalMissingUlnCountryCode = true;
+    departRequest.animal.uln_country_code = '';
+    departRequest.animal.uln = '';
+    this.validateDepartRequest(departRequest);
+  }
+
+  resetAnimal(departRequest: ExtendedDepartRequest) {
     const animal = {
       uln_country_code: '',
       uln_number: '',
@@ -344,45 +402,45 @@ export class DepartCsvComponent implements OnInit, OnDestroy {
       worker_number: ''
     };
 
-    arrivalRequest.animalHasChanged = false;
-    arrivalRequest.animal = <Animal>animal;
-    arrivalRequest.animalMissingUlnCountryCode = true;
-    this.validateArrivalRequest(arrivalRequest);
+    departRequest.animalHasChanged = false;
+    departRequest.animal = <Animal>animal;
+    departRequest.animalMissingUlnCountryCode = true;
+    this.validateDepartRequest(departRequest);
   }
 
-  validateArrivalRequest(arrivalRequest: ExtendedDepartRequest) {
+  validateDepartRequest(departRequest: ExtendedDepartRequest) {
 
     // Reset warnings first
-    this.missingAnimalArrivalRequests = this.missingAnimalArrivalRequests.filter(function( obj ) {
-      return obj.index !== arrivalRequest.index;
+    this.missingAnimalDepartRequests = this.missingAnimalDepartRequests.filter(function(obj ) {
+      return obj.index !== departRequest.index;
     });
-    this.invalidUbnPreviousOwnerArrivalRequests = this.invalidUbnPreviousOwnerArrivalRequests.filter(function( obj ) {
-      return obj.index !== arrivalRequest.index;
+    this.invalidUbnNewOwnerDepartRequests = this.invalidUbnNewOwnerDepartRequests.filter(function(obj ) {
+      return obj.index !== departRequest.index;
     });
 
-    const hadWarnings = arrivalRequest.hasWarnings;
-    arrivalRequest.hasWarnings = false;
+    const hadWarnings = departRequest.hasWarnings;
+    departRequest.hasWarnings = false;
 
     // Determine warning types
     // Identification number missing country code
-    if (arrivalRequest.animalMissingUlnCountryCode) {
-      this.missingAnimalArrivalRequests.push(arrivalRequest);
-      arrivalRequest.hasWarnings = true;
+    if (departRequest.animalMissingUlnCountryCode) {
+      this.missingAnimalDepartRequests.push(departRequest);
+      departRequest.hasWarnings = true;
     }
 
     // UBN validation check
-    if (!this.isValidUbn(arrivalRequest.ubn_previous_owner)) {
-      this.invalidUbnPreviousOwnerArrivalRequests.push(arrivalRequest);
-      arrivalRequest.invalidUbnPreviousOwner = true;
-      arrivalRequest.hasWarnings = true;
+    if (!this.isValidUbn(departRequest.ubn_new_owner)) {
+      this.invalidUbnNewOwnerDepartRequests.push(departRequest);
+      departRequest.invalidUbnNewOwner = true;
+      departRequest.hasWarnings = true;
     } else {
-      arrivalRequest.invalidUbnPreviousOwner = false;
+      departRequest.invalidUbnNewOwner = false;
     }
 
-    if (!hadWarnings && arrivalRequest.hasWarnings) {
-      this.arrivalRequestWarningsCount++;
-    } else if (hadWarnings && !arrivalRequest.hasWarnings) {
-      this.arrivalRequestWarningsCount--;
+    if (!hadWarnings && departRequest.hasWarnings) {
+      this.departRequestWarningsCount++;
+    } else if (hadWarnings && !departRequest.hasWarnings) {
+      this.departRequestWarningsCount--;
     }
   }
 
@@ -393,20 +451,20 @@ export class DepartCsvComponent implements OnInit, OnDestroy {
     return UBNValidator.isValidNonDutchUbn(ubn);
   }
 
-  submitArrivalRequests() {
-    if (this.arrivalRequestWarningsCount > 0) {
+  submitDepartRequests() {
+    if (this.departRequestWarningsCount > 0) {
       this.toggleAllWarningsModal();
     } else {
-      this.doSubmitArrivalRequests();
+      this.doSubmitDepartRequests();
     }
   }
 
-  submitSingleArrivalRequest(arrivalRequest: ExtendedDepartRequest) {
-    this.selectedArrivalRequest = arrivalRequest;
-    if (this.selectedArrivalRequest.hasWarnings) {
+  submitSingleDepartRequest(departRequest: ExtendedDepartRequest) {
+    this.selectedDepartRequest = departRequest;
+    if (this.selectedDepartRequest.hasWarnings) {
       this.toggleSingleWarningModal();
     } else {
-      this.doSubmitSingleArrivalRequest(arrivalRequest);
+      this.doSubmitSingleDepartRequest(departRequest);
     }
   }
 
@@ -438,51 +496,51 @@ export class DepartCsvComponent implements OnInit, OnDestroy {
     }
   }
 
-  updateArrivalDateString(arrivalRequest: ExtendedDepartRequest, arrivalDateString: string) {
-    arrivalRequest.arrival_date = SettingsService.getDateString_YYYY_MM_DD_fromDate(new Date(arrivalDateString));
-    this.validateArrivalRequest(arrivalRequest);
+  updateDepartDateString(departRequest: ExtendedDepartRequest, departDateString: string) {
+    departRequest.depart_date = SettingsService.getDateString_YYYY_MM_DD_fromDate(new Date(departDateString));
+    this.validateDepartRequest(departRequest);
   }
 
-  updateUbnPreviousOwner(arrivalRequest: ExtendedDepartRequest, UbnPreviousOwnerString: string) {
-    arrivalRequest.ubn_previous_owner = UbnPreviousOwnerString;
-    this.validateArrivalRequest(arrivalRequest);
+  updateUbnNewOwner(departRequest: ExtendedDepartRequest, UbnPreviousOwnerString: string) {
+    departRequest.ubn_new_owner = UbnPreviousOwnerString;
+    this.validateDepartRequest(departRequest);
   }
 
-  doSubmitArrivalRequests() {
-    this.arrivalRequests.forEach((arrivalRequest: ExtendedDepartRequest) => {
-      if (arrivalRequest.declareStatus !== true) {
-        arrivalRequest.isSubmitting = true;
-        this.apiService.doPostRequest(API_URI_DECLARE_DEPART, arrivalRequest)
+  doSubmitDepartRequests() {
+    this.departRequests.forEach((departRequest: ExtendedDepartRequest) => {
+      if (departRequest.declareStatus !== true) {
+        departRequest.isSubmitting = true;
+        this.apiService.doPostRequest(API_URI_DECLARE_DEPART, departRequest)
           .subscribe(
             res => {
-              arrivalRequest.isSubmitting = false;
-              arrivalRequest.errorMessage = null;
-              arrivalRequest.declareStatus = true;
+              departRequest.isSubmitting = false;
+              departRequest.errorMessage = null;
+              departRequest.declareStatus = true;
             },
             err => {
-              arrivalRequest.isSubmitting = false;
-              arrivalRequest.errorMessage = err.error.result.message;
-              arrivalRequest.declareStatus = false;
+              departRequest.isSubmitting = false;
+              departRequest.errorMessage = err.error.result.message;
+              departRequest.declareStatus = false;
             }
           );
       }
     });
   }
 
-  doSubmitSingleArrivalRequest(arrivalRequest: ExtendedDepartRequest) {
-    if (arrivalRequest.declareStatus !== true) {
-      arrivalRequest.isSubmitting = true;
-      this.apiService.doPostRequest(API_URI_DECLARE_DEPART, arrivalRequest)
+  doSubmitSingleDepartRequest(departRequest: ExtendedDepartRequest) {
+    if (departRequest.declareStatus !== true) {
+      departRequest.isSubmitting = true;
+      this.apiService.doPostRequest(API_URI_DECLARE_DEPART, departRequest)
         .subscribe(
           res => {
-            arrivalRequest.isSubmitting = false;
-            arrivalRequest.errorMessage = null;
-            arrivalRequest.declareStatus = true;
+            departRequest.isSubmitting = false;
+            departRequest.errorMessage = null;
+            departRequest.declareStatus = true;
           },
           err => {
-            arrivalRequest.isSubmitting = false;
-            arrivalRequest.errorMessage = err.error.result.message;
-            arrivalRequest.declareStatus = false;
+            departRequest.isSubmitting = false;
+            departRequest.errorMessage = err.error.result.message;
+            departRequest.declareStatus = false;
           }
         );
     }
