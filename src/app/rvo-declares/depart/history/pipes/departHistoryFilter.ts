@@ -18,7 +18,7 @@ export class DepartHistoryFilterPipe implements PipeTransform {
         depart.work_number +
         depart.pedigree +
         depart.depart_date +
-        depart.reason_of_depart +
+        depart.reason_of_loss +
         depart.ubn_new_owner +
         depart.certificate_number +
         depart.status

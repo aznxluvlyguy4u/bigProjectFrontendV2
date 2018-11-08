@@ -1,0 +1,221 @@
+<form class="form-declare">
+  <div class="row">
+      <div class="medium-2 columns">
+        <input #csv (change)="handleFileInput($event.target.files)" type="file" id="csv" name="file" accept=".csv" [disabled]="loadingStatesCount !== 0">
+      </div>
+  </div>
+</form>
+
+<div class="row" *ngIf="lossRequests.length > 0">
+  <div class="columns">
+    <button [disabled]="loadingStatesCount !== 0" (click)="submitLossRequests()" class="small primary button">{{ "DECLARE ALL" | translate }}  <span class="badge">{{lossRequests.length}}</span></button>
+    <!--{{ loadingStatesCount, lossRequestWarningsCount }}-->
+  </div>
+
+  <app-page-loading-spinner *ngIf="loadingStatesCount !== 0"></app-page-loading-spinner>
+</div>
+
+<div *ngFor="let lossRequest of lossRequests" class="csv_lossRequest" [class.success]="lossRequest.declareStatus === true" [class.error]="lossRequest.declareStatus === false" [class.warning]="lossRequest.hasWarnings && lossRequest.declareStatus === null">
+    <div class="row">
+      <div class="columns">
+        <i *ngIf="lossRequest.isSubmitting" class="fa fa-spinner fa-pulse fa-fw"></i>
+        <p class="alert">
+          {{lossRequest.errorMessage}}
+        </p>
+      </div>
+    </div>
+
+    <div class="row">
+
+      <div class="medium-3 columns">
+        <div class="row">
+          <label class="medium-7 columns">{{ 'IDENTIFICATION NUMBER' | translate }}</label>
+          <!-- Error messages -->
+          <label class="medium-5 columns warning-text" *ngIf="!lossRequest?.animal?.uln_country_code && lossRequest?.animal?.uln_number">
+            <small>{{ 'CHOOSE COUNTRY CODE' | translate }}</small>
+          </label>
+        </div>
+
+        <!--Missing country code but has a uln number-->
+        <div class="uid-input-group" *ngIf="!lossRequest?.animal?.uln_country_code && lossRequest?.animal?.uln_number">
+          <select [ngModel]="lossRequest?.animal?.uln_country_code" (change)="selectAnimalUlnCountryCode(lossRequest, $event.target.value)">
+            <option *ngFor="let country_code of country_code_list" [value]="country_code.code">
+              {{ country_code.code }}
+            </option>
+          </select>
+          <input type="text" [disabled]="lossRequest?.animal?.uln_number" [value]="lossRequest?.animal?.uln_number">
+        </div>
+
+        <!--Both country code and uln number are present-->
+        <div class="row collapse" *ngIf="lossRequest?.animal?.uln_country_code && lossRequest?.animal?.uln_number">
+          <span class="medium-9 columns">{{lossRequest?.animal?.uln_country_code}} {{lossRequest?.animal?.uln_number}}</span>
+          <button class="tiny button medium-3 columns" *ngIf="lossRequest?.animalUlnCountryCodeOnlyHasChanged" (click)="resetAnimalUlnCountryCode(lossRequest)">{{'CHANGE' | translate}}</button>
+          <button class="tiny button medium-3 columns" *ngIf="lossRequest?.animalHasChanged" (click)="resetAnimal(lossRequest)">{{'CHANGE' | translate}}</button>
+        </div>
+      </div>
+
+      <div class="medium-2 columns">
+        <div class="row">
+          <label class="medium-12 columns">{{ 'LOSS DATE' | translate }}</label>
+        </div>
+
+        <!--Both country code and uln number are present-->
+        <!--<div class="row collapse" *ngIf="arrivalRequest?.arrival_date">-->
+          <!--<span class="medium-9 columns">{{arrivalRequest?.arrival_date}}</span>-->
+        <!--</div>-->
+        <div class="row">
+          <div class="medium-9 columns">
+            <app-datepicker-v2 *ngIf="lossRequest?.date_of_death"
+              [dateString]="lossRequest?.date_of_death"
+              [disabled]="lossRequest?.datePickerDisabled"
+              [viewFormat]="view_date_format"
+              [activateSetNullButton]="false"
+              [activateResetButton]="false"
+              [modelFormat]="model_datetime_format"
+              (isDateStringChanged)="updateLossDateString(lossRequest, $event)"
+              (keyup)="preventKeyPress($event)" (keydown)="preventKeyPress($event)"
+              (keypress)="preventKeyPress($event)">
+            </app-datepicker-v2>
+          </div>
+          <button class="tiny button medium-3 columns" (click)="toggleDatePicker(lossRequest)">{{'CHANGE' | translate}}</button>
+        </div>
+      </div>
+
+      <div class="medium-3 columns">
+        <div class="row">
+          <label class="medium-7 columns">{{ 'UBN NEW OWNER' | translate }}</label>
+          <!-- Error messages -->
+          <label class="medium-5 columns warning-text" *ngIf="lossRequest?.invalidUbnProcessor">
+            <small>{{ 'UBN IS INVALID' | translate }}</small>
+          </label>
+        </div>
+
+        <div class="row collapse">
+          <div class="medium-8 columns">
+            <input [value]="lossRequest?.ubn_new_owner" (input)="updateUbnProcessor(lossRequest, $event.target.value)" [disabled]="lossRequest?.ubnProcessorDisabled" type="text" name="ubn_new_owner">
+          </div>
+          <button class="tiny button medium-3 columns" (click)="toggleUbnNewOwner(lossRequest)">{{'CHANGE' | translate}}</button>
+        </div>
+      </div>
+
+      <div class="medium-2 columns">
+        <div class="row">
+          <label class="medium-12 columns">{{ 'REASON OF LOSS' | translate }}</label>
+        </div>
+
+        <div class="row collapse" *ngIf="lossRequest?.reason_of_loss">
+          <select [(ngModel)]="lossRequest.reason_of_loss">
+            <option *ngFor="let reason of options_reason_of_loss" value="{{ reason }}">{{ reason | translate }}</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="medium-2 columns">
+        <div class="row">
+          <label class="medium-12 columns">{{ 'DATE SCANNED' | translate }}</label>
+        </div>
+
+        <!--Both country code and uln number are present-->
+        <div class="row collapse" *ngIf="lossRequest?.scanned_date">
+          <span class="medium-9 columns">{{ lossRequest?.scanned_date | date:'dd-MM-yyyy hh:mm:ss' }}</span>
+        </div>
+      </div>
+
+    </div>
+
+
+    <div class="row">
+      <div class="columns clearfix">
+        <button [disabled]="loadingStatesCount !== 0" (click)="submitSingleLossRequest(lossRequest)" class="float-right small primary button">{{ "DECLARE" | translate }}</button>
+      </div>
+    </div>
+
+</div>
+
+<div class="reveal-overlay" [ngStyle]="{'display': warningModalDisplay}">
+  <div class="reveal tiny" [ngStyle]="{'display': warningModalDisplay}">
+
+    <div class="modal-header">
+      {{ "WARNING" | translate }}
+      <button type="button" class="pull-right" aria-label="Close modal" (click)="toggleAllWarningsModal()">
+        <i class="fa fa-times" aria-hidden="true"></i>
+      </button>
+    </div>
+
+    <div class="modal-body" *ngIf="warningModalMode === 'single'">
+      <div class="callout warning">
+        <p *ngIf="selectedLossRequest.animalMissingUlnCountryCode">
+          {{ 'MISSING COUNTRY CODE' | translate }}
+        </p>
+
+        <p *ngIf="selectedLossRequest.invalidUbnNewOwner">
+          {{ 'UBN IS INVALID' | translate }}
+        </p>
+      </div>
+
+      <div>
+        <p><b>{{ "STILL CONTINUE WITH DECLARATION?" | translate }}</b></p>
+      </div>
+    </div>
+
+    <div class="modal-body" *ngIf="warningModalMode === 'all'">
+      <!--LossRequests with missing Animal details-->
+      <div *ngIf="missingAnimalLossRequests.length > 0" class="callout warning">
+        <p>{{ 'THE FOLLOWING LOSS REQUESTS HAVE IMCOMPLETE IDENTIFICATION NUMBERS' | translate }}</p>
+
+        <div>
+          <ng-container *ngFor="let warningLossRequest of missingAnimalLossRequests">
+              <p>{{ warningLossRequest.animal?.uln_country_code + warningLossRequest.animal?.uln_number }}</p>
+          </ng-container>
+        </div>
+
+      </div>
+
+      <!--LossRequests with invalid UBN-->
+      <div *ngIf="invalidUbnProcessorLossRequests.length > 0" class="callout warning">
+        <p>{{ 'THE FOLLOWING LOSS REQUESTS HAVE INVALID UBN NUMBERS' | translate }}</p>
+
+        <div>
+          <ng-container *ngFor="let warningLossRequest of invalidUbnProcessorLossRequests">
+            <ng-container *ngFor="let warningLossRequest of invalidUbnProcessorLossRequests">
+              <p>{{ warningLossRequest.animal?.uln_country_code + warningLossRequest.animal?.uln_number }}</p>
+            </ng-container>
+          </ng-container>
+        </div>
+
+      </div>
+
+      <div>
+        <p><b>{{ "STILL CONTINUE WITH DECLARATION?" | translate }}</b></p>
+      </div>
+
+    </div>
+
+    <div class="modal-footer">
+      <button
+              type="button"
+              class="button alert pull-right"
+              aria-label="Clear list"
+              (click)="toggleAllWarningsModal()">
+        {{ 'CANCEL' | translate }}
+      </button>
+
+      <button *ngIf="warningModalMode === 'all'"
+              type="button"
+              class="button pull-right primary"
+              aria-label="Clear list"
+              (click)="doSubmitLossRequests(); toggleAllWarningsModal();">
+        {{ 'DECLARE' | translate }}
+      </button>
+
+      <button *ngIf="warningModalMode === 'single'"
+              type="button"
+              class="button pull-right primary"
+              aria-label="Clear list"
+              (click)="doSubmitSingleLossRequest(selectedLossRequest); toggleAllWarningsModal();">
+        {{ 'DECLARE' | translate }}
+      </button>
+    </div>
+
+  </div>
+</div>

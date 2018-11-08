@@ -23,6 +23,9 @@
                                            class="alert badge tab-badge">{{ errorAmount }}</span>
         </a>
       </li>
+      <li [class.active]="isActiveRoute('/main/loss/csv')" class="tabs-title">
+        <a (click)="navigateTo('/main/loss/csv')">{{ 'CSV' | translate }}</a>
+      </li>
     </ul>
   </div>
 

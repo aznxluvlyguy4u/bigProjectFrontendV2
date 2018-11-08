@@ -53,7 +53,7 @@ export class DepartHistoryRowComponent {
 
       const new_depart: DepartChangeResponse = new DepartChangeResponse();
       new_depart.depart_date = this.form.get('depart_date').value;
-      new_depart.reason_of_depart = this.form.get('reason_of_depart').value;
+      new_depart.reason_of_depart = this.form.get('reason_of_loss').value;
       new_depart.is_export_animal = this.depart.is_export_animal;
       new_depart.animal.uln_country_code = this.depart.uln_country_code;
       new_depart.animal.uln_number = this.depart.uln_number;

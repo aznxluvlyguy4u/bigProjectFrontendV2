@@ -27,6 +27,7 @@ import {LossComponent} from './rvo-declares/loss/loss.component';
 import {LossDeclareComponent} from './rvo-declares/loss/declare/loss.declare';
 import {LossHistoryComponent} from './rvo-declares/loss/history/loss.history';
 import {LossErrorsComponent} from './rvo-declares/loss/errors/loss.errors';
+import {LossCsvComponent} from './rvo-declares/loss/csv/loss.csv';
 import {WeightComponent} from './nsfo-declares/weight/weight.component';
 import {WeightDeclareComponent} from './nsfo-declares/weight/declare/weight.declare';
 import {WeightHistoryComponent} from './nsfo-declares/weight/history/weight.history';
@@ -113,7 +114,8 @@ const appRoutes = [
         children: [
           {path: 'declare', component: LossDeclareComponent},
           {path: 'history', component: LossHistoryComponent},
-          {path: 'errors', component: LossErrorsComponent}
+          {path: 'errors', component: LossErrorsComponent},
+          {path: 'csv', component: LossCsvComponent},
         ]
       },
       {

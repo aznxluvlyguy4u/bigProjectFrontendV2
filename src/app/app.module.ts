@@ -97,6 +97,7 @@ import {DepartHistoryComponent} from './rvo-declares/depart/history/depart.histo
 import {DepartHistoryRowComponent} from './rvo-declares/depart/history/depart.history.row';
 import {DepartComponent} from './rvo-declares/depart/depart.component';
 import {EartagComponent} from './rvo-declares/eartag/eartag.component';
+import {LossCsvComponent} from './rvo-declares/loss/csv/loss.csv';
 import {LossDeclareComponent} from './rvo-declares/loss/declare/loss.declare';
 import {LossErrorRowComponent} from './rvo-declares/loss/errors/loss.errors.row';
 import {LossErrorsComponent} from './rvo-declares/loss/errors/loss.errors';
@@ -229,6 +230,7 @@ export function CreateTranslateLoader(http: HttpClient) {
     DepartHistoryFilterPipe,
     DepartComponent,
     EartagComponent,
+    LossCsvComponent,
     LossDeclareComponent,
     LossErrorRowComponent,
     LossErrorsComponent,

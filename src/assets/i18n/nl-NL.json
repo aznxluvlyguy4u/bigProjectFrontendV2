@@ -689,6 +689,8 @@
   "THE FOLLOWING ARRIVAL REQUESTS HAVE INVALID UBN NUMBERS": "Bij de volgende aanvoers is de UBN ongeldig:",
   "THE FOLLOWING DEPART REQUESTS HAVE IMCOMPLETE IDENTIFICATION NUMBERS": "Bij de volgende afvoermeldingen zijn de identificatie nummers incompleet:",
   "THE FOLLOWING DEPART REQUESTS HAVE INVALID UBN NUMBERS": "Bij de volgende afvoermeldingen is de UBN ongeldig:",
+  "THE FOLLOWING LOSS REQUESTS HAVE IMCOMPLETE IDENTIFICATION NUMBERS": "Bij de volgende sterftemeldingen zijn de identificatie nummers incompleet:",
+  "THE FOLLOWING LOSS REQUESTS HAVE INVALID UBN NUMBERS": "Bij de volgende sterftemeldingen is de UBN ongeldig:",
   "MULTIPLE CANDIDATE FATHERS, BUT NONE CHOSEN": "Meerdere vaders mogelijk, maar geen een ingevuld",
   "MISSING MOTHER DETAILS": "De gegevens van de moeder is incompleet",
   "MISSING SURROGATE MOTHER DETAILS": "De gegevens van een pleegmoeder is incompleet",
