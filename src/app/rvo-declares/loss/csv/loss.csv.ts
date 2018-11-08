@@ -320,7 +320,7 @@ export class LossCsvComponent implements OnInit, OnDestroy {
     lossRequest.datePickerDisabled = !lossRequest.datePickerDisabled;
   }
 
-  toggleUbnNewOwner(lossRequest: ExtendedLossRequest) {
+  toggleUbnProcessor(lossRequest: ExtendedLossRequest) {
     lossRequest.ubnProcessorDisabled = !lossRequest.ubnProcessorDisabled;
   }
 
