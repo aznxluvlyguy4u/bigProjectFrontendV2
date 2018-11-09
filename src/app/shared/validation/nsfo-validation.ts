@@ -36,7 +36,7 @@ export class UBNValidator {
     }
 
     if (group.controls['export_flag'].value === 'YES') {
-      // if (group.controls['ubn_processor'].value.trim() === '') {
+      // if (group.controls['ubn_new_owner'].value.trim() === '') {
       return null;
       // }
     }
