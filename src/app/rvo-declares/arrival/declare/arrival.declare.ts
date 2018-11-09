@@ -226,7 +226,7 @@ export class ArrivalDeclareComponent implements OnInit, OnDestroy, AfterViewInit
   }
 
   public getToday() {
-    moment().format(this.settings.getViewDateFormat());
+    return moment().format(this.settings.getViewDateFormat());
   }
 
   private isValidUbn(ubn: string): boolean {
