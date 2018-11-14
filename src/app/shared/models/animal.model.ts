@@ -40,6 +40,7 @@ export class Animal {
   public cause_of_death: string;
   public birth_weight: string;
   public last_weight: string;
+  public last_weight_measurement_date: string;
   public tail_length: string;
   public mates: Mate[] = [];
   public note: string;

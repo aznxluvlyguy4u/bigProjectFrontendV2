@@ -18,8 +18,11 @@
 <!--LIVESTOCK OVERVIEW-->
 <div class="row">
   <div class="large-12 columns">
-    <app-livestock-overview [items_per_page]="100" [weightMode]="true"
-                        (selected)="declareWeight($event)"></app-livestock-overview>
+    <app-livestock-overview
+      [items_per_page]="100"
+      [customType]="livestockType"
+      (selected)="declareWeight($event)"
+    ></app-livestock-overview>
   </div>
 </div>
 

@@ -24,6 +24,7 @@ import {JsonResponseModel} from '../../models/json-response.model';
 const fileTypeDropdownMinCount = 2;
 
 export const LIVESTOCK_TYPE_MATE = 'LIVE_STOCK_TYPE_MATE';
+export const LIVESTOCK_TYPE_WEIGHT = 'LIVE_STOCK_TYPE_WEIGHT';
 
 @Component({
     selector: 'app-livestock-overview',
@@ -35,7 +36,6 @@ export class LivestockOverviewComponent implements OnInit, OnDestroy {
     @Input() file_types_list: string[] = [];
     @Input() view_mode = false;
     @Input() load_historic_animals_in_non_view_mode = false;
-    @Input() weightMode = false;
     @Input() reportMode = false;
     @Input() onlyFemales = false;
     @Input() disableMultipleSelection = false;
@@ -44,9 +44,10 @@ export class LivestockOverviewComponent implements OnInit, OnDestroy {
     @Input() maxSelectionCount: number;
     @Output() selected = new EventEmitter();
     @Input() customType = '';
-    mateMode = false;
-    updateLastMateSubscription: Subscription;
     @Input() lastMateChanged: Subject<MateChangeResponse>;
+    mateMode = false;
+    weightMode = false;
+    updateLastMateSubscription: Subscription;
     public livestock_list_initial = <LivestockAnimal[]>[];
     public livestock_list = <LivestockAnimal[]>[];
     public filtered_list = <LivestockAnimal[]>[];
@@ -102,6 +103,12 @@ export class LivestockOverviewComponent implements OnInit, OnDestroy {
                 }
 
                 break;
+
+            case LIVESTOCK_TYPE_WEIGHT:
+                this.weightMode = true;
+                this.getLivestockLastWeight();
+                break;
+
             default:
                 this.getLivestockList();
                 break;
@@ -201,7 +208,11 @@ export class LivestockOverviewComponent implements OnInit, OnDestroy {
     }
 
     private getLivestockMateList() {
-        this.getLivestockListBase('?is_ewes_with_last_mate=true');
+        this.getLivestockListBase('?type=ewes_with_last_mate');
+    }
+
+    private getLivestockLastWeight() {
+      this.getLivestockListBase('?type=last_weight');
     }
 
     private getLivestockList() {

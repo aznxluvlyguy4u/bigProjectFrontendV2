@@ -9,12 +9,14 @@ import {API_URI_DECLARE_WEIGHT} from '../../../shared/services/nsfo-api/nsfo.set
 import {Animal} from '../../../shared/models/animal.model';
 import {ErrorMessage} from '../../../shared/models/error-message.model';
 import {AnimalsOverviewSelection} from '../../../shared/components/livestock/animals-overview-selection.model';
+import {LIVESTOCK_TYPE_WEIGHT} from '../../../shared/components/livestock/overview.component';
 
 @Component({
   templateUrl: './weight.declare.html',
 })
 
 export class WeightDeclareComponent {
+  public livestockType = LIVESTOCK_TYPE_WEIGHT;
   public isSendingDeclare = false;
   public isValidForm = true;
 
