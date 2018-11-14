@@ -228,10 +228,10 @@
                         </span>
           <span *ngIf="weightMode" class="large-text-center">
                             <label class="show-for-small-only">{{ 'PREVIOUS WEIGHT' | translate }}</label>
-                            <span *ngIf="animal.weight">
-                                {{ animal.weight }}
+                            <span *ngIf="animal.last_weight">
+                                {{ animal.last_weight }}
                             </span>
-                            <span *ngIf="!animal.weight">
+                            <span *ngIf="!animal.last_weight">
                                 --
                             </span>
                             <span>kg</span>
