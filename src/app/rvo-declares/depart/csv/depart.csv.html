@@ -93,9 +93,12 @@
 
         <div class="row collapse">
           <div class="medium-8 columns">
-            <input [value]="departRequest?.ubn_new_owner" (input)="updateUbnNewOwner(departRequest, $event.target.value)" [disabled]="departRequest?.ubnNewOwnerDisabled" type="text" name="ubn_new_owner">
+            <!--Single ubn change on input()-->
+            <input *ngIf="!multipleUbnNewOwnerMode" [value]="departRequest?.ubn_new_owner" (input)="updateSingleUbnNewOwner(departRequest, $event.target.value)" [disabled]="departRequest?.ubnNewOwnerDisabled" type="text" name="ubn_new_owner">
+            <!--Multiple ubn change on input()-->
+            <input *ngIf="multipleUbnNewOwnerMode" [value]="departRequest?.ubn_new_owner" (input)="updateMultipleUbnNewOwner(departRequest, $event.target.value)" [disabled]="departRequest?.ubnNewOwnerDisabled" type="text" name="ubn_new_owner">
           </div>
-          <button class="tiny button medium-3 columns" (click)="toggleUbnNewOwner(departRequest)">{{'CHANGE' | translate}}</button>
+          <button class="tiny button medium-3 columns" (click)="toggleUpdateUbnWarningModal(departRequest)">{{'CHANGE' | translate}}</button>
         </div>
       </div>
 
@@ -143,6 +146,7 @@
       </button>
     </div>
 
+    <!-- Single DepartRequest Warning -->
     <div class="modal-body" *ngIf="warningModalMode === 'single'">
       <div class="callout warning">
         <p *ngIf="selectedDepartRequest.animalMissingUlnCountryCode">
@@ -159,6 +163,7 @@
       </div>
     </div>
 
+    <!-- All DepartRequest Warning -->
     <div class="modal-body" *ngIf="warningModalMode === 'all'">
       <!--DepartRequests with missing Animal details-->
       <div *ngIf="missingAnimalDepartRequests.length > 0" class="callout warning">
@@ -192,6 +197,14 @@
 
     </div>
 
+    <!-- Change Single DepartRequest UBN Warning -->
+    <div class="modal-body" *ngIf="warningModalMode === 'changeUbn'">
+      <!--BirthRequests with multiple fathers-->
+      <div class="callout warning">
+        <p>{{ "CHANGE SINGLE OR MULTIPLE UBN" | translate }}</p>
+      </div>
+    </div>
+
     <div class="modal-footer">
       <button
               type="button"
@@ -215,6 +228,22 @@
               aria-label="Clear list"
               (click)="doSubmitSingleDepartRequest(selectedDepartRequest); toggleAllWarningsModal();">
         {{ 'DECLARE' | translate }}
+      </button>
+
+      <button *ngIf="warningModalMode === 'changeUbn'"
+              type="button"
+              class="button pull-right success"
+              aria-label="Clear list"
+              (click)="toggleUbnNewOwner(selectedDepartRequest, true); toggleAllWarningsModal();">
+        {{ 'YES' | translate }}
+      </button>
+
+      <button *ngIf="warningModalMode === 'changeUbn'"
+              type="button"
+              class="button pull-right success"
+              aria-label="Clear list"
+              (click)="toggleUbnNewOwner(selectedDepartRequest, false); toggleAllWarningsModal();">
+        {{ 'NO' | translate }}
       </button>
     </div>
 

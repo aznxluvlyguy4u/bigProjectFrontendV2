@@ -703,5 +703,6 @@
   "CSV FORMAT ERROR": "CSV voldoet niet aan formaat eisen",
   "COUNTRY": "Land",
   "EARTAG ADMINISTRATION": "Oormerkbeheer",
-  "UBN OF DEPARTURE AND ARRIVAL ARE IDENTICAL": "UBN van vertrek en aankomst zijn identiek"
+  "UBN OF DEPARTURE AND ARRIVAL ARE IDENTICAL": "UBN van vertrek en aankomst zijn identiek",
+  "CHANGE SINGLE OR MULTIPLE UBN": "Wilt u de UBN wijzigen voor alle aanvoeren/afvoeren waarbij het UBN mist of ongeldig is en die gedaan zijn op dezelfde scandatum?"
 }

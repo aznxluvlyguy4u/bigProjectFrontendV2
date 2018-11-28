@@ -30,6 +30,7 @@ interface DepartCsvRow {
 
 class ExtendedDepartRequest extends DepartRequest {
   public index: number;
+  public batchIndex: number;
   public is_aborted: boolean;
   public scanned_date: string;
   public animalUlnCountryCodeOnlyHasChanged = false;
@@ -62,6 +63,7 @@ export class DepartCsvComponent implements OnInit, OnDestroy {
 
   warningModalDisplay = 'none';
   warningModalMode = 'all';
+  multipleUbnNewOwnerMode = false;
 
   loadingStatesCount = 0;
   departRequestWarningsCount = 0;
@@ -69,7 +71,7 @@ export class DepartCsvComponent implements OnInit, OnDestroy {
 
   missingAnimalDepartRequests = <ExtendedDepartRequest[]>[];
   invalidUbnNewOwnerDepartRequests = <ExtendedDepartRequest[]>[];
-  departRequests: DepartRequest[] = [];
+  departRequests = <ExtendedDepartRequest[]>[];
   parsedAnimals = <LivestockAnimal[]>[];
   csvRows: DepartCsvRow[] = [];
   parsedResults: any;
@@ -181,6 +183,7 @@ export class DepartCsvComponent implements OnInit, OnDestroy {
 
   toDepartRequests() {
     let index = 0;
+    let batchIndex = 0;
     let currentScannedDate = null;
     let currentDateOfDepart = null;
     let currentUBN = null;
@@ -217,11 +220,12 @@ export class DepartCsvComponent implements OnInit, OnDestroy {
           this.resolveDepartRequestReasonOfDepart(row, departRequest);
           departRequest.index = row.index;
           departRequest.is_aborted = false;
-          departRequest.depart_date = currentDateOfDepart;
+          departRequest.depart_date = currentDateOfDepart ? currentDateOfDepart : currentScannedDate;
           departRequest.is_export_animal = false;
           departRequest.ubn_new_owner = currentUBN;
           departRequest.animal = row.tmp_animal;
           departRequest.scanned_date = row.scanned_date;
+          departRequest.batchIndex = batchIndex;
 
           this.validateDepartRequest(departRequest);
 
@@ -233,6 +237,7 @@ export class DepartCsvComponent implements OnInit, OnDestroy {
         currentDateOfDepart = null;
         currentUBN = null;
         currentAnimalGroup = <DepartCsvRow[]>[];
+        batchIndex++;
       }
       index++;
     });
@@ -373,8 +378,10 @@ export class DepartCsvComponent implements OnInit, OnDestroy {
     departRequest.datePickerDisabled = !departRequest.datePickerDisabled;
   }
 
-  toggleUbnNewOwner(departRequest: ExtendedDepartRequest) {
+  toggleUbnNewOwner(departRequest: ExtendedDepartRequest, multipleMode: boolean) {
     departRequest.ubnNewOwnerDisabled = !departRequest.ubnNewOwnerDisabled;
+    this.multipleUbnNewOwnerMode =
+      (this.multipleUbnNewOwnerMode !== multipleMode) ? multipleMode : this.multipleUbnNewOwnerMode;
   }
 
   selectAnimalUlnCountryCode(departRequest: ExtendedDepartRequest, countryCode: string) {
@@ -495,14 +502,39 @@ export class DepartCsvComponent implements OnInit, OnDestroy {
     }
   }
 
+  toggleUpdateUbnWarningModal(departRequest: ExtendedDepartRequest) {
+    this.selectedDepartRequest = departRequest;
+    if (departRequest.ubnNewOwnerDisabled) {
+      this.warningModalMode = 'changeUbn';
+      if (this.warningModalDisplay === 'none') {
+        this.warningModalDisplay = 'block';
+      } else {
+        this.warningModalDisplay = 'none';
+      }
+    } else {
+      departRequest.ubnNewOwnerDisabled = !departRequest.ubnNewOwnerDisabled;
+    }
+  }
+
   updateDepartDateString(departRequest: ExtendedDepartRequest, departDateString: string) {
     departRequest.depart_date = SettingsService.getDateString_YYYY_MM_DD_fromDate(new Date(departDateString));
     this.validateDepartRequest(departRequest);
   }
 
-  updateUbnNewOwner(departRequest: ExtendedDepartRequest, UbnNewOwnerString: string) {
+  updateSingleUbnNewOwner(departRequest: ExtendedDepartRequest, UbnNewOwnerString: string) {
     departRequest.ubn_new_owner = UbnNewOwnerString;
     this.validateDepartRequest(departRequest);
+  }
+
+  updateMultipleUbnNewOwner(departRequest: ExtendedDepartRequest, UbnNewOwnerString: string) {
+    const departRequestsBatch = this.departRequests.filter(function( obj ) {
+      return obj.batchIndex === departRequest.batchIndex;
+    });
+
+    departRequestsBatch.forEach((batchDepartRequest: ExtendedDepartRequest) => {
+      batchDepartRequest.ubn_new_owner = UbnNewOwnerString;
+      this.validateDepartRequest(batchDepartRequest);
+    });
   }
 
   doSubmitDepartRequests() {

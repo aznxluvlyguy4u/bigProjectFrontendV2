@@ -28,6 +28,7 @@ interface ArrivalCsvRow {
 
 class ExtendedArrivalRequest extends ArrivalRequest {
   public index: number;
+  public batchIndex: number;
   public is_aborted: boolean;
   public scanned_date: string;
   public animalUlnCountryCodeOnlyHasChanged = false;
@@ -59,6 +60,7 @@ export class ArrivalCsvComponent implements OnInit, OnDestroy {
 
   warningModalDisplay = 'none';
   warningModalMode = 'all';
+  multipleUbnPreviousOwnerMode = false;
 
   loadingStatesCount = 0;
   arrivalRequestWarningsCount = 0;
@@ -66,7 +68,7 @@ export class ArrivalCsvComponent implements OnInit, OnDestroy {
 
   missingAnimalArrivalRequests = <ExtendedArrivalRequest[]>[];
   invalidUbnPreviousOwnerArrivalRequests = <ExtendedArrivalRequest[]>[];
-  arrivalRequests: ArrivalRequest[] = [];
+  arrivalRequests = <ExtendedArrivalRequest[]>[];
   parsedAnimals = <LivestockAnimal[]>[];
   csvRows: ArrivalCsvRow[] = [];
   parsedResults: any;
@@ -177,6 +179,7 @@ export class ArrivalCsvComponent implements OnInit, OnDestroy {
 
   toArrivalRequests() {
     let index = 0;
+    let batchIndex = 0;
     let currentScannedDate = null;
     let currentDateOfArrival = null;
     let currentUBN = null;
@@ -212,11 +215,12 @@ export class ArrivalCsvComponent implements OnInit, OnDestroy {
           this.resolveArrivalRequestAnimal(row, arrivalRequest);
           arrivalRequest.index = row.index;
           arrivalRequest.is_aborted = false;
-          arrivalRequest.arrival_date = currentDateOfArrival;
+          arrivalRequest.arrival_date = currentDateOfArrival ? currentDateOfArrival : currentScannedDate;
           arrivalRequest.is_import_animal = false;
           arrivalRequest.ubn_previous_owner = currentUBN;
           arrivalRequest.animal = row.tmp_animal;
           arrivalRequest.scanned_date = row.scanned_date;
+          arrivalRequest.batchIndex = batchIndex;
 
           this.validateArrivalRequest(arrivalRequest);
 
@@ -228,6 +232,7 @@ export class ArrivalCsvComponent implements OnInit, OnDestroy {
         currentDateOfArrival = null;
         currentUBN = null;
         currentAnimalGroup = <ArrivalCsvRow[]>[];
+        batchIndex++;
       }
       index++;
     });
@@ -319,8 +324,10 @@ export class ArrivalCsvComponent implements OnInit, OnDestroy {
     arrivalRequest.datePickerDisabled = !arrivalRequest.datePickerDisabled;
   }
 
-  toggleUbnPreviousOwner(arrivalRequest: ExtendedArrivalRequest) {
+  toggleUbnPreviousOwner(arrivalRequest: ExtendedArrivalRequest, multipleMode: boolean) {
     arrivalRequest.ubnPreviousOwnerDisabled = !arrivalRequest.ubnPreviousOwnerDisabled;
+    this.multipleUbnPreviousOwnerMode =
+      (this.multipleUbnPreviousOwnerMode !== multipleMode) ? multipleMode : this.multipleUbnPreviousOwnerMode;
   }
 
   selectAnimalUlnCountryCode(arrivalRequest: ExtendedArrivalRequest, countryCode: string) {
@@ -441,14 +448,39 @@ export class ArrivalCsvComponent implements OnInit, OnDestroy {
     }
   }
 
+  toggleUpdateUbnWarningModal(arrivalRequest: ExtendedArrivalRequest) {
+    this.selectedArrivalRequest = arrivalRequest;
+    if (arrivalRequest.ubnPreviousOwnerDisabled) {
+      this.warningModalMode = 'changeUbn';
+      if (this.warningModalDisplay === 'none') {
+        this.warningModalDisplay = 'block';
+      } else {
+        this.warningModalDisplay = 'none';
+      }
+    } else {
+      arrivalRequest.ubnPreviousOwnerDisabled = !arrivalRequest.ubnPreviousOwnerDisabled;
+    }
+  }
+
   updateArrivalDateString(arrivalRequest: ExtendedArrivalRequest, arrivalDateString: string) {
     arrivalRequest.arrival_date = SettingsService.getDateString_YYYY_MM_DD_fromDate(new Date(arrivalDateString));
     this.validateArrivalRequest(arrivalRequest);
   }
 
-  updateUbnPreviousOwner(arrivalRequest: ExtendedArrivalRequest, UbnPreviousOwnerString: string) {
+  updateSingleUbnPreviousOwner(arrivalRequest: ExtendedArrivalRequest, UbnPreviousOwnerString: string) {
     arrivalRequest.ubn_previous_owner = UbnPreviousOwnerString;
     this.validateArrivalRequest(arrivalRequest);
+  }
+
+  updateMultipleUbnPreviousOwner(arrivalRequest: ExtendedArrivalRequest, UbnPreviousOwnerString: string) {
+    const arrivalRequestsBatch = this.arrivalRequests.filter(function( obj ) {
+      return obj.batchIndex === arrivalRequest.batchIndex;
+    });
+
+    arrivalRequestsBatch.forEach((batchArrivalRequest: ExtendedArrivalRequest) => {
+      batchArrivalRequest.ubn_previous_owner = UbnPreviousOwnerString;
+      this.validateArrivalRequest(batchArrivalRequest);
+    });
   }
 
   doSubmitArrivalRequests() {
