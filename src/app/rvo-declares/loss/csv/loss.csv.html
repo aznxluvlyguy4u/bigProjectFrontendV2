@@ -91,10 +91,13 @@
         </div>
 
         <div class="row collapse">
-          <div class="medium-8 columns">
-            <input [value]="lossRequest?.ubn_processor" (input)="updateUbnProcessor(lossRequest, $event.target.value)" [disabled]="lossRequest?.ubnProcessorDisabled" type="text" name="ubn_processor">
+          <div class="medium-10 columns">
+            <select [(ngModel)]="lossRequest.ubn_processor">
+              <option *ngFor="let ubn_processor of ubn_processors" value="{{ ubn_processor.ubn }}">{{ ubn_processor.ubn }} ({{
+                ubn_processor.name }})
+              </option>
+            </select>
           </div>
-          <button class="tiny button medium-3 columns" (click)="toggleUbnProcessor(lossRequest)">{{'CHANGE' | translate}}</button>
         </div>
       </div>
 

@@ -4,7 +4,7 @@ import {LOSS_REASON_OF_LOSS, LossRequest} from '../loss.model';
 import { PapaParseService } from 'ngx-papaparse';
 import { Settings } from '../../../shared/variables/settings';
 import {
-  API_URI_DECLARE_LOSS
+  API_URI_DECLARE_LOSS, API_URI_GET_UBN_PROCESSORS
 } from '../../../shared/services/nsfo-api/nsfo.settings';
 import { NSFOService } from '../../../shared/services/nsfo-api/nsfo.service';
 import * as moment from 'moment';
@@ -13,6 +13,7 @@ import {Router} from '@angular/router';
 import {TranslateService} from '@ngx-translate/core';
 import {UBNValidator} from '../../../shared/validation/nsfo-validation';
 import {CacheService} from '../../../shared/services/settings/cache.service';
+import {JsonResponseModel} from '../../../shared/models/json-response.model';
 
 interface LossCsvRow {
   index: number;
@@ -36,7 +37,6 @@ class ExtendedLossRequest extends LossRequest {
   public animalHasOnlyWorkerNumber = false;
   public invalidUbnProcessor = false;
   public datePickerDisabled = true;
-  public ubnProcessorDisabled = true;
   public hasWarnings = false;
   public declareStatus: boolean;
   public isSubmitting: boolean;
@@ -56,7 +56,9 @@ export class LossCsvComponent implements OnInit, OnDestroy {
 
   public country_code_list = [];
   public options_reason_of_loss = LOSS_REASON_OF_LOSS;
+  public ubn_processors = [];
   private countryCodeObs;
+  private defaultUbnProcessor = '2486574';
 
   warningModalDisplay = 'none';
   warningModalMode = 'all';
@@ -95,6 +97,20 @@ export class LossCsvComponent implements OnInit, OnDestroy {
       .subscribe(countryCodeList => {
         this.country_code_list = countryCodeList[0];
       });
+
+    this.getUBNProcessors();
+  }
+
+  public getUBNProcessors() {
+    this.apiService.doGetRequest(API_URI_GET_UBN_PROCESSORS)
+      .subscribe(
+        (res: JsonResponseModel) => {
+          this.ubn_processors = res.result;
+        },
+        error => {
+          alert(this.apiService.getErrorMessage(error));
+        }
+      );
   }
 
   resetPrivateVariables() {
@@ -189,7 +205,7 @@ export class LossCsvComponent implements OnInit, OnDestroy {
       lossRequest.index = csvRow.index;
       lossRequest.is_aborted = false;
       lossRequest.date_of_death = csvRowScannedDate;
-      lossRequest.ubn_processor = csvRow.ubn_processor;
+      lossRequest.ubn_processor = csvRow.ubn_processor ? csvRow.ubn_processor : this.defaultUbnProcessor;
       lossRequest.animal = csvRow.tmp_animal;
       lossRequest.scanned_date = csvRow.scanned_date;
 
@@ -320,10 +336,6 @@ export class LossCsvComponent implements OnInit, OnDestroy {
     lossRequest.datePickerDisabled = !lossRequest.datePickerDisabled;
   }
 
-  toggleUbnProcessor(lossRequest: ExtendedLossRequest) {
-    lossRequest.ubnProcessorDisabled = !lossRequest.ubnProcessorDisabled;
-  }
-
   selectAnimalUlnCountryCode(lossRequest: ExtendedLossRequest, countryCode: string) {
     lossRequest.animalUlnCountryCodeOnlyHasChanged = true;
     lossRequest.animalMissingUlnCountryCode = false;
@@ -407,6 +419,7 @@ export class LossCsvComponent implements OnInit, OnDestroy {
 
   submitSingleLossRequest(lossRequest: ExtendedLossRequest) {
     this.selectedLossRequest = lossRequest;
+    console.log(lossRequest);
     if (this.selectedLossRequest.hasWarnings) {
       this.toggleSingleWarningModal();
     } else {
