@@ -15,7 +15,7 @@ export class Animal {
   public work_number: string;
   public worker_number: string;
   public collar: Collar = new Collar();
-  public collar_color: number;
+  public collar_color: string;
   public collar_number: number;
   public name: string;
   public nickname: string;

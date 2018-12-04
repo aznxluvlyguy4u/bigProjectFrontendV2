@@ -20,6 +20,7 @@ import {PaginationService} from 'ngx-pagination';
 import {Mate, MateChangeResponse} from '../../models/nsfo-declare.model';
 import {Animal, LivestockAnimal} from '../../models/animal.model';
 import {JsonResponseModel} from '../../models/json-response.model';
+import {TranslateService} from '@ngx-translate/core';
 
 const fileTypeDropdownMinCount = 2;
 
@@ -81,6 +82,7 @@ export class LivestockOverviewComponent implements OnInit, OnDestroy {
                 public element: ElementRef,
                 private filter: LivestockFilterPipe,
                 private downloadService: DownloadService,
+                private translate: TranslateService,
                 private utils: UtilsService) {
         this.view_date_format = settings.VIEW_DATE_FORMAT;
         this.model_datetime_format = settings.MODEL_DATETIME_FORMAT;
@@ -426,7 +428,7 @@ export class LivestockOverviewComponent implements OnInit, OnDestroy {
         }
     }
 
-    private getSelectionValue(selection, animal: LivestockAnimal) {
+    public getSelectionValue(selection, animal: LivestockAnimal) {
         switch (selection) {
             case 'PEDIGREE NUMBER':
                 return animal.pedigree;
@@ -438,7 +440,8 @@ export class LivestockOverviewComponent implements OnInit, OnDestroy {
                 return animal.work_number;
 
             case 'COLLAR NUMBER':
-                return animal.collar_number;
+                return animal.collar_color && animal.collar_number ?
+                  this.translate.instant(animal.collar_color) + ' ' + animal.collar_number : null;
 
             case 'INFLOW DATE':
                 return animal.inflow_date;
@@ -484,7 +487,7 @@ export class LivestockOverviewComponent implements OnInit, OnDestroy {
                 break;
 
             case 'COLLAR NUMBER':
-                this.livestock_list = _.orderBy(this.livestock_list, ['collar_number'], [order]);
+                this.livestock_list = _.orderBy(this.livestock_list, ['collar_color', 'collar_number'], [order]);
                 break;
 
             case 'INFLOW DATE':
@@ -521,7 +524,7 @@ export class LivestockOverviewComponent implements OnInit, OnDestroy {
                 break;
 
             case 'COLLAR NUMBER':
-                this.livestock_list = _.orderBy(this.livestock_list, ['collar_number'], [order]);
+                this.livestock_list = _.orderBy(this.livestock_list, ['collar_color', 'collar_number'], [order]);
                 break;
 
             case 'INFLOW DATE':
