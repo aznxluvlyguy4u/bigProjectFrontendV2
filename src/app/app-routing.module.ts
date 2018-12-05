@@ -153,7 +153,7 @@ const appRoutes = [
           {path: 'lineage_proof', component: ReportLineageProofComponent},
           {path: 'inbreeding', component: ReportInbreedingCoefficientComponent},
           {path: 'livestock', component: ReportLivestockComponent},
-          // {path: 'fertilizer_accounting', component: ReportFertilizerAccountingComponent},
+          {path: 'fertilizer_accounting', component: ReportFertilizerAccountingComponent},
           {path: 'offspring', component: ReportOffspringComponent},
         ]
       },
