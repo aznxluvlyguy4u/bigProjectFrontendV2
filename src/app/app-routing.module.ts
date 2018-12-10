@@ -81,7 +81,7 @@ const appRoutes = [
           {path: 'declare', component: ArrivalDeclareComponent},
           {path: 'history', component: ArrivalHistoryComponent},
           {path: 'errors', component: ArrivalErrorsComponent},
-          {path: 'csv', component: ArrivalCsvComponent},
+          {path: 'reader', component: ArrivalCsvComponent},
         ]
       },
       {
@@ -90,7 +90,7 @@ const appRoutes = [
           {path: 'declare', component: DepartDeclareComponent},
           {path: 'history', component: DepartHistoryComponent},
           {path: 'errors', component: DepartErrorsComponent},
-          {path: 'csv', component: DepartCsvComponent},
+          {path: 'reader', component: DepartCsvComponent},
         ]
       },
       {
@@ -106,7 +106,7 @@ const appRoutes = [
           {path: 'declare', component: BirthDeclareComponent},
           {path: 'history', component: BirthHistoryComponent},
           {path: 'errors', component: BirthErrorsComponent},
-          {path: 'csv', component: BirthCsvComponent},
+          {path: 'reader', component: BirthCsvComponent},
         ]
       },
       {
@@ -115,7 +115,7 @@ const appRoutes = [
           {path: 'declare', component: LossDeclareComponent},
           {path: 'history', component: LossHistoryComponent},
           {path: 'errors', component: LossErrorsComponent},
-          {path: 'csv', component: LossCsvComponent},
+          {path: 'reader', component: LossCsvComponent},
         ]
       },
       {

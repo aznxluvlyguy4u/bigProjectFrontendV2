@@ -17,8 +17,8 @@
       <li [class.active]="isActiveRoute('/main/birth/history')" class="tabs-title">
         <a (click)="navigateTo('/main/birth/history')">{{ 'HISTORY' | translate }}</a>
       </li>
-      <li *ngIf="isCsvImportActive" [class.active]="isActiveRoute('/main/birth/csv')" class="tabs-title">
-        <a (click)="navigateTo('/main/birth/csv')">{{ 'CSV' | translate }}</a>
+      <li *ngIf="isCsvImportActive" [class.active]="isActiveRoute('/main/birth/reader')" class="tabs-title">
+        <a (click)="navigateTo('/main/birth/reader')">{{ 'READER' | translate }}</a>
       </li>
       <!--<li [class.active]="isActiveRoute('/main/birth/errors')" class="tabs-title">
           <a (click)="navigateTo('/main/birth/errors')">{{ 'ERRORS' | translate }}</a>
@@ -32,7 +32,7 @@
       <select [(ngModel)]="selectedRoute" (change)="selectRoute($event)">
         <option value="/main/birth/declare">{{ 'DECLARE BIRTH' | translate }}</option>
         <option value="/main/birth/history">{{ 'HISTORY' | translate }}</option>
-        <option *ngIf="isCsvImportActive" value="/main/birth/csv">{{ 'CSV' | translate }}</option>
+        <option *ngIf="isCsvImportActive" value="/main/birth/reader">{{ 'READER' | translate }}</option>
       </select>
     </label>
   </div>

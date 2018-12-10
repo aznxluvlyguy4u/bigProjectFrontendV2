@@ -23,8 +23,8 @@
                                            class="alert badge tab-badge">{{ errorAmount }}</span>
         </a>
       </li>
-      <li [class.active]="isActiveRoute('/main/loss/csv')" class="tabs-title">
-        <a (click)="navigateTo('/main/loss/csv')">{{ 'CSV' | translate }}</a>
+      <li [class.active]="isActiveRoute('/main/loss/reader')" class="tabs-title">
+        <a (click)="navigateTo('/main/loss/reader')">{{ 'READER' | translate }}</a>
       </li>
     </ul>
   </div>
@@ -36,6 +36,7 @@
         <option value="/main/loss/declare">{{ 'DECLARE LOSS' | translate }}</option>
         <option value="/main/loss/history">{{ 'HISTORY' | translate }}</option>
         <option value="/main/loss/errors">{{ 'ERRORS' | translate }} ({{ errorAmount }})</option>
+        <option value="/main/loss/reader">{{ 'READER' | translate }}</option>
       </select>
     </label>
   </div>
