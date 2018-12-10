@@ -704,6 +704,6 @@
   "COUNTRY": "Land",
   "EARTAG ADMINISTRATION": "Oormerkbeheer",
   "UBN OF DEPARTURE AND ARRIVAL ARE IDENTICAL": "UBN van vertrek en aankomst zijn identiek",
-  "CHANGE SINGLE OR MULTIPLE UBN": "Wilt u de UBN wijzigen voor alle aanvoeren/afvoeren waarbij het UBN mist of ongeldig is en die gedaan zijn op dezelfde scandatum?",
+  "CHANGE SINGLE OR MULTIPLE UBN": "Wilt u de UBN wijzigen voor alle aanvoeren/afvoeren op dezelfde scandatum waarop het UBN gelijk is aan het UBN dat u nu wijzigt of waar geen UBN is ingevuld?",
   "READER": "Reader"
 }
