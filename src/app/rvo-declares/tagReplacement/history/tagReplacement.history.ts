@@ -12,6 +12,7 @@ import {TagReplacementHistoryRowComponent} from './tagReplacement.history.row';
 import {PaginationService} from 'ngx-pagination';
 import {JsonResponseModel} from '../../../shared/models/json-response.model';
 import {CacheService} from '../../../shared/services/settings/cache.service';
+import {SortOrder, SortService} from '../../../shared/services/utils/sort.service';
 
 @Component({
   providers: [PaginationService],
@@ -26,7 +27,7 @@ export class TagReplacementHistoryComponent implements OnInit {
   public page: number;
   public searchValue: string;
 
-  constructor(private nsfo: NSFOService, private settings: SettingsService, private cache: CacheService) {
+  constructor(private nsfo: NSFOService, private settings: SettingsService, private cache: CacheService, private sort: SortService) {
   }
 
   ngOnInit() {
@@ -47,7 +48,13 @@ export class TagReplacementHistoryComponent implements OnInit {
             this.tagReplacementHistoryList.push(tagReplacement);
           }
 
-          this.tagReplacementHistoryList = _.orderBy(this.tagReplacementHistoryList, ['log_date'], ['desc']);
+          const sortOrder: SortOrder = {
+            variableName: 'log_date',
+            ascending: false,
+            isDate: true // it is date string, not a date
+          };
+
+          this.tagReplacementHistoryList = this.sort.sort(this.tagReplacementHistoryList, [sortOrder]);
           this.isLoading = false;
         },
         error => {
