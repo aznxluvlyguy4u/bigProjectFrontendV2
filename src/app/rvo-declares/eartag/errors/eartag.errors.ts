@@ -4,11 +4,11 @@ import {NSFOService} from '../../../shared/services/nsfo-api/nsfo.service';
 import {SettingsService} from '../../../shared/services/settings/settings.service';
 import {EartagErrorResponse} from '../eartag.model';
 import {API_URI_GET_EARTAGS_ERRORS} from '../../../shared/services/nsfo-api/nsfo.settings';
-import {NgxPaginationModule} from 'ngx-pagination';
+import {PaginationService} from 'ngx-pagination';
 import {JsonResponseModel} from '../../../shared/models/json-response.model';
 
 @Component({
-  providers: [NgxPaginationModule],
+  providers: [PaginationService],
   templateUrl: './eartag.errors.html',
 })
 export class EartagErrorsComponent implements OnInit {

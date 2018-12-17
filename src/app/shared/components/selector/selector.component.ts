@@ -5,11 +5,11 @@ import {FormControl, FormGroup, FormBuilder} from '@angular/forms';
 import {NSFOService} from '../../services/nsfo-api/nsfo.service';
 import {SettingsService} from '../../services/settings/settings.service';
 import {Constants} from '../../variables/constants';
-import {NgxPaginationModule} from 'ngx-pagination';
+import {PaginationService} from 'ngx-pagination';
 
 @Component({
   selector: 'selector',
-  providers: [NgxPaginationModule],
+  providers: [PaginationService],
   templateUrl: './selector.component.html',
 })
 

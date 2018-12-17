@@ -8,11 +8,12 @@ import {LossChangeResponse} from '../loss.model';
 import {NSFOService} from '../../../shared/services/nsfo-api/nsfo.service';
 import {API_URI_GET_LOSS_HISTORY, API_URI_REVOKE_DECLARATION} from '../../../shared/services/nsfo-api/nsfo.settings';
 import {Settings} from '../../../shared/variables/settings';
-import {NgxPaginationModule} from 'ngx-pagination';
+import {PaginationService} from 'ngx-pagination';
 import {JsonResponseModel} from '../../../shared/models/json-response.model';
+import {CacheService} from '../../../shared/services/settings/cache.service';
 
 @Component({
-  providers: [NgxPaginationModule],
+  providers: [PaginationService],
   templateUrl: './loss.history.html',
 })
 
@@ -24,7 +25,7 @@ export class LossHistoryComponent implements OnInit {
   public page: number;
   public searchValue: string;
 
-  constructor(private apiService: NSFOService, private settings: Settings) {
+  constructor(private apiService: NSFOService, private settings: Settings, private cache: CacheService) {
   }
 
   ngOnInit() {
@@ -68,13 +69,16 @@ export class LossHistoryComponent implements OnInit {
   }
 
   public revokeLoss() {
+    const originalRequestState = this.selected_loss.request_state;
+    this.selected_loss.request_state = 'REVOKING';
     this.apiService
       .doPostRequest(API_URI_REVOKE_DECLARATION, this.selected_loss)
       .subscribe(
         () => {
-          this.selected_loss.request_state = 'REVOKING';
+          this.selected_loss.request_state = this.cache.useRvoLogic() ? 'REVOKING' : 'REVOKED';
         },
         error => {
+          this.selected_loss.request_state = originalRequestState;
           alert(this.apiService.getErrorMessage(error));
         }
       );

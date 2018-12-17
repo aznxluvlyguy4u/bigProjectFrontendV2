@@ -5,6 +5,7 @@ import {DeclareManagerItem} from '../../services/declaremanager/declare-manager-
 import {DeclareManagerService} from '../../services/declaremanager/declare-manager.service';
 import {SettingsService} from '../../services/settings/settings.service';
 import * as moment from 'moment';
+import {CacheService} from '../../services/settings/cache.service';
 
 @Component({
   selector: 'app-declare-manager-modal',
@@ -19,7 +20,7 @@ export class DeclareManagerModalComponent implements OnInit, OnDestroy {
   private toggleModalSubscription: Subscription;
 
   constructor(private declareItemService: DeclareManagerService, private translate: TranslateService,
-              private settings: SettingsService) {
+              private settings: SettingsService, private cache: CacheService) {
   }
 
 
@@ -110,5 +111,9 @@ export class DeclareManagerModalComponent implements OnInit, OnDestroy {
 
   public hasCompletedAndHiddenDeclares(): boolean {
     return this.declareItemService.completedValidDeclareItemsCount > 0 || this.declareItemService.failedDeclareItemsCount > 0;
+  }
+
+  public useRvoLogic(): boolean {
+    return this.cache.useRvoLogic();
   }
 }

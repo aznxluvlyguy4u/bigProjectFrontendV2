@@ -1,11 +1,17 @@
 import * as moment from 'moment';
 import {FormControl, FormGroup} from '@angular/forms';
+import {AlgorithmService} from '../services/utils/algorithm.service';
+import {StringFormatter} from '../services/utils/string-formatter.service';
+import {NumberValidator} from './number.validation';
 
 interface ValidationResult {
   [key: string]: boolean;
 }
 
 export class UBNValidator {
+  public static minUbnLength = 2;
+  public static maxUbnLength = 7;
+
   static isImportAnimal(group: FormGroup): ValidationResult {
     if (group.controls['import_flag'].value === 'NO') {
       if (group.controls['ubn_previous_owner'].value.trim() !== '') {
@@ -37,32 +43,47 @@ export class UBNValidator {
     return {'isNotExportAnimal': true};
   }
 
-  static validateWithSevenTest(control: FormControl): ValidationResult {
+  static validateUbnAllowEmpty(control: FormControl): ValidationResult {
+    return UBNValidator.validateUbnBase(control, true);
+  }
+
+  static validateUbn(control: FormControl): ValidationResult {
+    return UBNValidator.validateUbnBase(control, false);
+  }
+
+  private static validateUbnBase(control: FormControl, allowEmptyUbn: boolean): ValidationResult {
     let ubn_number = '';
 
     if (control.value) {
       ubn_number = control.value;
     }
 
-    if (ubn_number.length === 7) {
-      const chars = ubn_number.split('');
-      const calc_values = [1, 7, 3, 1, 7, 3, 1];
-      let sum = 0;
+    const isValid =
+      (allowEmptyUbn && (ubn_number === '' || ubn_number === null || ubn_number === undefined)) ||
+      UBNValidator.isValidNonDutchUbn(ubn_number) ||
+      UBNValidator.isValidDutchUbn(ubn_number)
+    ;
 
-      for (let i = 0; i < chars.length; i++) {
-        sum = sum + (parseInt(chars[i], null) * calc_values[i]);
-      }
+    return !isValid ? {'validateWithSevenTest': true} : null;
+  }
 
-      if ((sum / 10) % 1 === 0) {
-        return null;
-      }
+  static isValidNonDutchUbn(ubn: string): boolean {
+    return NumberValidator.isNumber(ubn) && this.hasValidUbnLength(ubn) &&
+      (
+        StringFormatter.firstChar(ubn) === '9' ||
+        AlgorithmService.isValidSevenTestNumber(ubn)
+      );
+  }
+
+  static isValidDutchUbn(ubn: string): boolean {
+    return this.hasValidUbnLength(ubn) && AlgorithmService.isValidSevenTestNumber(ubn);
+  }
+
+  static hasValidUbnLength(ubn: string): boolean {
+    if (!ubn) {
+      return false;
     }
-
-    if (ubn_number.length === 0) {
-      return null;
-    }
-
-    return {'validateWithSevenTest': true};
+    return this.minUbnLength <= ubn.length && ubn.length <= this.maxUbnLength;
   }
 }
 
@@ -154,7 +175,7 @@ export class PasswordValidator {
 
 export class ExteriorMeasurementsValidator {
   static validateMeasurementValue(control: FormControl): ValidationResult {
-    if ((control.value >= 69 && control.value <= 99) || control.value === 0) {
+    if ( ExteriorMeasurementsValidator.isEmpty(control.value, false) || (control.value >= 69 && control.value <= 99)) {
       return null;
     }
 
@@ -162,11 +183,15 @@ export class ExteriorMeasurementsValidator {
   }
 
   static validateMeasurementValueBetween0And99(control: FormControl): ValidationResult {
-    if ((control.value > 0 && control.value <= 99) || control.value === 0) {
+    if ( ExteriorMeasurementsValidator.isEmpty(control.value, false) || (control.value > 0 && control.value <= 99)) {
       return null;
     }
 
     return {'invalidExteriorMeasurementBetween0And99': true};
+  }
+
+  static isEmpty(value: any, allowEmptyString = true): boolean {
+    return value === undefined || value === null || value === 0 || (value === '' && allowEmptyString);
   }
 }
 

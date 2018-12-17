@@ -27,7 +27,13 @@ export class Child {
   public birth_progress: string;
   public birth_weight: number;
   public tail_length: number;
-  public surrogate_mother: SurrogateMotherByUln | Animal;
+  public surrogate_mother: any;
+  public date_of_birth: string;
+  public date_scanned: string;
+  public has_lambar: boolean;
+  public surrogateMotherMissingUlnCountryCode = false;
+  public surrogateMotherUlnCountryCodeOnlyHasChanged = false;
+  public surrogateMotherHasChanged = false;
 }
 
 
@@ -44,12 +50,21 @@ export class BirthRequest {
   public mother: any;
   public father: any;
   public children: Array<Child | StillBorn>;
+  public stillBorns: Array<StillBorn>;
   public date_of_birth: string;
   public is_aborted: boolean;
   public is_pseudo_pregnancy: boolean;
   public litter_size: number;
   public stillborn_count: number;
   public born_alive_count: number;
+  public declareStatus: boolean;
+  public isSubmitting: boolean;
+  public errorMessage: string;
+  public suggestedCandidateFathersIsLoading: boolean;
+  public suggestedCandidateMothersIsLoading: boolean;
+  constructor() {
+    this.declareStatus = null;
+  }
 }
 
 

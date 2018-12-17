@@ -39,8 +39,11 @@ export class NSFOService {
     if (this.cache.getAccessToken() !== undefined) {
       headers = headers.set(this.access_token, this.cache.getAccessToken());
     }
-    if (this.cache.getUbn() !== undefined) {
-      headers = headers.set(this.ubn, this.cache.getUbn());
+    // if (this.cache.getUbn() !== undefined) {
+    //   headers = headers.set(this.ubn, this.cache.getUbn());
+    // }
+    if (this.cache.getLocation() !== undefined) {
+      headers = headers.set(this.ubn, this.cache.getLocation().ubn);
     }
 
     if (this.cache.getGhostToken() !== undefined) {
@@ -108,6 +111,14 @@ export class NSFOService {
       });
   }
 
+  doDeleteRequest(uri: string, id) {
+    return this.httpClient.delete(this.apiUrl + uri + '/' + id,
+      {
+        headers: this.getDefaultHeaders(),
+        responseType: 'json', // response will be treated as this, default = json
+      });
+  }
+
   public logout() {
     this.cache.deleteAccessToken();
     this.cache.deleteGhostToken();
@@ -138,7 +149,10 @@ export class NSFOService {
               return message;
             }
           } else {
-            const dataPart = !!result.data ? ' (' + this.translate.instant(result.data) + ') ' : '';
+            let dataPart = '';
+            if (!(result.data instanceof Array)) {
+              dataPart = !!result.data ? ' (' + this.translate.instant(result.data) + ') ' : '';
+            }
             return this.getTranslatedMessage(result.message) + dataPart;
           }
         }

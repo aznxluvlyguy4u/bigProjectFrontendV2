@@ -164,7 +164,7 @@ export class DownloadService {
     };
 
     const queryParam = typeof fileType === 'string' ? '?' + QUERY_PARAM_FILE_TYPE + '=' + fileType.toLowerCase() : '';
-    this.doDownloadPostRequest(API_URI_GET_LINEAGE_PROOF + queryParam, request);
+    this.doDownloadPostRequestByReportWorker(API_URI_GET_LINEAGE_PROOF + queryParam, request);
   }
 
   doLivestockReportPostRequest(animals: LivestockAnimal[], fileType: string, concatBreedValueAndAccuracyColumns: boolean) {
@@ -179,7 +179,7 @@ export class DownloadService {
     const concatBooleanString = UtilsService.getBooleanAsString(concatBreedValueAndAccuracyColumns);
     let queryParam = '?' + QUERY_PARAM_CONCAT_VALUE_AND_ACCURACY + '=' + concatBooleanString;
     queryParam += typeof fileType === 'string' ? '&' + QUERY_PARAM_FILE_TYPE + '=' + fileType.toLowerCase() : '';
-    this.doDownloadPostRequest(API_URI_GET_LIVESTOCK_DOCUMENT + queryParam, data);
+    this.doDownloadPostRequestByReportWorker(API_URI_GET_LIVESTOCK_DOCUMENT + queryParam, data);
   }
 
   doInbreedingCoefficientReportPostRequest(ram: Animal, ewes: LivestockAnimal[], fileType: string) {
@@ -191,7 +191,8 @@ export class DownloadService {
       },
       'ewes': ewes
     };
-    this.doDownloadPostRequest(API_URI_GET_INBREEDING_COEFFICIENT + QueryParamsService.getFileTypeQueryParam(fileType), request);
+    this.doDownloadPostRequestByReportWorker(API_URI_GET_INBREEDING_COEFFICIENT + QueryParamsService.getFileTypeQueryParam(fileType),
+      request);
   }
 
   doOffspringReportPostRequest(animals: Animal[], concatBreedValueAndAccuracyColumns: boolean) {
@@ -202,19 +203,19 @@ export class DownloadService {
 
     const concatBooleanString = UtilsService.getBooleanAsString(concatBreedValueAndAccuracyColumns);
     const queryParam = '?' + QUERY_PARAM_CONCAT_VALUE_AND_ACCURACY + '=' + concatBooleanString;
-    this.doDownloadPostRequest(API_URI_GET_OFFSPRING_REPORT + queryParam, request);
+    this.doDownloadPostRequestByReportWorker(API_URI_GET_OFFSPRING_REPORT + queryParam, request);
   }
 
   doFertilizerAccountingReportGetRequest(referenceDateString: string, fileType: string) {
 
     const queryParam = '?' + QUERY_PARAM_REFERENCE_DATE + '=' + referenceDateString + '&' + QUERY_PARAM_FILE_TYPE + '=' + fileType;
-    this.doDownloadGetRequest(API_URI_GET_FERTILIZER_ACCOUNTING_REPORT + queryParam);
+    this.doDownloadGetRequestByReportWorker(API_URI_GET_FERTILIZER_ACCOUNTING_REPORT + queryParam);
   }
 
   doInvoicePdfGetRequest(invoice: Invoice) {
-    const download = this.getNewDownloadRequest(INVOICE_PDF, PDF, 0, null);
+    // const download = this.getNewDownloadRequest(INVOICE_PDF, PDF, 0, null);
     const uri = API_URI_INVOICES + '/' + invoice.id + '/pdf';
-    this.doDownloadGetRequest(uri);
+    this.doDownloadGetWithImmediateDownload(uri, true);
   }
 
   private getNextId(): number {
@@ -245,7 +246,7 @@ export class DownloadService {
     this.downloadsShownInModalChanged.next(this.downloadRequestShownInModal.slice());
   }
 
-  private doDownloadPostRequest(uri: string, request: any) {
+  private doDownloadPostRequestByReportWorker(uri: string, request: any) {
 
     this.nsfo.doPostRequest(uri, request)
       .subscribe(
@@ -258,12 +259,92 @@ export class DownloadService {
       );
   }
 
-  private doDownloadGetRequest(uri: string) {
+  private doDownloadGetRequestByReportWorker(uri: string) {
     this.nsfo.doGetRequest(uri)
       .subscribe(
           (res: JsonResponseModel) => {
               this.reportService.fetchReports();
           },
+        error => {
+          alert(this.nsfo.getErrorMessage(error));
+        }
+      );
+  }
+
+  private doDownloadPostRequestAndStoreInModal(uri: string, request: any, download: DownloadRequest) {
+
+    if (download == null) {
+      return;
+    }
+
+    this.addDownload(download);
+
+    this.nsfo.doPostRequest(uri, request)
+      .subscribe(
+        (res: JsonResponseModel) => {
+          download.url = res.result;
+          this.completeDownloadPreparation(download);
+        },
+        error => {
+          this.failDownload(download, error);
+        }
+      );
+  }
+
+  private doDownloadGetRequestAndStoreInModal(uri: string, download: DownloadRequest) {
+
+    if (download == null) {
+      return;
+    }
+
+    this.addDownload(download);
+
+    this.nsfo.doGetRequest(uri)
+      .subscribe(
+        (res: JsonResponseModel) => {
+          download.url = res.result;
+          this.completeDownloadPreparation(download);
+        },
+        error => {
+          this.failDownload(download, error);
+        }
+      );
+  }
+
+  /**
+   * @param {string} uri
+   * @param {boolean} openInNewTab use true for for example PDFs
+   */
+  private doDownloadGetWithImmediateDownload(uri: string, openInNewTab: boolean) {
+    const newTabUrl = openInNewTab ? '/loading' : '/downloaded';
+    const win = window.open(newTabUrl, '_blank');
+
+    this.nsfo.doGetRequest(uri)
+      .subscribe(
+        (res: JsonResponseModel) => {
+          win.location.href = res.result;
+        },
+        error => {
+          alert(this.nsfo.getErrorMessage(error));
+        }
+      );
+  }
+
+
+  /**
+   * @param {string} uri
+   * @param request
+   * @param {boolean} openInNewTab use true for for example PDFs
+   */
+  private doDownloadPostWithImmediateDownload(uri: string, request: any, openInNewTab: boolean) {
+    const newTabUrl = openInNewTab ? '/loading' : '/downloaded';
+    const win = window.open(newTabUrl, '_blank');
+
+    this.nsfo.doPostRequest(uri, request)
+      .subscribe(
+        (res: JsonResponseModel) => {
+          win.location.href = res.result;
+        },
         error => {
           alert(this.nsfo.getErrorMessage(error));
         }

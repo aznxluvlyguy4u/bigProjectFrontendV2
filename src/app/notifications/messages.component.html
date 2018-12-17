@@ -112,6 +112,8 @@
                                 class="tiny primary button">{{ 'GO TO ARRIVAL' | translate}}</button>
                         <button *ngIf="selectedMessage.type == 'DECLARE_ARRIVAL'" (click)="navigateTo('/main/depart')"
                                 class="tiny primary button">{{ 'GO TO DEPART' | translate}}</button>
+                        <button *ngIf="selectedMessage.type == 'NEW_INVOICE'" (click)="navigateTo(selectedMessage.url)"
+                                class="tiny primary button">{{ 'GO TO INVOICES' | translate}}</button>
                     </span>
               <span class="pull-right">
                         <button (click)="closeModal()" class="tiny primary button">{{ 'AGREED' | translate}}</button>

@@ -33,6 +33,6 @@
     <span
       [hidden]="tagReplacement.request_state == 'OPEN' || tagReplacement.request_state == 'REVOKING' ||  tagReplacement.request_state == 'REVOKED'"
       class="pull-right">
-        <app-revoke-button [isActive]="tagReplacement.message_number" (click)="sendRevokeRequest()"></app-revoke-button>
+        <app-revoke-button [hasMessageNumber]="tagReplacement.message_number" (click)="sendRevokeRequest()"></app-revoke-button>
     </span>
 </td>

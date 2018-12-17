@@ -133,14 +133,14 @@
               {{invoice_rule_selection.invoice_rule.vat_percentage_rate}}%
             </td>
             <td class="text-right">
-              {{invoice_rule_selection.invoice_rule.price_excl_vat | localNumberFormat:3 }}
+              {{invoice_rule_selection.invoice_rule.price_excl_vat | localNumberFormat:2 }}
             </td>
             <td class="text-right">
-              {{invoice_rule_selection.amount}}
+              {{invoice_rule_selection.amount | localNumberFormat:2}}
             </td>
             <td class="text-right">
               {{(invoice_rule_selection.invoice_rule.price_excl_vat * invoice_rule_selection.amount) |
-              localNumberFormat:3 }}
+              localNumberFormat:2 }}
             </td>
           </tr>
           </tbody>
@@ -189,16 +189,14 @@
   </div>
   <div class="large-12 columns">
         <span class="pull-right">
-            <button *ngIf="invoice.status != 'PAID'" type="button" class="small primary button"
+            <button *ngIf="invoice.status != 'PAID'" type="button" class="small primary button spanned-button"
                     (click)="startInvoicePaymentProcedure()">
                 {{'PAY INVOICE' | translate}}
             </button>
-            <a [routerLink]="['/main/invoices/overview']">
-                <button type="button" class="small primary button">
-                    {{ 'RETURN TO OVERVIEW' | translate }}
-                </button>
-            </a>
-            <button type="button" (click)="downloadPdf()" class="small primary button">
+            <button type="button" class="small primary button spanned-button" (click)="navigateToInvoiceOverview()">
+                {{ 'RETURN TO OVERVIEW' | translate }}
+            </button>
+            <button type="button" (click)="downloadPdf()" class="small primary button spanned-button">
                 {{ "DOWNLOAD PDF" | translate }}
             </button>
         </span>

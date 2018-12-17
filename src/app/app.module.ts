@@ -77,16 +77,19 @@ import {ArrivalDeclareComponent} from './rvo-declares/arrival/declare/arrival.de
 import {ArrivalErrorRowComponent} from './rvo-declares/arrival/errors/arrival.errors.row';
 import {ArrivalErrorsComponent} from './rvo-declares/arrival/errors/arrival.errors';
 import {ArrivalHistoryRowComponent} from './rvo-declares/arrival/history/arrival.history.row';
+import {ArrivalCsvComponent} from './rvo-declares/arrival/csv/arrival.csv';
 import {RevokeButtonComponent} from './shared/components/revokebutton/revoke-button.component';
 import {HistoryErrorInfoComponent} from './shared/components/historyerrorinfo/history-error-info.component';
 import {ArrivalHistoryComponent} from './rvo-declares/arrival/history/arrival.history';
 import {ArrivalComponent} from './rvo-declares/arrival/arrival.component';
+import {BirthCsvComponent} from './rvo-declares/birth/csv/birth.csv';
 import {BirthDeclareRowComponent} from './rvo-declares/birth/declare/birth.declare.row';
 import {BirthDeclareComponent} from './rvo-declares/birth/declare/birth.declare';
 import {BirthErrorRowComponent} from './rvo-declares/birth/errors/birth.errors.row';
 import {BirthErrorsComponent} from './rvo-declares/birth/errors/birth.errors';
 import {BirthHistoryComponent} from './rvo-declares/birth/history/birth.history';
 import {BirthComponent} from './rvo-declares/birth/birth.component';
+import {DepartCsvComponent} from './rvo-declares/depart/csv/depart.csv';
 import {DepartDeclareComponent} from './rvo-declares/depart/declare/depart.declare';
 import {DepartErrorsComponent} from './rvo-declares/depart/errors/depart.errors';
 import {DepartErrorRowComponent} from './rvo-declares/depart/errors/depart.errors.row';
@@ -94,6 +97,7 @@ import {DepartHistoryComponent} from './rvo-declares/depart/history/depart.histo
 import {DepartHistoryRowComponent} from './rvo-declares/depart/history/depart.history.row';
 import {DepartComponent} from './rvo-declares/depart/depart.component';
 import {EartagComponent} from './rvo-declares/eartag/eartag.component';
+import {LossCsvComponent} from './rvo-declares/loss/csv/loss.csv';
 import {LossDeclareComponent} from './rvo-declares/loss/declare/loss.declare';
 import {LossErrorRowComponent} from './rvo-declares/loss/errors/loss.errors.row';
 import {LossErrorsComponent} from './rvo-declares/loss/errors/loss.errors';
@@ -140,8 +144,12 @@ import {ButtonPrimaryComponent} from './shared/components/button-primary/button-
 import {InsideComponentLoadingSpinnerComponent} from './shared/components/inside-component-loading-spinner/inside-component-loading-spinner.component';
 import {AnimalHealthComponent} from './animal-health/animal-health.component';
 import {AnimalHealthRequestComponent} from './animal-health/request/animal-health.request';
+import { PapaParseModule } from 'ngx-papaparse';
 import {ReportService} from './shared/services/report/report.service';
 import {ReportModalComponent} from './shared/components/reportmodal/report-modal.component';
+import {SortService} from './shared/services/utils/sort.service';
+import {InvoiceSortPipe} from './invoices/pipes/invoice-sort.pipe';
+
 // AoT requires an exported function for factories
 export function CreateTranslateLoader(http: HttpClient) {
     return new TranslateHttpLoader(http, '../assets/i18n/', '.json');
@@ -252,6 +260,111 @@ export function CreateTranslateLoader(http: HttpClient) {
       DatepickerV2Component,
       EartagErrorRowComponent,
       LineComponent,
+    LiveSearchComponent,
+    RvoLeadingLivestockSyncComponent,
+    AdminComponent,
+    GhostLoginComponent,
+    LoginComponent,
+    DashboardComponent,
+    HomeComponent,
+    InvoiceDetailsComponent,
+    InvoiceOverviewComponent,
+    InvoiceFilterPipe,
+    InvoiceComponent,
+    InvoiceSortPipe,
+    LivestockOverviewComponent,
+    LivestockDetailComponent,
+    AnimalDetailsCardComponent,
+    DatepickerComponent,
+    DatepickerV2Component,
+    ExteriorComponent,
+    DownloadButtonComponent,
+    ExteriorComponent,
+    LivestockComponent,
+    LivestockMainOverviewComponent,
+    MessagesComponent,
+    PaginationComponent,
+    MateComponent,
+    SelectorComponent,
+    MateDeclareComponent,
+    MateHistoryPipe,
+    MateHistoryRowComponent,
+    MateHistoryComponent,
+    WeightComponent,
+    WeightHistoryRowComponent,
+    WeightHistoryComponent,
+    WeightDeclareComponent,
+    DownloadLandingPageComponent,
+    LoadingComponent,
+    DatepickerV2Component,
+    FileTypeDropdownComponent,
+    ReportFertilizerAccountingComponent,
+    ReportInbreedingCoefficientComponent,
+    ReportLineageProofComponent,
+    ReportLivestockComponent,
+    ReportOffspringComponent,
+    BooleanSwitchComponent,
+    ReportComponent,
+    ReportOffspringComponent,
+    ArrivalCsvComponent,
+    ArrivalDeclareComponent,
+    ArrivalErrorRowComponent,
+    ArrivalErrorsComponent,
+    ArrivalHistoryRowComponent,
+    RevokeButtonComponent,
+    HistoryErrorInfoComponent,
+    ArrivalHistoryComponent,
+    ArrivalHistoryFilterPipe,
+    ArrivalComponent,
+    BirthCsvComponent,
+    BirthDeclareRowComponent,
+    BirthDeclareComponent,
+    BirthErrorRowComponent,
+    BirthErrorsComponent,
+    BirthHistoryRowComponent,
+    BirthHistoryComponent,
+    BirthHistoryPipe,
+    BirthComponent,
+    DepartCsvComponent,
+    DepartDeclareComponent,
+    DepartErrorsComponent,
+    DepartErrorRowComponent,
+    DepartHistoryComponent,
+    DepartHistoryRowComponent,
+    DepartHistoryFilterPipe,
+    DepartComponent,
+    EartagComponent,
+    LossCsvComponent,
+    LossDeclareComponent,
+    LossErrorRowComponent,
+    LossErrorsComponent,
+    LossHistoryRowComponent,
+    LossHistoryComponent,
+    LossHistoryFilterPipe,
+    LossComponent,
+    TagReplacementDeclareComponent,
+    TagReplacementErrorRowComponent,
+    TagReplacementErrorsComponent,
+    TagReplacementHistoryRowComponent,
+    TagReplacementHistoryComponent,
+    TagReplacementComponent,
+    ContactComponent,
+    ProfileComponent,
+    ProfileCompanyComponent,
+    ProfileEmailComponent,
+    ProfileLoginComponent,
+    DownloadModalComponent,
+    DeclareManagerModalComponent,
+    EartagDeclareComponent,
+    EartagErrorsComponent,
+    EartagHistoryComponent,
+    EartagHistoryRowComponent,
+    EartagHistoryFilterPipe,
+    CheckMarkComponent,
+    DatepickerComponent,
+    DatepickerV2Component,
+    EartagErrorRowComponent,
+    LineComponent,
     lastFiveMessagesFilterPipe,
     localNumberFormat,
     InvoiceFilterPipe,
@@ -268,11 +381,11 @@ export function CreateTranslateLoader(http: HttpClient) {
     ArrivalHistoryFilterPipe,
     TagReplacementHistoryFilterPipe,
     MateHistoryPipe,
-      BarComponent,
+    BarComponent,
     PageLoadingSpinnerComponent,
     InsideComponentLoadingSpinnerComponent,
     ButtonPrimaryComponent,
-      ReportModalComponent,
+    ReportModalComponent
   ],
   imports: [
     BrowserAnimationsModule,
@@ -285,6 +398,7 @@ export function CreateTranslateLoader(http: HttpClient) {
     FormsModule,
     CommonModule,
     ReactiveFormsModule,
+    PapaParseModule,
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
@@ -311,6 +425,7 @@ export function CreateTranslateLoader(http: HttpClient) {
       GoogleLineChartService,
       ReportService,
     Settings,
+    SortService,
     Constants,
     MatSnackBar
   ],

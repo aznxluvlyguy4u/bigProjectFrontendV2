@@ -4,13 +4,13 @@ import {Component, OnInit} from '@angular/core';
 import {NSFOService} from '../../../shared/services/nsfo-api/nsfo.service';
 import {SettingsService} from '../../../shared/services/settings/settings.service';
 import {API_URI_GET_WEIGHT_HISTORY, API_URI_REVOKE_WEIGHT} from '../../../shared/services/nsfo-api/nsfo.settings';
-import {NgxPaginationModule} from 'ngx-pagination';
+import {PaginationService} from 'ngx-pagination';
 import {ErrorMessage} from '../../../shared/models/error-message.model';
 import {WeightChangeResponse} from '../../../shared/models/nsfo-declare.model';
 import {JsonResponseModel} from '../../../shared/models/json-response.model';
 
 @Component({
-  providers: [NgxPaginationModule],
+  providers: [PaginationService],
   templateUrl: './weight.history.html',
 })
 

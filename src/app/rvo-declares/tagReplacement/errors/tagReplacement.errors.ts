@@ -7,11 +7,12 @@ import {SettingsService} from '../../../shared/services/settings/settings.servic
 import {API_URI_GET_TAG_REPLACEMENT_ERRORS} from '../../../shared/services/nsfo-api/nsfo.settings';
 import {TagReplacementErrorResponse} from '../tagReplacement.model';
 
-import {NgxPaginationModule} from 'ngx-pagination';
+import {PaginationService} from 'ngx-pagination';
 import {JsonResponseModel} from '../../../shared/models/json-response.model';
+import {SortOrder, SortService} from '../../../shared/services/utils/sort.service';
 
 @Component({
-  providers: [NgxPaginationModule],
+  providers: [PaginationService],
   templateUrl: './tagReplacement.errors.html',
 })
 
@@ -21,7 +22,7 @@ export class TagReplacementErrorsComponent implements OnInit {
   public showHiddenMessages = false;
   public page: number;
 
-  constructor(private nsfo: NSFOService, private settings: SettingsService) {
+  constructor(private nsfo: NSFOService, private settings: SettingsService, private sort: SortService) {
   }
 
   ngOnInit() {
@@ -41,7 +42,13 @@ export class TagReplacementErrorsComponent implements OnInit {
             this.tagReplacementErrorList.push(tagReplacement);
           }
 
-          this.tagReplacementErrorList = _.orderBy(this.tagReplacementErrorList, ['log_date'], ['desc']);
+          const sortOrder: SortOrder = {
+            variableName: 'log_date',
+            ascending: false,
+            isDate: true // it is date string, not a date
+          };
+
+          this.tagReplacementErrorList = this.sort.sort(this.tagReplacementErrorList, [sortOrder]);
           this.isLoading = false;
         },
         error => {

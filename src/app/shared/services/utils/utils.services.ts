@@ -11,7 +11,6 @@ import {CacheService} from '../settings/cache.service';
 @Injectable()
 export class UtilsService {
   private userInfo: ReplaySubject<any> = new ReplaySubject();
-  private currentUBN: ReplaySubject<any> = new ReplaySubject();
   private messages: ReplaySubject<any> = new ReplaySubject();
   private menuMessages: Message[] = [];
 
@@ -46,13 +45,8 @@ export class UtilsService {
     return this.userInfo.asObservable();
   }
 
-  public setCurrentUBN(currentUBN) {
-    this.cache.setUbn(currentUBN);
-    this.currentUBN.next(currentUBN);
-  }
-
-  public getCurrentUBN() {
-    return this.currentUBN.asObservable();
+  public setCurrentLocation(currentLocation) {
+    this.cache.setLocation(currentLocation);
   }
 
   public setMessages(messages) {

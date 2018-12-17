@@ -1,5 +1,12 @@
 <div class="large-12 columns">
-  <div class="row table-search">
+
+  <div *ngIf="!cache.useRvoLogic()" class="row table-search">
+    <div class="large-2 columns retrieve-button">
+        <button (click)="openEartagPlainTextModal()" class="button expanded" type="button">Toevoegen </button>
+    </div>
+  </div>
+
+  <div *ngIf="cache.useRvoLogic()" class="row table-search">
     <div *ngIf="statusHasBeenRetrieved" class="large-2 columns retrieve-button">
       <button *ngIf="areBirthsInProgress"
               type="button"
@@ -60,7 +67,6 @@
         {{getLastManualRetrieveTagActionBy()}}
       </div>
     </div>
-
     <div class="large-2 columns search-field">
       <input type="text" [(ngModel)]="searchValue" maxlength="20" placeholder="{{ 'SEARCH' | translate }}">
     </div>
@@ -89,7 +95,7 @@
         </th>
         <th>{{ 'STATUS' | translate}}</th>
         <th>
-          <button type="button" [disabled]="!(selected_eartags_list.length > 0) || sync_in_progress"
+          <button *ngIf="cache.useRvoLogic()" type="button" [disabled]="!(selected_eartags_list.length > 0) || sync_in_progress"
                   (click)="openModalAll()" class="tiny primary button pull-right">
             <span class="badge">{{ selected_eartags_list.length }}</span>
             {{ 'TRANSFER ALL' | translate}}
@@ -106,10 +112,15 @@
         <td>{{ eartag.uln_country_code + eartag.uln_number }}</td>
         <td>{{ eartag.tag_status | translate }}</td>
         <td>
-          <button type="button" [disabled]="sync_in_progress" (click)="selected_eartag = eartag; openModal()"
+          <button *ngIf="cache.useRvoLogic()" type="button" [disabled]="sync_in_progress" (click)="selected_eartag = eartag; openModal()"
                   class="tiny primary button pull-right">{{ 'TRANSFER' | translate }}
           </button>
+
+          <button *ngIf="!cache.useRvoLogic()" type="button" [disabled]="sync_in_progress" (click)="removeEarTag(eartag.id)"
+                    class="tiny alert button pull-right">{{ 'REMOVE' | translate }}
+            </button>
         </td>
+
       </tr>
       </tbody>
     </table>
@@ -144,6 +155,48 @@
           <span *ngIf="all_eartags_in_progress"><i class="fa fa-gear fa-spin fa-fw"></i></span>
         </button>
         <button (click)="closeModalAll()" [disabled]="all_eartags_in_progress" class="tiny primary button pull-right">{{
+          'CANCEL' | translate}}
+        </button>
+      </div>
+    </div>
+  </div>
+
+
+  <!--NEW EARTAG MODAL-->
+  <div class="reveal-overlay" [ngStyle]="{'display': eartag_add_modal}">
+    <div class="large reveal" id="" [ngStyle]="{'display': eartag_add_modal}">
+      <div class="modal-header">
+        {{ 'TRANSFER EARTAGS' | translate }}
+        <button type="button" class="pull-right" aria-label="Close modal" (click)="closeEartagPlainTextModal()">
+          <i class="fa fa-times" aria-hidden="true"></i>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="large-2 column">
+            {{ 'SEPERATOR' | translate }}
+          </div>
+          <div class="large-2 column end">
+            <input type="text" [(ngModel)]="separator" name="separator" value=",">
+          </div>
+        </div>
+        <div class="row">
+          <div class="large-2 column">
+            {{ 'PLAIN TEXT INPUT' | translate }}
+          </div>
+          <div class="large-10 column end">
+            <textarea [(ngModel)]="plain_text_input" name="plain_text_input"></textarea>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <span class="input-error-msg"> {{ error_message | translate }} </span>
+        <button (click)="saveManualEartags()" [disabled]="save_manual_eartag_in_progress"
+                class="tiny alert button pull-right">
+          <span *ngIf="!eartag_in_progress">{{ 'SAVE' | translate}}</span>
+          <span *ngIf="eartag_in_progress"><i class="fa fa-gear fa-spin fa-fw"></i></span>
+        </button>
+        <button (click)="closeEartagPlainTextModal()" [disabled]="eartag_in_progress" class="tiny primary button pull-right">{{
           'CANCEL' | translate}}
         </button>
       </div>

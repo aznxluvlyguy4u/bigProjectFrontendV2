@@ -1,0 +1,249 @@
+<form class="form-declare">
+  <div class="row">
+      <div class="medium-2 columns">
+        <input #csv (change)="handleFileInput($event.target.files)" type="file" id="csv" name="file" accept=".csv" [disabled]="loadingStatesCount !== 0">
+      </div>
+  </div>
+</form>
+
+<div class="row" *ngIf="departRequests.length > 0">
+  <div class="columns">
+    <button [disabled]="loadingStatesCount !== 0" (click)="submitDepartRequests()" class="small primary button">{{ "DECLARE ALL" | translate }}  <span class="badge">{{departRequests.length}}</span></button>
+    <!--{{ loadingStatesCount, departRequestWarningsCount }}-->
+  </div>
+
+  <app-page-loading-spinner *ngIf="loadingStatesCount !== 0"></app-page-loading-spinner>
+</div>
+
+<div *ngFor="let departRequest of departRequests" class="csv_departRequest" [class.success]="departRequest.declareStatus === true" [class.error]="departRequest.declareStatus === false" [class.warning]="departRequest.hasWarnings && departRequest.declareStatus === null">
+    <!--<pre>{{ departRequest | json }}</pre>-->
+    <div class="row">
+      <div class="columns">
+        <i *ngIf="departRequest.isSubmitting" class="fa fa-spinner fa-pulse fa-fw"></i>
+        <p class="alert">
+          {{departRequest.errorMessage}}
+        </p>
+      </div>
+    </div>
+
+    <div class="row">
+
+      <div class="medium-3 columns">
+        <div class="row">
+          <label class="medium-7 columns">{{ 'IDENTIFICATION NUMBER' | translate }}</label>
+          <!-- Error messages -->
+          <label class="medium-5 columns warning-text" *ngIf="!departRequest?.animal?.uln_country_code && departRequest?.animal?.uln_number">
+            <small>{{ 'CHOOSE COUNTRY CODE' | translate }}</small>
+          </label>
+        </div>
+
+        <!--Missing country code but has a uln number-->
+        <div class="uid-input-group" *ngIf="!departRequest?.animal?.uln_country_code && departRequest?.animal?.uln_number">
+          <select [ngModel]="departRequest?.animal?.uln_country_code" (change)="selectAnimalUlnCountryCode(departRequest, $event.target.value)">
+            <option *ngFor="let country_code of country_code_list" [value]="country_code.code">
+              {{ country_code.code }}
+            </option>
+          </select>
+          <input type="text" [disabled]="departRequest?.animal?.uln_number" [value]="departRequest?.animal?.uln_number">
+        </div>
+
+        <!--Both country code and uln number are present-->
+        <div class="row collapse" *ngIf="departRequest?.animal?.uln_country_code && departRequest?.animal?.uln_number">
+          <span class="medium-9 columns">{{departRequest?.animal?.uln_country_code}} {{departRequest?.animal?.uln_number}}</span>
+          <button class="tiny button medium-3 columns" *ngIf="departRequest?.animalUlnCountryCodeOnlyHasChanged" (click)="resetAnimalUlnCountryCode(departRequest)">{{'CHANGE' | translate}}</button>
+          <button class="tiny button medium-3 columns" *ngIf="departRequest?.animalHasChanged" (click)="resetAnimal(departRequest)">{{'CHANGE' | translate}}</button>
+        </div>
+      </div>
+
+      <div class="medium-2 columns">
+        <div class="row">
+          <label class="medium-12 columns">{{ 'DEPART DATE' | translate }}</label>
+        </div>
+
+        <!--Both country code and uln number are present-->
+        <!--<div class="row collapse" *ngIf="arrivalRequest?.arrival_date">-->
+          <!--<span class="medium-9 columns">{{arrivalRequest?.arrival_date}}</span>-->
+        <!--</div>-->
+        <div class="row">
+          <div class="medium-9 columns">
+            <app-datepicker-v2 *ngIf="departRequest?.depart_date"
+              [dateString]="departRequest?.depart_date"
+              [disabled]='departRequest?.datePickerDisabled'
+              [viewFormat]="view_date_format"
+              [activateSetNullButton]="false"
+              [activateResetButton]="false"
+              [modelFormat]="model_datetime_format"
+              (isDateStringChanged)="updateDepartDateString(departRequest, $event)"
+              (keyup)="preventKeyPress($event)" (keydown)="preventKeyPress($event)"
+              (keypress)="preventKeyPress($event)">
+            </app-datepicker-v2>
+          </div>
+          <button class="tiny button medium-3 columns" (click)="toggleDatePicker(departRequest)">{{'CHANGE' | translate}}</button>
+        </div>
+      </div>
+
+      <div class="medium-3 columns">
+        <div class="row">
+          <label class="medium-7 columns">{{ 'UBN NEW OWNER' | translate }}</label>
+          <!-- Error messages -->
+          <label class="medium-5 columns warning-text" *ngIf="departRequest?.invalidUbnNewOwner">
+            <small>{{ 'UBN IS INVALID' | translate }}</small>
+          </label>
+        </div>
+
+        <div class="row collapse">
+          <div class="medium-8 columns">
+            <!--Single ubn change on input()-->
+            <input *ngIf="!multipleUbnNewOwnerMode" [value]="departRequest?.ubn_new_owner" (input)="updateSingleUbnNewOwner(departRequest, $event.target.value)" [disabled]="departRequest?.ubnNewOwnerDisabled" type="text" name="ubn_new_owner">
+            <!--Multiple ubn change on input()-->
+            <input *ngIf="multipleUbnNewOwnerMode" [value]="departRequest?.ubn_new_owner" (input)="updateMultipleUbnNewOwner(departRequest, $event.target.value)" [disabled]="departRequest?.ubnNewOwnerDisabled" type="text" name="ubn_new_owner">
+          </div>
+          <button class="tiny button medium-3 columns" (click)="toggleUpdateUbnWarningModal(departRequest)">{{'CHANGE' | translate}}</button>
+        </div>
+      </div>
+
+      <div class="medium-2 columns">
+        <div class="row">
+          <label class="medium-12 columns">{{ 'REASON OF DEPART' | translate }}</label>
+        </div>
+
+        <div class="row collapse" *ngIf="departRequest?.reason_of_depart">
+          <select [(ngModel)]="departRequest.reason_of_depart">
+            <option *ngFor="let reason of options_reason_of_depart" value="{{ reason }}">{{ reason | translate }}</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="medium-2 columns">
+        <div class="row">
+          <label class="medium-12 columns">{{ 'DATE SCANNED' | translate }}</label>
+        </div>
+
+        <!--Both country code and uln number are present-->
+        <div class="row collapse" *ngIf="departRequest?.scanned_date">
+          <span class="medium-9 columns">{{ departRequest?.scanned_date | date:'dd-MM-yyyy hh:mm:ss' }}</span>
+        </div>
+      </div>
+
+    </div>
+
+
+    <div class="row">
+      <div class="columns clearfix">
+        <button [disabled]="loadingStatesCount !== 0" (click)="submitSingleDepartRequest(departRequest)" class="float-right small primary button">{{ "DECLARE" | translate }}</button>
+      </div>
+    </div>
+
+</div>
+
+<div class="reveal-overlay" [ngStyle]="{'display': warningModalDisplay}">
+  <div class="reveal tiny" [ngStyle]="{'display': warningModalDisplay}">
+
+    <div class="modal-header">
+      {{ "WARNING" | translate }}
+      <button type="button" class="pull-right" aria-label="Close modal" (click)="toggleAllWarningsModal()">
+        <i class="fa fa-times" aria-hidden="true"></i>
+      </button>
+    </div>
+
+    <!-- Single DepartRequest Warning -->
+    <div class="modal-body" *ngIf="warningModalMode === 'single'">
+      <div class="callout warning">
+        <p *ngIf="selectedDepartRequest.animalMissingUlnCountryCode">
+          {{ 'MISSING COUNTRY CODE' | translate }}
+        </p>
+
+        <p *ngIf="selectedDepartRequest.invalidUbnNewOwner">
+          {{ 'UBN IS INVALID' | translate }}
+        </p>
+      </div>
+
+      <div>
+        <p><b>{{ "STILL CONTINUE WITH DECLARATION?" | translate }}</b></p>
+      </div>
+    </div>
+
+    <!-- All DepartRequest Warning -->
+    <div class="modal-body" *ngIf="warningModalMode === 'all'">
+      <!--DepartRequests with missing Animal details-->
+      <div *ngIf="missingAnimalDepartRequests.length > 0" class="callout warning">
+        <p>{{ 'THE FOLLOWING DEPART REQUESTS HAVE IMCOMPLETE IDENTIFICATION NUMBERS' | translate }}</p>
+
+        <div>
+          <ng-container *ngFor="let warningDepartRequest of missingAnimalDepartRequests">
+              <p>{{ warningDepartRequest.animal?.uln_country_code + warningDepartRequest.animal?.uln_number }}</p>
+          </ng-container>
+        </div>
+
+      </div>
+
+      <!--DepartRequests with invalid UBN-->
+      <div *ngIf="invalidUbnNewOwnerDepartRequests.length > 0" class="callout warning">
+        <p>{{ 'THE FOLLOWING DEPART REQUESTS HAVE INVALID UBN NUMBERS' | translate }}</p>
+
+        <div>
+          <ng-container *ngFor="let warningDepartRequest of invalidUbnNewOwnerDepartRequests">
+            <p>{{ warningDepartRequest.animal?.uln_country_code + warningDepartRequest.animal?.uln_number }}</p>
+          </ng-container>
+        </div>
+
+      </div>
+
+      <div>
+        <p><b>{{ "STILL CONTINUE WITH DECLARATION?" | translate }}</b></p>
+      </div>
+
+    </div>
+
+    <!-- Change Single DepartRequest UBN Warning -->
+    <div class="modal-body" *ngIf="warningModalMode === 'changeUbn'">
+      <!--BirthRequests with multiple fathers-->
+      <div class="callout warning">
+        <p>{{ "CHANGE SINGLE OR MULTIPLE UBN" | translate }}</p>
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <button
+              type="button"
+              class="button alert pull-right"
+              aria-label="Clear list"
+              (click)="toggleAllWarningsModal()">
+        {{ 'CANCEL' | translate }}
+      </button>
+
+      <button *ngIf="warningModalMode === 'all'"
+              type="button"
+              class="button pull-right primary"
+              aria-label="Clear list"
+              (click)="doSubmitDepartRequests(); toggleAllWarningsModal();">
+        {{ 'DECLARE' | translate }}
+      </button>
+
+      <button *ngIf="warningModalMode === 'single'"
+              type="button"
+              class="button pull-right primary"
+              aria-label="Clear list"
+              (click)="doSubmitSingleDepartRequest(selectedDepartRequest); toggleAllWarningsModal();">
+        {{ 'DECLARE' | translate }}
+      </button>
+
+      <button *ngIf="warningModalMode === 'changeUbn'"
+              type="button"
+              class="button pull-right success"
+              aria-label="Clear list"
+              (click)="toggleUbnNewOwner(selectedDepartRequest, true); toggleAllWarningsModal();">
+        {{ 'YES' | translate }}
+      </button>
+
+      <button *ngIf="warningModalMode === 'changeUbn'"
+              type="button"
+              class="button pull-right success"
+              aria-label="Clear list"
+              (click)="toggleUbnNewOwner(selectedDepartRequest, false); toggleAllWarningsModal();">
+        {{ 'NO' | translate }}
+      </button>
+    </div>
+
+  </div>
+</div>

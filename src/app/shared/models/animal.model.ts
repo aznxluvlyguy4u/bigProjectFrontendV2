@@ -5,6 +5,7 @@ import {Mate} from './nsfo-declare.model';
 import {BreedValues} from './breedvalues.model';
 
 export class Animal {
+  public id: string;
   public uln_country_code: string;
   public uln_number: string;
   public uln: string;
@@ -12,10 +13,12 @@ export class Animal {
   public pedigree_number: string;
   public stn: string;
   public work_number: string;
+  public worker_number: string;
   public collar: Collar = new Collar();
-  public collar_color: number;
+  public collar_color: string;
   public collar_number: number;
   public name: string;
+  public nickname: string;
   public date_of_birth: string;
   public dd_mm_yyyy_date_of_birth: string;
   public birth_progress: string;
@@ -37,6 +40,7 @@ export class Animal {
   public cause_of_death: string;
   public birth_weight: string;
   public last_weight: string;
+  public last_weight_measurement_date: string;
   public tail_length: string;
   public mates: Mate[] = [];
   public note: string;
@@ -52,6 +56,7 @@ export class Animal {
   public measurement: MeasurementOutput = new MeasurementOutput();
   public declare_log: any[];
   public is_public: boolean;
+  public is_user_allowed_to_access_animal_details: boolean;
   public ubn: string;
   public breed_code: string;
   public last_mate: Mate;
@@ -68,6 +73,7 @@ export class Animal {
   public is_own_animal: boolean;
   public production: string;
   public general_appearance: number;
+  public child_count: number;
 }
 
 export class Ewe extends Animal {

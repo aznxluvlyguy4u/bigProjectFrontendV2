@@ -40,7 +40,7 @@ export class LossDeclareComponent implements OnInit {
     this.form = fb.group({
       loss_date: new FormControl('', Validators.compose([Validators.required, DateValidator.validateDateFormat])),
       ubn_processor: new FormControl('2486574', Validators.compose(
-        [Validators.required, UBNValidator.validateWithSevenTest])),
+        [Validators.required, UBNValidator.validateUbn])),
       reason_loss: new FormControl('')
     });
   }
@@ -93,12 +93,7 @@ export class LossDeclareComponent implements OnInit {
               }
             },
             err => {
-              const error = err;
-              this.errorMessage = error.message;
-
-              if (!this.errorMessage) {
-                this.errorMessage = 'SOMETHING WENT WRONG! TRY AGAIN AT LATER TIME!';
-              }
+              this.errorMessage = this.nsfo.getErrorMessage(err);
               this.openModal();
               animal.successful = false;
               animal.sending = false;

@@ -2,62 +2,62 @@
 
     <!--TOP NAVIGATION BAR-->
     <nav [class.is_admin]="isAdmin">
-        <ul class="navbar-ul-container">
-          <li style="float: left;">
-            <button style="float: left;" type="button" (click)="isActiveSideMenu = !isActiveSideMenu; isActiveUserMenu = false; isActiveMessageMenu = false;" [class.active]="isActiveSideMenu" class="menu-toggle">
-              <i class="fa fa-bars"></i>
-            </button>
-          </li>
+      <ul class="navbar-ul-container">
+        <li style="float: left;">
+          <button style="float: left;" type="button" (click)="isActiveSideMenu = !isActiveSideMenu; isActiveUserMenu = false; isActiveMessageMenu = false;" [class.active]="isActiveSideMenu" class="menu-toggle">
+            <i class="fa fa-bars"></i>
+          </button>
+        </li>
 
-          <li class="li-left">
-            <div class="brand-name" (click)="navigateTo('/main')"> NSFO <span>Online</span></div>
-          </li>
+        <li class="li-left">
+          <div class="brand-name" (click)="navigateTo('/main')"> NSFO <span>Online</span></div>
+        </li>
 
-          <li class="li-left">
-            <div class="ubn-container">
-              <select [(ngModel)]="currentUBNValue" (change)="selectUBN(); reloadApp()">
-                <option *ngFor="let ubn of ubnList" value="{{ ubn }}"> ({{'UBN_SHORT' | translate}}:{{ ubn }})</option>
-              </select>
-            </div>
-          </li>
-
-          <li class="li-right">
-            <div>
-              <button type="button" (click)="toggleActiveUserMenu()" [class.active]="isActiveUserMenu" class="profile-toggle">
-                <i class="fa fa-user"><span class="show-for-large">{{ currentUser.first_name }} {{ currentUser.last_name }} </span></i>
-              </button>
-            </div>
-          </li>
-
-          <li class="li-right">
-            <button type="button" (click)="toggleActiveMessageMenu()" [class.active]="isActiveMessageMenu" class="message-toggle">
-              <i class="fa fa-envelope"><span *ngIf="menuMessages.length > 0"> {{ menuMessages.length }}</span></i>
-            </button>
-          </li>
-
-          <li class="li-right">
-            <ng-template [ngIf]="!isDownloadModalEmpty()">
-              <button type="button" (click)="toggleDownloadModal()" [class.active]="isActiveDownloadModal" class="download-toggle">
-                <i class="fa fa-download"><span *ngIf="downloadCount() > 0"> {{ downloadCount() }}</span></i>
-              </button>
-            </ng-template>
-          </li>
+        <li class="li-left">
+          <div class="ubn-container">
+            <select [(ngModel)]="currentLocation" (change)="selectUBN(); reloadApp()">
+              <option *ngFor="let location of locationList" [ngValue]="location"> ({{'UBN_SHORT' | translate}}:{{ location.ubn }} {{ location.country_code }})</option>
+            </select>
+          </div>
+        </li>
 
         <li class="li-right">
-            <ng-template [ngIf]="!isReportModalEmpty()">
-                <button type="button" (click)="toggleReportModal()" [class.active]="isActiveReportModal" class="download-toggle">
-                    <i class="fas fa-cloud-download-alt"><span *ngIf="reportCount() > 0"> {{ reportCount() }}</span></i>
-                </button>
-            </ng-template>
+          <div>
+            <button type="button" (click)="toggleActiveUserMenu()" [class.active]="isActiveUserMenu" class="profile-toggle">
+              <i class="fa fa-user"><span class="show-for-large">{{ currentUser.first_name }} {{ currentUser.last_name }} </span></i>
+            </button>
+          </div>
         </li>
-          <li class="li-right">
-            <ng-template [ngIf]="!isDeclareModalEmpty()">
-              <button type="button" (click)="toggleDeclareItemsModal()" [class.active]="isActiveDeclareItemsModal" class="declare-modal-toggle">
-                <i class="fa fa-list"><span *ngIf="declareItemsCount() > 0"> {{ declareItemsCount() }}</span></i>
+
+        <li class="li-right">
+          <button type="button" (click)="toggleActiveMessageMenu()" [class.active]="isActiveMessageMenu" class="message-toggle">
+            <i class="fa fa-envelope"><span *ngIf="menuMessages.length > 0"> {{ menuMessages.length }}</span></i>
+          </button>
+        </li>
+
+        <li class="li-right">
+          <ng-template [ngIf]="!isDownloadModalEmpty()">
+            <button type="button" (click)="toggleDownloadModal()" [class.active]="isActiveDownloadModal" class="download-toggle">
+              <i class="fa fa-download"><span *ngIf="downloadCount() > 0"> {{ downloadCount() }}</span></i>
+            </button>
+          </ng-template>
+        </li>
+
+      <li class="li-right">
+          <ng-template [ngIf]="!isReportModalEmpty()">
+              <button type="button" (click)="toggleReportModal()" [class.active]="isActiveReportModal" class="download-toggle">
+                  <i class="fas fa-cloud-download-alt"><span *ngIf="reportCount() > 0"> {{ reportCount() }}</span></i>
               </button>
-            </ng-template>
-          </li>
-        </ul>
+          </ng-template>
+      </li>
+        <li class="li-right">
+          <ng-template [ngIf]="!isDeclareModalEmpty()">
+            <button type="button" (click)="toggleDeclareItemsModal()" [class.active]="isActiveDeclareItemsModal" class="declare-modal-toggle">
+              <i class="fa fa-list"><span *ngIf="declareItemsCount() > 0"> {{ declareItemsCount() }}</span></i>
+            </button>
+          </ng-template>
+        </li>
+      </ul>
     </nav>
 
   <!--SIDE MENU-->
@@ -67,7 +67,7 @@
                 <i class="fas fa-tachometer-alt fa-fw" aria-hidden="true"></i>
                 {{ 'DASHBOARD' | translate }}
             </li>
-            <li (click)="navigateTo('/main/livestock'); isActiveSideMenu = false" [class.active]="isActiveRoute('/main/livestock/overview')" class="link">
+            <li (click)="navigateTo('/main/livestock/overview'); isActiveSideMenu = false" [class.active]="isActiveRoute('/main/livestock/overview')" class="link">
                 <i class="fa fa-list fa-fw" aria-hidden="true"></i>
                 {{ 'LIVESTOCK' | translate }}
             </li>
@@ -116,7 +116,7 @@
             <li (click)="navigateTo('/main/profile'); isActiveSideMenu = false" [class.active]="isActiveRoute('/main/profile/company') || isActiveRoute('/main/profile/login')" class="item link">
                 {{ 'PROFILE' | translate }}
             </li>
-            <li (click)="navigateTo('/main/invoices'); isActiveSideMenu = false" [class.active]="isActiveRoute('/main/invoices/overview')" class="item link">
+            <li *ngIf="isInvoicesActive" (click)="navigateTo('/main/invoices'); isActiveSideMenu = false" [class.active]="isActiveRoute('/main/invoices/overview')" class="item link">
                 {{'INVOICES' | translate}}
             </li>
 

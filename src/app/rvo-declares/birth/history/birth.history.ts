@@ -8,11 +8,12 @@ import {
   API_URI_REVOKE_BIRTH,
 } from '../../../shared/services/nsfo-api/nsfo.settings';
 import {Settings} from '../../../shared/variables/settings';
-import {NgxPaginationModule} from 'ngx-pagination';
+import {PaginationService} from 'ngx-pagination';
 import {JsonResponseModel} from '../../../shared/models/json-response.model';
+import {CacheService} from '../../../shared/services/settings/cache.service';
 
 @Component({
-  providers: [NgxPaginationModule],
+  providers: [PaginationService],
   templateUrl: './birth.history.html',
 })
 
@@ -26,7 +27,7 @@ export class BirthHistoryComponent implements OnInit {
 
   public isLoading: boolean;
 
-  constructor(private nsfo: NSFOService, private settings: Settings) {
+  constructor(private nsfo: NSFOService, private cache: CacheService) {
   }
 
   ngOnInit() {
@@ -74,7 +75,7 @@ export class BirthHistoryComponent implements OnInit {
       .doPostRequest(API_URI_REVOKE_BIRTH, jsonpayload)
       .subscribe(
         () => {
-          this.selectedLitter.request_state = 'REVOKING';
+          this.selectedLitter.request_state = this.cache.useRvoLogic() ? 'REVOKING' : 'REVOKED';
         },
         error => {
           alert(this.nsfo.getErrorMessage(error));

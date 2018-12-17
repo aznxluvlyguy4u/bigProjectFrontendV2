@@ -31,7 +31,7 @@ export class EartagHistoryRowComponent {
               private apiService: NSFOService,
               private settings: SettingsService) {
     this.form = fb.group({
-      ubn_new_owner: new FormControl('', UBNValidator.validateWithSevenTest)
+      ubn_new_owner: new FormControl('', UBNValidator.validateUbn)
     });
   }
 

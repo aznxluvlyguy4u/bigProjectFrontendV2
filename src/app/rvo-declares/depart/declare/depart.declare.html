@@ -14,7 +14,7 @@
   </div>
 
   <!--REASON OF DEPART-->
-  <div *ngIf="export_animal.controls['export_flag'].value == 'NO'" class="large-2 columns end">
+  <div *ngIf="animal_form.controls['export_flag'].value == 'NO'" class="large-2 columns end">
     <label>
       {{ 'REASON OF DEPART' | translate }} &nbsp;
       <select formControlName="reason_depart">
@@ -23,7 +23,7 @@
     </label>
   </div>
 </form>
-<form [formGroup]="export_animal">
+<form [formGroup]="animal_form">
   <!--EXPORT ANIMAL FLAG-->
   <div class="large-1 columns end">
     <label>{{ 'EXPORT' | translate }} &nbsp;
@@ -35,12 +35,12 @@
   </div>
 
   <!--UBN NEW OWNER-->
-  <div *ngIf="export_animal.controls['export_flag'].value == constants.NO"
+  <div *ngIf="animal_form.controls['export_flag'].value == constants.NO"
        class="large-2 columns">
     <label>
       {{ 'UBN NEW OWNER' | translate }}
       <input type="text" formControlName="ubn_new_owner">
-      <div [hidden]="export_animal.valid || isValidForm" class="input-error-msg pull-right">{{ 'UBN IS INVALID' |
+      <div [hidden]="animal_form.valid || isValidForm" class="input-error-msg pull-right">{{ 'UBN IS INVALID' |
         translate }}
       </div>
     </label>

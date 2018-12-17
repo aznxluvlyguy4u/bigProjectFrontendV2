@@ -9,11 +9,13 @@ import {SettingsService} from '../../../shared/services/settings/settings.servic
 import {TagReplacementHistoryChangeResponse} from '../tagReplacement.model';
 import {API_URI_GET_TAG_REPLACEMENT_HISTORY, API_URI_REVOKE_DECLARATION} from '../../../shared/services/nsfo-api/nsfo.settings';
 import {TagReplacementHistoryRowComponent} from './tagReplacement.history.row';
-import {NgxPaginationModule} from 'ngx-pagination';
+import {PaginationService} from 'ngx-pagination';
 import {JsonResponseModel} from '../../../shared/models/json-response.model';
+import {CacheService} from '../../../shared/services/settings/cache.service';
+import {SortOrder, SortService} from '../../../shared/services/utils/sort.service';
 
 @Component({
-  providers: [NgxPaginationModule],
+  providers: [PaginationService],
   templateUrl: './tagReplacement.history.html',
 })
 
@@ -25,7 +27,7 @@ export class TagReplacementHistoryComponent implements OnInit {
   public page: number;
   public searchValue: string;
 
-  constructor(private nsfo: NSFOService, private settings: SettingsService) {
+  constructor(private nsfo: NSFOService, private settings: SettingsService, private cache: CacheService, private sort: SortService) {
   }
 
   ngOnInit() {
@@ -46,7 +48,13 @@ export class TagReplacementHistoryComponent implements OnInit {
             this.tagReplacementHistoryList.push(tagReplacement);
           }
 
-          this.tagReplacementHistoryList = _.orderBy(this.tagReplacementHistoryList, ['log_date'], ['desc']);
+          const sortOrder: SortOrder = {
+            variableName: 'log_date',
+            ascending: false,
+            isDate: true // it is date string, not a date
+          };
+
+          this.tagReplacementHistoryList = this.sort.sort(this.tagReplacementHistoryList, [sortOrder]);
           this.isLoading = false;
         },
         error => {
@@ -68,13 +76,16 @@ export class TagReplacementHistoryComponent implements OnInit {
   }
 
   public revokeTagReplacement() {
+    const originalRequestState = this.selectedTagReplacement.request_state;
+    this.selectedTagReplacement.request_state = 'REVOKING';
     this.nsfo
       .doPostRequest(API_URI_REVOKE_DECLARATION, this.selectedTagReplacement)
       .subscribe(
         () => {
-          this.selectedTagReplacement.request_state = 'REVOKING';
+          this.selectedTagReplacement.request_state = this.cache.useRvoLogic() ? 'REVOKING' : 'REVOKED';
         },
         error => {
+          this.selectedTagReplacement.request_state = originalRequestState;
           alert(this.nsfo.getErrorMessage(error));
         }
       );

@@ -228,10 +228,10 @@
                         </span>
           <span *ngIf="weightMode" class="large-text-center">
                             <label class="show-for-small-only">{{ 'PREVIOUS WEIGHT' | translate }}</label>
-                            <span *ngIf="animal.weight">
-                                {{ animal.weight }}
+                            <span *ngIf="animal.last_weight">
+                                {{ animal.last_weight }}
                             </span>
-                            <span *ngIf="!animal.weight">
+                            <span *ngIf="!animal.last_weight">
                                 --
                             </span>
                             <span>kg</span>
@@ -281,21 +281,25 @@
             <span *ngIf="animal.sending && !animal.successful"> <i class="fa fa-gear fa-spin fa-fw"></i> </span>
             <span *ngIf="animal.successful"> <i class="fa fa-check" aria-hidden="true"></i> </span>
           </button>
-          <button type="button" *ngIf="view_mode && animal.is_public" class="tiny primary button expanded"
+          <button type="button"
+                  *ngIf="view_mode"
+                  class="tiny primary button expanded"
                   (click)="viewAnimalDetails(animal)">
             {{ 'VIEW DETAILS' | translate }}
           </button>
 
-          <div *ngIf="view_mode && !animal.is_public">
-            {{ 'NOT PUBLIC' | translate }} ({{ 'LOCATION' | translate }}:
-            <span *ngIf="animal.ubn"> {{animal.ubn}})</span>
-            <span *ngIf="!animal.ubn"> -- )</span>
-          </div>
+          <!-- User are always allowed to see all their historic animals -->
+
+          <!--<div *ngIf="view_mode && !animal.is_public">-->
+            <!--{{ 'NOT PUBLIC' | translate }} ({{ 'LOCATION' | translate }}:-->
+            <!--<span *ngIf="animal.ubn"> {{animal.ubn}})</span>-->
+            <!--<span *ngIf="!animal.ubn"> &#45;&#45; )</span>-->
+          <!--</div>-->
         </td>
       </tr>
       </tbody>
     </table>
-    <pagination-controls (pageChange)="page = $event"></pagination-controls>
+    <pagination-controls *ngIf="!isLoading" (pageChange)="page = $event"></pagination-controls>
   </div>
 </div>
 

@@ -39,6 +39,6 @@
 <td>
     <span
       [hidden]="editMode || eartag.request_state == 'OPEN' || eartag.request_state == 'REVOKING' || eartag.request_state == 'REVOKED'">
-        <app-revoke-button [isActive]="eartag.message_number" (click)="sendRevokeRequest()"></app-revoke-button>
+        <app-revoke-button [hasMessageNumber]="eartag.message_number" (click)="sendRevokeRequest()"></app-revoke-button>
     </span>
 </td>

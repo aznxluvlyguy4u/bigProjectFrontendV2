@@ -1,6 +1,7 @@
 import * as moment from 'moment';
 import {Pipe, PipeTransform} from '@angular/core';
 import {SettingsService} from '../../../services/settings/settings.service';
+import {TranslateService} from '@ngx-translate/core';
 
 @Pipe({
   name: 'livestockFilter'
@@ -10,7 +11,7 @@ export class LivestockFilterPipe implements PipeTransform {
 
   private view_date_format;
 
-  constructor(settings: SettingsService) {
+  constructor(settings: SettingsService, private translate: TranslateService) {
     this.view_date_format = settings.getViewDateFormat();
   }
 
@@ -34,7 +35,10 @@ export class LivestockFilterPipe implements PipeTransform {
         animal.date_of_birth +
         animal.gender +
         animal.work_number +
-        animal.collar_number +
+        (animal.collar_color ? this.translate.instant(animal.collar_color) + animal.collar_number : '') +
+        (animal.collar_color ? this.translate.instant(animal.collar_color) + ' ' + animal.collar_number : '') +
+        animal.collar_color + animal.collar_number +
+        animal.collar_color + ' ' + animal.collar_number +
         animal.inflow_date
       ).indexOf(search_query) !== -1);
     }

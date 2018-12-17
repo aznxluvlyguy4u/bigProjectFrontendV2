@@ -16,18 +16,20 @@ import {UtilsService} from '../../services/utils/utils.services';
 import {DownloadService} from '../../services/download/download.service';
 import {Subscription} from 'rxjs';
 import {Subject} from 'rxjs';
-import {NgxPaginationModule} from 'ngx-pagination';
+import {PaginationService} from 'ngx-pagination';
 import {Mate, MateChangeResponse} from '../../models/nsfo-declare.model';
 import {Animal, LivestockAnimal} from '../../models/animal.model';
 import {JsonResponseModel} from '../../models/json-response.model';
+import {TranslateService} from '@ngx-translate/core';
 
 const fileTypeDropdownMinCount = 2;
 
 export const LIVESTOCK_TYPE_MATE = 'LIVE_STOCK_TYPE_MATE';
+export const LIVESTOCK_TYPE_WEIGHT = 'LIVE_STOCK_TYPE_WEIGHT';
 
 @Component({
     selector: 'app-livestock-overview',
-    providers: [NgxPaginationModule, LivestockFilterPipe],
+    providers: [PaginationService, LivestockFilterPipe],
     templateUrl: './overview.component.html',
 })
 export class LivestockOverviewComponent implements OnInit, OnDestroy {
@@ -35,7 +37,6 @@ export class LivestockOverviewComponent implements OnInit, OnDestroy {
     @Input() file_types_list: string[] = [];
     @Input() view_mode = false;
     @Input() load_historic_animals_in_non_view_mode = false;
-    @Input() weightMode = false;
     @Input() reportMode = false;
     @Input() onlyFemales = false;
     @Input() disableMultipleSelection = false;
@@ -44,9 +45,10 @@ export class LivestockOverviewComponent implements OnInit, OnDestroy {
     @Input() maxSelectionCount: number;
     @Output() selected = new EventEmitter();
     @Input() customType = '';
-    mateMode = false;
-    updateLastMateSubscription: Subscription;
     @Input() lastMateChanged: Subject<MateChangeResponse>;
+    mateMode = false;
+    weightMode = false;
+    updateLastMateSubscription: Subscription;
     public livestock_list_initial = <LivestockAnimal[]>[];
     public livestock_list = <LivestockAnimal[]>[];
     public filtered_list = <LivestockAnimal[]>[];
@@ -80,6 +82,7 @@ export class LivestockOverviewComponent implements OnInit, OnDestroy {
                 public element: ElementRef,
                 private filter: LivestockFilterPipe,
                 private downloadService: DownloadService,
+                private translate: TranslateService,
                 private utils: UtilsService) {
         this.view_date_format = settings.VIEW_DATE_FORMAT;
         this.model_datetime_format = settings.MODEL_DATETIME_FORMAT;
@@ -102,6 +105,12 @@ export class LivestockOverviewComponent implements OnInit, OnDestroy {
                 }
 
                 break;
+
+            case LIVESTOCK_TYPE_WEIGHT:
+                this.weightMode = true;
+                this.getLivestockLastWeight();
+                break;
+
             default:
                 this.getLivestockList();
                 break;
@@ -158,7 +167,8 @@ export class LivestockOverviewComponent implements OnInit, OnDestroy {
 
         let updateLastMateValue = false;
 
-        if (currentAnimal.last_mate === null) {
+        if (currentAnimal.last_mate === null || currentAnimal.last_mate === undefined ||
+          currentAnimal.last_mate.end_date === undefined) {
             updateLastMateValue = true;
         } else {
             const newEndDateMoment = moment(declareResult.end_date, this.settings.VIEW_DATE_FORMAT);
@@ -200,7 +210,11 @@ export class LivestockOverviewComponent implements OnInit, OnDestroy {
     }
 
     private getLivestockMateList() {
-        this.getLivestockListBase('?is_ewes_with_last_mate=true');
+        this.getLivestockListBase('?type=ewes_with_last_mate');
+    }
+
+    private getLivestockLastWeight() {
+      this.getLivestockListBase('?type=last_weight');
     }
 
     private getLivestockList() {
@@ -414,7 +428,7 @@ export class LivestockOverviewComponent implements OnInit, OnDestroy {
         }
     }
 
-    private getSelectionValue(selection, animal: LivestockAnimal) {
+    public getSelectionValue(selection, animal: LivestockAnimal) {
         switch (selection) {
             case 'PEDIGREE NUMBER':
                 return animal.pedigree;
@@ -426,7 +440,8 @@ export class LivestockOverviewComponent implements OnInit, OnDestroy {
                 return animal.work_number;
 
             case 'COLLAR NUMBER':
-                return animal.collar_number;
+                return animal.collar_color && animal.collar_number ?
+                  this.translate.instant(animal.collar_color) + ' ' + animal.collar_number : null;
 
             case 'INFLOW DATE':
                 return animal.inflow_date;
@@ -472,7 +487,7 @@ export class LivestockOverviewComponent implements OnInit, OnDestroy {
                 break;
 
             case 'COLLAR NUMBER':
-                this.livestock_list = _.orderBy(this.livestock_list, ['collar_number'], [order]);
+                this.livestock_list = _.orderBy(this.livestock_list, ['collar_color', 'collar_number'], [order]);
                 break;
 
             case 'INFLOW DATE':
@@ -509,7 +524,7 @@ export class LivestockOverviewComponent implements OnInit, OnDestroy {
                 break;
 
             case 'COLLAR NUMBER':
-                this.livestock_list = _.orderBy(this.livestock_list, ['collar_number'], [order]);
+                this.livestock_list = _.orderBy(this.livestock_list, ['collar_color', 'collar_number'], [order]);
                 break;
 
             case 'INFLOW DATE':

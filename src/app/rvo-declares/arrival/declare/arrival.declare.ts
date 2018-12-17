@@ -8,6 +8,8 @@ import {Constants} from '../../../shared/variables/constants';
 import {API_URI_DECLARE_ARRIVAL} from '../../../shared/services/nsfo-api/nsfo.settings';
 import {DateValidator, UBNValidator} from '../../../shared/validation/nsfo-validation';
 import {SettingsService} from '../../../shared/services/settings/settings.service';
+import {CacheService} from '../../../shared/services/settings/cache.service';
+import {TranslateService} from '@ngx-translate/core';
 
 @Component({
   templateUrl: './arrival.declare.html',
@@ -31,7 +33,7 @@ export class ArrivalDeclareComponent implements OnInit, OnDestroy, AfterViewInit
 
     public import_animal: FormGroup = new FormGroup({
         import_flag: new FormControl(this.constants.NO),
-        ubn_previous_owner: new FormControl('', UBNValidator.validateWithSevenTest),
+        ubn_previous_owner: new FormControl('', UBNValidator.validateUbn),
         certificate_number: new FormControl(''),
     });
 
@@ -48,13 +50,15 @@ export class ArrivalDeclareComponent implements OnInit, OnDestroy, AfterViewInit
   constructor(public constants: Constants,
               private fb: FormBuilder,
               private apiService: NSFOService,
+              private cache: CacheService,
+              private translate: TranslateService,
               private settings: SettingsService) {
     this.view_date_format = settings.getViewDateFormat();
     this.model_datetime_format = settings.getModelDateTimeFormat();
 
     this.import_animal = new FormGroup({
       import_flag: new FormControl(constants.NO),
-      ubn_previous_owner: new FormControl('', UBNValidator.validateWithSevenTest),
+      ubn_previous_owner: new FormControl('', UBNValidator.validateUbnAllowEmpty),
       certificate_number: new FormControl(''),
     });
     this.import_animal.validator = UBNValidator.isImportAnimal;
@@ -81,6 +85,10 @@ export class ArrivalDeclareComponent implements OnInit, OnDestroy, AfterViewInit
     this.countryCodeObs.unsubscribe();
   }
 
+  public allowImports(): boolean {
+    return this.cache.useRvoLogic();
+  }
+
   public getTempArrivalList() {
     if (sessionStorage['arrival_list']) {
       const arrival_list = <ArrivalRequest[]> JSON.parse(sessionStorage['arrival_list']);
@@ -100,6 +108,20 @@ export class ArrivalDeclareComponent implements OnInit, OnDestroy, AfterViewInit
   public addNewArrival() {
     if (this.form.valid) {
       this.form_valid = true;
+
+      if (this.import_animal.controls['import_flag'].value === this.constants.NO) {
+        const ubnPreviousOwner = this.import_animal.controls['ubn_previous_owner'].value;
+        if (ubnPreviousOwner === this.cache.getUbn()) {
+          this.error_message = this.translate.instant('UBN OF DEPARTURE AND ARRIVAL ARE IDENTICAL');
+          this.openModal();
+          return;
+        }
+        if (!this.isValidUbn(ubnPreviousOwner)) {
+          this.error_message = this.translate.instant('UBN IS INVALID') + ': ' + ubnPreviousOwner;
+          this.openModal();
+          return;
+        }
+      }
 
       const arrival = new ArrivalRequest();
       const arrival_date_string = moment(this.form.get('arrival_date').value, this.settings.getViewDateFormat());
@@ -159,20 +181,21 @@ export class ArrivalDeclareComponent implements OnInit, OnDestroy, AfterViewInit
               sessionStorage.setItem('arrival_list', JSON.stringify(this.arrival_list));
               if (this.arrival_list.length === 0) {
                 this.in_progress = false;
-                this.form.get('import_flag').setValue('NO');
-                this.form.get('ubn_previous_owner').setValue('');
-                this.form.get('certificate_number').setValue('');
+                this.import_animal.get('import_flag').setValue('NO');
+                this.import_animal.get('ubn_previous_owner').setValue('');
+                this.import_animal.get('certificate_number').setValue('');
                 this.form.get('arrival_date').setValue(this.getToday());
               }
             },
             err => {
-              const error = err;
-              this.error_message = error.message;
-              this.error_number = error.pedigree;
-              this.error_number = error.uln;
+              const error = err.error ? err.error.result : undefined;
 
-              if (!this.error_message) {
+              if (!error || !error.message) {
                 this.error_message = 'SOMETHING WENT WRONG! TRY AGAIN AT LATER TIME!';
+              } else {
+                this.error_message = error.message;
+                this.error_number = error.pedigree;
+                this.error_number = error.uln;
               }
 
               this.openModal();
@@ -203,6 +226,13 @@ export class ArrivalDeclareComponent implements OnInit, OnDestroy, AfterViewInit
   }
 
   public getToday() {
-    moment().format(this.settings.getViewDateFormat());
+    return moment().format(this.settings.getViewDateFormat());
+  }
+
+  private isValidUbn(ubn: string): boolean {
+    if (this.cache.useRvoLogic()) {
+      return UBNValidator.isValidDutchUbn(ubn);
+    }
+    return UBNValidator.isValidNonDutchUbn(ubn);
   }
 }

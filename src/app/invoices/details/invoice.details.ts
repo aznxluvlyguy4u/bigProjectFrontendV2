@@ -53,6 +53,10 @@ export class InvoiceDetailsComponent implements OnInit {
       );
   }
 
+  navigateToInvoiceOverview(): void {
+    this.navigateTo('/main/invoices/overview');
+  }
+
   private navigateTo(url: string) {
     this.router.navigate([url]);
   }

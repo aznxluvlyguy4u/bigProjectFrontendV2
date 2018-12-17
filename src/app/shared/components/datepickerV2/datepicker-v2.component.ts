@@ -25,6 +25,7 @@ export class DatepickerV2Component implements OnInit, OnChanges {
   @Input() firstWeekDaySunday: boolean;
   @Input() isStatic: boolean;
   @Input() activateSetNullButton = true;
+  @Input() activateResetButton = true;
   @Output() isDateStringChanged = new EventEmitter();
   @Output() isDateChanged: EventEmitter<Date> = new EventEmitter<Date>();
   private el: any;

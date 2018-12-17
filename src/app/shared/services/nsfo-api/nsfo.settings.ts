@@ -2,12 +2,12 @@
 export const UBN_TOKEN_NAMESPACE = 'ubn_token';
 export const ACCESS_TOKEN_NAMESPACE = 'access_token';
 export const GHOST_TOKEN_NAMESPACE = 'ghost_token';
+export const UBN_LOCATION_NAMESPACE = 'location_token';
 export const API_URI_GET_USER_INFO = '/v1/components/menu-bar';
 export const API_URI_GET_COUNTRY_CODES = '/v1/countries?continent=europe';
 export const API_URI_GET_STATE_CODES = '/v1/countries/nl/provinces';
 export const API_URI_REVOKE_DECLARATION = '/v1/revokes';
 export const API_URI_HIDE_ERROR = '/v1/errors';
-
 // GHOST LOGIN
 export const API_URI_VERIFY_GHOST_TOKEN = '/v1/admins/verify-ghost-token';
 
@@ -21,6 +21,8 @@ export const API_URI_GET_ANIMAL_DETAILS = '/v1/animals-details';
 export const API_URI_CHANGE_ANIMAL_DETAILS = '/v1/animals-details';
 export const API_URI_SYNC_ANIMALS = '/v1/animals-sync';
 export const API_URI_SYNC_ANIMALS_RVO_LEADING = '/v1/animals-sync/rvo-leading';
+export const API_URI_GET_EWES_IN_LIVESTOCK = '/v1/animals-livestock?gender=female';
+export const API_URI_GET_HISTORIC_EWES_IN_LIVESTOCK = '/v1/animals-historic-livestock?gender=female';
 
 // MEASUREMENTS
 export const API_URI_MEASUREMENTS = '/v1/measurements';
@@ -114,6 +116,9 @@ export const API_URI_GET_FERTILIZER_ACCOUNTING_REPORT = '/v1/reports/fertilizer-
 
 // GENDER
 export const API_URI_ANIMAL_GENDER = '/v1/animals-gender';
+
+// NICKNAME
+export const API_URI_ANIMAL_NICKNAME = '/v1/animals-nickname';
 
 // COLLAR Colors
 export const API_URI_GET_COLLAR_COLORS = '/v1/collars';

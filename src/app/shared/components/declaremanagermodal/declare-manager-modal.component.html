@@ -26,7 +26,8 @@
             <th>{{ 'DECLARE TYPE' | translate }}</th>
             <th>{{ 'EVENT DATE' | translate }}</th>
             <th>{{ 'DESCRIPTION' | translate }}</th>
-            <th>{{ 'READY FOR SENDING TO RVO' | translate }}</th>
+            <th *ngIf="useRvoLogic()">{{ 'READY FOR SENDING TO RVO' | translate }}</th>
+            <th *ngIf="!useRvoLogic()">{{ 'STATUS' | translate }}</th>
           </tr>
           </thead>
           <tbody>

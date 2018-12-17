@@ -13,16 +13,29 @@ import {
   API_URI_TRANSFER_EARTAGS
 } from '../../../shared/services/nsfo-api/nsfo.settings';
 import {SettingsService} from '../../../shared/services/settings/settings.service';
-import {NgxPaginationModule} from 'ngx-pagination';
+import {PaginationService} from 'ngx-pagination';
 import {User} from '../../../shared/models/person.model';
 import {JsonResponseModel} from '../../../shared/models/json-response.model';
+import { UtilsService } from '../../../shared/services/utils/utils.services';
+import { CacheService } from '../../../shared/services/settings/cache.service';
 
 @Component({
-  providers: [NgxPaginationModule],
+  providers: [PaginationService],
   templateUrl: './eartag.declare.html',
 })
 
 export class EartagDeclareComponent implements OnInit, OnDestroy {
+
+  public country_code_list: any;
+  public countryCode$;
+  public eartag_add_modal: string = 'none';
+
+  private userInfo$;
+
+  plain_text_input: any;
+  separator = ',';
+  save_manual_eartag_in_progress: boolean = false;
+
   areRecurrentApiCallsActivated = true;
   eartagStatusOverview: EartagStatusOverviewResponse;
   birthDeclaresInProgress: number;
@@ -52,19 +65,25 @@ export class EartagDeclareComponent implements OnInit, OnDestroy {
   constructor(private apiService: NSFOService,
               private fb: FormBuilder,
               private translate: TranslateService,
-              private settings: SettingsService) {
+              private settings: SettingsService,
+              public cache: CacheService) {
     this.form = fb.group({
-      ubn_new_owner: new FormControl('', Validators.compose([UBNValidator.validateWithSevenTest, Validators.required]))
+      ubn_new_owner: new FormControl('', Validators.compose([UBNValidator.validateUbn, Validators.required]))
     });
 
     this.form_single_tag = fb.group({
-      ubn_new_owner: new FormControl('', Validators.compose([UBNValidator.validateWithSevenTest, Validators.required]))
+      ubn_new_owner: new FormControl('', Validators.compose([UBNValidator.validateUbn, Validators.required]))
     });
   }
 
   ngOnInit() {
+    this.getCountryCodeList();
     this.getEartagsList();
-    this.getEartagsSyncStatusOverview();
+
+    if (this.cache.useRvoLogic()) {
+      this.getEartagsSyncStatusOverview();
+    }
+
     this.areRecurrentApiCallsActivated = true;
     this.birthDeclaresInProgress = 0;
     this.birthRevokesInProgress = 0;
@@ -74,6 +93,7 @@ export class EartagDeclareComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.areRecurrentApiCallsActivated = false;
+    this.countryCode$.unsubscribe();
   }
 
   getBirthsInProgressMessage(): string {
@@ -255,8 +275,7 @@ export class EartagDeclareComponent implements OnInit, OnDestroy {
             this.closeModal();
           },
           err => {
-            const error = err;
-            this.error_message = error.message;
+            this.error_message = this.apiService.getErrorMessage(err);
             this.eartag_in_progress = false;
           }
         );
@@ -328,5 +347,79 @@ export class EartagDeclareComponent implements OnInit, OnDestroy {
   public closeModalAll() {
     this.modal_all_display = 'none';
     this.error_message = '';
+  }
+
+  private getCountryCodeList() {
+    this.countryCode$ = this.settings.getCountryList()
+      .subscribe(countryCodeList => {
+        this.country_code_list = countryCodeList[0];
+      });
+  }
+
+  openEartagPlainTextModal() {
+    this.eartag_add_modal = 'block';
+  }
+
+  closeEartagPlainTextModal() {
+    this.eartag_add_modal = 'none';
+  }
+
+  saveManualEartags() {
+    this.isLoading = true;
+
+    const body = {
+      plain_text_input: this.plain_text_input,
+      separator: this.separator
+    };
+
+    this.apiService
+      .doPostRequest(API_URI_GET_EARTAGS, body)
+      .subscribe(
+        (res: JsonResponseModel) => {
+          const eartags = res.result;
+          this.eartags_list = [];
+
+          for (const eartag of eartags) {
+            eartag.uln = eartag.uln_country_code + eartag.uln_number;
+            eartag.ulnLastFive = eartag.uln_number.substr(eartag.uln_number.length - 5);
+            this.eartags_list.push(eartag);
+          }
+          this.eartags_list = _.orderBy(this.eartags_list, ['ulnLastFive']);
+          this.isLoading = false;
+
+          this.closeEartagPlainTextModal();
+        },
+        error => {
+          alert(this.apiService.getErrorMessage(error));
+          this.closeEartagPlainTextModal();
+          this.isLoading = false;
+        }
+      );
+  }
+
+  removeEarTag(id: number) {
+    this.apiService
+      .doDeleteRequest(API_URI_GET_EARTAGS, id)
+      .subscribe(
+        (res: JsonResponseModel) => {
+          const eartags = res.result;
+          this.eartags_list = [];
+
+          for (const eartag of eartags) {
+            eartag.uln = eartag.uln_country_code + eartag.uln_number;
+            eartag.ulnLastFive = eartag.uln_number.substr(eartag.uln_number.length - 5);
+            this.eartags_list.push(eartag);
+          }
+          this.eartags_list = _.orderBy(this.eartags_list, ['ulnLastFive']);
+          this.isLoading = false;
+
+          this.closeEartagPlainTextModal();
+        },
+        error => {
+          alert(this.apiService.getErrorMessage(error));
+          this.closeEartagPlainTextModal();
+          this.isLoading = false;
+        }
+      );
   }
 }

@@ -6,7 +6,7 @@ import {
   API_URI_GET_COMPANY_PROFILE,
   API_URI_GET_STATE_CODES
 } from '../../../shared/services/nsfo-api/nsfo.settings';
-import {FormGroup, FormBuilder, Validators} from '@angular/forms';
+import {FormGroup, FormBuilder, Validators, FormControl} from '@angular/forms';
 import {UtilsService} from '../../../shared/services/utils/utils.services';
 import * as _ from 'lodash';
 import {Company} from '../../../shared/models/company.model';
@@ -45,6 +45,7 @@ export class ProfileCompanyComponent implements OnInit {
       address_postal_code: ['', Validators.required],
       address_city: ['', Validators.required],
       address_state: ['', Validators.required],
+      address_country: [''],
       billing_address_street_name: ['', Validators.required],
       billing_address_address_number: ['', Validators.required],
       billing_address_suffix: [''],
@@ -55,6 +56,7 @@ export class ProfileCompanyComponent implements OnInit {
       veterinarian_company_name: [''],
       veterinarian_telephone_number: [''],
       veterinarian_email_address: [''],
+      billing_address_country: ['']
     });
   }
 
@@ -95,6 +97,7 @@ export class ProfileCompanyComponent implements OnInit {
                 address_postal_code: this.company.address.postal_code,
                 address_city: this.company.address.city,
                 address_state: this.company.address.state,
+                address_country: this.company.address.country.name,
               });
             }
 
@@ -106,6 +109,7 @@ export class ProfileCompanyComponent implements OnInit {
                 billing_address_postal_code: this.company.billing_address.postal_code,
                 billing_address_city: this.company.billing_address.city,
                 billing_address_state: this.company.billing_address.state,
+                billing_address_country: this.company.address.country.name,
               });
             }
 
@@ -117,6 +121,11 @@ export class ProfileCompanyComponent implements OnInit {
                 veterinarian_email_address: this.company.veterinarian.email_address,
               });
             }
+          }
+
+          if (this.company.address.country.code !== 'NL') {
+            this.form.controls['address_state'].disable();
+            this.form.controls['billing_address_state'].disable();
           }
 
           this.updateIsRevealHistoricAnimalsValue();

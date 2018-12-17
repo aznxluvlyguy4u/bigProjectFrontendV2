@@ -14,10 +14,10 @@ export class HistoryErrorInfoComponent {
   }
 
   showErrorInfo(): boolean {
-    return this.historyResponse !== null
-      && this.historyResponse.request_state !== null
-      && this.historyResponse.error_code !== null
-      && this.historyResponse.error_message !== null;
+    return this.historyResponse !== null && this.historyResponse !== undefined
+      && this.historyResponse.request_state !== null && this.historyResponse.request_state !== undefined
+      && this.historyResponse.error_code !== null && this.historyResponse.error_code !== undefined
+      && this.historyResponse.error_message !== null && this.historyResponse.error_message !== undefined;
   }
 
   getErrorData(): string {
@@ -25,6 +25,7 @@ export class HistoryErrorInfoComponent {
       return '';
     }
 
-    return this.translateService.instant('SUCCESSFULLY PROCESSED BY RVO, BUT WITH WARNING') + '. Foutcode ' + this.historyResponse.error_code + ': ' + this.historyResponse.error_message;
+    return this.translateService.instant('SUCCESSFULLY PROCESSED BY RVO, BUT WITH WARNING') +
+      '. Foutcode ' + this.historyResponse.error_code + ': ' + this.historyResponse.error_message;
   }
 }
