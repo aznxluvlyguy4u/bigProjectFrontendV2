@@ -636,6 +636,7 @@
   "YOU HAVE RECEIVED A NEW INVOICE": "U heeft een nieuwe factuur ontvangen",
   "OFFSPRING": "Nakomelingen",
   "FERTILIZER ACCOUNTING": "Mestboekhouding",
+  "BIRTH LIST": "Geboortelijst",
   "CONCATENATE VALUE AND ACCURACY": "Voeg waarde en nauwkeurigheid samen",
   "REFERENCE DATE": "Peildatum",
   "A TIMEOUT OCCURED. TRY AGAIN LATER, PERHAPS WHEN THE SERVER IS LESS BUSY OR TRY IT WITH LESS DATA.": "Een timeout heeft plaatsgevonden. Probeer het later nog eens, mogelijk wanneer de server minder druk is of probeer het met minder data.",
@@ -705,5 +706,6 @@
   "EARTAG ADMINISTRATION": "Oormerkbeheer",
   "UBN OF DEPARTURE AND ARRIVAL ARE IDENTICAL": "UBN van vertrek en aankomst zijn identiek",
   "CHANGE SINGLE OR MULTIPLE UBN": "Wilt u de UBN wijzigen voor alle aanvoeren/afvoeren op dezelfde scandatum waarop het UBN gelijk is aan het UBN dat u nu wijzigt of waar geen UBN is ingevuld?",
+  "PEDIGREE REGISTER": "Stamboek",
   "READER": "Reader"
 }

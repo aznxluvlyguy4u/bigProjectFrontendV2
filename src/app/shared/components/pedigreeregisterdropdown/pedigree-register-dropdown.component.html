@@ -1,0 +1,23 @@
+<span id="component-pedigree-register-input" class="pedigree-register-input-group">
+    <select
+            id="component-abbreviation-input"
+            class="abbreviation"
+            [(ngModel)]="selectedPedigreeRegisterId"
+            title="pedigreeRegister" [disabled]="disabled"
+            (click)="changePedigreeRegister()"
+            [ngClass]="{'ng-dirty': isDirty}"
+    >
+        <option *ngIf="allowNull" [value]=null> </option>
+        <option
+                *ngFor="let pedigreeRegister of getPedigreeRegisters()"
+                value="{{ pedigreeRegister.id }}"
+        >{{ pedigreeRegister.abbreviation }}</option>
+    </select>
+    <button *ngIf="!disabled && showResetButton"
+            type="submit"
+            (click)="reset()"
+            class="button secondary"
+            [disabled]="disabled || hasOriginalValues()"
+            title="{{'RESET TO ORIGINAL VALUE' | translate}}"
+    ><i class="fa fa-fast-backward" aria-hidden="true"></i></button>
+</span>
