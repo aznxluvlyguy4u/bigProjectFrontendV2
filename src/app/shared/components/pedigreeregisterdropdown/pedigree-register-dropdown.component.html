@@ -5,7 +5,7 @@
             [(ngModel)]="selectedPedigreeRegisterId"
             title="pedigreeRegister" [disabled]="disabled"
             (click)="changePedigreeRegister()"
-            [ngClass]="{'ng-dirty': isDirty}"
+            [ngClass]="{'ng-dirty': isDirty,'hide-text': hideSelectedValue}"
     >
         <option *ngIf="allowNull" [value]=null> </option>
         <option

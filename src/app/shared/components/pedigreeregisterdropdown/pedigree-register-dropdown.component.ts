@@ -11,6 +11,7 @@ export class PedigreeRegisterDropdownComponent implements OnInit, OnChanges {
 	@Input() allowNull = false;
 	@Input() showResetButton = true;
 	@Input() disabled = false;
+	@Input() hideSelectedValue = false;
 	@Input() selectedPedigreeRegisterId: number;
 	@Output() pedigreeRegisterChange = new EventEmitter<PedigreeRegister>();
 
