@@ -52,8 +52,15 @@
                 {{ 'DOWNLOAD' | translate }}
               </button>
             </td>
-            <td *ngIf="reportRequest.error_code">
+            <td *ngIf="displayFailedMessage(reportRequest)">
               {{ 'FAILED' | translate }}
+              <i class="fa fa-info-circle"
+                 aria-hidden="true"
+                 title="{{(reportRequest.error_message != null ? reportRequest.error_message : 'DOWNLOAD MODAL FAILED DEFAULT INFO TEXT') | translate}}">
+              </i>
+            </td>
+            <td *ngIf="displayMissingDataMessage(reportRequest)">
+              {{ 'NO DATA' | translate }}
               <i class="fa fa-info-circle"
                  aria-hidden="true"
                  title="{{(reportRequest.error_message != null ? reportRequest.error_message : 'DOWNLOAD MODAL FAILED DEFAULT INFO TEXT') | translate}}">

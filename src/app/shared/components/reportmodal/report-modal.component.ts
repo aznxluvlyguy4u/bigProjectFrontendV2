@@ -174,4 +174,17 @@ export class ReportModalComponent implements OnInit, OnDestroy {
   public hasFailedDownloads() {
     return this.reportService.failedReportsCount > 0;
   }
+
+  public displayFailedMessage(reportRequest: ReportRequest) {
+    return reportRequest != null && reportRequest.error_code !== null && reportRequest.error_code !== undefined
+      && !this.has404ErrorCode(reportRequest.error_code);
+  }
+
+  public displayMissingDataMessage(reportRequest: ReportRequest) {
+    return reportRequest != null && this.has404ErrorCode(reportRequest.error_code);
+  }
+
+  private has404ErrorCode(code: string|int): boolean {
+    return code === 404 || code === '404';
+  }
 }
