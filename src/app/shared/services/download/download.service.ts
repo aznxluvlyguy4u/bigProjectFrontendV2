@@ -5,6 +5,7 @@ import {NSFOService} from '../nsfo-api/nsfo.service';
 import {
   API_URI_GET_FERTILIZER_ACCOUNTING_REPORT,
   API_URI_GET_INBREEDING_COEFFICIENT,
+  API_URI_GET_BIRTH_LIST_REPORT,
   API_URI_GET_LINEAGE_PROOF,
   API_URI_GET_LIVESTOCK_DOCUMENT,
   API_URI_GET_OFFSPRING_REPORT,
@@ -24,7 +25,7 @@ import * as _ from 'lodash';
 import {Animal, LivestockAnimal} from '../../models/animal.model';
 import {Invoice} from '../../models/invoice.model';
 import {JsonResponseModel} from '../../models/json-response.model';
-import {QueryParamSet} from '../../models/query-param-set.model';
+import {QueryParamSetModel} from '../../models/query-param-set.model';
 import {ReportService} from '../report/report.service';
 
 export const INBREEDING_COEFFICIENT_REPORT = 'INBREEDING_COEFFICIENT_REPORT';
@@ -216,7 +217,7 @@ export class DownloadService {
   }
 
   doBirthListReportGetRequest(breedCode?: string, pedigreeRegisterAbbreviation?: string) {
-    let queryParams: QueryParamSet = [];
+    let queryParams: QueryParamSetModel[] = [];
     if (breedCode !== null && breedCode !== undefined) {
       queryParams.push({
         key: QUERY_PARAM_BREED_CODE,
@@ -231,7 +232,7 @@ export class DownloadService {
       });
     }
     const queryParamString = QueryParamsService.getQueryParamsAsString(queryParams);
-    this.doDownloadPostRequestByReportWorker(API_URI_GET_BIRTH_LIST_REPORT + queryParam, {});
+    this.doDownloadPostRequestByReportWorker(API_URI_GET_BIRTH_LIST_REPORT + queryParamString, {});
   }
 
   doInvoicePdfGetRequest(invoice: Invoice) {
