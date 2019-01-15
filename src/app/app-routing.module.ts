@@ -64,6 +64,7 @@ import {ReportFertilizerAccountingComponent} from './report/fertilityAccounting/
 import {ReportOffspringComponent} from './report/offspring/report.offspring.component';
 import {AnimalHealthComponent} from './animal-health/animal-health.component';
 import {AnimalHealthRequestComponent} from './animal-health/request/animal-health.request';
+import {ReportBirthListComponent} from './report/birthlist/report.birth-list.component';
 
 // const appRoutes: Routes = [
 const appRoutes = [
@@ -165,6 +166,7 @@ const appRoutes = [
           {path: 'livestock', component: ReportLivestockComponent},
           // {path: 'fertilizer_accounting', component: ReportFertilizerAccountingComponent},
           {path: 'offspring', component: ReportOffspringComponent},
+          {path: 'birth_list', component: ReportBirthListComponent},
         ]
       },
       {

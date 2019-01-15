@@ -5,6 +5,7 @@ import {NSFOService} from '../nsfo-api/nsfo.service';
 import {
   API_URI_GET_FERTILIZER_ACCOUNTING_REPORT,
   API_URI_GET_INBREEDING_COEFFICIENT,
+  API_URI_GET_BIRTH_LIST_REPORT,
   API_URI_GET_LINEAGE_PROOF,
   API_URI_GET_LIVESTOCK_DOCUMENT,
   API_URI_GET_OFFSPRING_REPORT,
@@ -13,7 +14,9 @@ import {
 import {
   QUERY_PARAM_CONCAT_VALUE_AND_ACCURACY,
   QUERY_PARAM_FILE_TYPE,
-  QUERY_PARAM_REFERENCE_DATE
+  QUERY_PARAM_REFERENCE_DATE,
+  QUERY_PARAM_BREED_CODE,
+  QUERY_PARAM_PEDIGREE_REGISTER
 } from '../../variables/query-param.constant';
 import {UtilsService} from '../utils/utils.services';
 import {QueryParamsService} from '../utils/query-params.service';
@@ -22,6 +25,7 @@ import * as _ from 'lodash';
 import {Animal, LivestockAnimal} from '../../models/animal.model';
 import {Invoice} from '../../models/invoice.model';
 import {JsonResponseModel} from '../../models/json-response.model';
+import {QueryParamSetModel} from '../../models/query-param-set.model';
 import {ReportService} from '../report/report.service';
 
 export const INBREEDING_COEFFICIENT_REPORT = 'INBREEDING_COEFFICIENT_REPORT';
@@ -210,6 +214,25 @@ export class DownloadService {
 
     const queryParam = '?' + QUERY_PARAM_REFERENCE_DATE + '=' + referenceDateString + '&' + QUERY_PARAM_FILE_TYPE + '=' + fileType;
     this.doDownloadGetRequestByReportWorker(API_URI_GET_FERTILIZER_ACCOUNTING_REPORT + queryParam);
+  }
+
+  doBirthListReportGetRequest(breedCode?: string, pedigreeRegisterAbbreviation?: string) {
+    let queryParams: QueryParamSetModel[] = [];
+    if (breedCode !== null && breedCode !== undefined) {
+      queryParams.push({
+        key: QUERY_PARAM_BREED_CODE,
+        value: breedCode
+      });
+    }
+
+    if (pedigreeRegisterAbbreviation !== null && pedigreeRegisterAbbreviation !== undefined) {
+      queryParams.push({
+        key: QUERY_PARAM_PEDIGREE_REGISTER,
+        value: pedigreeRegisterAbbreviation
+      });
+    }
+    const queryParamString = QueryParamsService.getQueryParamsAsString(queryParams);
+    this.doDownloadPostRequestByReportWorker(API_URI_GET_BIRTH_LIST_REPORT + queryParamString, {});
   }
 
   doInvoicePdfGetRequest(invoice: Invoice) {

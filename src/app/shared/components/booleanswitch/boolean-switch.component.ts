@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {Component, EventEmitter, Input, Output, ViewChild} from '@angular/core';
 
 
 @Component({
@@ -9,9 +9,6 @@ export class BooleanSwitchComponent {
   @Input() allowNull = false;
   @Input() boolVal: boolean;
   @Input() disabled = false;
-
-  @Input() hideLabel = true;
-  @Input() label = '';
 
   @Output() boolValChanged = new EventEmitter<boolean>();
 

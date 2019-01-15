@@ -81,6 +81,43 @@ export class ReportModalComponent implements OnInit, OnDestroy {
           return this.translate.instant('REPORT_OFF_SPRING');
         case ReportType.PEDIGREE_REGISTER_OVERVIEW:
           return this.translate.instant('REPORT_PEDIGREE_REGISTER_OVERVIEW');
+      case ReportType.BIRTH_LIST:
+        return this.translate.instant('REPORT_BIRTH_LIST');
+      case ReportType.MEMBERS_AND_USERS_OVERVIEW:
+        return this.translate.instant('REPORT_MEMBERS_AND_USERS_OVERVIEW');
+      case ReportType.ANIMAL_HEALTH_STATUSES:
+        return this.translate.instant('REPORT_ANIMAL_HEALTH_STATUSES');
+      case ReportType.QUICK_VIEW_KPIS:
+        return this.translate.instant('REPORT_QUICK_VIEW_KPIS');
+      case ReportType.COMPANY_REGISTER:
+        return this.translate.instant('REPORT_COMPANY_REGISTER');
+      case ReportType.MARKS_PER_ANIMAL_PER_BIRTH_YEAR:
+        return this.translate.instant('REPORT_MARKS_PER_ANIMAL_PER_BIRTH_YEAR');
+      case ReportType.CLIENT_NOTES_OVERVIEW:
+        return this.translate.instant('REPORT_CLIENT_NOTES_OVERVIEW');
+      case ReportType.STAR_EWES:
+        return this.translate.instant('REPORT_STAR_EWES');
+      case ReportType.COMBI_FORMS_VKI_AND_TRANSPORT_DOCUMENTS:
+        return this.translate.instant('REPORT_COMBI_FORMS_VKI_AND_TRANSPORT_DOCUMENTS');
+      case ReportType.EWE_CARD:
+        return this.translate.instant('REPORT_EWE_CARD');
+      case ReportType.BLOOD_AND_TISSUE_INVESTIGATIONS:
+        return this.translate.instant('REPORT_BLOOD_AND_TISSUE_INVESTIGATIONS');
+      case ReportType.I_AND_R:
+        return this.translate.instant('REPORT_I_AND_R');
+      case ReportType.POPREP_INPUT_FILE:
+        return this.translate.instant('REPORT_POPREP_INPUT_FILE');
+      case ReportType.REASONS_DEPART_AND_LOSS:
+        return this.translate.instant('REPORT_REASONS_DEPART_AND_LOSS');
+      case ReportType.WEIGHTS_PER_BIRTH_YEAR:
+        return this.translate.instant('REPORT_WEIGHTS_PER_BIRTH_YEAR');
+      case ReportType.TREATMENTS:
+        return this.translate.instant('REPORT_TREATMENTS');
+      case ReportType.MODEL_EXPORT_CERTIFICATE:
+        return this.translate.instant('REPORT_MODEL_EXPORT_CERTIFICATE');
+      case ReportType.ACTION_LOG:
+        return this.translate.instant('REPORT_ACTION_LOG');
+        
         default:
           return this.translate.instant('REPORT_UNKNOWN');
     }

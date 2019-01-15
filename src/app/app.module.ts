@@ -53,6 +53,7 @@ import {LivestockComponent} from './livestock/livestock.component';
 import {LivestockMainOverviewComponent} from './livestock/main-overview/main-overview.component';
 import {MessagesComponent} from './notifications/messages.component';
 import {PaginationComponent} from './shared/components/pagination/pagination.component';
+import {PedigreeRegisterDropdownComponent} from './shared/components/pedigreeregisterdropdown/pedigree-register-dropdown.component';
 import {MateComponent} from './nsfo-declares/mate/mate.component';
 import {SelectorComponent} from './shared/components/selector/selector.component';
 import {MateDeclareComponent} from './nsfo-declares/mate/declare/mate.declare';
@@ -71,6 +72,7 @@ import {ReportInbreedingCoefficientComponent} from './report/inbreedingCoefficie
 import {ReportLineageProofComponent} from './report/lineageProof/report.lineageProof';
 import {ReportLivestockComponent} from './report/livestock/report.livestock';
 import {ReportOffspringComponent} from './report/offspring/report.offspring.component';
+import {ReportBirthListComponent} from './report/birthlist/report.birth-list.component';
 import {BooleanSwitchComponent} from './shared/components/booleanswitch/boolean-switch.component';
 import {ReportComponent} from './report/report.component';
 import {ArrivalDeclareComponent} from './rvo-declares/arrival/declare/arrival.declare';
@@ -148,6 +150,7 @@ import { PapaParseModule } from 'ngx-papaparse';
 import {ReportService} from './shared/services/report/report.service';
 import {ReportModalComponent} from './shared/components/reportmodal/report-modal.component';
 import {SortService} from './shared/services/utils/sort.service';
+import {PedigreeRegisterStorage} from './shared/services/storage/pedigree-register.storage';
 import {InvoiceSortPipe} from './invoices/pipes/invoice-sort.pipe';
 
 // AoT requires an exported function for factories
@@ -303,6 +306,7 @@ export function CreateTranslateLoader(http: HttpClient) {
     ReportLineageProofComponent,
     ReportLivestockComponent,
     ReportOffspringComponent,
+    ReportBirthListComponent,
     BooleanSwitchComponent,
     ReportComponent,
     ReportOffspringComponent,
@@ -349,6 +353,7 @@ export function CreateTranslateLoader(http: HttpClient) {
     TagReplacementHistoryComponent,
     TagReplacementComponent,
     ContactComponent,
+    PedigreeRegisterDropdownComponent,
     ProfileComponent,
     ProfileCompanyComponent,
     ProfileEmailComponent,
@@ -427,7 +432,8 @@ export function CreateTranslateLoader(http: HttpClient) {
     Settings,
     SortService,
     Constants,
-    MatSnackBar
+    MatSnackBar,
+    PedigreeRegisterStorage,
   ],
   bootstrap: [AppComponent]
 })

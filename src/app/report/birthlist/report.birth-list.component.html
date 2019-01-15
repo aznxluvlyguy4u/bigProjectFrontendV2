@@ -1,0 +1,61 @@
+<h4 style="text-align: center">{{'BIRTH LIST' | translate }}</h4>
+
+<div class="row">
+  <div class="small-12 medium-4 columns" style="text-align: left">
+    &nbsp;
+  </div>
+  <div class="small-12 medium-5 columns end" style="text-align: left; font-style: italic">
+    {{ 'FILTER MATES BASED ON EWE DATA' | translate }}
+  </div>
+</div>
+<div class="row">
+  <div class="small-3 medium-5 columns" style="text-align: right">
+    <label> &nbsp;
+      <app-boolean-switch
+        [boolVal]="isBreedCodeActive"
+        (boolValChanged)="isBreedCodeActive=$event"
+      ></app-boolean-switch>
+    </label>
+  </div>
+  <div class="small-9 medium-2 columns end"  style="text-align: left">
+    <label>
+      {{ 'BREED CODE' | translate }}
+      <ng-container *ngIf="isBreedCodeActive">
+        <input [disabled]="!isBreedCodeActive" type="text" [(ngModel)]="breedCode" maxlength="25">
+      </ng-container>
+      <ng-container *ngIf="!isBreedCodeActive">
+        <input [disabled]="true" type="text">
+      </ng-container>
+    </label>
+  </div>
+</div>
+<div class="row">
+  <div class="small-3 medium-5 columns" style="text-align: right">
+    <label> &nbsp;
+      <app-boolean-switch
+        [boolVal]="isPedigreeRegisterActive"
+        (boolValChanged)="isPedigreeRegisterActive=$event"
+      ></app-boolean-switch>
+    </label>
+  </div>
+  <div class="small-9 medium-2 columns end"  style="text-align: left">
+      <label>{{ 'PEDIGREE REGISTER' | translate }}
+        <app-pedigree-register-dropdown
+          [showResetButton]=false
+          [disabled]="!isPedigreeRegisterActive"
+          [hideSelectedValue]="!isPedigreeRegisterActive"
+          (pedigreeRegisterChange)="pedigreeRegister=$event"
+        ></app-pedigree-register-dropdown>
+      </label>
+  </div>
+</div>
+<div class="row">
+  <div class="small-12 medium-5 columns"  style="text-align: right">
+    &nbsp;
+  </div>
+  <div class="small-12 medium-2 columns end"  style="text-align: left">
+    <app-download-button
+      (click)="download()"
+    ></app-download-button>
+  </div>
+</div>

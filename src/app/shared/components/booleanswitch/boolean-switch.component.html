@@ -1,15 +1,9 @@
-<label class="left">
-  <span *ngIf="!hideLabel">{{ label | translate }}</span>
-  <div class="switch large">
-    <input class="switch-input" id="yes-no" type="checkbox" name="boolean-switch" [(ngModel)]="boolVal"
-           (click)="toggle()">
-    <label class="switch-paddle" for="yes-no">
-            <span class="switch-active" aria-hidden="true"
-                  value="true"
-            >{{ 'YES' | translate }}</span>
-      <span class="switch-inactive" aria-hidden="true"
-            value="false"
-      >{{ 'NO' | translate }}</span>
-    </label>
-  </div>
-</label>
+<div class="switch large" (click)="toggle()">
+  <input class="switch-input" id="yes-no" type="checkbox" name="boolean-switch"
+         [checked]="boolVal">
+  <label class="switch-paddle">
+    <span class="show-for-sr"> {{ boolVal| json}} TEST </span>
+    <span class="switch-active" aria-hidden="true">{{ 'YES' | translate }}</span>
+    <span class="switch-inactive" aria-hidden="true">{{ 'NO' | translate }}</span>
+  </label>
+</div>
