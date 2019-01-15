@@ -184,7 +184,7 @@ export class ReportModalComponent implements OnInit, OnDestroy {
     return reportRequest != null && this.has404ErrorCode(reportRequest.error_code);
   }
 
-  private has404ErrorCode(code: string|int): boolean {
+  private has404ErrorCode(code: string|number): boolean {
     return code === 404 || code === '404';
   }
 }
