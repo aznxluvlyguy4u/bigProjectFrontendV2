@@ -25,14 +25,12 @@ export class QueryParamsService {
 
     for (let set of sets) {
       let value = set.value;
-      console.log(set, value)
       if (value !== undefined && value !== null){
         const prefix = isFirstQueryParam ? '?' : '&';
         isFirstQueryParam = false;
 
         const formattedValue = typeof value === 'string' ? value.toLowerCase() : value;
         result = result + prefix + set.key + '=' + formattedValue;
-        console.log(result);
       }
     }
 
@@ -42,7 +40,6 @@ export class QueryParamsService {
   public static hasNonNullQueryParams(sets: QueryParamSetModel[]): boolean {
     for (let set of sets) {
       let value = set.value;
-      console.log(set, value);
       if (value !== undefined && value !== null){
         return true;
       }
