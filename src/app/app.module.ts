@@ -148,7 +148,6 @@ import { PapaParseModule } from 'ngx-papaparse';
 import {ReportService} from './shared/services/report/report.service';
 import {ReportModalComponent} from './shared/components/reportmodal/report-modal.component';
 import {SortService} from './shared/services/utils/sort.service';
-import {ArrayUtilService} from './shared/services/utils/array-util.service';
 import {PedigreeRegisterStorage} from './shared/services/storage/pedigree-register.storage';
 import {InvoiceSortPipe} from './invoices/pipes/invoice-sort.pipe';
 
@@ -328,7 +327,6 @@ export function CreateTranslateLoader(http: HttpClient) {
       ReportService,
     Settings,
     SortService,
-    ArrayUtilService,
     Constants,
     MatSnackBar,
     PedigreeRegisterStorage,
