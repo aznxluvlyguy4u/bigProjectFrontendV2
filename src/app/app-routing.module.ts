@@ -183,8 +183,8 @@ const appRoutes = [
   },
   {path: 'login', component: LoginComponent},
   {path: 'ghostlogin/:ghostToken/:accessToken', component: GhostLoginComponent},
-  {path: 'loading', component: LoadingComponent},
-  {path: 'downloaded', component: DownloadLandingPageComponent},
+  {path: 'loading/:encodedUrl', component: LoadingComponent},
+  {path: 'downloaded/:encodedUrl', component: DownloadLandingPageComponent},
   {path: '', redirectTo: '/main', pathMatch: 'full'}
 ];
 

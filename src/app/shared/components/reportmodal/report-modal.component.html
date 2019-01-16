@@ -44,7 +44,7 @@
               <i class="fa fa-spinner fa-pulse fa-2x fa-fw"
                  title="{{ 'YOUR FILE IS NOW BEING GENERATED' | translate }}"></i>
             </td>
-            <td *ngIf="reportRequest.finished_at && !reportRequest.error_code">
+            <td *ngIf="reportRequest.finished_at != null && reportRequest.download_url != null && !reportRequest.error_code">
               <button type="button"
                       class="button primary pull-left"
                       aria-label="Download file"
