@@ -45,12 +45,14 @@
                  title="{{ 'YOUR FILE IS NOW BEING GENERATED' | translate }}"></i>
             </td>
             <td *ngIf="reportRequest.finished_at != null && reportRequest.download_url != null && !reportRequest.error_code">
-              <button type="button"
-                      class="button primary pull-left"
-                      aria-label="Download file"
-                      (click)="downloadFile(reportRequest)">
+                <a
+                  class="button primary pull-left margin-top-1"
+                  aria-label="Download file"
+                  href="{{reportRequest.download_url}}"
+                  target="_blank"
+                  >
                 {{ 'DOWNLOAD' | translate }}
-              </button>
+                </a>
             </td>
             <td *ngIf="displayFailedMessage(reportRequest)">
               {{ 'FAILED' | translate }}
