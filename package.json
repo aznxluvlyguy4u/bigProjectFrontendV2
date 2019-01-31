@@ -8,6 +8,8 @@
     "deploy:reader": "ng build --configuration=staging && gulp deploy:reader",
     "deploy:staging": "ng build --configuration=staging && gulp deploy:staging",
     "deploy:prod": "ng build --configuration=production && gulp deploy:prod",
+    "deploy:staging:upload-only": "gulp deploy:staging",
+    "deploy:prod:upload-only": "gulp deploy:prod",
     "deploy:staging:maintenance": "gulp deploy:staging:maintenance",
     "deploy:prod:maintenance": "gulp deploy:prod:maintenance",
     "test": "ng test",
