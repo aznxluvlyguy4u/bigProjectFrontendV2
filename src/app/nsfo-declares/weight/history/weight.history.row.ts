@@ -36,21 +36,19 @@ export class WeightHistoryRowComponent {
       this.isSending = true;
       const newWeight = _.cloneDeep(this.weight);
       newWeight.measurement_date = this.form.get('measurement_date').value;
-      newWeight.weight = this.form.get('weight').value;
 
       this.nsfo
         .doPutRequest(API_URI_CHANGE_WEIGHT + '/' + newWeight.message_id, newWeight)
         .subscribe(
           res => {
             this.weight.measurement_date = moment(newWeight.measurement_date).format(this.settings.getViewDateFormat());
-            this.weight.request_state = 'OPEN';
             this.editMode = false;
             this.isSending = false;
           },
           err => {
-            const error = err;
+            const error = err.error;
             this.showError.emit(error);
-            this.editMode = false;
+            this.cancelEditing();
             this.isSending = false;
           }
         );
