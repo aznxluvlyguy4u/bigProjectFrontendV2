@@ -727,6 +727,7 @@
   "PEDIGREE REGISTER": "Stamboek",
   "FILTER MATES BASED ON EWE DATA": "Filter dekkingen gebaseerd op ooigegevens",
   "FOUND ANIMAL DOES NOT BELONG TO CLIENT": "Dit dier is niet meer in uw bezit",
+  "DECLARE_BELONGS_TO_OTHER_ACCOUNT": "De melding behoort tot een andere account",
   "NO DATA": "Geen data",
   "READER": "Reader"
 }
