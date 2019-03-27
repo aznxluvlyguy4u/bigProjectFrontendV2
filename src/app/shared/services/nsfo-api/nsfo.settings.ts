@@ -114,6 +114,7 @@ export const API_URI_GET_LIVESTOCK_DOCUMENT = '/v1/reports/livestock';
 export const API_URI_GET_OFFSPRING_REPORT = '/v1/reports/offspring';
 export const API_URI_GET_FERTILIZER_ACCOUNTING_REPORT = '/v1/reports/fertilizer-accounting';
 export const API_URI_GET_BIRTH_LIST_REPORT = '/v1/reports/birth-list';
+export const API_URI_GET_COMPANY_REGISTER_REPORT = '/v1/reports/company-register';
 
 // Pedigree Register
 export const API_URI_GET_PEDIGREE_REGISTERS = '/v1/pedigreeregisters';

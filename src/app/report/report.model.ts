@@ -4,4 +4,5 @@ export const REPORT_OPTIONS_LIST = [
   {url: '/main/report/offspring', name: 'OFFSPRING', nl_order: 2},
   // {url: '/main/report/fertilizer_accounting', name: 'FERTILIZER ACCOUNTING', nl_order: 3},
   {url: '/main/report/birth_list', name: 'BIRTH LIST', nl_order: 4},
+  {url: '/main/report/company_register', name: 'COMPANY REGISTER', nl_order: 5}
 ];

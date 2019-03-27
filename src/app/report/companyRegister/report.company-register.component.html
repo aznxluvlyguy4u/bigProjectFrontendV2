@@ -1,0 +1,56 @@
+<h4 style="text-align: center">{{'COMPANY REGISTER' | translate }}</h4>
+
+<div class="row">
+  <div class="small-12 medium-4 columns" style="text-align: left">
+    &nbsp;
+  </div>
+</div>
+
+
+<form [formGroup]="form">
+  <!--DEPART DATE-->
+  <div class="row">
+    <div class="large-4 columns small-centered">
+      <label>
+        {{ 'SAMPLE DATE' | translate }}
+        <app-datepicker   [formCtrl]="form.controls['sample_date']"
+                          [viewFormat]="view_date_format"
+                          [modelFormat]="view_date_format"></app-datepicker>
+        <div [hidden]="form.controls['sample_date'].valid" class="input-error-msg pull-right">{{ 'FILL IN THE DEPART DATE' | translate }}
+        </div>
+      </label>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="large-4 columns small-centered">
+      <label>
+        {{ 'SELECT FILETYPE' | translate }}
+        <select [(formControl)]="form.controls['selected_file_type']">
+          <option
+            *ngFor="let file_type of getFileTypesList()"
+            [ngValue]="file_type"
+          >{{ file_type }}
+          </option>
+        </select>
+      </label>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="small-12 medium-5 columns"  style="text-align: right">
+      &nbsp;
+    </div>
+    <div class="small-12 medium-2 columns end"  style="text-align: left">
+      <app-download-button
+        (click)="download()"
+      ></app-download-button>
+    </div>
+  </div>
+</form>
+
+
+
+
+
+
