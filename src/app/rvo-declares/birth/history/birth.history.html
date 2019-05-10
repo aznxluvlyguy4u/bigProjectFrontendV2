@@ -29,13 +29,24 @@
   <th class="text-center">{{ 'ABORTED' | translate }}</th>
   <th class="text-center">{{ 'PSEUDOPREGNANCY' | translate }}</th>
   <th>{{ 'STATUS' | translate }}</th>
-  <th></th>
+  <th>
+    <ng-container *ngIf="showForcedRevokeOption()">
+    {{ 'FORCED REVOKE' | translate }} <i class="fa fa-info-circle" aria-hidden="true"
+                                         title="{{ ('FORCED REVOKE INFO TOOLTIP TEXT' | translate) }}"></i>
+    <app-boolean-switch
+      [isLarge]="false"
+      [boolVal]="allowForcedRevokes"
+      (boolValChanged)="allowForcedRevokes = $event"
+    >
+    </app-boolean-switch>
+    </ng-container>
+  </th>
   </tr>
   </thead>
   <tbody>
   <tr app-birth-history-row
     *ngFor="let litter of litters | birthHistoryFilter: searchValue | paginate: {itemsPerPage: 10, currentPage: page}; let i = index"
-    (revokeLitter)="selectLitter($event)" [litter-object]="litter"></tr>
+    (revokeLitter)="selectLitter($event)" [litter-object]="litter" [allow-forced-revokes]="allowForcedRevokes"></tr>
   </tbody>
 </table>
 

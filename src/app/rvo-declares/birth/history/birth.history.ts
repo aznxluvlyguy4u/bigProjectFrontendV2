@@ -11,6 +11,7 @@ import {Settings} from '../../../shared/variables/settings';
 import {PaginationService} from 'ngx-pagination';
 import {JsonResponseModel} from '../../../shared/models/json-response.model';
 import {CacheService} from '../../../shared/services/settings/cache.service';
+import {SettingsService} from '../../../shared/services/settings/settings.service';
 
 @Component({
   providers: [PaginationService],
@@ -26,12 +27,16 @@ export class BirthHistoryComponent implements OnInit {
   public searchValue: string;
 
   public isLoading: boolean;
+  public allowForcedRevokes: boolean;
 
-  constructor(private nsfo: NSFOService, private cache: CacheService) {
-  }
+  constructor(private cache: CacheService,
+              private nsfo: NSFOService,
+              private settingsService: SettingsService
+  ) {}
 
   ngOnInit() {
     this.getBirthHistoryList();
+    this.allowForcedRevokes = false;
   }
 
   public getBirthHistoryList() {
@@ -86,4 +91,7 @@ export class BirthHistoryComponent implements OnInit {
 
   }
 
+  public showForcedRevokeOption(): boolean {
+    return this.settingsService.isAdmin();
+  }
 }
