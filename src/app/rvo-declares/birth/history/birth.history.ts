@@ -71,6 +71,7 @@ export class BirthHistoryComponent implements OnInit {
   public revokeLitter() {
     const originalRequestState = this.selectedLitter.request_state;
     this.selectedLitter.request_state = 'REVOKING';
+    this.selectedLitter.isRevokeButtonClicked = true;
 
     const jsonpayload = {
       litter_id: this.selectedLitter.litter_id
@@ -85,6 +86,7 @@ export class BirthHistoryComponent implements OnInit {
         error => {
           alert(this.nsfo.getErrorMessage(error));
           this.selectedLitter.request_state = originalRequestState;
+          this.selectedLitter.isRevokeButtonClicked = false;
         }
       );
     this.closeModal();

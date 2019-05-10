@@ -96,10 +96,10 @@
 
   <span
     *ngIf="isRevokeButtonActive()">
-        <button *ngIf="allowStandardRevoke()"
+        <button *ngIf="allowStandardRevoke()" [disabled]="litter.isRevokeButtonClicked"
                 class="tiny alert button" (click)="sendRevokeRequest()"
         > {{ 'REVOKE' | translate }} </button>
-        <button *ngIf="!allowStandardRevoke()" title="{{ ('FORCED REVOKE' | translate) }}"
+        <button *ngIf="!allowStandardRevoke()" [disabled]="litter.isRevokeButtonClicked" title="{{ ('FORCED REVOKE' | translate) }}"
                 class="tiny alert button" (click)="sendRevokeRequest()"> {{ 'REVOKE' | translate }}
           <i class="fa fa-exclamation-triangle" aria-hidden="true" *ngIf="!allowStandardRevoke()"></i>
         </button>
