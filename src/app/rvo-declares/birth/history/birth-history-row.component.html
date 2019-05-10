@@ -81,7 +81,7 @@
   <label class="show-for-small-only">{{ 'STATUS' | translate }}</label>
   <span [ngSwitch]="litter.request_state">
         <ng-template [ngSwitchCase]="'OPEN'"> {{ 'PROCESSING' | translate }} </ng-template>
-        <ng-template [ngSwitchCase]="'REVOKING'"> {{ 'PROCESSING' | translate }} </ng-template>
+        <ng-template [ngSwitchCase]="'REVOKING'"> {{ 'REVOKING' | translate }} </ng-template>
         <ng-template [ngSwitchCase]="'FINISHED'"> {{ 'SENT' | translate }} </ng-template>
         <ng-template [ngSwitchCase]="'FINISHED_WITH_WARNING'"> {{ 'SENT' | translate }} </ng-template>
         <ng-template [ngSwitchCase]="'REVOKED'"> {{ 'REVOKED' | translate }} </ng-template>
@@ -95,8 +95,14 @@
     </span>
 
   <span
-    *ngIf="litter.request_state != 'OPEN' && litter.request_state != 'REVOKING' && litter.request_state != 'REVOKED'">
-        <button class="tiny alert button" (click)="sendRevokeRequest()">{{ 'REVOKE' | translate }}</button>
+    *ngIf="isRevokeButtonActive()">
+        <button *ngIf="allowStandardRevoke()" [disabled]="litter.isRevokeButtonClicked"
+                class="tiny alert button" (click)="sendRevokeRequest()"
+        > {{ 'REVOKE' | translate }} </button>
+        <button *ngIf="!allowStandardRevoke()" [disabled]="litter.isRevokeButtonClicked" title="{{ ('FORCED REVOKE' | translate) }}"
+                class="tiny alert button" (click)="sendRevokeRequest()"> {{ 'REVOKE' | translate }}
+          <i class="fa fa-exclamation-triangle" aria-hidden="true" *ngIf="!allowStandardRevoke()"></i>
+        </button>
     </span>
 </td>
 

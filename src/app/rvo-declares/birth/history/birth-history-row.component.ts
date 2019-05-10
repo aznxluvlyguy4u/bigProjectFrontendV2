@@ -7,6 +7,7 @@ import {Settings} from '../../../shared/variables/settings';
 import {NSFOService} from '../../../shared/services/nsfo-api/nsfo.service';
 import {API_URI_GET_BIRTH_DETAILS} from '../../../shared/services/nsfo-api/nsfo.settings';
 import {JsonResponseModel} from '../../../shared/models/json-response.model';
+import {SettingsService} from '../../../shared/services/settings/settings.service';
 
 declare var $;
 
@@ -17,14 +18,17 @@ declare var $;
 
 export class BirthHistoryRowComponent {
   @Input('litter-object') litter: Litter;
+  @Input('allow-forced-revokes') allowForcedRevokes = false;
   @Output() revokeLitter = new EventEmitter();
   public modalDisplay = 'none';
   public litterDetails: LitterDetails = new LitterDetails();
 
   public isLoadingDetails: boolean;
 
-  constructor(private settings: Settings, private nsfo: NSFOService) {
-  }
+  constructor(private nsfo: NSFOService,
+              private settings: Settings,
+              private settingsService: SettingsService
+  ) {}
 
   private sendRevokeRequest() {
     this.revokeLitter.emit(this.litter);
@@ -76,5 +80,39 @@ export class BirthHistoryRowComponent {
       return 'YES';
     }
     return 'NO';
+  }
+
+  public isRevokeButtonActive(): boolean {
+    return this.allowStandardRevoke() || this.allowForcedRevokesByButton();
+  }
+
+  private allowStandardRevoke(): boolean {
+    return this.litter.request_state !== 'OPEN' &&
+           this.litter.request_state !== 'REVOKING' &&
+           this.litter.request_state !== 'REVOKED'
+      ;
+  }
+
+  private allowForcedRevokesByButton(): boolean {
+    return this.allowForcedRevokes &&
+           this.settingsService.isAdmin() &&
+           this.litter.request_state !== 'REVOKED' &&
+           this.isLitterCreationOneDayOldOrOlder()
+      ;
+  }
+
+  private isLitterCreationOneDayOldOrOlder(): boolean {
+    const logDateString = this.litter.log_date;
+    if (logDateString !== undefined && logDateString !== null && logDateString !== '') {
+      const logDate = new Date(logDateString);
+      return logDate <= this.yesterday();
+    }
+    return true;
+  }
+
+  private yesterday(): Date {
+    const maxLogDate = new Date();
+    maxLogDate.setDate(maxLogDate.getDate() - 1);
+    return maxLogDate;
   }
 }
