@@ -9,6 +9,7 @@ export class BooleanSwitchComponent {
   @Input() allowNull = false;
   @Input() boolVal: boolean;
   @Input() disabled = false;
+  @Input() isLarge = true;
 
   @Output() boolValChanged = new EventEmitter<boolean>();
 

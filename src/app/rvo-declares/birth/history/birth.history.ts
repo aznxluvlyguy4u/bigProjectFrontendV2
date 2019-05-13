@@ -11,6 +11,7 @@ import {Settings} from '../../../shared/variables/settings';
 import {PaginationService} from 'ngx-pagination';
 import {JsonResponseModel} from '../../../shared/models/json-response.model';
 import {CacheService} from '../../../shared/services/settings/cache.service';
+import {SettingsService} from '../../../shared/services/settings/settings.service';
 
 @Component({
   providers: [PaginationService],
@@ -26,12 +27,18 @@ export class BirthHistoryComponent implements OnInit {
   public searchValue: string;
 
   public isLoading: boolean;
+  public allowForcedRevokes: boolean;
+  public allowResendOpenDeclares: boolean;
 
-  constructor(private nsfo: NSFOService, private cache: CacheService) {
-  }
+  constructor(private cache: CacheService,
+              private nsfo: NSFOService,
+              private settingsService: SettingsService
+  ) {}
 
   ngOnInit() {
     this.getBirthHistoryList();
+    this.allowForcedRevokes = false;
+    this.allowResendOpenDeclares = false;
   }
 
   public getBirthHistoryList() {
@@ -66,6 +73,7 @@ export class BirthHistoryComponent implements OnInit {
   public revokeLitter() {
     const originalRequestState = this.selectedLitter.request_state;
     this.selectedLitter.request_state = 'REVOKING';
+    this.selectedLitter.isRevokeButtonClicked = true;
 
     const jsonpayload = {
       litter_id: this.selectedLitter.litter_id
@@ -80,10 +88,18 @@ export class BirthHistoryComponent implements OnInit {
         error => {
           alert(this.nsfo.getErrorMessage(error));
           this.selectedLitter.request_state = originalRequestState;
+          this.selectedLitter.isRevokeButtonClicked = false;
         }
       );
     this.closeModal();
 
   }
 
+  public showForcedRevokeOption(): boolean {
+    return this.settingsService.isAdmin();
+  }
+
+  public showResendDeclaresOption(): boolean {
+    return this.settingsService.isAdmin();
+  }
 }
