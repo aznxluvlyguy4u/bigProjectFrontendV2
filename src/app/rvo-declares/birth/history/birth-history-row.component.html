@@ -79,13 +79,21 @@
 <!--STATUS-->
 <td>
   <label class="show-for-small-only">{{ 'STATUS' | translate }}</label>
-  <span [ngSwitch]="litter.request_state">
+  <button *ngIf="displayResendOpenDeclareButton()" [disabled]="!isResendButtonActive"
+          class="tiny primary button" (click)="resendOpenBirthRequests()"
+  >
+    <span *ngIf="isProcessingResend"><i class="fa fa-spinner fa-pulse fa-fw"></i></span>
+    <span *ngIf="!isProcessingResend">{{ 'RESEND OPEN DECLARES' | translate }}</span>
+  </button>
+  <span [ngSwitch]="litter.request_state" *ngIf="!displayResendOpenDeclareButton()">
         <ng-template [ngSwitchCase]="'OPEN'"> {{ 'PROCESSING' | translate }} </ng-template>
         <ng-template [ngSwitchCase]="'REVOKING'"> {{ 'REVOKING' | translate }} </ng-template>
         <ng-template [ngSwitchCase]="'FINISHED'"> {{ 'SENT' | translate }} </ng-template>
         <ng-template [ngSwitchCase]="'FINISHED_WITH_WARNING'"> {{ 'SENT' | translate }} </ng-template>
         <ng-template [ngSwitchCase]="'REVOKED'"> {{ 'REVOKED' | translate }} </ng-template>
     </span>
+  <i class="fa fa-info-circle" aria-hidden="true" *ngIf="resendResultMessage != null"
+     title="{{ resendResultMessage | translate }}"></i>
 </td>
 
 <!--ROW BUTTONS-->

@@ -28,6 +28,7 @@ export class BirthHistoryComponent implements OnInit {
 
   public isLoading: boolean;
   public allowForcedRevokes: boolean;
+  public allowResendOpenDeclares: boolean;
 
   constructor(private cache: CacheService,
               private nsfo: NSFOService,
@@ -37,6 +38,7 @@ export class BirthHistoryComponent implements OnInit {
   ngOnInit() {
     this.getBirthHistoryList();
     this.allowForcedRevokes = false;
+    this.allowResendOpenDeclares = false;
   }
 
   public getBirthHistoryList() {
@@ -94,6 +96,10 @@ export class BirthHistoryComponent implements OnInit {
   }
 
   public showForcedRevokeOption(): boolean {
+    return this.settingsService.isAdmin();
+  }
+
+  public showResendDeclaresOption(): boolean {
     return this.settingsService.isAdmin();
   }
 }
