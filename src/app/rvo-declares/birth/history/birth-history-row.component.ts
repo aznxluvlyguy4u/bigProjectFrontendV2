@@ -5,9 +5,11 @@ import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {Litter, LitterDetails} from '../birth.model';
 import {Settings} from '../../../shared/variables/settings';
 import {NSFOService} from '../../../shared/services/nsfo-api/nsfo.service';
-import {API_URI_GET_BIRTH_DETAILS} from '../../../shared/services/nsfo-api/nsfo.settings';
+import {API_URI_DECLARE_BIRTH, API_URI_GET_BIRTH_DETAILS} from '../../../shared/services/nsfo-api/nsfo.settings';
 import {JsonResponseModel} from '../../../shared/models/json-response.model';
 import {SettingsService} from '../../../shared/services/settings/settings.service';
+import {ResendDeclareModel} from '../../../shared/models/resend-declare.model';
+import {HttpErrorResponse} from '@angular/common/http';
 
 declare var $;
 
@@ -18,6 +20,7 @@ declare var $;
 
 export class BirthHistoryRowComponent {
   @Input('litter-object') litter: Litter;
+  @Input('allow-resend-open-declares') allowResendOpenDeclares: boolean;
   @Input('allow-forced-revokes') allowForcedRevokes = false;
   @Output() revokeLitter = new EventEmitter();
   public modalDisplay = 'none';
@@ -25,10 +28,18 @@ export class BirthHistoryRowComponent {
 
   public isLoadingDetails: boolean;
 
+  public isResendButtonActive: boolean;
+  public isProcessingResend: boolean;
+  public resendResult: ResendDeclareModel;
+  public resendResultMessage: string;
+
   constructor(private nsfo: NSFOService,
               private settings: Settings,
               private settingsService: SettingsService
-  ) {}
+  ) {
+    this.isResendButtonActive = true;
+    this.isProcessingResend = false;
+  }
 
   private sendRevokeRequest() {
     this.revokeLitter.emit(this.litter);
@@ -50,6 +61,29 @@ export class BirthHistoryRowComponent {
           this.isLoadingDetails = false;
         }
       );
+  }
+
+  public resendOpenBirthRequests() {
+    this.isResendButtonActive = false;
+    this.isProcessingResend = true;
+    this.nsfo.doPostRequest(API_URI_DECLARE_BIRTH + '/' + this.litter.litter_id, {})
+      .subscribe(
+        (res: JsonResponseModel) => {
+          this.resendResult = res.result;
+          this.isProcessingResend = false;
+        },
+        error => {
+          alert(this.nsfo.getErrorMessage(error));
+          if (error.status === 400 || error.status === 404) {
+            this.resendResultMessage = error.error.result.message;
+          }
+          this.isProcessingResend = false;
+        }
+      );
+  }
+
+  public displayResendOpenDeclareButton(): boolean {
+    return this.allowResendOpenDeclares && this.litter.request_state === 'OPEN' && this.resendResult  == null;
   }
 
   public openModal() {
@@ -86,7 +120,7 @@ export class BirthHistoryRowComponent {
     return this.allowStandardRevoke() || this.allowForcedRevokesByButton();
   }
 
-  private allowStandardRevoke(): boolean {
+  public allowStandardRevoke(): boolean {
     return this.litter.request_state !== 'OPEN' &&
            this.litter.request_state !== 'REVOKING' &&
            this.litter.request_state !== 'REVOKED'
