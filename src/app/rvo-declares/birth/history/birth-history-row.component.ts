@@ -83,7 +83,11 @@ export class BirthHistoryRowComponent {
   }
 
   public displayResendOpenDeclareButton(): boolean {
-    return this.allowResendOpenDeclares && this.litter.request_state === 'OPEN' && this.resendResult  == null;
+    return this.allowResendOpenDeclares &&
+      this.litter.request_state === 'OPEN' &&
+      this.resendResult  == null &&
+      this.isLitterCreationOneDayOldOrOlder()
+      ;
   }
 
   public openModal() {
