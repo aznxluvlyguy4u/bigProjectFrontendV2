@@ -12,7 +12,7 @@ import {
   API_URI_GET_ANIMAL_DETAILS,
   API_URI_GET_COLLAR_COLORS,
   API_URI_GET_COUNTRY_CODES,
-  API_URI_GET_EARTAGS,
+  API_URI_GET_EARTAGS, API_URI_MEASUREMENTS,
 } from '../../shared/services/nsfo-api/nsfo.settings';
 import {FormControl, FormGroup, FormBuilder, Validators} from '@angular/forms';
 import {DateValidator} from '../../shared/validation/nsfo-validation';
@@ -58,16 +58,19 @@ export class LivestockDetailComponent {
   public edit_mode = false;
   public gender_edit_mode = false;
   public nickname_edit_mode = false;
+  public birth_measurements_edit_mode = false;
   public changeEnabled = false;
   public changed_animal_info = false;
   public changed_animal_info_error = false;
   public gender_changed_animal_info_error = false;
   public nickname_changed_animal_info_error = false;
+  public birth_measurements_changed_animal_info_error = false;
   public in_progress = false;
   public sub: any;
   public error_message = 'AN ERROR OCCURRED WHILE SAVING';
   public gender_change_error = '';
   public nickname_change_error = '';
+  public birth_measurements_change_error = '';
   public measurementDates: string[] = [];
   public measurementWeights: number[] = [];
   public logs: DeclareLog[] = [];
@@ -473,6 +476,52 @@ export class LivestockDetailComponent {
       );
   }
 
+  public sendBirthMeasurementsChangeRequest() {
+    if (!this.isAdmin) {
+      return;
+    }
+    this.birth_measurements_edit_mode = false;
+    this.birth_measurements_changed_animal_info_error = false;
+    this.birth_measurements_change_error = '';
+    this.changeEnabled = false;
+    this.changed_animal_info = false;
+    this.changed_animal_info_error = false;
+
+    const newBirthWeight = this.animal.measurement.birth_weight;
+    const newTailLength = this.animal.measurement.tail_length;
+
+    const request = {
+      'birth_weight': newBirthWeight,
+      'tail_length': newTailLength,
+      'reset_measurement_date_using_date_of_birth': false
+    };
+
+    if (newBirthWeight === null || newBirthWeight === undefined || newBirthWeight === '') {
+      delete request.birth_weight;
+    }
+
+    if (newTailLength === null || newTailLength === undefined || newTailLength === '') {
+      delete request.tail_length;
+    }
+
+    this.apiService
+      .doPutRequest(API_URI_MEASUREMENTS + '/' + this.animal.id + '/birth-measurements', request)
+      .subscribe(
+        res => {
+          this.changed_animal_info = true;
+          this.changeEnabled = true;
+        },
+        err => {
+          this.birth_measurements_changed_animal_info_error = true;
+          this.changeEnabled = true;
+          this.birth_measurements_change_error = this.apiService.getErrorMessage(err);
+          this.animal.measurement.birth_weight = this.temp_animal.measurement.birth_weight;
+          this.animal.measurement.tail_length = this.temp_animal.measurement.tail_length;
+          alert(this.birth_measurements_change_error);
+        }
+      );
+  }
+
   public sendChangeRequest() {
     if (!this.animal.is_own_animal && !this.isAdmin) {
       return;
@@ -531,6 +580,17 @@ export class LivestockDetailComponent {
     this.gender_edit_mode = !this.gender_edit_mode;
 
     if (!this.gender_edit_mode) {
+      this.animal = _.clone(this.temp_animal);
+    }
+  }
+
+  public toggleBirthMeasurementsEditMode() {
+    if (!this.isAdmin) {
+      return;
+    }
+    this.birth_measurements_edit_mode = !this.birth_measurements_edit_mode;
+
+    if (!this.birth_measurements_edit_mode) {
       this.animal = _.clone(this.temp_animal);
     }
   }
