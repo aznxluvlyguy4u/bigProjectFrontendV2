@@ -329,13 +329,16 @@
             </div>
           </div>
 
+          <hr *ngIf="birth_measurements_edit_mode">
+
           <!-- BIRTH WEIGHT -->
           <div class="row">
             <div class="medium-6 columns">
               <label class="middle"> {{ 'BIRTH WEIGHT' | translate }} (kg)</label>
             </div>
             <div class="medium-6 columns">
-              <input type="text" [(ngModel)]="animal.measurement.birth_weight" [disabled]="true">
+              <input type="number" [(ngModel)]="animal.measurement.birth_weight" [disabled]="!birth_measurements_edit_mode"
+                     min="0" max="9.9" step="0.1">
             </div>
           </div>
 
@@ -355,9 +358,32 @@
               <label class="middle"> {{ 'TAIL LENGTH' | translate }} {{ '(CM)' | translate }} </label>
             </div>
             <div class="medium-6 columns">
-              <input type="text" [(ngModel)]="animal.measurement.tail_length" [disabled]="true">
+              <input type="number" [(ngModel)]="animal.measurement.tail_length" [disabled]="!birth_measurements_edit_mode"
+                     min="0" max="30" step="0.01"
+              >
             </div>
           </div>
+
+          <div class="row" *ngIf="changeEnabled && isAdmin">
+            <div class="medium-offset-6 medium-6 columns end">
+              <button type="button" *ngIf="birth_measurements_edit_mode" (click)="toggleBirthMeasurementsEditMode()"
+                      class="tiny alert button pull-right">{{ 'CANCEL' | translate }}
+              </button>
+              <button type="button" *ngIf="birth_measurements_edit_mode" (click)="sendBirthMeasurementsChangeRequest()"
+                      class="tiny primary button pull-right">{{ 'SAVE' | translate }}
+              </button>
+              <button type="button" *ngIf="!birth_measurements_edit_mode" [disabled]="!changeEnabled" (click)="toggleBirthMeasurementsEditMode()"
+                      class="tiny primary button pull-right">
+                            <span *ngIf="isLoading">
+                                <i class="fa fa-gear fa-spin fa-fw"></i>
+                            </span>
+                <span *ngIf="!isLoading">
+                                {{ 'CHANGE' | translate }}
+                            </span>
+              </button>
+            </div>
+          </div>
+
         </div>
       </div>
     </div>
