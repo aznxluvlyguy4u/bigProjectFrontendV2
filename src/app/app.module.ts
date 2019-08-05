@@ -73,6 +73,7 @@ import {ReportLineageProofComponent} from './report/lineageProof/report.lineageP
 import {ReportLivestockComponent} from './report/livestock/report.livestock';
 import {ReportOffspringComponent} from './report/offspring/report.offspring.component';
 import {ReportBirthListComponent} from './report/birthlist/report.birth-list.component';
+import {ReportEweCardComponent} from './report/eweCard/report.ewe-card.component';
 import {BooleanSwitchComponent} from './shared/components/booleanswitch/boolean-switch.component';
 import {ReportComponent} from './report/report.component';
 import {ArrivalDeclareComponent} from './rvo-declares/arrival/declare/arrival.declare';
@@ -203,6 +204,7 @@ export function CreateTranslateLoader(http: HttpClient) {
     ReportLivestockComponent,
     ReportOffspringComponent,
     ReportBirthListComponent,
+    ReportEweCardComponent,
     BooleanSwitchComponent,
     ReportComponent,
     ReportOffspringComponent,

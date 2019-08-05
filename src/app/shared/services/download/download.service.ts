@@ -9,7 +9,8 @@ import {
   API_URI_GET_LINEAGE_PROOF,
   API_URI_GET_LIVESTOCK_DOCUMENT,
   API_URI_GET_OFFSPRING_REPORT,
-  API_URI_INVOICES
+  API_URI_INVOICES,
+  API_URI_GET_EWE_CARD_REPORT
 } from '../nsfo-api/nsfo.settings';
 import {
   QUERY_PARAM_CONCAT_VALUE_AND_ACCURACY,
@@ -208,6 +209,15 @@ export class DownloadService {
     const concatBooleanString = UtilsService.getBooleanAsString(concatBreedValueAndAccuracyColumns);
     const queryParam = '?' + QUERY_PARAM_CONCAT_VALUE_AND_ACCURACY + '=' + concatBooleanString;
     this.doDownloadPostRequestByReportWorker(API_URI_GET_OFFSPRING_REPORT + queryParam, request);
+  }
+
+  doEweCardReportPostRequest(animals: Animal[]) {
+
+    const request = {
+      ewes: NSFOService.cleanAnimalsInput(animals)
+    };
+
+    this.doDownloadPostRequestByReportWorker(API_URI_GET_EWE_CARD_REPORT, request);
   }
 
   doFertilizerAccountingReportGetRequest(referenceDateString: string, fileType: string) {
