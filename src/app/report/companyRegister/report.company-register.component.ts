@@ -15,7 +15,7 @@ export class ReportCompanyRegisterComponent {
 
   public view_date_format;
   public form: FormGroup;
-  public defaultFileType: string = PDF;
+  public defaultFileType: string = CSV;
 
   public breedCode: string;
   public pedigreeRegister: PedigreeRegister;
@@ -36,7 +36,7 @@ export class ReportCompanyRegisterComponent {
   }
 
   public getFileTypesList(): string[] {
-    return [ CSV, PDF ];
+    return [ CSV ];
   }
 
   download() {
