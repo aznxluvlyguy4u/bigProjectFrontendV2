@@ -150,6 +150,7 @@ import {ReportModalComponent} from './shared/components/reportmodal/report-modal
 import {SortService} from './shared/services/utils/sort.service';
 import {PedigreeRegisterStorage} from './shared/services/storage/pedigree-register.storage';
 import {InvoiceSortPipe} from './invoices/pipes/invoice-sort.pipe';
+import {ReportCompanyRegisterComponent} from './report/companyRegister/report.company-register.component';
 
 // AoT requires an exported function for factories
 export function CreateTranslateLoader(http: HttpClient) {
@@ -203,6 +204,7 @@ export function CreateTranslateLoader(http: HttpClient) {
     ReportLivestockComponent,
     ReportOffspringComponent,
     ReportBirthListComponent,
+    ReportCompanyRegisterComponent,
     BooleanSwitchComponent,
     ReportComponent,
     ReportOffspringComponent,
