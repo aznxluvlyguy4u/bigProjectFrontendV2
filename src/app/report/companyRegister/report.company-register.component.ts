@@ -36,7 +36,7 @@ export class ReportCompanyRegisterComponent {
   }
 
   public getFileTypesList(): string[] {
-    return [ CSV ];
+    return [ CSV, PDF ];
   }
 
   download() {
