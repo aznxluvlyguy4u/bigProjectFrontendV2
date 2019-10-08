@@ -1,0 +1,9 @@
+<select
+  id="component-yeardropdown"
+  [(ngModel)]="year"
+  [disabled]="disabled"
+  (click)="emitYearSelection()"
+>
+  <option *ngIf="allowNull" [value]=null> - </option>
+  <option *ngFor="let year of years" [value]="year">{{ year }}</option>
+</select>
