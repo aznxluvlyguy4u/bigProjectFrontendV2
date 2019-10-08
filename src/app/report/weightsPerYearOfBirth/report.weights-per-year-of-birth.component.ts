@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 import { DownloadService } from '../../shared/services/download/download.service';
 
