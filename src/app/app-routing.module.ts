@@ -60,10 +60,10 @@ import {ReportComponent} from './report/report.component';
 import {ReportLineageProofComponent} from './report/lineageProof/report.lineageProof';
 import {ReportInbreedingCoefficientComponent} from './report/inbreedingCoefficient/report.inbreedingCoefficient';
 import {ReportLivestockComponent} from './report/livestock/report.livestock';
-import {ReportFertilizerAccountingComponent} from './report/fertilityAccounting/report.fertilizer-accounting.component';
 import {ReportOffspringComponent} from './report/offspring/report.offspring.component';
 import {ReportBirthListComponent} from './report/birthlist/report.birth-list.component';
 import {ReportCompanyRegisterComponent} from './report/companyRegister/report.company-register.component';
+import {ReportWeightsPerYearOfBirthComponent} from './report/weightsPerYearOfBirth/report.weights-per-year-of-birth.component';
 
 // const appRoutes: Routes = [
 const appRoutes = [
@@ -158,7 +158,8 @@ const appRoutes = [
           // {path: 'fertilizer_accounting', component: ReportFertilizerAccountingComponent},
           {path: 'offspring', component: ReportOffspringComponent},
           {path: 'birth_list', component: ReportBirthListComponent},
-          {path: 'company_register', component: ReportCompanyRegisterComponent}
+          {path: 'company_register', component: ReportCompanyRegisterComponent},
+          {path: 'weights_per_year_of_birth', component: ReportWeightsPerYearOfBirthComponent}
         ]
       },
       {
