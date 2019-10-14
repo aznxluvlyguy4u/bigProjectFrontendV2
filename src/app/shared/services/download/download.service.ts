@@ -10,14 +10,16 @@ import {
   API_URI_GET_LIVESTOCK_DOCUMENT,
   API_URI_GET_OFFSPRING_REPORT,
   API_URI_INVOICES,
-  API_URI_GET_EWE_CARD_REPORT
+  API_URI_GET_EWE_CARD_REPORT,
+  API_URI_GET_COMPANY_REGISTER_REPORT,
+  API_URI_GET_WEIGHTS_PER_YEAR_OF_BIRTH_REPORT
 } from '../nsfo-api/nsfo.settings';
 import {
   QUERY_PARAM_CONCAT_VALUE_AND_ACCURACY,
   QUERY_PARAM_FILE_TYPE,
   QUERY_PARAM_REFERENCE_DATE,
   QUERY_PARAM_BREED_CODE,
-  QUERY_PARAM_PEDIGREE_REGISTER
+  QUERY_PARAM_PEDIGREE_REGISTER, QUERY_PARAM_SAMPLE_DATE, QUERY_PARAM_YEAR_OF_BIRTH
 } from '../../variables/query-param.constant';
 import {UtilsService} from '../utils/utils.services';
 import {QueryParamsService} from '../utils/query-params.service';
@@ -227,7 +229,7 @@ export class DownloadService {
   }
 
   doBirthListReportGetRequest(breedCode?: string, pedigreeRegisterAbbreviation?: string) {
-    let queryParams: QueryParamSetModel[] = [];
+    const queryParams: QueryParamSetModel[] = [];
     if (breedCode !== null && breedCode !== undefined) {
       queryParams.push({
         key: QUERY_PARAM_BREED_CODE,
@@ -243,6 +245,32 @@ export class DownloadService {
     }
     const queryParamString = QueryParamsService.getQueryParamsAsString(queryParams);
     this.doDownloadPostRequestByReportWorker(API_URI_GET_BIRTH_LIST_REPORT + queryParamString, {});
+  }
+
+  doCompanyRegisterReportGetRequest(sampleDate: string, fileType: string) {
+    const queryParams: QueryParamSetModel[] = [];
+    queryParams.push({
+      key: QUERY_PARAM_SAMPLE_DATE,
+      value: sampleDate
+    });
+
+    queryParams.push({
+      key: QUERY_PARAM_FILE_TYPE,
+      value: fileType
+    });
+    const queryParamString = QueryParamsService.getQueryParamsAsString(queryParams);
+    this.doDownloadPostRequestByReportWorker(API_URI_GET_COMPANY_REGISTER_REPORT + queryParamString, {});
+  }
+
+  doWeightsPerYearOfBirthReportGetRequest(year: string) {
+    const queryParams: QueryParamSetModel[] = [];
+    queryParams.push({
+      key: QUERY_PARAM_YEAR_OF_BIRTH,
+      value: year
+    });
+
+    const queryParamString = QueryParamsService.getQueryParamsAsString(queryParams);
+    this.doDownloadPostRequestByReportWorker(API_URI_GET_WEIGHTS_PER_YEAR_OF_BIRTH_REPORT + queryParamString, {});
   }
 
   doInvoicePdfGetRequest(invoice: Invoice) {

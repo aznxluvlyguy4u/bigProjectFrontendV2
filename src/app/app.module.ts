@@ -67,13 +67,15 @@ import {DownloadLandingPageComponent} from './redirect/download/download-landing
 import {LoadingComponent} from './redirect/loading/loading.component';
 import {DatepickerV2Component} from './shared/components/datepickerV2/datepicker-v2.component';
 import {FileTypeDropdownComponent} from './shared/components/filetypedropdown/file-type-dropdown.component';
+import {ReportBirthListComponent} from './report/birthlist/report.birth-list.component';
+import {ReportCompanyRegisterComponent} from './report/companyRegister/report.company-register.component';
 import {ReportFertilizerAccountingComponent} from './report/fertilityAccounting/report.fertilizer-accounting.component';
 import {ReportInbreedingCoefficientComponent} from './report/inbreedingCoefficient/report.inbreedingCoefficient';
 import {ReportLineageProofComponent} from './report/lineageProof/report.lineageProof';
 import {ReportLivestockComponent} from './report/livestock/report.livestock';
 import {ReportOffspringComponent} from './report/offspring/report.offspring.component';
-import {ReportBirthListComponent} from './report/birthlist/report.birth-list.component';
 import {ReportEweCardComponent} from './report/eweCard/report.ewe-card.component';
+import {ReportWeightsPerYearOfBirthComponent} from './report/weightsPerYearOfBirth/report.weights-per-year-of-birth.component';
 import {BooleanSwitchComponent} from './shared/components/booleanswitch/boolean-switch.component';
 import {ReportComponent} from './report/report.component';
 import {ArrivalDeclareComponent} from './rvo-declares/arrival/declare/arrival.declare';
@@ -151,6 +153,7 @@ import {ReportModalComponent} from './shared/components/reportmodal/report-modal
 import {SortService} from './shared/services/utils/sort.service';
 import {PedigreeRegisterStorage} from './shared/services/storage/pedigree-register.storage';
 import {InvoiceSortPipe} from './invoices/pipes/invoice-sort.pipe';
+import {YeardropdownComponent} from './shared/components/yeardropdown/yeardropdown.component';
 
 // AoT requires an exported function for factories
 export function CreateTranslateLoader(http: HttpClient) {
@@ -205,6 +208,8 @@ export function CreateTranslateLoader(http: HttpClient) {
     ReportOffspringComponent,
     ReportBirthListComponent,
     ReportEweCardComponent,
+    ReportCompanyRegisterComponent,
+    ReportWeightsPerYearOfBirthComponent,
     BooleanSwitchComponent,
     ReportComponent,
     ReportOffspringComponent,
@@ -288,7 +293,8 @@ export function CreateTranslateLoader(http: HttpClient) {
     PageLoadingSpinnerComponent,
     InsideComponentLoadingSpinnerComponent,
     ButtonPrimaryComponent,
-    ReportModalComponent
+    ReportModalComponent,
+    YeardropdownComponent
   ],
   imports: [
     BrowserAnimationsModule,

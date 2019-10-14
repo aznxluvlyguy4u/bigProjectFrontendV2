@@ -115,6 +115,8 @@ export const API_URI_GET_OFFSPRING_REPORT = '/v1/reports/offspring';
 export const API_URI_GET_FERTILIZER_ACCOUNTING_REPORT = '/v1/reports/fertilizer-accounting';
 export const API_URI_GET_BIRTH_LIST_REPORT = '/v1/reports/birth-list';
 export const API_URI_GET_EWE_CARD_REPORT = '/v1/reports/ewe-card';
+export const API_URI_GET_COMPANY_REGISTER_REPORT = '/v1/reports/company-register';
+export const API_URI_GET_WEIGHTS_PER_YEAR_OF_BIRTH_REPORT = '/v1/reports/weights-per-year-of-birth';
 
 // Pedigree Register
 export const API_URI_GET_PEDIGREE_REGISTERS = '/v1/pedigreeregisters';

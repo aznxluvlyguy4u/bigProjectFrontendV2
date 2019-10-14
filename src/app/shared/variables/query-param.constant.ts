@@ -3,3 +3,5 @@ export const QUERY_PARAM_CONCAT_VALUE_AND_ACCURACY = 'concat_value_and_accuracy'
 export const QUERY_PARAM_REFERENCE_DATE = 'reference_date';
 export const QUERY_PARAM_BREED_CODE = 'breed_code';
 export const QUERY_PARAM_PEDIGREE_REGISTER = 'pedigree_register';
+export const QUERY_PARAM_SAMPLE_DATE = 'sample_date';
+export const QUERY_PARAM_YEAR_OF_BIRTH = 'year_of_birth';

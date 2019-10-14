@@ -1,4 +1,9 @@
-<div class="switch large" (click)="toggle()">
+<div
+  class="switch large"
+  [ngClass]="{'large': isLarge}"
+  style="margin-bottom: 0"
+  (click)="toggle()"
+>
   <input class="switch-input" id="yes-no" type="checkbox" name="boolean-switch"
          [checked]="boolVal">
   <label class="switch-paddle">
