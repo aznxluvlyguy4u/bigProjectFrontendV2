@@ -12,7 +12,6 @@ import { Animal } from '../../shared/models/animal.model';
 })
 export class ReportEweCardComponent {
   defaultFileType = CSV;
-  concatBreedValueAndAccuracyColumns = false;
   lineageProofMaxSelectionCount = 50;
 
   constructor(private downloadService: DownloadService) {}

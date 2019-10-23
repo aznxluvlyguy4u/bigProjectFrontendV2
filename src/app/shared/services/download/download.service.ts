@@ -216,7 +216,7 @@ export class DownloadService {
   doEweCardReportPostRequest(animals: Animal[]) {
 
     const request = {
-      ewes: NSFOService.cleanAnimalsInput(animals)
+      animals: NSFOService.cleanAnimalsInput(animals)
     };
 
     this.doDownloadPostRequestByReportWorker(API_URI_GET_EWE_CARD_REPORT, request);
