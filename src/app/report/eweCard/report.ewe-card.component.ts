@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { DownloadService } from '../../shared/services/download/download.service';
-import { CSV } from '../../shared/variables/file-type.enum';
+import { PDF } from '../../shared/variables/file-type.enum';
 import { Animal } from '../../shared/models/animal.model';
 
 
@@ -11,8 +11,8 @@ import { Animal } from '../../shared/models/animal.model';
   templateUrl: './report.ewe-card.component.html',
 })
 export class ReportEweCardComponent {
-  defaultFileType = CSV;
-  lineageProofMaxSelectionCount = 50;
+  defaultFileType = PDF;
+  maxSelectionCount = 50;
 
   constructor(private downloadService: DownloadService) {}
 
@@ -21,6 +21,6 @@ export class ReportEweCardComponent {
   }
 
   public getFileTypesList(): string[] {
-    return [ CSV ];
+    return [ PDF ];
   }
 }

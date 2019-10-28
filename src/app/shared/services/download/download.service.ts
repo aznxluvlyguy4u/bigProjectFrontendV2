@@ -219,7 +219,8 @@ export class DownloadService {
       animals: NSFOService.cleanAnimalsInput(animals)
     };
 
-    this.doDownloadPostRequestByReportWorker(API_URI_GET_EWE_CARD_REPORT, request);
+    const queryParam = '?' + QUERY_PARAM_FILE_TYPE + '=' + PDF.toLowerCase();
+    this.doDownloadPostRequestByReportWorker(API_URI_GET_EWE_CARD_REPORT + queryParam, request);
   }
 
   doFertilizerAccountingReportGetRequest(referenceDateString: string, fileType: string) {
