@@ -153,6 +153,7 @@ import {SortService} from './shared/services/utils/sort.service';
 import {PedigreeRegisterStorage} from './shared/services/storage/pedigree-register.storage';
 import {InvoiceSortPipe} from './invoices/pipes/invoice-sort.pipe';
 import {YeardropdownComponent} from './shared/components/yeardropdown/yeardropdown.component';
+import {ReportAnimalFeaturesPerYearOfBirthComponent} from './report/animalFeaturesPerYearOfBirth/report.animal-features-per-year-of-birth.component';
 
 // AoT requires an exported function for factories
 export function CreateTranslateLoader(http: HttpClient) {
@@ -208,6 +209,7 @@ export function CreateTranslateLoader(http: HttpClient) {
     ReportBirthListComponent,
     ReportCompanyRegisterComponent,
     ReportWeightsPerYearOfBirthComponent,
+    ReportAnimalFeaturesPerYearOfBirthComponent,
     BooleanSwitchComponent,
     ReportComponent,
     ReportOffspringComponent,
