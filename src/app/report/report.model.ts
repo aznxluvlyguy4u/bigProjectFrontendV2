@@ -4,6 +4,6 @@ export const REPORT_OPTIONS_LIST = [
   {url: '/main/report/birth_list', name: 'BIRTH LIST', nl_order: 2}, // Geboortelijst
   {url: '/main/report/weights_per_year_of_birth', name: 'WEIGHTS PER YEAR OF BIRTH', nl_order: 3}, // Gewicht per geboortejaar
   {url: '/main/report/inbreeding', name: 'INBREEDING COEFFICIENT', nl_order: 4}, // Inteeltcoëfficient
-  // {url: '/main/report/fertilizer_accounting', name: 'FERTILIZER ACCOUNTING', nl_order: 4}, // Mestboekhouding
-  {url: '/main/report/offspring', name: 'OFFSPRING', nl_order: 5} // Nakomelingen
+  {url: '/main/report/fertilizer_accounting', name: 'FERTILIZER ACCOUNTING', nl_order: 5}, // Mestboekhouding
+  {url: '/main/report/offspring', name: 'OFFSPRING', nl_order: 6} // Nakomelingen
 ];
