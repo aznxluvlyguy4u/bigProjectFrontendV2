@@ -21,7 +21,10 @@ export class DatepickerComponent implements AfterViewInit {
   @Input('first-week-day-sunday') firstWeekDaySunday: boolean;
   @Input('static') isStatic: boolean;
   @Input() formCtrl: FormControl;
+  @Input() name = '';
+  @Input() parentComponent: any = null;
   @Output('datePickerEvent') changed: EventEmitter<Date> = new EventEmitter<Date>();
+  @Output() private valueChange = new EventEmitter();
   private el: any;
   private date: any;
   private viewContainer: ViewContainerRef;
@@ -29,6 +32,9 @@ export class DatepickerComponent implements AfterViewInit {
   private onTouched: Function;
   // private cd: any;
   private cannonical: number;
+  private updateEndDateSubscriber;
+  private receiveStartDate;
+  private currentDayObject;
 
   // constructor(cd: NgModel, viewContainer: ViewContainerRef) {
   constructor(viewContainer: ViewContainerRef) {
@@ -41,6 +47,31 @@ export class DatepickerComponent implements AfterViewInit {
 
   ngAfterViewInit() {
     this.initValue();
+    this.updateEndDateSubscriber = this.parentComponent.updateEndDateObservable.subscribe(newEndDate => {
+        if(this.name === 'mate_enddate') {
+          this.viewValue = newEndDate;
+        }
+    });
+
+    this.receiveStartDate = this.parentComponent.sendStartDateObservable.subscribe(startDate => {
+      if(this.name === 'mate_enddate') {
+        let dateDiff = this.currentDayObject.diff(startDate, 'days') + 1;
+        if (this.currentDayObject.format('DD-MM-YYYY') === startDate.format('DD-MM-YYYY')) {
+            dateDiff = 0;
+        }
+
+        if (dateDiff <= 0) {
+          this.viewValue = startDate.format('DD-MM-YYYY');
+          this.formCtrl.setValue(startDate.format());
+        }
+      }
+    });
+  }
+
+  ngOnDestroy() {
+    // unsubscribe to ensure no memory leaks
+    this.updateEndDateSubscriber.unsubscribe();
+    this.receiveStartDate.unsubscribe();
   }
 
   preventKeyPress(event) {
@@ -171,10 +202,12 @@ export class DatepickerComponent implements AfterViewInit {
 
   private setValue(value: any): void {
     const val = moment(value, this.modelFormat || 'DD-MM-YYYY');
+    this.currentDayObject = val;
     this.viewValue = val.format(this.viewFormat || 'DD-MM-YYYY');
     // this.cd.viewToModelUpdate(val.format(this.modelFormat || 'YYYY-MM-DD'));
     this.cannonical = val.toDate().getTime();
     this.formCtrl.setValue(val.format(this.modelFormat));
+    this.valueChange.emit(value);
   }
 
   private initValue(): void {

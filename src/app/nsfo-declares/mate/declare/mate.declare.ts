@@ -1,5 +1,5 @@
 import * as _ from 'lodash';
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit, AfterViewInit} from '@angular/core';
 import {FormControl, FormGroup, FormBuilder, Validators} from '@angular/forms';
 import {TranslateService} from '@ngx-translate/core';
 import {NSFOService} from '../../../shared/services/nsfo-api/nsfo.service';
@@ -9,7 +9,7 @@ import {SettingsService} from '../../../shared/services/settings/settings.servic
 import {API_URI_DECLARE_MATE, API_URI_GET_ANIMALS} from '../../../shared/services/nsfo-api/nsfo.settings';
 import {Router} from '@angular/router';
 import {Settings} from '../../../shared/variables/settings';
-import {Subject} from 'rxjs';
+import {Observable, Subject} from 'rxjs';
 import {MateChangeResponse} from '../../../shared/models/nsfo-declare.model';
 import {LivestockAnimal} from '../../../shared/models/animal.model';
 import {MateAnimalWithStatus} from './mate-animal-with-status.model';
@@ -17,6 +17,7 @@ import {AnimalsOverviewSelection} from '../../../shared/components/livestock/ani
 import {ErrorMessage} from '../../../shared/models/error-message.model';
 import {JsonResponseModel} from '../../../shared/models/json-response.model';
 import {HttpErrorResponse} from '@angular/common/http';
+import * as moment from 'moment';
 
 @Component({
   providers: [NSFOService, Constants],
@@ -45,6 +46,12 @@ export class MateDeclareComponent implements OnInit, OnDestroy {
     });
   public uidPattern = '[0-9]';
   public successDurationSeconds = 3;
+  private updateEndDateSubject = new Subject<any>();
+  public updateEndDateObservable = this.updateEndDateSubject.asObservable();
+  private sendStartDateSubject = new Subject<any>();
+  public sendStartDateObservable = this.sendStartDateSubject.asObservable();
+  private self;
+  private startDate;
 
   constructor(private fb: FormBuilder,
               private nsfo: NSFOService,
@@ -53,6 +60,7 @@ export class MateDeclareComponent implements OnInit, OnDestroy {
               private settingsService: SettingsService,
               private settings: Settings,
               private translate: TranslateService) {
+    this.self = this;
     this.view_date_format = settingsService.getViewDateFormat();
     this.model_datetime_format = settingsService.getModelDateTimeFormat();
 
@@ -64,6 +72,10 @@ export class MateDeclareComponent implements OnInit, OnDestroy {
     this.errorMessages = [];
   }
 
+  ngAfterViewChecked() {
+      this.startDate = moment(this.form.get('mate_startdate').value);
+  }
+
   ngOnDestroy() {
     this.countryCode$.unsubscribe();
   }
@@ -71,6 +83,18 @@ export class MateDeclareComponent implements OnInit, OnDestroy {
   purgeErrors() {
     this.errorMessages = [];
     this.closeModal();
+  }
+
+  private updateEndDate(startDate) {
+    if (typeof startDate === 'object') {
+        this.form.get('mate_enddate').setValue(startDate.format());
+        this.updateEndDateSubject.next(startDate.format('DD-MM-YYYY'));
+    }
+  }
+
+  private sendStartDateToDatePicker()
+  {
+    this.sendStartDateSubject.next(this.startDate);
   }
 
   public getCountryCodeList() {
