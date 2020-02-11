@@ -32,8 +32,8 @@ export class DatepickerComponent implements AfterViewInit {
   private onTouched: Function;
   // private cd: any;
   private cannonical: number;
-  private updateEndDateSubscriber;
-  private receiveStartDate;
+  private updateEndDateSubscriber = null;
+  private receiveStartDate = null;
   private currentDayObject;
 
   // constructor(cd: NgModel, viewContainer: ViewContainerRef) {
@@ -47,31 +47,37 @@ export class DatepickerComponent implements AfterViewInit {
 
   ngAfterViewInit() {
     this.initValue();
-    this.updateEndDateSubscriber = this.parentComponent.updateEndDateObservable.subscribe(newEndDate => {
+    if (this.parentComponent !== null) {
+      this.updateEndDateSubscriber = this.parentComponent.updateEndDateObservable.subscribe(newEndDate => {
         if(this.name === 'mate_enddate') {
           this.viewValue = newEndDate;
         }
-    });
+      });
 
-    this.receiveStartDate = this.parentComponent.sendStartDateObservable.subscribe(startDate => {
-      if(this.name === 'mate_enddate') {
-        let dateDiff = this.currentDayObject.diff(startDate, 'days') + 1;
-        if (this.currentDayObject.format('DD-MM-YYYY') === startDate.format('DD-MM-YYYY')) {
+      this.receiveStartDate = this.parentComponent.sendStartDateObservable.subscribe(startDate => {
+        if(this.name === 'mate_enddate') {
+          let dateDiff = this.currentDayObject.diff(startDate, 'days') + 1;
+          if (this.currentDayObject.format('DD-MM-YYYY') === startDate.format('DD-MM-YYYY')) {
             dateDiff = 0;
-        }
+          }
 
-        if (dateDiff <= 0) {
-          this.viewValue = startDate.format('DD-MM-YYYY');
-          this.formCtrl.setValue(startDate.format());
+          if (dateDiff <= 0) {
+            this.viewValue = startDate.format('DD-MM-YYYY');
+            this.formCtrl.setValue(startDate.format());
+          }
         }
-      }
-    });
+      });
+    }
   }
 
   ngOnDestroy() {
     // unsubscribe to ensure no memory leaks
-    this.updateEndDateSubscriber.unsubscribe();
-    this.receiveStartDate.unsubscribe();
+    if (this.updateEndDateSubscriber !== null) {
+      this.updateEndDateSubscriber.unsubscribe();
+    }
+    if (this.receiveStartDate !== null) {
+      this.receiveStartDate.unsubscribe();
+    }
   }
 
   preventKeyPress(event) {
