@@ -46,11 +46,11 @@ export class MateDeclareComponent implements OnInit, OnDestroy {
     });
   public uidPattern = '[0-9]';
   public successDurationSeconds = 3;
-  private updateEndDateSubject = new Subject<any>();
+  public updateEndDateSubject = new Subject<any>();
   public updateEndDateObservable = this.updateEndDateSubject.asObservable();
-  private sendStartDateSubject = new Subject<any>();
+  public sendStartDateSubject = new Subject<any>();
   public sendStartDateObservable = this.sendStartDateSubject.asObservable();
-  private self;
+  public self;
   private startDate;
 
   constructor(private fb: FormBuilder,
@@ -85,15 +85,14 @@ export class MateDeclareComponent implements OnInit, OnDestroy {
     this.closeModal();
   }
 
-  private updateEndDate(startDate) {
+  public updateEndDate(startDate) {
     if (typeof startDate === 'object') {
         this.form.get('mate_enddate').setValue(startDate.format());
         this.updateEndDateSubject.next(startDate.format('DD-MM-YYYY'));
     }
   }
 
-  private sendStartDateToDatePicker()
-  {
+  public sendStartDateToDatePicker() {
     this.sendStartDateSubject.next(this.startDate);
   }
 
