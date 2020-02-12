@@ -1,5 +1,5 @@
 import * as _ from 'lodash';
-import {Component, OnDestroy, OnInit, AfterViewInit} from '@angular/core';
+import {Component, OnDestroy, OnInit, AfterViewChecked} from '@angular/core';
 import {FormControl, FormGroup, FormBuilder, Validators} from '@angular/forms';
 import {TranslateService} from '@ngx-translate/core';
 import {NSFOService} from '../../../shared/services/nsfo-api/nsfo.service';
@@ -24,7 +24,7 @@ import * as moment from 'moment';
   templateUrl: './mate.declare.html',
 })
 
-export class MateDeclareComponent implements OnInit, OnDestroy {
+export class MateDeclareComponent implements OnInit, OnDestroy, AfterViewChecked {
   livestockType = LIVESTOCK_TYPE_MATE;
   lastDeclareUpdateSubject = new Subject<MateChangeResponse>();
   public countryCode$;
