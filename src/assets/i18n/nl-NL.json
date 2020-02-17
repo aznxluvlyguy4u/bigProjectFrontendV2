@@ -742,5 +742,8 @@
   "INACTIVE": "Niet actief",
   "DEAD": "Dood",
   "NO DATA": "Geen data",
+  "BORN AS": "Geboren als",
+  "STATUS SLASH CLASS": "Status/klasse",
+  "COLOR MARKINGS": "Kleurtekeningen",
   "READER": "Reader"
 }
