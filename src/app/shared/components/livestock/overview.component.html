@@ -210,7 +210,12 @@
         </td>
         <td class="padding-column">
           <label class="show-for-small-only">{{ 'ULN' | translate }}</label>
-          {{ animal.uln_country_code + animal.uln_number }}
+          <div>
+            {{ animal.uln_country_code + animal.uln_number }}
+          </div>
+          <div *ngIf="displaySubUlnText" class="sub-uln-text">
+            {{ getSubUlnText(animal) }}
+          </div>
         </td>
         <td class="padding-column">
           <label class="show-for-small-only">{{ selection_column_one | translate }}</label>

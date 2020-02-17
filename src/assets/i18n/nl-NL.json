@@ -740,6 +740,11 @@
   "FILTER MATES BASED ON EWE DATA": "Filter dekkingen gebaseerd op ooigegevens",
   "FOUND ANIMAL DOES NOT BELONG TO CLIENT": "Dit dier is niet meer in uw bezit",
   "DECLARE_BELONGS_TO_OTHER_ACCOUNT": "De melding behoort tot een andere account",
+  "INACTIVE": "Niet actief",
+  "DEAD": "Dood",
   "NO DATA": "Geen data",
+  "BORN AS": "Geboren als",
+  "STATUS SLASH CLASS": "Status/klasse",
+  "COLOR MARKINGS": "Kleurtekeningen",
   "READER": "Reader"
 }
