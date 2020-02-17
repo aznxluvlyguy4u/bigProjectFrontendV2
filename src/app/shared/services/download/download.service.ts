@@ -12,7 +12,7 @@ import {
   API_URI_INVOICES,
   API_URI_GET_EWE_CARD_REPORT,
   API_URI_GET_COMPANY_REGISTER_REPORT,
-  API_URI_GET_WEIGHTS_PER_YEAR_OF_BIRTH_REPORT
+  API_URI_GET_WEIGHTS_PER_YEAR_OF_BIRTH_REPORT, API_URI_GET_ANIMAL_FEATURES_PER_YEAR_OF_BIRTH_REPORT
 } from '../nsfo-api/nsfo.settings';
 import {
   QUERY_PARAM_CONCAT_VALUE_AND_ACCURACY,
@@ -272,6 +272,17 @@ export class DownloadService {
 
     const queryParamString = QueryParamsService.getQueryParamsAsString(queryParams);
     this.doDownloadPostRequestByReportWorker(API_URI_GET_WEIGHTS_PER_YEAR_OF_BIRTH_REPORT + queryParamString, {});
+  }
+
+  doAnimalFeaturesPerYearOfBirthReportGetRequest(year: string) {
+    let queryParams: QueryParamSetModel[] = [];
+    queryParams.push({
+      key: QUERY_PARAM_YEAR_OF_BIRTH,
+      value: year
+    });
+
+    const queryParamString = QueryParamsService.getQueryParamsAsString(queryParams);
+    this.doDownloadPostRequestByReportWorker(API_URI_GET_ANIMAL_FEATURES_PER_YEAR_OF_BIRTH_REPORT + queryParamString, {});
   }
 
   doInvoicePdfGetRequest(invoice: Invoice) {
