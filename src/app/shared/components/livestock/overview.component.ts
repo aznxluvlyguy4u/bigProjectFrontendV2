@@ -46,6 +46,7 @@ export class LivestockOverviewComponent implements OnInit, OnDestroy {
     @Output() selected = new EventEmitter();
     @Input() customType = '';
     @Input() lastMateChanged: Subject<MateChangeResponse>;
+    @Input() displaySubUlnText = false;
     mateMode = false;
     weightMode = false;
     updateLastMateSubscription: Subscription;
@@ -498,6 +499,14 @@ export class LivestockOverviewComponent implements OnInit, OnDestroy {
                 this.livestock_list = _.orderBy(this.livestock_list, ['gender'], [order]);
                 break;
         }
+    }
+
+    public getSubUlnText(animal: LivestockAnimal): string {
+        const productionValue = animal.production != null ? animal.production : '-';
+        const breedCodeValue = animal.breed_code != null ? animal.breed_code : '-';
+
+        return this.translate.instant('PRODUCTION') + ': ' + productionValue + ', ' +
+          this.translate.instant('BREED CODE') + ': ' + breedCodeValue;
     }
 
     private setOrderColumnTwo() {
