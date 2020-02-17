@@ -14,6 +14,7 @@ export class SettingsService {
   private locale = 'nl';
   private countryList: ReplaySubject<any> = new ReplaySubject<any>();
   private viewDateFormat = 'DD-MM-YYYY';
+  private viewDateFormatInComponent = 'dd-MM-yyyy';
   private viewDateTimeFormat = 'DD-MM-YYYY HH:mm';
   private modelDateTimeFormat = 'YYYY-MM-DDThh:mm:ssZ';
   private modelDateFormat = 'YYYY-MM-DD';
@@ -64,6 +65,10 @@ export class SettingsService {
 
   public getViewDateFormat() {
     return this.viewDateFormat;
+  }
+
+  public getViewDateFormatInComponent() {
+    return this.viewDateFormatInComponent;
   }
 
   public setViewDateFormat(viewDateFormat) {

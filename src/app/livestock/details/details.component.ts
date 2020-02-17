@@ -27,6 +27,8 @@ import {GoogleChartConfigModel} from '../../shared/models/google.chart.config.mo
 import {BreedValues} from '../../shared/models/breedvalues.model';
 import {TranslateService} from '@ngx-translate/core';
 import {PaginationService} from 'ngx-pagination';
+import {CacheService} from '../../shared/services/settings/cache.service';
+import {DatePipe} from '@angular/common';
 
 @Component({
   templateUrl: './details.component.html',
@@ -111,6 +113,8 @@ export class LivestockDetailComponent {
   constructor(private route: ActivatedRoute,
               private router: Router,
               private apiService: NSFOService,
+              private cache: CacheService,
+              private datePipe: DatePipe,
               public settings: SettingsService,
               private fb: FormBuilder,
               private translate: TranslateService,
@@ -193,6 +197,26 @@ export class LivestockDetailComponent {
       pointSize: 10,
       legend: {position: 'none'},
     });
+  }
+
+  public animalDetailHeaderExtraInfo(): string {
+    let extraInfo = '';
+    let prefix = '';
+
+    if (!this.animal.is_alive) {
+      if (this.animal.date_of_death != null) {
+        const formattedDateOfDeath = this.datePipe.transform(this.animal.date_of_death, this.settings.getViewDateFormatInComponent());
+        extraInfo += this.translate.instant('DEAD') + ' [' + formattedDateOfDeath + ']';
+      } else {
+        extraInfo += this.translate.instant('DEAD');
+      }
+      prefix = ', ';
+    }
+
+    if (this.cache.getUbn() !== this.animal.ubn) {
+      extraInfo += prefix + this.translate.instant('INACTIVE');
+    }
+    return extraInfo;
   }
 
   public genderType(gender: string): string {
