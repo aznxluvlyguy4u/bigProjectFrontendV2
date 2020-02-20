@@ -29,6 +29,7 @@ import {TranslateService} from '@ngx-translate/core';
 import {PaginationService} from 'ngx-pagination';
 import {CacheService} from '../../shared/services/settings/cache.service';
 import {DatePipe} from '@angular/common';
+import {StringValidation} from '../../shared/validation/string.validation';
 
 @Component({
   templateUrl: './details.component.html',
@@ -204,7 +205,7 @@ export class LivestockDetailComponent {
     let prefix = '';
 
     if (!this.animal.is_alive) {
-      if (this.animal.date_of_death != null) {
+      if (StringValidation.isNotEmpty(this.animal.date_of_death)) {
         const formattedDateOfDeath = this.datePipe.transform(this.animal.date_of_death, this.settings.getViewDateFormatInComponent());
         extraInfo += this.translate.instant('DEAD') + ' [' + formattedDateOfDeath + ']';
       } else {
