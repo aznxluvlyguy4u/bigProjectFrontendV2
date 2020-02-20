@@ -1,0 +1,216 @@
+<div id="animal-details-contact-card-component" class="details-contact-card-wrapper">
+
+  <table *ngIf="!hasData()" class="contact-table">
+    <thead>
+      <tr>
+        <th colspan="2" class="contact-table-header-row">{{header.toUpperCase()}}</th>
+      </tr>
+    </thead>
+    <tbody>
+    <tr>
+      <td class="contact-table-spanned-notification-row" colspan="2">
+        {{ 'NO CONTACT DATA AVAILABLE' | translate }}
+      </td>
+    </tr>
+    </tbody>
+  </table>
+
+  <table *ngIf="hasData()" class="contact-table">
+    <thead>
+      <tr>
+        <th colspan="2" class="contact-table-header-row">{{header.toUpperCase()}}</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="contact-table-label-column">
+          {{'NAME' | translate}}
+        </td>
+        <td class="contact-table-data-column">
+          {{ location?.company?.owner?.full_name }}
+        </td>
+      </tr>
+      <tr>
+        <td class="contact-table-label-column">
+          {{'ADDRESS' | translate}}
+        </td>
+        <td class="contact-table-data-column">
+          {{ getParsedAddress() }}
+        </td>
+      </tr>
+      <tr>
+        <td class="contact-table-label-column">
+          {{'POSTAL CODE' | translate}}
+        </td>
+        <td class="contact-table-data-column">
+          {{ location?.address?.postal_code }}
+        </td>
+      </tr>
+      <tr>
+        <td class="contact-table-label-column">
+          {{'ADDRESS CITY' | translate}}
+        </td>
+        <td class="contact-table-data-column">
+          {{ location?.address?.city }}
+        </td>
+      </tr>
+      <tr>
+        <td class="contact-table-label-column">
+          {{'COUNTRY' | translate}}
+        </td>
+        <td class="contact-table-data-column">
+          {{ location?.address?.country_name }}
+        </td>
+      </tr>
+      <tr>
+        <td class="contact-table-label-column">
+          {{'EMAIL' | translate}}
+        </td>
+        <td class="contact-table-data-column">
+          {{ location?.company?.owner?.email_address }}
+        </td>
+      </tr>
+      <tr>
+        <td class="contact-table-label-column">
+          {{'TELEPHONE NUMBER' | translate}}
+        </td>
+        <td class="contact-table-data-column">
+          {{ location?.company.telephone_number }}
+        </td>
+      </tr>
+      <tr>
+        <td class="contact-table-label-column">
+          UBN
+        </td>
+        <td class="contact-table-data-column">
+          {{ location?.ubn }}
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+<!--  <div class="row">-->
+<!--    <div class="medium-offset-6 medium-6 columns">-->
+<!--      <ng-template [ngIf]="!offSpring">-->
+<!--        {{ inputAnimal.gender == 'FEMALE' ? ('MOTHER' | translate) : ('FATHER' | translate) }}-->
+<!--      </ng-template>-->
+<!--      <ng-template [ngIf]="offSpring">-->
+<!--        {{ inputAnimal.gender == 'FEMALE' ? ('OOI' | translate) : ('RAM' | translate) }}-->
+<!--      </ng-template>-->
+<!--    </div>-->
+<!--  </div><br>-->
+<!--  <div class="row">-->
+<!--    <div class="medium-6 columns">-->
+<!--      <label class="middle">{{ 'ULN' | translate }}</label>-->
+<!--    </div>-->
+<!--    <div class="medium-6 columns">-->
+<!--      <input type="text" disabled value="{{ getUln(inputAnimal) }}">-->
+<!--    </div>-->
+<!--  </div>-->
+
+<!--  &lt;!&ndash; PEDIGREE NUMBER &ndash;&gt;-->
+<!--  <div class="row">-->
+<!--    <div class="medium-6 columns">-->
+<!--      <label class="middle">{{ 'PEDIGREE NUMBER' | translate }}</label>-->
+<!--    </div>-->
+<!--    <div class="medium-6 columns">-->
+<!--      <div class="uid-input-group">-->
+<!--        <input type="text" disabled value="{{ inputAnimal.pedigree ? inputAnimal.pedigree : (inputAnimal.pedigree_country_code ? inputAnimal.pedigree_country_code + (inputAnimal.pedigree_number ? inputAnimal.pedigree_number : '') : '') }}">-->
+<!--      </div>-->
+<!--    </div>-->
+<!--  </div>-->
+
+<!--  &lt;!&ndash; DATE OF BIRTH &ndash;&gt;-->
+<!--  <div class="row">-->
+<!--    <div class="medium-6 columns">-->
+<!--      <label class="middle">{{ 'DATE OF BIRTH' | translate }}</label>-->
+<!--    </div>-->
+<!--    <div class="medium-6 columns">-->
+<!--      <input [(ngModel)]="dateOfBirth" type="text" disabled>-->
+<!--    </div>-->
+<!--  </div>-->
+
+<!--  &lt;!&ndash; LITTER SIZE &ndash;&gt;-->
+<!--  <div class="row">-->
+<!--    <div class="medium-6 columns">-->
+<!--      <label class="middle">{{ 'LITTER SIZE' | translate }}</label>-->
+<!--    </div>-->
+<!--    <div class="medium-6 columns">-->
+<!--      <input type="text" disabled value="{{ inputAnimal.litter_size ? inputAnimal.litter_size : '' }}">-->
+<!--    </div>-->
+<!--  </div>-->
+
+<!--  <div class="row">-->
+<!--    <div class="medium-6 columns">-->
+<!--      <label class="middle">{{ 'PRODUCTION' | translate }}</label>-->
+<!--    </div>-->
+<!--    <div class="medium-6 columns">-->
+<!--      <input type="text" disabled value="{{ inputAnimal.production }}">-->
+<!--    </div>-->
+<!--  </div>-->
+<!--  <div class="row">-->
+<!--    <div class="medium-6 columns">-->
+<!--      <label class="middle">{{ 'GENERAL APPEARANCE' | translate }}</label>-->
+<!--    </div>-->
+<!--    <div class="medium-6 columns">-->
+<!--      <input type="text" disabled value="{{ inputAnimal.general_appearance }}">-->
+<!--    </div>-->
+<!--  </div>-->
+
+<!--  &lt;!&ndash; FATHER &ndash;&gt;-->
+<!--  <div *ngIf="mainAnimalGender == 'FEMALE' || mainAnimalGender == null">-->
+<!--    <div class="row">-->
+<!--      <div class="medium-12 columns">-->
+<!--        <label class="middle"><b>{{ 'FATHER' | translate }}</b></label>-->
+<!--      </div>-->
+<!--    </div>-->
+<!--    <div class="row">-->
+<!--      <div class="medium-6 columns">-->
+<!--        <label class="middle">{{"ULN" | translate}}</label>-->
+<!--      </div>-->
+<!--      <div class="medium-6 columns">-->
+<!--        <input type="text" disabled value="{{ inputAnimal.father && inputAnimal.father != '' ? inputAnimal.father : inputAnimal.parent_father ? getUln(inputAnimal.parent_father) : '' }}">-->
+<!--      </div>-->
+<!--    </div>-->
+<!--    <div class="row">-->
+<!--      <div class="medium-6 columns">-->
+<!--        <label class="middle">{{"PEDIGREE NUMBER" | translate}}</label>-->
+<!--      </div>-->
+<!--      <div class="medium-6 columns">-->
+<!--        <input type="text" disabled value="{{ inputAnimal.father && inputAnimal.father != '' ? inputAnimal.father : inputAnimal.parent_father ? inputAnimal.parent_father.stn : '' }}">-->
+<!--      </div>-->
+<!--    </div>-->
+<!--  </div>-->
+<!--  &lt;!&ndash; MOTHER &ndash;&gt;-->
+<!--  <div *ngIf="mainAnimalGender == 'MALE' || mainAnimalGender == null">-->
+<!--    <div class="row">-->
+<!--      <div class="medium-12 columns">-->
+<!--        <label class="middle"><b>{{ 'MOTHER' | translate }}</b></label>-->
+<!--      </div>-->
+<!--    </div>-->
+<!--    <div class="row">-->
+<!--      <div class="medium-6 columns">-->
+<!--        <label class="middle">{{"ULN" | translate}}</label>-->
+<!--      </div>-->
+<!--      <div class="medium-6 columns">-->
+<!--        <input type="text" disabled value="{{ inputAnimal.mother && inputAnimal.mother != '' ? inputAnimal.mother : inputAnimal.parent_mother ? getUln(inputAnimal.parent_mother) : '' }}">-->
+<!--      </div>-->
+<!--    </div>-->
+<!--    <div class="row">-->
+<!--      <div class="medium-6 columns">-->
+<!--        <label class="middle">{{"PEDIGREE NUMBER" | translate}}</label>-->
+<!--      </div>-->
+<!--      <div class="medium-6 columns">-->
+<!--        <input type="text" disabled value="{{ inputAnimal.mother && inputAnimal.mother != '' ? inputAnimal.mother : inputAnimal.parent_mother ? inputAnimal.parent_mother.stn : '' }}">-->
+<!--      </div>-->
+<!--    </div>-->
+<!--  </div>-->
+<!--  <div class="row">-->
+<!--    <div class="large-12 columns">-->
+<!--      <button (click)="redirectToAnimal()" class="button small primary" [disabled]="!isRedirectButtonEnabled()">-->
+<!--        {{ "SHOW ANIMAL CARD" | translate }}-->
+<!--      </button>-->
+<!--    </div>-->
+<!--  </div>-->
+
+</div>

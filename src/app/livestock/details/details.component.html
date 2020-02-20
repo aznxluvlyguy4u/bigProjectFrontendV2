@@ -475,64 +475,6 @@
           </div>
         </div>
 
-        <!-- BREEDER AND/OR CO-OWNER -->
-        <!--<div class="info-container">-->
-        <!--<div class="info-header">-->
-        <!--{{ 'BREEDER AND OR CO-OWNER' | translate }}-->
-        <!--</div>-->
-        <!--<div class="info-body">-->
-
-        <!--&lt;!&ndash; BREEDER &ndash;&gt;-->
-        <!--<div class="row">-->
-        <!--<div class="medium-6 columns">-->
-        <!--<label> {{ 'BREEDER' | translate }} </label>-->
-        <!--</div>-->
-        <!--<div class="medium-6 columns">-->
-        <!--<input type="text" [(ngModel)]="animal.breeder.breeder" [disabled]="!edit_mode">-->
-        <!--</div>-->
-        <!--</div>-->
-
-        <!--&lt;!&ndash; UBN BREEDER &ndash;&gt;-->
-        <!--<div class="row">-->
-        <!--<div class="medium-6 columns">-->
-        <!--<label> {{ 'UBN BREEDER' | translate }} </label>-->
-        <!--</div>-->
-        <!--<div class="medium-6 columns">-->
-        <!--<input type="text" [(ngModel)]="animal.breeder.ubn" [disabled]="!edit_mode">-->
-        <!--</div>-->
-        <!--</div>-->
-
-        <!--&lt;!&ndash; E-MAIL ADDRESS &ndash;&gt;-->
-        <!--<div class="row">-->
-        <!--<div class="medium-6 columns">-->
-        <!--<label> {{ 'E-MAIL ADDRESS' | translate }} </label>-->
-        <!--</div>-->
-        <!--<div class="medium-6 columns">-->
-        <!--<input type="text" [(ngModel)]="animal.breeder.email" [disabled]="!edit_mode">-->
-        <!--</div>-->
-        <!--</div>-->
-
-        <!--&lt;!&ndash; TELEPHONE &ndash;&gt;-->
-        <!--<div class="row">-->
-        <!--<div class="medium-6 columns">-->
-        <!--<label> {{ 'TELEPHONE' | translate }} </label>-->
-        <!--</div>-->
-        <!--<div class="medium-6 columns">-->
-        <!--<input type="text" [(ngModel)]="animal.breeder.telephone" [disabled]="!edit_mode">-->
-        <!--</div>-->
-        <!--</div>-->
-
-        <!--&lt;!&ndash; CO-OWNER &ndash;&gt;-->
-        <!--<div class="row">-->
-        <!--<div class="medium-6 columns">-->
-        <!--<label> {{ 'CO-OWNER' | translate }} </label>-->
-        <!--</div>-->
-        <!--<div class="medium-6 columns">-->
-        <!--<input type="text" [disabled]="!edit_mode">-->
-        <!--</div>-->
-        <!--</div>-->
-        <!--</div>-->
-        <!--</div>-->
       </div>
     </div>
 
@@ -563,6 +505,34 @@
                 [mainAnimalGender]="'parents'"
               >
               </app-animal-details-card>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="large-12 columns">
+      <div class="info-container">
+        <div class="info-header">
+          <label>
+            {{ "CONTACT" | translate }}
+          </label>
+        </div>
+        <div class="row">
+          <div class="large-12 columns">
+            <div class="large-6 columns info-body">
+              <app-animal-details-contact-card
+                [header]="'BREEDER'|translate"
+                [location]="animal.breeder"
+              ></app-animal-details-contact-card>
+            </div>
+            <div class="large-6 columns info-body">
+              <app-animal-details-contact-card
+                [header]="'HOLDER'|translate"
+                [location]="animal.holder"
+              >
+              </app-animal-details-contact-card>
             </div>
           </div>
         </div>

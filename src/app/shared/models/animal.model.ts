@@ -3,6 +3,7 @@ import {Exterior, MeasurementOutput, Weight} from './measurement.model';
 import {Breeder} from './breeder.model';
 import {Mate} from './nsfo-declare.model';
 import {BreedValues} from './breedvalues.model';
+import {LocalLocation} from './location.model';
 
 export class Animal {
   public id: string;
@@ -54,7 +55,8 @@ export class Animal {
   public parent_father: Ram;
   public exteriors: Exterior[] = [];
   public exterior: Exterior = new Exterior();
-  public breeder: Breeder = new Breeder();
+  public breeder: LocalLocation = new LocalLocation();
+  public holder: LocalLocation = new LocalLocation();
   public measurement: MeasurementOutput = new MeasurementOutput();
   public declare_log: any[];
   public is_public: boolean;
