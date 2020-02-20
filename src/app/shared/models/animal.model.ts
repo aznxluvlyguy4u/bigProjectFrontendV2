@@ -20,11 +20,13 @@ export class Animal {
   public name: string;
   public nickname: string;
   public date_of_birth: string;
+  public country_of_birth: string;
   public dd_mm_yyyy_date_of_birth: string;
   public birth_progress: string;
   public litter_size: string;
+  public suckle_count: string;
   public n_ling: number;
-  public inbreeding_index: string;
+  public inbreeding_coefficient: string;
   public gender: string;
   public rearing: string;
   public suction_size: string;

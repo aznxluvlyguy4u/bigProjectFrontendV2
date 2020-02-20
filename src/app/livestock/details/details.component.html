@@ -166,6 +166,16 @@
             </div>
           </div>
 
+          <!-- COUNTRY OF BIRTH -->
+          <div class="row">
+            <div class="medium-6 columns">
+              <label class="middle">{{ 'COUNTRY OF BIRTH' | translate }}</label>
+            </div>
+            <div class="medium-6 columns">
+              <input type="text" [(ngModel)]="animal.country_of_birth" [disabled]="true">
+            </div>
+          </div>
+
           <!-- GENDER -->
           <div class="row">
             <div class="medium-6 columns">
@@ -204,6 +214,16 @@
             </div>
           </div>
 
+          <!-- SUCKLE COUNT -->
+          <div class="row">
+            <div class="medium-6 columns">
+              <label class="middle">{{ 'SUCKLE COUNT' | translate }}</label>
+            </div>
+            <div class="medium-6 columns">
+              <input type="number" [ngModel]="animal.suckle_count" disabled>
+            </div>
+          </div>
+
           <div class="row">
             <div class="medium-6 columns">
               <label class="middle">{{ 'PRODUCTION' | translate }}</label>
@@ -212,16 +232,6 @@
               <input type="text" disabled value="{{ animal.production }}">
             </div>
           </div>
-
-          <!--&lt;!&ndash; INBREEDING INDEX &ndash;&gt;-->
-          <!--<div class="row">-->
-          <!--<div class="medium-6 columns">-->
-          <!--<label class="middle">{{ 'INBREEDING INDEX' | translate }}</label>-->
-          <!--</div>-->
-          <!--<div class="medium-6 columns">-->
-          <!--<input type="text" [(ngModel)]="animal.inbreeding_index" [disabled]="true">-->
-          <!--</div>-->
-          <!--</div>-->
 
           <!--&lt;!&ndash; REARING &ndash;&gt;-->
           <!--<div class="row">-->
@@ -262,6 +272,17 @@
               <input type="text" [(ngModel)]="animal.scrapie_genotype" [disabled]="true">
             </div>
           </div>
+
+          <!-- INBREEDING COEFFICIENT -->
+          <div class="row">
+            <div class="medium-6 columns">
+              <label class="middle">{{ 'INBREEDING COEFFICIENT' | translate }}</label>
+            </div>
+            <div class="medium-6 columns">
+              <input type="text" [(ngModel)]="animal.inbreeding_coefficient" [disabled]="true">
+            </div>
+          </div>
+
         </div>
       </div>
 
