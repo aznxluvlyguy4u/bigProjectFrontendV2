@@ -598,6 +598,13 @@
                   <td>{{ breedValue.chart_label}}</td>
                   <td class="breed-value-and-accuracy-column">{{ breedValue.prioritize_normalized_values_in_table ? breedValue.normalized_value : breedValue.value}} / {{ breedValue.accuracy}}%</td>
                 </tr>
+
+                <tr style="font-style: italic">
+                  <td></td>
+                  <td>{{ 'EVALUATION DATE'|translate }}</td>
+                  <td class="breed-value-and-accuracy-column">{{animal.breed_value_max_generation_date}}</td>
+                </tr>
+
                 </tbody>
               </table>
             </div>

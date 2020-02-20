@@ -69,6 +69,7 @@ export class Animal {
   public sending: boolean;
   public successful: boolean;
   public selected: boolean;
+  public breed_value_max_generation_date: string;
   public breed_values: BreedValues[] = [];
   public pedigree: string;
   public is_own_historic_animal: boolean;
