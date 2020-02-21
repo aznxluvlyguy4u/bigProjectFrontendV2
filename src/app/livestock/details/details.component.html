@@ -113,21 +113,25 @@
             <div class="medium-6 columns">
               <input type="text" [(ngModel)]="animal.nickname" [disabled]="!nickname_edit_mode">
             </div>
-            <button type="button" *ngIf="nickname_edit_mode" (click)="toggleNicknameEditMode()"
-                    class="tiny alert button pull-right">{{ 'CANCEL' | translate }}
-            </button>
-            <button type="button" *ngIf="nickname_edit_mode" (click)="sendNicknameChangeRequest()"
-                    class="tiny primary button pull-right">{{ 'SAVE' | translate }}
-            </button>
-            <button type="button" *ngIf="!nickname_edit_mode" [disabled]="!changeEnabled" (click)="toggleNicknameEditMode()"
-                    class="tiny primary button pull-right">
+          </div>
+          <div class="row" *ngIf="changeEnabled && isAdmin">
+            <div class="medium-offset-6 medium-6 columns end">
+              <button type="button" *ngIf="nickname_edit_mode" (click)="toggleNicknameEditMode()"
+                      class="tiny alert button pull-right">{{ 'CANCEL' | translate }}
+              </button>
+              <button type="button" *ngIf="nickname_edit_mode" (click)="sendNicknameChangeRequest()"
+                      class="tiny primary button pull-right">{{ 'SAVE' | translate }}
+              </button>
+              <button type="button" *ngIf="!nickname_edit_mode" [disabled]="!changeEnabled" (click)="toggleNicknameEditMode()"
+                      class="tiny primary button pull-right">
                             <span *ngIf="isLoading">
                                 <i class="fa fa-gear fa-spin fa-fw"></i>
                             </span>
-              <span *ngIf="!isLoading">
+                <span *ngIf="!isLoading">
                                 {{ 'CHANGE' | translate }}
                             </span>
-            </button>
+              </button>
+            </div>
           </div>
 
           <!-- WORK NUMBER -->
@@ -187,21 +191,25 @@
                 </option>
               </select>
             </div>
-            <button type="button" *ngIf="gender_edit_mode" (click)="toggleGenderEditMode()"
-                    class="tiny alert button pull-right">{{ 'CANCEL' | translate }}
-            </button>
-            <button type="button" *ngIf="gender_edit_mode" (click)="sendGenderChangeRequest()"
-                    class="tiny primary button pull-right">{{ 'SAVE' | translate }}
-            </button>
-            <button type="button" *ngIf="!gender_edit_mode" [disabled]="!changeEnabled" (click)="toggleGenderEditMode()"
-                    class="tiny primary button pull-right">
+          </div>
+          <div class="row" *ngIf="changeEnabled && isAdmin">
+            <div class="medium-offset-6 medium-6 columns end">
+              <button type="button" *ngIf="gender_edit_mode" (click)="toggleGenderEditMode()"
+                      class="tiny alert button pull-right">{{ 'CANCEL' | translate }}
+              </button>
+              <button type="button" *ngIf="gender_edit_mode" (click)="sendGenderChangeRequest()"
+                      class="tiny primary button pull-right">{{ 'SAVE' | translate }}
+              </button>
+              <button type="button" *ngIf="!gender_edit_mode" [disabled]="!changeEnabled" (click)="toggleGenderEditMode()"
+                      class="tiny primary button pull-right">
                             <span *ngIf="isLoading">
                                 <i class="fa fa-gear fa-spin fa-fw"></i>
                             </span>
-              <span *ngIf="!isLoading">
+                <span *ngIf="!isLoading">
                                 {{ 'CHANGE' | translate }}
                             </span>
-            </button>
+              </button>
+            </div>
           </div>
 
           <!-- LITTER SIZE -->
