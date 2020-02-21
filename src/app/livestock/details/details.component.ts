@@ -30,6 +30,7 @@ import {PaginationService} from 'ngx-pagination';
 import {CacheService} from '../../shared/services/settings/cache.service';
 import {DatePipe} from '@angular/common';
 import {StringValidation} from '../../shared/validation/string.validation';
+import {ResponseResultModel} from '../../shared/models/response-result.model';
 
 @Component({
   templateUrl: './details.component.html',
@@ -487,9 +488,12 @@ export class LivestockDetailComponent {
     this.apiService
       .doPutRequest(API_URI_ANIMAL_NICKNAME + '/' + this.animal.id, request)
       .subscribe(
-        res => {
+        (res: ResponseResultModel) => {
           this.changed_animal_info = true;
           this.changeEnabled = true;
+          const result: Animal = res.result;
+          this.animal.nickname = result.nickname;
+          this.edit_mode = false;
         },
         err => {
           this.nickname_changed_animal_info_error = true;
@@ -571,10 +575,11 @@ export class LivestockDetailComponent {
     this.apiService
       .doPutRequest(API_URI_CHANGE_ANIMAL_DETAILS + '/' + this.temp_animal.uln, request)
       .subscribe(
-        res => {
+        (res: ResponseResultModel) => {
           this.changed_animal_info = true;
           this.changeEnabled = true;
 
+          this.edit_mode = false;
         },
         err => {
           this.changed_animal_info_error = true;
