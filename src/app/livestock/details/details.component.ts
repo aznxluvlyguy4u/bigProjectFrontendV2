@@ -59,7 +59,7 @@ export class LivestockDetailComponent {
   public model_datetime_format: string;
   public livestock_gender_options = LIVESTOCK_GENDER_OPTIONS;
   public livestock_breed_options = LIVESTOCK_BREED_OPTIONS;
-  public edit_mode = false;
+  public collar_edit_mode = false;
   public gender_edit_mode = false;
   public nickname_edit_mode = false;
   public birth_measurements_edit_mode = false;
@@ -493,7 +493,6 @@ export class LivestockDetailComponent {
           this.changeEnabled = true;
           const result: Animal = res.result;
           this.animal.nickname = result.nickname;
-          this.edit_mode = false;
         },
         err => {
           this.nickname_changed_animal_info_error = true;
@@ -556,7 +555,7 @@ export class LivestockDetailComponent {
       return;
     }
     this.changeEnabled = false;
-    this.edit_mode = false;
+    this.collar_edit_mode = false;
     this.changed_animal_info = false;
     this.changed_animal_info_error = false;
 
@@ -579,7 +578,7 @@ export class LivestockDetailComponent {
           this.changed_animal_info = true;
           this.changeEnabled = true;
 
-          this.edit_mode = false;
+          this.collar_edit_mode = false;
         },
         err => {
           this.changed_animal_info_error = true;
@@ -589,6 +588,50 @@ export class LivestockDetailComponent {
         }
       );
   }
+
+
+
+  public sendCollarChangeRequest() {
+    if (!this.animal.is_own_animal && !this.isAdmin) {
+      return;
+    }
+    this.changeEnabled = false;
+    this.collar_edit_mode = false;
+    this.changed_animal_info = false;
+    this.changed_animal_info_error = false;
+
+    if (this.animal.collar.color) {
+      if (this.animal.collar.number === '') {
+        this.changed_animal_info = false;
+        this.changeEnabled = true;
+        return false;
+      }
+    }
+
+    const request = {
+      'collar': this.animal.collar
+    };
+
+    this.apiService
+      .doPutRequest(API_URI_CHANGE_ANIMAL_DETAILS + '/' + this.temp_animal.uln, request)
+      .subscribe(
+        (res: ResponseResultModel) => {
+          this.changed_animal_info = true;
+          this.changeEnabled = true;
+          const result: Animal = res.result;
+          this.collar_edit_mode = false;
+          this.animal.collar.color = result.collar.color;
+          this.animal.collar.number = result.collar.number;
+        },
+        err => {
+          this.changed_animal_info_error = true;
+          this.changeEnabled = true;
+          this.animal.collar = this.temp_animal.collar;
+
+        }
+      );
+  }
+
 
   public generateLineageProof(fileType: string) {
     this.downloadService.doLineageProofPostRequest([this.animal], fileType);
@@ -636,13 +679,24 @@ export class LivestockDetailComponent {
     }
   }
 
+  public toggleCollarEditMode() {
+    if (!this.animal.is_own_animal && !this.isAdmin) {
+      return;
+    }
+    this.collar_edit_mode = !this.collar_edit_mode;
+
+    if (!this.collar_edit_mode) {
+      this.animal = _.clone(this.temp_animal);
+    }
+  }
+
   public toggleEditMode() {
     if (!this.animal.is_own_animal && !this.isAdmin) {
       return;
     }
-    this.edit_mode = !this.edit_mode;
+    this.collar_edit_mode = !this.collar_edit_mode;
 
-    if (!this.edit_mode) {
+    if (!this.collar_edit_mode) {
       this.animal = _.clone(this.temp_animal);
     }
   }
