@@ -63,7 +63,7 @@ export class DepartComponent implements OnInit, OnDestroy {
       if (!this.cleanUpComponent && this.loopGetDepartErrorList) {
         this.getDepartErrorList();
       }
-    }, 10 * 1000);
+    }, 60 * 1000);
   }
 
   public navigateTo(route: string) {

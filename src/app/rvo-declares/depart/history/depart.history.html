@@ -22,16 +22,16 @@
   </thead>
   <tbody>
   <tr app-depart-history-row
-    *ngFor="let depart of departHistoryList | departHistoryFilter:[searchValue] | paginate: {itemsPerPage: 10, currentPage: page}; let i = index"
+    *ngFor="let depart of departHistoryList | departHistoryFilter:[searchValue] | paginate: {itemsPerPage: 10, currentPage: page, totalItems: totalDepartItems}; let i = index"
     (revokeDepart)="selectDepart($event)" [depart]="depart" [depart_index]="i"></tr>
   </tbody>
 </table>
 
-<div *ngIf="isLoading" class="data-loader">
+<div *ngIf="isLoading" class="data-loader" style="padding:0;">
   <app-page-loading-spinner></app-page-loading-spinner>
 </div>
 
-<pagination-controls (pageChange)="page = $event"></pagination-controls>
+<pagination-controls (pageChange)="page = $event;getDepartHistoryList($event)"></pagination-controls>
 
 <!--REVOKE MODAL-->
 <div class="reveal-overlay" [ngStyle]="{'display': modal_display}">

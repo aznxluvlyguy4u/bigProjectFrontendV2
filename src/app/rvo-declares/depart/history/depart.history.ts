@@ -21,6 +21,7 @@ export class DepartHistoryComponent implements OnInit {
   public isLoading = true;
   public page: number;
   public searchValue: string;
+  public totalDepartItems: number;
 
   constructor(private apiService: NSFOService, private settings: Settings, private cache: CacheService) {
   }
@@ -29,11 +30,20 @@ export class DepartHistoryComponent implements OnInit {
     this.getDepartHistoryList();
   }
 
-  public getDepartHistoryList() {
+  public getDepartHistoryList(page = 1) {
+    this.isLoading = true;
+    if (typeof this.page !== 'undefined') {
+      page = this.page;
+    } else {
+      this.page = page;
+    }
+
     this.apiService
-      .doGetRequest(API_URI_GET_DEPARTS_HISTORY)
+      .doGetRequest(API_URI_GET_DEPARTS_HISTORY + '?page=' + page)
       .subscribe((res: JsonResponseModel) => {
-          const departs = <DepartChangeResponse[]> res.result.departs;
+          const departs = <DepartChangeResponse[]> res.result.departs.items;
+          this.totalDepartItems = res.result.departs.totalItems;
+          this.departHistoryList = [];
 
           for (const depart of departs) {
             depart.depart_date = moment(depart.depart_date).format(this.settings.VIEW_DATE_FORMAT);
@@ -43,7 +53,8 @@ export class DepartHistoryComponent implements OnInit {
             this.departHistoryList.push(depart);
           }
 
-          const departs_exports = <DepartChangeResponse[]> res.result.exports;
+          const departs_exports = <DepartChangeResponse[]> res.result.exports.items;
+          // this.totalDepartItems = this.totalDepartItems + res.result.exports.totalItems;
 
           for (const depart of departs_exports) {
             depart.depart_date = moment(depart.depart_date).format(this.settings.VIEW_DATE_FORMAT);
