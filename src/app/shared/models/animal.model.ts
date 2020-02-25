@@ -1,9 +1,9 @@
 import {Litter} from './litter.model';
-import {Exterior, MeasurementOutput, Weight} from './measurement.model';
-import {Breeder} from './breeder.model';
+import {BirthOutput, Exterior, MeasurementOutput, Weight} from './measurement.model';
 import {Mate} from './nsfo-declare.model';
 import {BreedValues} from './breedvalues.model';
 import {LocalLocation} from './location.model';
+import {PredicateDetailsModel} from './predicate-details.model';
 
 export class Animal {
   public id: string;
@@ -29,12 +29,16 @@ export class Animal {
   public n_ling: number;
   public inbreeding_coefficient: string;
   public gender: string;
-  public rearing: string;
+  public rearing: Rearing;
+  public lambar: boolean;
+  public surrogate: Animal;
   public suction_size: string;
-  public blind_factor: string;
+  public blindness_factor: string;
   public scrapie_genotype: string;
   public breed_status: string;
+  public breed_type: string;
   public predicate: string;
+  public predicate_details: PredicateDetailsModel = new PredicateDetailsModel();
   public breed: string;
   public inflow_date: string;
   public nurture_type: string;
@@ -57,7 +61,8 @@ export class Animal {
   public exterior: Exterior = new Exterior();
   public breeder: LocalLocation = new LocalLocation();
   public holder: LocalLocation = new LocalLocation();
-  public measurement: MeasurementOutput = new MeasurementOutput();
+  public scan_measurements: MeasurementOutput = new MeasurementOutput();
+  public birth: BirthOutput = new BirthOutput();
   public declare_log: any[];
   public is_public: boolean;
   public is_user_allowed_to_access_animal_details: boolean;
@@ -87,6 +92,12 @@ export class Ewe extends Animal {
 export class Ram extends Animal {
 }
 
+export class Rearing {
+  public label: string;
+  public lambar: boolean;
+  public surrogate: Animal;
+}
+
 export class Collar {
   color: string;
   number: string;
@@ -108,4 +119,9 @@ export const LIVESTOCK_SORT_OPTIONS = [
 
 export const LIVESTOCK_GENDER_FILTER_OPTIONS = [
   'ALL', 'MALE', 'FEMALE', 'NEUTER'
+];
+
+export const BLINDNESS_FACTOR_TYPES = [
+  'BLINDNESS_FACTOR_FREE',
+  'BLINDNESS_FACTOR_CARRIER',
 ];

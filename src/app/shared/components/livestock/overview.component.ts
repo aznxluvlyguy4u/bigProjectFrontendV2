@@ -374,7 +374,11 @@ export class LivestockOverviewComponent implements OnInit, OnDestroy {
     }
 
     private viewAnimalDetails(animal: LivestockAnimal) {
-        this.router.navigate(['/main/livestock/details', animal.uln]);
+        if (animal.id != null) {
+          this.router.navigate(['/main/livestock/details', animal.id]);
+        } else {
+          this.router.navigate(['/main/livestock/details', animal.uln]);
+        }
     }
 
     private selectAnimal(event: Event, animal: LivestockAnimal): boolean {

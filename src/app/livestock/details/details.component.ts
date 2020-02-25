@@ -1,7 +1,8 @@
 import * as moment from 'moment';
 import * as _ from 'lodash';
 
-import {Component, OnInit} from '@angular/core';
+import {Component} from '@angular/core';
+import {MatSnackBar} from '@angular/material';
 import {ActivatedRoute, Router} from '@angular/router';
 import {LIVESTOCK_BREED_OPTIONS, LIVESTOCK_GENDER_OPTIONS} from '../livestock.model';
 import {NSFOService} from '../../shared/services/nsfo-api/nsfo.service';
@@ -18,7 +19,7 @@ import {FormControl, FormGroup, FormBuilder, Validators} from '@angular/forms';
 import {DateValidator} from '../../shared/validation/nsfo-validation';
 import {SettingsService} from '../../shared/services/settings/settings.service';
 import {DownloadService} from '../../shared/services/download/download.service';
-import {Animal} from '../../shared/models/animal.model';
+import {Animal, BLINDNESS_FACTOR_TYPES} from '../../shared/models/animal.model';
 import {Exterior} from '../../shared/models/measurement.model';
 import {Inspector, User} from '../../shared/models/person.model';
 import {DeclareLog} from './declare-log.model';
@@ -31,6 +32,8 @@ import {CacheService} from '../../shared/services/settings/cache.service';
 import {DatePipe} from '@angular/common';
 import {StringValidation} from '../../shared/validation/string.validation';
 import {ResponseResultModel} from '../../shared/models/response-result.model';
+import {BIRTH_PROGRESS_TYPES} from '../../rvo-declares/birth/birth.model';
+import {PREDICATE_TYPES} from '../../shared/models/predicate-details.model';
 
 @Component({
   templateUrl: './details.component.html',
@@ -59,42 +62,38 @@ export class LivestockDetailComponent {
   public model_datetime_format: string;
   public livestock_gender_options = LIVESTOCK_GENDER_OPTIONS;
   public livestock_breed_options = LIVESTOCK_BREED_OPTIONS;
+
+  // EDIT MODES
+  public birth_measurements_edit_mode = false;
+  public blindness_factor_edit_mode = false;
   public collar_edit_mode = false;
   public gender_edit_mode = false;
   public nickname_edit_mode = false;
-  public birth_measurements_edit_mode = false;
+  public notes_edit_mode = false;
+  public predicate_edit_mode = false;
+  public rearing_edit_mode = false;
+  public scan_measurements_edit_mode = false;
+
   public changeEnabled = false;
-  public changed_animal_info = false;
-  public changed_animal_info_error = false;
-  public gender_changed_animal_info_error = false;
-  public nickname_changed_animal_info_error = false;
-  public birth_measurements_changed_animal_info_error = false;
   public in_progress = false;
-  public sub: any;
+
   public error_message = 'AN ERROR OCCURRED WHILE SAVING';
-  public gender_change_error = '';
-  public nickname_change_error = '';
-  public birth_measurements_change_error = '';
+
+  // WEIGHTS GRAPH
   public measurementDates: string[] = [];
   public measurementWeights: number[] = [];
-  public logs: DeclareLog[] = [];
-  public breedValues: BreedValues[] = [];
-  // EXTERIOR MEASUREMENTS
-  public exteriorForm: FormGroup;
-  public isValidExteriorForm = true;
-  public isRequestingExterior = false;
-  public hasServerError = false;
 
-  public isExteriorEditMode = false;
-  public inspectors: User[] = [];
-  public kinds: string[] = [];
+  // DECLARE LOG
+  public logs: DeclareLog[] = [];
+
+  // BREED VALUES GRAPH
+  public breedValues: BreedValues[] = [];
+
+  // EXTERIOR MEASUREMENTS
   public selectedExterior: Exterior = new Exterior();
   public isAdmin = false;
-  public tempExterior: Exterior = new Exterior();
-  public displayExteriorModal = 'none';
   public selectedExteriorDate = '';
 
-  public invalidMeasurementDate = false;
   public model_date_format: string;
 
   public isLoadingAnimalDetails: boolean;
@@ -112,6 +111,10 @@ export class LivestockDetailComponent {
 
   private maxChildrenCountToDisplayChildDetails = 2000;
 
+  public birth_progress_types = BIRTH_PROGRESS_TYPES;
+  public blindness_factor_types = BLINDNESS_FACTOR_TYPES;
+  public predicate_types = PREDICATE_TYPES;
+
   constructor(private route: ActivatedRoute,
               private router: Router,
               private apiService: NSFOService,
@@ -120,7 +123,9 @@ export class LivestockDetailComponent {
               public settings: SettingsService,
               private fb: FormBuilder,
               private translate: TranslateService,
-              private downloadService: DownloadService) {
+              private downloadService: DownloadService,
+              public snackBar: MatSnackBar
+  ) {
     this.isAdmin = settings.isAdmin();
     this.view_date_format = settings.getViewDateFormat();
     this.model_datetime_format = settings.getModelDateTimeFormat();
@@ -146,8 +151,17 @@ export class LivestockDetailComponent {
     });
   }
 
+  private openSaveConfirmationSnackBar() {
+    const message = this.translate.instant('THE ANIMAL INFO HAS BEEN SAVED') + '!';
+    this.snackBar.open(message);
+  }
+
   public updateHistory(event: string) {
-      this.animalHistory.push(this.animal.uln);
+      if (this.animal.id != null) {
+        this.animalHistory.push(this.animal.id);
+      } else {
+        this.animalHistory.push(this.animal.uln);
+      }
   }
 
   startLoading() {
@@ -285,7 +299,7 @@ export class LivestockDetailComponent {
           this.logs = this.animal.declare_log.length > 0 ? this.animal.declare_log : [];
 
           this.changeEnabled = false;
-          this.temp_animal = _.clone(this.animal);
+          this.temp_animal = _.cloneDeep(this.animal);
 
           // this.getExteriorKinds();
           // this.getInspectors();
@@ -440,14 +454,28 @@ export class LivestockDetailComponent {
     return this.breedValues.length > 0;
   }
 
+  private saveSuccessfulActions() {
+    this.birth_measurements_edit_mode = false;
+    this.blindness_factor_edit_mode = false;
+    this.collar_edit_mode = false;
+    this.gender_edit_mode = false;
+    this.nickname_edit_mode = false;
+    this.notes_edit_mode = false;
+    this.predicate_edit_mode = false;
+    this.rearing_edit_mode = false;
+    this.scan_measurements_edit_mode = false;
+
+    this.changeEnabled = true;
+    this.temp_animal = _.cloneDeep(this.animal);
+    this.openSaveConfirmationSnackBar();
+  }
+
   public sendGenderChangeRequest() {
     if (!this.animal.is_own_animal && !this.isAdmin) {
       return;
     }
     this.changeEnabled = false;
     this.gender_edit_mode = false;
-    this.changed_animal_info = false;
-    this.changed_animal_info_error = false;
 
     const request = {
       'gender': this.genderType(this.animal.gender),
@@ -459,14 +487,12 @@ export class LivestockDetailComponent {
       .doPostRequest(API_URI_ANIMAL_GENDER, request)
       .subscribe(
         res => {
-          this.changed_animal_info = true;
-          this.changeEnabled = true;
+          this.saveSuccessfulActions();
         },
         err => {
-          this.gender_changed_animal_info_error = true;
           this.changeEnabled = true;
-          this.gender_change_error = err.error.result.message;
           this.animal.gender = this.temp_animal.gender;
+          alert(err.error.result.message);
         }
       );
   }
@@ -477,8 +503,6 @@ export class LivestockDetailComponent {
     }
     this.changeEnabled = false;
     this.nickname_edit_mode = false;
-    this.changed_animal_info = false;
-    this.changed_animal_info_error = false;
 
     const request = {
       'nickname': this.animal.nickname,
@@ -489,17 +513,14 @@ export class LivestockDetailComponent {
       .doPutRequest(API_URI_ANIMAL_NICKNAME + '/' + this.animal.id, request)
       .subscribe(
         (res: ResponseResultModel) => {
-          this.changed_animal_info = true;
-          this.changeEnabled = true;
           const result: Animal = res.result;
           this.animal.nickname = result.nickname;
+          this.saveSuccessfulActions();
         },
         err => {
-          this.nickname_changed_animal_info_error = true;
           this.changeEnabled = true;
-          this.nickname_change_error = this.apiService.getErrorMessage(err);
           this.animal.nickname = this.temp_animal.nickname;
-          alert(this.nickname_change_error);
+          alert(this.apiService.getErrorMessage(err));
         }
       );
   }
@@ -509,18 +530,16 @@ export class LivestockDetailComponent {
       return;
     }
     this.birth_measurements_edit_mode = false;
-    this.birth_measurements_changed_animal_info_error = false;
-    this.birth_measurements_change_error = '';
     this.changeEnabled = false;
-    this.changed_animal_info = false;
-    this.changed_animal_info_error = false;
 
-    const newBirthWeight = this.animal.measurement.birth_weight;
-    const newTailLength = this.animal.measurement.tail_length;
+    const newBirthWeight = this.animal.birth.birth_weight;
+    const newTailLength = this.animal.birth.tail_length;
+    const newBirthProgress = this.animal.birth.birth_progress;
 
     const request = {
       'birth_weight': newBirthWeight,
       'tail_length': newTailLength,
+      'birth_progress': newBirthProgress,
       'reset_measurement_date_using_date_of_birth': false
     };
 
@@ -536,98 +555,73 @@ export class LivestockDetailComponent {
       .doPutRequest(API_URI_MEASUREMENTS + '/' + this.animal.id + '/birth-measurements', request)
       .subscribe(
         res => {
-          this.changed_animal_info = true;
-          this.changeEnabled = true;
+          this.saveSuccessfulActions();
         },
         err => {
-          this.birth_measurements_changed_animal_info_error = true;
           this.changeEnabled = true;
-          this.birth_measurements_change_error = this.apiService.getErrorMessage(err);
-          this.animal.measurement.birth_weight = this.temp_animal.measurement.birth_weight;
-          this.animal.measurement.tail_length = this.temp_animal.measurement.tail_length;
-          alert(this.birth_measurements_change_error);
+          this.animal.birth.birth_weight = this.temp_animal.birth.birth_weight;
+          this.animal.birth.tail_length = this.temp_animal.birth.tail_length;
+          this.animal.birth.birth_progress = this.temp_animal.birth.birth_progress;
+          alert(this.apiService.getErrorMessage(err));
         }
       );
   }
 
-  public sendChangeRequest() {
+  public sendGeneralChangeRequest() {
     if (!this.animal.is_own_animal && !this.isAdmin) {
       return;
     }
     this.changeEnabled = false;
     this.collar_edit_mode = false;
-    this.changed_animal_info = false;
-    this.changed_animal_info_error = false;
 
     if (this.animal.collar.color) {
       if (this.animal.collar.number === '') {
-        this.changed_animal_info = false;
         this.changeEnabled = true;
         return false;
       }
     }
 
-    const request = {
-      'collar': this.animal.collar
-    };
+    let request: object;
 
-    this.apiService
-      .doPutRequest(API_URI_CHANGE_ANIMAL_DETAILS + '/' + this.temp_animal.uln, request)
-      .subscribe(
-        (res: ResponseResultModel) => {
-          this.changed_animal_info = true;
-          this.changeEnabled = true;
-
-          this.collar_edit_mode = false;
+    if (this.isAdmin) {
+      request = {
+        'collar': this.animal.collar,
+        'predicate_details': {
+          'type': this.animal.predicate_details.type,
+          'score': this.animal.predicate_details.score
         },
-        err => {
-          this.changed_animal_info_error = true;
-          this.changeEnabled = true;
-          this.animal.collar = this.temp_animal.collar;
-
-        }
-      );
-  }
-
-
-
-  public sendCollarChangeRequest() {
-    if (!this.animal.is_own_animal && !this.isAdmin) {
-      return;
+        'blindness_factor': this.animal.blindness_factor,
+        'rearing': this.animal.rearing.label
+      };
+    } else {
+      request = {
+        'collar': this.animal.collar,
+        'blindness_factor': this.animal.blindness_factor,
+        'rearing': this.animal.rearing.label
+      };
     }
-    this.changeEnabled = false;
-    this.collar_edit_mode = false;
-    this.changed_animal_info = false;
-    this.changed_animal_info_error = false;
-
-    if (this.animal.collar.color) {
-      if (this.animal.collar.number === '') {
-        this.changed_animal_info = false;
-        this.changeEnabled = true;
-        return false;
-      }
-    }
-
-    const request = {
-      'collar': this.animal.collar
-    };
 
     this.apiService
       .doPutRequest(API_URI_CHANGE_ANIMAL_DETAILS + '/' + this.temp_animal.uln, request)
       .subscribe(
         (res: ResponseResultModel) => {
-          this.changed_animal_info = true;
           this.changeEnabled = true;
           const result: Animal = res.result;
-          this.collar_edit_mode = false;
+
           this.animal.collar.color = result.collar.color;
           this.animal.collar.number = result.collar.number;
+          this.animal.predicate_details.type = result.predicate_details.type;
+          this.animal.predicate_details.score = result.predicate_details.score;
+          this.animal.predicate_details.formatted = result.predicate_details.formatted;
+          this.animal.blindness_factor = result.blindness_factor;
+          this.animal.predicate_details.formatted = result.predicate_details.formatted;
+          this.animal.predicate_details.formatted = result.predicate_details.formatted;
+
+          this.saveSuccessfulActions();
         },
         err => {
-          this.changed_animal_info_error = true;
           this.changeEnabled = true;
           this.animal.collar = this.temp_animal.collar;
-
         }
       );
   }
@@ -645,6 +639,17 @@ export class LivestockDetailComponent {
     this.animal.work_number = tag.ulnLastFive;
   }
 
+  private deactivateEditModes(editModeToKeepActive: string) {
+    if (editModeToKeepActive !== 'birthMeasurements') { this.birth_measurements_edit_mode = false; }
+    if (editModeToKeepActive !== 'blindnessFactor')   { this.blindness_factor_edit_mode = false; }
+    if (editModeToKeepActive !== 'collar')            { this.collar_edit_mode = false; }
+    if (editModeToKeepActive !== 'gender')            { this.gender_edit_mode = false; }
+    if (editModeToKeepActive !== 'nickname')          { this.nickname_edit_mode = false; }
+    if (editModeToKeepActive !== 'notes')             { this.notes_edit_mode = false; }
+    if (editModeToKeepActive !== 'predicate')         { this.predicate_edit_mode = false; }
+    if (editModeToKeepActive !== 'rearing')           { this.rearing_edit_mode = false; }
+    if (editModeToKeepActive !== 'scanMeasurements')  { this.scan_measurements_edit_mode = false; }
+  }
 
   public toggleGenderEditMode() {
     if (!this.animal.is_own_animal && !this.isAdmin) {
@@ -652,8 +657,10 @@ export class LivestockDetailComponent {
     }
     this.gender_edit_mode = !this.gender_edit_mode;
 
-    if (!this.gender_edit_mode) {
-      this.animal = _.clone(this.temp_animal);
+    this.animal = _.cloneDeep(this.temp_animal);
+
+    if (this.gender_edit_mode) {
+      this.deactivateEditModes('gender');
     }
   }
 
@@ -663,8 +670,10 @@ export class LivestockDetailComponent {
     }
     this.birth_measurements_edit_mode = !this.birth_measurements_edit_mode;
 
-    if (!this.birth_measurements_edit_mode) {
-      this.animal = _.clone(this.temp_animal);
+    this.animal = _.cloneDeep(this.temp_animal);
+
+    if (this.birth_measurements_edit_mode) {
+      this.deactivateEditModes('birthMeasurements');
     }
   }
 
@@ -674,8 +683,10 @@ export class LivestockDetailComponent {
     }
     this.nickname_edit_mode = !this.nickname_edit_mode;
 
-    if (!this.nickname_edit_mode) {
-      this.animal = _.clone(this.temp_animal);
+    this.animal = _.cloneDeep(this.temp_animal);
+
+    if (this.nickname_edit_mode) {
+      this.deactivateEditModes('nickname');
     }
   }
 
@@ -685,19 +696,75 @@ export class LivestockDetailComponent {
     }
     this.collar_edit_mode = !this.collar_edit_mode;
 
-    if (!this.collar_edit_mode) {
-      this.animal = _.clone(this.temp_animal);
+    this.animal = _.cloneDeep(this.temp_animal);
+
+    if (this.collar_edit_mode) {
+      this.deactivateEditModes('collar');
     }
   }
 
-  public toggleEditMode() {
+  public togglePredicateEditMode() {
     if (!this.animal.is_own_animal && !this.isAdmin) {
       return;
     }
-    this.collar_edit_mode = !this.collar_edit_mode;
+    this.predicate_edit_mode = !this.predicate_edit_mode;
 
-    if (!this.collar_edit_mode) {
-      this.animal = _.clone(this.temp_animal);
+    this.animal = _.cloneDeep(this.temp_animal);
+
+    if (this.predicate_edit_mode) {
+      this.deactivateEditModes('predicate');
+    }
+  }
+
+  public toggleBlindnessFactorEditMode() {
+    if (!this.animal.is_own_animal && !this.isAdmin) {
+      return;
+    }
+    this.blindness_factor_edit_mode = !this.blindness_factor_edit_mode;
+
+    this.animal = _.cloneDeep(this.temp_animal);
+
+    if (this.blindness_factor_edit_mode) {
+      this.deactivateEditModes('blindnessFactor');
+    }
+  }
+
+  public toggleRearingEditMode() {
+    if (!this.animal.is_own_animal && !this.isAdmin) {
+      return;
+    }
+    this.rearing_edit_mode = !this.rearing_edit_mode;
+
+    this.animal = _.cloneDeep(this.temp_animal);
+
+    if (this.rearing_edit_mode) {
+      this.deactivateEditModes('rearing');
+    }
+  }
+
+  public toggleNotesEditMode() {
+    if (!this.animal.is_own_animal && !this.isAdmin) {
+      return;
+    }
+    this.notes_edit_mode = !this.notes_edit_mode;
+
+    this.animal = _.cloneDeep(this.temp_animal);
+
+    if (this.notes_edit_mode) {
+      this.deactivateEditModes('notes');
+    }
+  }
+
+  public toggleScanMeasurementsEditMode() {
+    if (!this.animal.is_own_animal && !this.isAdmin) {
+      return;
+    }
+    this.scan_measurements_edit_mode = !this.scan_measurements_edit_mode;
+
+    this.animal = _.cloneDeep(this.temp_animal);
+
+    if (this.scan_measurements_edit_mode) {
+      this.deactivateEditModes('scanMeasurements');
     }
   }
 
