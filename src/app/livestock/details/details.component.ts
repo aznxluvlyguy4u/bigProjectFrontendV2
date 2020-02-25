@@ -34,6 +34,7 @@ import {StringValidation} from '../../shared/validation/string.validation';
 import {ResponseResultModel} from '../../shared/models/response-result.model';
 import {BIRTH_PROGRESS_TYPES} from '../../rvo-declares/birth/birth.model';
 import {PREDICATE_TYPES} from '../../shared/models/predicate-details.model';
+import {HttpErrorResponse} from '@angular/common/http';
 
 @Component({
   templateUrl: './details.component.html',
@@ -454,20 +455,30 @@ export class LivestockDetailComponent {
     return this.breedValues.length > 0;
   }
 
-  private saveSuccessfulActions() {
-    this.birth_measurements_edit_mode = false;
-    this.blindness_factor_edit_mode = false;
-    this.collar_edit_mode = false;
-    this.gender_edit_mode = false;
-    this.nickname_edit_mode = false;
-    this.notes_edit_mode = false;
-    this.predicate_edit_mode = false;
-    this.rearing_edit_mode = false;
-    this.scan_measurements_edit_mode = false;
+  private deactivateEditModes(editModeToKeepActive: string) {
+    if (editModeToKeepActive !== 'birthMeasurements') { this.birth_measurements_edit_mode = false; }
+    if (editModeToKeepActive !== 'blindnessFactor')   { this.blindness_factor_edit_mode = false; }
+    if (editModeToKeepActive !== 'collar')            { this.collar_edit_mode = false; }
+    if (editModeToKeepActive !== 'gender')            { this.gender_edit_mode = false; }
+    if (editModeToKeepActive !== 'nickname')          { this.nickname_edit_mode = false; }
+    if (editModeToKeepActive !== 'notes')             { this.notes_edit_mode = false; }
+    if (editModeToKeepActive !== 'predicate')         { this.predicate_edit_mode = false; }
+    if (editModeToKeepActive !== 'rearing')           { this.rearing_edit_mode = false; }
+    if (editModeToKeepActive !== 'scanMeasurements')  { this.scan_measurements_edit_mode = false; }
+  }
 
+  private actionsAfterSuccessfulSave() {
+    this.deactivateEditModes('none');
     this.changeEnabled = true;
     this.temp_animal = _.cloneDeep(this.animal);
     this.openSaveConfirmationSnackBar();
+  }
+
+  private actionsAfterFailedSave(err: HttpErrorResponse) {
+    this.animal = _.cloneDeep(this.temp_animal);
+    this.changeEnabled = true;
+    const errorMessage = this.apiService.getErrorMessage(err);
+    alert(errorMessage);
   }
 
   public sendGenderChangeRequest() {
@@ -487,12 +498,10 @@ export class LivestockDetailComponent {
       .doPostRequest(API_URI_ANIMAL_GENDER, request)
       .subscribe(
         res => {
-          this.saveSuccessfulActions();
+          this.actionsAfterSuccessfulSave();
         },
         err => {
-          this.changeEnabled = true;
-          this.animal.gender = this.temp_animal.gender;
-          alert(err.error.result.message);
+          this.actionsAfterFailedSave(err);
         }
       );
   }
@@ -515,12 +524,10 @@ export class LivestockDetailComponent {
         (res: ResponseResultModel) => {
           const result: Animal = res.result;
           this.animal.nickname = result.nickname;
-          this.saveSuccessfulActions();
+          this.actionsAfterSuccessfulSave();
         },
         err => {
-          this.changeEnabled = true;
-          this.animal.nickname = this.temp_animal.nickname;
-          alert(this.apiService.getErrorMessage(err));
+          this.actionsAfterFailedSave(err);
         }
       );
   }
@@ -555,14 +562,10 @@ export class LivestockDetailComponent {
       .doPutRequest(API_URI_MEASUREMENTS + '/' + this.animal.id + '/birth-measurements', request)
       .subscribe(
         res => {
-          this.saveSuccessfulActions();
+          this.actionsAfterSuccessfulSave();
         },
         err => {
-          this.changeEnabled = true;
-          this.animal.birth.birth_weight = this.temp_animal.birth.birth_weight;
-          this.animal.birth.tail_length = this.temp_animal.birth.tail_length;
-          this.animal.birth.birth_progress = this.temp_animal.birth.birth_progress;
-          alert(this.apiService.getErrorMessage(err));
+          this.actionsAfterFailedSave(err);
         }
       );
   }
@@ -617,11 +620,10 @@ export class LivestockDetailComponent {
           this.animal.predicate_details.formatted = result.predicate_details.formatted;
           this.animal.predicate_details.formatted = result.predicate_details.formatted;
 
-          this.saveSuccessfulActions();
+          this.actionsAfterSuccessfulSave();
         },
         err => {
-          this.changeEnabled = true;
-          this.animal.collar = this.temp_animal.collar;
+          this.actionsAfterFailedSave(err);
         }
       );
   }
@@ -637,18 +639,6 @@ export class LivestockDetailComponent {
     this.animal.uln_country_code = tag.uln_country_code;
     this.animal.uln_number = tag.uln_number;
     this.animal.work_number = tag.ulnLastFive;
-  }
-
-  private deactivateEditModes(editModeToKeepActive: string) {
-    if (editModeToKeepActive !== 'birthMeasurements') { this.birth_measurements_edit_mode = false; }
-    if (editModeToKeepActive !== 'blindnessFactor')   { this.blindness_factor_edit_mode = false; }
-    if (editModeToKeepActive !== 'collar')            { this.collar_edit_mode = false; }
-    if (editModeToKeepActive !== 'gender')            { this.gender_edit_mode = false; }
-    if (editModeToKeepActive !== 'nickname')          { this.nickname_edit_mode = false; }
-    if (editModeToKeepActive !== 'notes')             { this.notes_edit_mode = false; }
-    if (editModeToKeepActive !== 'predicate')         { this.predicate_edit_mode = false; }
-    if (editModeToKeepActive !== 'rearing')           { this.rearing_edit_mode = false; }
-    if (editModeToKeepActive !== 'scanMeasurements')  { this.scan_measurements_edit_mode = false; }
   }
 
   public toggleGenderEditMode() {
