@@ -381,7 +381,9 @@
               <label class="middle"> {{ 'BIRTH PROGRESS' | translate }} </label>
             </div>
             <div class="medium-6 columns">
-              <select [(ngModel)]="animal.birth.birth_progress" [disabled]="!birth_measurements_edit_mode">
+              <select
+                style="width: 15.7rem"
+                [(ngModel)]="animal.birth.birth_progress" [disabled]="!birth_measurements_edit_mode">
                 <option value=""></option>
                 <option *ngFor="let birth_progress of birth_progress_types" value="{{ birth_progress }}">{{ birth_progress | translate }}</option>
               </select>
