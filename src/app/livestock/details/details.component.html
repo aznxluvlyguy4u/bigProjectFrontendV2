@@ -241,25 +241,39 @@
           <!--</div>-->
           <!--</div>-->
 
-          <!--&lt;!&ndash; SUCTION SIZE &ndash;&gt;-->
-          <!--<div class="row">-->
-          <!--<div class="medium-6 columns">-->
-          <!--<label class="middle">{{ 'SUCTION SIZE' | translate }}</label>-->
-          <!--</div>-->
-          <!--<div class="medium-6 columns">-->
-          <!--<input type="text" [(ngModel)]="animal.suction_size" [disabled]="true">-->
-          <!--</div>-->
-          <!--</div>-->
-
-          <!--&lt;!&ndash; BLIND FACTOR &ndash;&gt;-->
-          <!--<div class="row">-->
-          <!--<div class="medium-6 columns">-->
-          <!--<label class="middle">{{ 'BLIND FACTOR' | translate }}</label>-->
-          <!--</div>-->
-          <!--<div class="medium-6 columns">-->
-          <!--<input type="text" [(ngModel)]="animal.blind_factor" [disabled]="true">-->
-          <!--</div>-->
-          <!--</div>-->
+          <!-- BLIND FACTOR -->
+          <div class="row">
+            <div class="medium-6 columns">
+              <label class="middle">{{ 'BLIND FACTOR' | translate }}</label>
+            </div>
+            <div class="medium-6 columns">
+              <select
+                style="width: 8.5rem"
+                [(ngModel)]="animal.blindness_factor" [disabled]="!blindness_factor_edit_mode">
+                <option value=""></option>
+                <option *ngFor="let blindness_factor_type of blindness_factor_types" value="{{ blindness_factor_type }}">{{ blindness_factor_type | translate }}</option>
+              </select>
+            </div>
+          </div>
+          <div class="row" *ngIf="changeEnabled && isAdmin">
+            <div class="medium-offset-6 medium-6 columns end">
+              <button type="button" *ngIf="blindness_factor_edit_mode" (click)="toggleBlindnessFactorEditMode()"
+                      class="tiny alert button pull-right">{{ 'CANCEL' | translate }}
+              </button>
+              <button type="button" *ngIf="blindness_factor_edit_mode" (click)="sendGeneralChangeRequest()"
+                      class="tiny primary button pull-right">{{ 'SAVE' | translate }}
+              </button>
+              <button type="button" *ngIf="!blindness_factor_edit_mode" [disabled]="!changeEnabled" (click)="toggleBlindnessFactorEditMode()"
+                      class="tiny primary button pull-right">
+                            <span *ngIf="isLoading">
+                                <i class="fa fa-gear fa-spin fa-fw"></i>
+                            </span>
+                <span *ngIf="!isLoading">
+                                {{ 'CHANGE' | translate }}
+                            </span>
+              </button>
+            </div>
+          </div>
 
           <!-- SCRAPIE GENOTYPE -->
           <div class="row">
