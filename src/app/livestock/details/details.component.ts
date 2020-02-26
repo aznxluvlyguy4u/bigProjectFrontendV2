@@ -19,7 +19,7 @@ import {FormControl, FormGroup, FormBuilder, Validators} from '@angular/forms';
 import {DateValidator} from '../../shared/validation/nsfo-validation';
 import {SettingsService} from '../../shared/services/settings/settings.service';
 import {DownloadService} from '../../shared/services/download/download.service';
-import {Animal, BLINDNESS_FACTOR_TYPES} from '../../shared/models/animal.model';
+import {Animal, BLINDNESS_FACTOR_TYPES, Rearing} from '../../shared/models/animal.model';
 import {Exterior} from '../../shared/models/measurement.model';
 import {Inspector, User} from '../../shared/models/person.model';
 import {DeclareLog} from './declare-log.model';
@@ -72,7 +72,6 @@ export class LivestockDetailComponent {
   public nickname_edit_mode = false;
   public notes_edit_mode = false;
   public predicate_edit_mode = false;
-  public rearing_edit_mode = false;
   public scan_measurements_edit_mode = false;
 
   public changeEnabled = false;
@@ -354,6 +353,7 @@ export class LivestockDetailComponent {
             this.motherAnimal.dd_mm_yyyy_date_of_birth = res.result.parent_mother.dd_mm_yyyy_date_of_birth;
             this.motherAnimal.gender = 'FEMALE';
             this.motherAnimal.litter_size = res.result.parent_mother.n_ling;
+            this.motherAnimal.uln = res.result.parent_mother.uln_country_code + res.result.parent_mother.uln_number;
           }
 
           // window.scrollTo(0, 0);
@@ -463,7 +463,6 @@ export class LivestockDetailComponent {
     if (editModeToKeepActive !== 'nickname')          { this.nickname_edit_mode = false; }
     if (editModeToKeepActive !== 'notes')             { this.notes_edit_mode = false; }
     if (editModeToKeepActive !== 'predicate')         { this.predicate_edit_mode = false; }
-    if (editModeToKeepActive !== 'rearing')           { this.rearing_edit_mode = false; }
     if (editModeToKeepActive !== 'scanMeasurements')  { this.scan_measurements_edit_mode = false; }
   }
 
@@ -575,7 +574,7 @@ export class LivestockDetailComponent {
       return;
     }
     this.changeEnabled = false;
-    this.collar_edit_mode = false;
+    this.deactivateEditModes('none');
 
     if (this.animal.collar.color) {
       if (this.animal.collar.number === '') {
@@ -586,6 +585,13 @@ export class LivestockDetailComponent {
 
     let request: object;
 
+    let newRearingEditValue: any = null;
+    if (this.animal.rearing.surrogate != null) {
+      newRearingEditValue = this.animal.rearing.surrogate.id;
+    } else if (this.animal.rearing.lambar === true) {
+      newRearingEditValue = 'LAMBAR';
+    }
+
     if (this.isAdmin) {
       request = {
         'collar': this.animal.collar,
@@ -594,13 +600,13 @@ export class LivestockDetailComponent {
           'score': this.animal.predicate_details.score
         },
         'blindness_factor': this.animal.blindness_factor,
-        'rearing': this.animal.rearing.label
+        'rearing': newRearingEditValue
       };
     } else {
       request = {
         'collar': this.animal.collar,
         'blindness_factor': this.animal.blindness_factor,
-        'rearing': this.animal.rearing.label
+        'rearing': newRearingEditValue
       };
     }
 
@@ -719,17 +725,9 @@ export class LivestockDetailComponent {
     }
   }
 
-  public toggleRearingEditMode() {
-    if (!this.animal.is_own_animal && !this.isAdmin) {
-      return;
-    }
-    this.rearing_edit_mode = !this.rearing_edit_mode;
-
-    this.animal = _.cloneDeep(this.temp_animal);
-
-    if (this.rearing_edit_mode) {
-      this.deactivateEditModes('rearing');
-    }
+  public updateRearing(rearing: Rearing) {
+    this.animal.rearing = rearing;
+    this.sendGeneralChangeRequest();
   }
 
   public toggleNotesEditMode() {

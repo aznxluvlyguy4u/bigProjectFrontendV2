@@ -95,7 +95,7 @@ export class Ram extends Animal {
 export class Rearing {
   public label: string;
   public lambar: boolean;
-  public surrogate: Animal;
+  public surrogate: Ewe;
 }
 
 export class Collar {

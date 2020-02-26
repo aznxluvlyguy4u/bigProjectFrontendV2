@@ -231,15 +231,27 @@
             </div>
           </div>
 
-          <!--&lt;!&ndash; REARING &ndash;&gt;-->
-          <!--<div class="row">-->
-          <!--<div class="medium-6 columns">-->
-          <!--<label class="middle">{{ 'REARING' | translate }}</label>-->
-          <!--</div>-->
-          <!--<div class="medium-6 columns">-->
-          <!--<input type="text" [(ngModel)]="animal.rearing" [disabled]="true">-->
-          <!--</div>-->
-          <!--</div>-->
+          <!-- REARING -->
+          <div class="row">
+            <div class="medium-6 columns">
+              <label class="middle">{{ 'REARING' | translate }}</label>
+            </div>
+            <div class="medium-6 columns">
+              <input type="text" [(ngModel)]="animal.rearing.label" [disabled]="true">
+            </div>
+          </div>
+          <div class="row" *ngIf="changeEnabled && isAdmin">
+            <div class="medium-offset-6 medium-6 columns end">
+              <app-rearing-selector-modal
+               [isLoading]="false"
+               [disabled]="!changeEnabled"
+               [rearing]="animal.rearing"
+               [motherUln]="motherAnimal?.uln"
+               [childUln]="animal?.uln"
+               (rearingChange)="updateRearing($event)"
+              ></app-rearing-selector-modal>
+            </div>
+          </div>
 
           <!-- BLIND FACTOR -->
           <div class="row">

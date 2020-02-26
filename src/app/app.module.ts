@@ -156,6 +156,7 @@ import {InvoiceSortPipe} from './invoices/pipes/invoice-sort.pipe';
 import {YeardropdownComponent} from './shared/components/yeardropdown/yeardropdown.component';
 import {ReportAnimalFeaturesPerYearOfBirthComponent} from './report/animalFeaturesPerYearOfBirth/report.animal-features-per-year-of-birth.component';
 import {AnimalDetailsContactCardComponent} from './livestock/details/contact/animal-details-contact-card.component';
+import {RearingSelectorComponent} from './shared/components/rearingselector/rearing-selector.component';
 
 // AoT requires an exported function for factories
 export function CreateTranslateLoader(http: HttpClient) {
@@ -297,6 +298,7 @@ export function CreateTranslateLoader(http: HttpClient) {
     PageLoadingSpinnerComponent,
     InsideComponentLoadingSpinnerComponent,
     ButtonPrimaryComponent,
+    RearingSelectorComponent,
     ReportModalComponent,
     YeardropdownComponent
   ],
