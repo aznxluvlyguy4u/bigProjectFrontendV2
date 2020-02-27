@@ -363,6 +363,13 @@ export class LivestockDetailComponent {
             this.changeEnabled = true;
           }
 
+          if (typeof this.animal.inbreeding_coefficient === 'number') {
+            this.animal.inbreeding_coefficient = (new Intl.NumberFormat([], {
+              minimumFractionDigits: 1,
+              maximumFractionDigits: 1
+            }).format(Number(this.animal.inbreeding_coefficient * 100))) + '%';
+          }
+
           this.updateLoadingStatus();
         },
         error => {
