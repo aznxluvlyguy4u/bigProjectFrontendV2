@@ -20,6 +20,9 @@ import {JsonResponseModel} from '../../../shared/models/json-response.model';
 
 export class ExteriorComponent implements OnInit, AfterViewInit, OnChanges {
 
+  @Input()
+  modificationDisabled = false;
+
   @Input() exteriors: Exterior[] = [];
   @Input() uln: string;
   @Output() latestExteriors = new EventEmitter<Exterior[]>();

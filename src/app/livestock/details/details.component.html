@@ -93,8 +93,9 @@
               <button type="button" *ngIf="nickname_edit_mode" (click)="sendNicknameChangeRequest()"
                       class="tiny primary button pull-right">{{ 'SAVE' | translate }}
               </button>
-              <button type="button" *ngIf="!nickname_edit_mode" [disabled]="!changeEnabled" (click)="toggleNicknameEditMode()"
-                      class="tiny primary button pull-right">
+              <button type="button" *ngIf="!nickname_edit_mode" [disabled]="!changeEnabled || isAnyEditModeActive()" (click)="toggleNicknameEditMode()"
+                      class="tiny primary button pull-right"
+              >
                             <span *ngIf="isLoading">
                                 <i class="fa fa-gear fa-spin fa-fw"></i>
                             </span>
@@ -138,7 +139,7 @@
               <button type="button" *ngIf="collar_edit_mode" (click)="sendGeneralChangeRequest()"
                       class="tiny primary button pull-right">{{ 'SAVE' | translate }}
               </button>
-              <button type="button" *ngIf="!collar_edit_mode" [disabled]="!changeEnabled" (click)="toggleCollarEditMode()"
+              <button type="button" *ngIf="!collar_edit_mode" [disabled]="!changeEnabled || isAnyEditModeActive()" (click)="toggleCollarEditMode()"
                       class="tiny primary button pull-right">
                             <span *ngIf="isLoading">
                                 <i class="fa fa-gear fa-spin fa-fw"></i>
@@ -190,7 +191,7 @@
               <button type="button" *ngIf="gender_edit_mode" (click)="sendGenderChangeRequest()"
                       class="tiny primary button pull-right">{{ 'SAVE' | translate }}
               </button>
-              <button type="button" *ngIf="!gender_edit_mode" [disabled]="!changeEnabled" (click)="toggleGenderEditMode()"
+              <button type="button" *ngIf="!gender_edit_mode" [disabled]="!changeEnabled || isAnyEditModeActive()" (click)="toggleGenderEditMode()"
                       class="tiny primary button pull-right">
                             <span *ngIf="isLoading">
                                 <i class="fa fa-gear fa-spin fa-fw"></i>
@@ -244,7 +245,7 @@
             <div class="medium-offset-6 medium-6 columns end">
               <app-rearing-selector-modal
                [isLoading]="false"
-               [disabled]="!changeEnabled"
+               [disabled]="!changeEnabled || isAnyEditModeActive()"
                [rearing]="animal.rearing"
                [motherUln]="motherAnimal?.uln"
                [childUln]="animal?.uln"
@@ -275,7 +276,7 @@
               <button type="button" *ngIf="blindness_factor_edit_mode" (click)="sendGeneralChangeRequest()"
                       class="tiny primary button pull-right">{{ 'SAVE' | translate }}
               </button>
-              <button type="button" *ngIf="!blindness_factor_edit_mode" [disabled]="!changeEnabled" (click)="toggleBlindnessFactorEditMode()"
+              <button type="button" *ngIf="!blindness_factor_edit_mode" [disabled]="!changeEnabled || isAnyEditModeActive()" (click)="toggleBlindnessFactorEditMode()"
                       class="tiny primary button pull-right">
                             <span *ngIf="isLoading">
                                 <i class="fa fa-gear fa-spin fa-fw"></i>
@@ -422,7 +423,7 @@
               <button type="button" *ngIf="birth_measurements_edit_mode" (click)="sendBirthMeasurementsChangeRequest()"
                       class="tiny primary button pull-right">{{ 'SAVE' | translate }}
               </button>
-              <button type="button" *ngIf="!birth_measurements_edit_mode" [disabled]="!changeEnabled" (click)="toggleBirthMeasurementsEditMode()"
+              <button type="button" *ngIf="!birth_measurements_edit_mode" [disabled]="!changeEnabled || isAnyEditModeActive()" (click)="toggleBirthMeasurementsEditMode()"
                       class="tiny primary button pull-right">
                             <span *ngIf="isLoading">
                                 <i class="fa fa-gear fa-spin fa-fw"></i>
@@ -443,6 +444,7 @@
       <div class="info-container">
         <app-exterior-component
           *ngIf="animal.uln != ''"
+          [modificationDisabled]="isAnyEditModeActive()"
           (latestExteriors)="setLatestExteriors($event)"
           [uln]="animal.uln"
           [exteriors]="animal.exteriors"
@@ -489,7 +491,7 @@
                 <button type="button" *ngIf="predicate_edit_mode" (click)="sendGeneralChangeRequest()"
                         class="tiny primary button pull-right">{{ 'SAVE' | translate }}
                 </button>
-                <button type="button" *ngIf="!predicate_edit_mode" [disabled]="!changeEnabled" (click)="togglePredicateEditMode()"
+                <button type="button" *ngIf="!predicate_edit_mode" [disabled]="!changeEnabled || isAnyEditModeActive()" (click)="togglePredicateEditMode()"
                         class="tiny primary button pull-right">
                             <span *ngIf="isLoading">
                                 <i class="fa fa-gear fa-spin fa-fw"></i>
@@ -524,7 +526,7 @@
                 <button type="button" *ngIf="breed_type_edit_mode" (click)="sendGeneralChangeRequest()"
                         class="tiny primary button pull-right">{{ 'SAVE' | translate }}
                 </button>
-                <button type="button" *ngIf="!breed_type_edit_mode" [disabled]="!changeEnabled" (click)="toggleBreedTypeEditMode()"
+                <button type="button" *ngIf="!breed_type_edit_mode" [disabled]="!changeEnabled || isAnyEditModeActive()" (click)="toggleBreedTypeEditMode()"
                         class="tiny primary button pull-right">
                             <span *ngIf="isLoading">
                                 <i class="fa fa-gear fa-spin fa-fw"></i>

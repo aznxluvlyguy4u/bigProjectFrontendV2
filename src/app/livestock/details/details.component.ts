@@ -462,6 +462,19 @@ export class LivestockDetailComponent {
     return this.breedValues.length > 0;
   }
 
+  private isAnyEditModeActive(): boolean {
+    return this.birth_measurements_edit_mode ||
+      this.blindness_factor_edit_mode ||
+      this.breed_type_edit_mode ||
+      this.collar_edit_mode ||
+      this.gender_edit_mode ||
+      this.nickname_edit_mode ||
+      this.notes_edit_mode ||
+      this.predicate_edit_mode ||
+      this.scan_measurements_edit_mode
+      ;
+  }
+
   private deactivateEditModes(editModeToKeepActive: string) {
     if (editModeToKeepActive !== 'birthMeasurements') { this.birth_measurements_edit_mode = false; }
     if (editModeToKeepActive !== 'blindnessFactor')   { this.blindness_factor_edit_mode = false; }
