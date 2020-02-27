@@ -353,7 +353,6 @@ export class LivestockDetailComponent {
             this.motherAnimal.dd_mm_yyyy_date_of_birth = res.result.parent_mother.dd_mm_yyyy_date_of_birth;
             this.motherAnimal.gender = 'FEMALE';
             this.motherAnimal.litter_size = res.result.parent_mother.n_ling;
-            this.motherAnimal.uln = res.result.parent_mother.uln_country_code + res.result.parent_mother.uln_number;
           }
 
           // window.scrollTo(0, 0);
