@@ -508,12 +508,35 @@
                 <label class="middle">{{ 'STATUS SLASH CLASS' | translate }}</label>
               </div>
               <div class="medium-6 columns">
-                <select [(ngModel)]="animal.breed_type" [disabled]="true">
-                  <option *ngFor="let option of livestock_breed_options" value="{{ option }}">{{ option | translate }}
-                  </option>
+                <select
+                  style="width: 9.3rem"
+                  [(ngModel)]="animal.breed_type" [disabled]="!breed_type_edit_mode">
+                  <option value=""></option>
+                  <option *ngFor="let option of livestock_breed_options" value="{{ option }}">{{ option | translate }}</option>
                 </select>
               </div>
             </div>
+            <div class="row" *ngIf="changeEnabled && isAdmin">
+              <div class="medium-offset-6 medium-6 columns end">
+                <button type="button" *ngIf="breed_type_edit_mode" (click)="toggleBreedTypeEditMode()"
+                        class="tiny alert button pull-right">{{ 'CANCEL' | translate }}
+                </button>
+                <button type="button" *ngIf="breed_type_edit_mode" (click)="sendGeneralChangeRequest()"
+                        class="tiny primary button pull-right">{{ 'SAVE' | translate }}
+                </button>
+                <button type="button" *ngIf="!breed_type_edit_mode" [disabled]="!changeEnabled" (click)="toggleBreedTypeEditMode()"
+                        class="tiny primary button pull-right">
+                            <span *ngIf="isLoading">
+                                <i class="fa fa-gear fa-spin fa-fw"></i>
+                            </span>
+                  <span *ngIf="!isLoading">
+                                {{ 'CHANGE' | translate }}
+                            </span>
+                </button>
+              </div>
+            </div>
+
+
           </div>
         </div>
 
