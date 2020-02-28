@@ -108,7 +108,7 @@ export class LivestockDetailComponent {
 
   public animalHistory: string[] = [];
 
-  private selectedUln: string;
+  private selectedUlnOrAnimalId: string;
 
   private maxChildrenCountToDisplayChildDetails = 2000;
 
@@ -145,8 +145,8 @@ export class LivestockDetailComponent {
 
     // Recreate component if the route is navigated to again. Usually with for a different animal
     route.params.subscribe(value => {
-      if (this.selectedUln !== value.uln) {
-        this.selectedUln = value.uln;
+      if (this.selectedUlnOrAnimalId !== value.uln) {
+        this.selectedUlnOrAnimalId = value.uln;
         this.loadingData();
       }
     });
@@ -265,7 +265,7 @@ export class LivestockDetailComponent {
 
   public getAnimalDetails() {
     this.apiService
-      .doGetRequest(API_URI_GET_ANIMAL_DETAILS + '/' + this.selectedUln)
+      .doGetRequest(API_URI_GET_ANIMAL_DETAILS + '/' + this.selectedUlnOrAnimalId)
       .subscribe((res: JsonResponseModel) => {
           this.animal = res.result;
           this.animal.uln = this.animal.uln_country_code + this.animal.uln_number;
@@ -431,7 +431,7 @@ export class LivestockDetailComponent {
   private doGetChildren() {
     this.isLoadingChildren = true;
     this.apiService
-      .doGetRequest(API_URI_GET_ANIMAL_DETAILS + '/' + this.selectedUln + '/children')
+      .doGetRequest(API_URI_GET_ANIMAL_DETAILS + '/' + this.selectedUlnOrAnimalId + '/children')
       .subscribe(
         (res: JsonResponseModel) => {
           this.children = res.result;
