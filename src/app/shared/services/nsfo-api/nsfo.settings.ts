@@ -15,8 +15,8 @@ export const API_URI_GET_REPORTS = '/v1/reports';
 
 
 // LIVESTOCK
-export const API_URI_GET_ANIMALS = '/v1/animals-livestock';
-export const API_URI_GET_HISTORIC_ANIMALS = '/v1/animals-historic-livestock';
+export const API_URI_GET_ANIMALS_LIVESTOCK = '/v1/animals-livestock';
+export const API_URI_GET_ANIMALS_HISTORIC_LIVESTOCK = '/v1/animals-historic-livestock';
 export const API_URI_GET_ANIMAL_DETAILS = '/v1/animals-details';
 export const API_URI_CHANGE_ANIMAL_DETAILS = '/v1/animals-details';
 export const API_URI_SYNC_ANIMALS = '/v1/animals-sync';
