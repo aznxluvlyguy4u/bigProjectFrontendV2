@@ -736,78 +736,88 @@
     </div>
 
 
+    <div class="large-12 columns">
 
+      <div class="info-container">
+        <div class="info-header">
+          <label>{{ "LOG" | translate }}</label>
 
-    <div class="row">
-      <div class="large-12 columns">
-        <table class="animal-logs">
-          <thead>
-          <tr>
-            <td>{{ 'DATE' | translate }}</td>
-            <td>{{ 'EVENT DATE' | translate }}</td>
-            <td>{{ 'EVENT' | translate }}</td>
-            <td>{{ 'BY' | translate }}</td>
-          </tr>
-          </thead>
-          <tbody>
-          <tr *ngIf="logs.length == 0">
-            <td colspan="4" class="text-center">{{ 'NO LOGS ARE AVAILABLE' | translate }}</td>
-          </tr>
-          <tr *ngFor="let log of logs">
-            <td>
-                            <span *ngIf="log.log_date">
-                                {{ stringAsViewDateTime(log.log_date) }}
-                            </span>
-              <span *ngIf="!log.log_date"> -- </span>
-            </td>
-            <td>
-                            <span *ngIf="log.start_date">
-                                {{ stringAsViewDate(log.start_date) }}
-                                <span *ngIf="log.end_date">{{ '- ' + stringAsViewDate(log.end_date) }}</span>
-                            </span>
-              <span *ngIf="!log.start_date"> -- </span>
-            </td>
-            <td>
-                            <span *ngIf="log.action == 'MATE'">
-                                {{ 'DECLARED MATE' | translate }}
-                            </span>
-              <span *ngIf="log.action == 'BIRTH'">
-                                {{ 'DECLARED BIRTH' | translate }}
-                            </span>
-              <span *ngIf="log.action == 'WEIGHT MEASUREMENT KG'">
-                                {{ 'DECLARED WEIGHT' | translate }}
-                                <span *ngIf="log.data"> ({{log.data}}kg)</span>
-                            </span>
-              <span *ngIf="log.action == 'ARRIVAL FROM UBN'">
-                                {{ 'DECLARED ARRIVAL' | translate }}
-                                <span *ngIf="log.data"> ({{'PREVIOUS OWNER' | translate}}: {{log.data}})</span>
-                            </span>
-              <span *ngIf="log.action == 'IMPORT FROM'">
-                                {{ 'DECLARED IMPORT' | translate }}
-                                <span *ngIf="log.data"> ({{'COUNTRY ORIGIN' | translate}}: {{log.data}})</span>
-                            </span>
-              <span *ngIf="log.action == 'DEPARTURE TO UBN'">
-                                {{ 'DECLARED DEPART' | translate }}
-                                <span *ngIf="log.data"> ({{'NEW OWNER' | translate }}: {{log.data}})</span>
-                            </span>
-              <span *ngIf="log.action == 'EXPORT'">
-                                {{ 'DECLARED EXPORT' | translate }}
-                            </span>
-              <span *ngIf="log.action == 'LOSS'">
-                                {{ 'DECLARED LOSS' | translate }}
-                            </span>
-              <span *ngIf="log.action == 'TAG REPLACE REPLACED ULN'">
-                                {{ 'DECLARED TAG REPLACE' | translate }}
-                                <span *ngIf="log.data"> ({{'OLD TAG' | translate }}: {{log.data}})</span>
-                            </span>
-            </td>
-            <td>
-              {{ log.first_name + ' ' + log.last_name }}
-            </td>
-          </tr>
-          </tbody>
-        </table>
+          <div class="info-body">
+
+            <table class="animal-logs">
+              <thead>
+                <tr>
+                  <th>{{ 'DATE' | translate }}</th>
+                  <th>{{ 'EVENT DATE' | translate }}</th>
+                  <th>{{ 'EVENT' | translate }}</th>
+                  <th>{{ 'BY' | translate }}</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngIf="logs.length == 0">
+                  <td colspan="4" class="text-center">{{ 'NO LOGS ARE AVAILABLE' | translate }}</td>
+                </tr>
+                <tr *ngFor="let log of logs">
+                  <td>
+                                  <span *ngIf="log.log_date">
+                                      {{ stringAsViewDateTime(log.log_date) }}
+                                  </span>
+                    <span *ngIf="!log.log_date"> -- </span>
+                  </td>
+                  <td>
+                                  <span *ngIf="log.start_date">
+                                      {{ stringAsViewDate(log.start_date) }}
+                                      <span *ngIf="log.end_date">{{ '- ' + stringAsViewDate(log.end_date) }}</span>
+                                  </span>
+                    <span *ngIf="!log.start_date"> -- </span>
+                  </td>
+                  <td>
+                                  <span *ngIf="log.action == 'MATE'">
+                                      {{ 'DECLARED MATE' | translate }}
+                                  </span>
+                    <span *ngIf="log.action == 'BIRTH'">
+                                      {{ 'DECLARED BIRTH' | translate }}
+                                  </span>
+                    <span *ngIf="log.action == 'WEIGHT MEASUREMENT KG'">
+                                      {{ 'DECLARED WEIGHT' | translate }}
+                                      <span *ngIf="log.data"> ({{log.data}}kg)</span>
+                                  </span>
+                    <span *ngIf="log.action == 'ARRIVAL FROM UBN'">
+                                      {{ 'DECLARED ARRIVAL' | translate }}
+                                      <span *ngIf="log.data"> ({{'PREVIOUS OWNER' | translate}}: {{log.data}})</span>
+                                  </span>
+                    <span *ngIf="log.action == 'IMPORT FROM'">
+                                      {{ 'DECLARED IMPORT' | translate }}
+                                      <span *ngIf="log.data"> ({{'COUNTRY ORIGIN' | translate}}: {{log.data}})</span>
+                                  </span>
+                    <span *ngIf="log.action == 'DEPARTURE TO UBN'">
+                                      {{ 'DECLARED DEPART' | translate }}
+                                      <span *ngIf="log.data"> ({{'NEW OWNER' | translate }}: {{log.data}})</span>
+                                  </span>
+                    <span *ngIf="log.action == 'EXPORT'">
+                                      {{ 'DECLARED EXPORT' | translate }}
+                                  </span>
+                    <span *ngIf="log.action == 'LOSS'">
+                                      {{ 'DECLARED LOSS' | translate }}
+                                  </span>
+                    <span *ngIf="log.action == 'TAG REPLACE REPLACED ULN'">
+                                      {{ 'DECLARED TAG REPLACE' | translate }}
+                                      <span *ngIf="log.data"> ({{'OLD TAG' | translate }}: {{log.data}})</span>
+                                  </span>
+                  </td>
+                  <td>
+                    {{ log.first_name + ' ' + log.last_name }}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+
+          </div>
+
+        </div>
       </div>
+
     </div>
+
   </div>
 </div>
