@@ -97,18 +97,23 @@ export class LivestockDetailComponent {
 
   public model_date_format: string;
 
+  // LOADING PRIMARY DATA
   public isLoadingAnimalDetails: boolean;
   public isLoadingChildren: boolean;
   public hasLoadedChildren: boolean;
   public isLoadingCollarColorList: boolean;
-  isLoading: boolean;
+  isLoadingPrimaryData: boolean;
+
+  // LOADING SECONDARY DATA
+  // This data can be loaded separately
+  public isLoadingAnnotations: boolean;
 
   public displayChildren = false;
   public childrenPage = 1;
 
   public animalHistory: string[] = [];
 
-  private selectedUlnOrAnimalId: string;
+  public selectedUlnOrAnimalId: string;
 
   private maxChildrenCountToDisplayChildDetails = 2000;
 
@@ -166,17 +171,21 @@ export class LivestockDetailComponent {
   }
 
   startLoading() {
-    this.isLoading = true;
+    // Primary data
+    this.isLoadingPrimaryData = true;
     this.isLoadingAnimalDetails = true;
     this.isLoadingCollarColorList = true;
     this.displayChildren = false;
     this.hasLoadedChildren = false;
     this.children = [];
     this.childrenPage = 1;
+
+    // Secondary data
+    this.isLoadingAnnotations = true;
   }
 
-  updateLoadingStatus() {
-    this.isLoading = this.isLoadingAnimalDetails || this.isLoadingCollarColorList;
+  updatePrimaryDataLoadingStatus() {
+    this.isLoadingPrimaryData = this.isLoadingAnimalDetails || this.isLoadingCollarColorList;
   }
 
   public loadingData() {
@@ -253,12 +262,12 @@ export class LivestockDetailComponent {
           (res: JsonResponseModel) => {
             this.collar_color_list = res.result;
             this.isLoadingCollarColorList = false;
-            this.updateLoadingStatus();
+            this.updatePrimaryDataLoadingStatus();
         },
         error => {
           alert(this.apiService.getErrorMessage(error));
           this.isLoadingCollarColorList = false;
-          this.updateLoadingStatus();
+          this.updatePrimaryDataLoadingStatus();
         }
       );
   }
@@ -370,12 +379,12 @@ export class LivestockDetailComponent {
             }).format(Number(this.animal.inbreeding_coefficient * 100))) + '%';
           }
 
-          this.updateLoadingStatus();
+          this.updatePrimaryDataLoadingStatus();
         },
         error => {
           alert(this.apiService.getErrorMessage(error));
           this.isLoadingAnimalDetails = false;
-          this.updateLoadingStatus();
+          this.updatePrimaryDataLoadingStatus();
         }
       );
   }

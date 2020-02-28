@@ -157,6 +157,8 @@ import {YeardropdownComponent} from './shared/components/yeardropdown/yeardropdo
 import {ReportAnimalFeaturesPerYearOfBirthComponent} from './report/animalFeaturesPerYearOfBirth/report.animal-features-per-year-of-birth.component';
 import {AnimalDetailsContactCardComponent} from './livestock/details/contact/animal-details-contact-card.component';
 import {RearingSelectorComponent} from './shared/components/rearingselector/rearing-selector.component';
+import {AnimalAnnotationsComponent} from './livestock/details/annotations/animal-annotations.component';
+import {AnimalAnnotationComponent} from './livestock/details/annotations/animal-annotation.component';
 
 // AoT requires an exported function for factories
 export function CreateTranslateLoader(http: HttpClient) {
@@ -187,6 +189,8 @@ export function CreateTranslateLoader(http: HttpClient) {
     ExteriorComponent,
     DownloadButtonComponent,
     ExteriorComponent,
+    AnimalAnnotationComponent,
+    AnimalAnnotationsComponent,
     LivestockComponent,
     LivestockMainOverviewComponent,
     MessagesComponent,
