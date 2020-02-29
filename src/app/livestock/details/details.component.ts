@@ -471,7 +471,7 @@ export class LivestockDetailComponent {
     return this.breedValues.length > 0;
   }
 
-  private isAnyEditModeActive(): boolean {
+  public isAnyEditModeActive(): boolean {
     return this.birth_measurements_edit_mode ||
       this.blindness_factor_edit_mode ||
       this.breed_type_edit_mode ||
