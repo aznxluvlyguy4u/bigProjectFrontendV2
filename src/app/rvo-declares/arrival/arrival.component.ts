@@ -62,7 +62,7 @@ export class ArrivalComponent implements OnInit, OnDestroy {
       if (!this.cleanUpComponent && this.loopGetArrivalErrorList) {
         this.getArrivalErrorList();
       }
-    }, 10 * 1000);
+    }, 60 * 1000);
   }
 
   public navigateTo(route: string) {

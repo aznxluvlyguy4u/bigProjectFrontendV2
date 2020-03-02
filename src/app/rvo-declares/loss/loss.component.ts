@@ -55,7 +55,7 @@ export class LossComponent implements OnInit, OnDestroy {
       if (!this.cleanUpComponent && this.loopGetLossErrorList) {
         this.getLossErrorList();
       }
-    }, 10 * 1000);
+    }, 60 * 1000);
   }
 
   public navigateTo(route: string) {

@@ -22,17 +22,17 @@
   </thead>
   <tbody>
   <tr app-arrival-history-row
-    *ngFor="let arrival of arrivalHistoryList | arrivalHistoryFilter:[searchValue] | paginate: {itemsPerPage: 10, currentPage: page}; let i = index"
+    *ngFor="let arrival of arrivalHistoryList | arrivalHistoryFilter:[searchValue] | paginate: {itemsPerPage: 10, currentPage: page, totalItems: totalArrivalItems}; let i = index"
     (revokeArrival)="selectArrival($event)" (showError)="showError($event)" [arrival]="arrival"
     [arrival_index]="i"></tr>
   </tbody>
 </table>
 
-<div *ngIf="isLoading" class="data-loader">
+<div *ngIf="isLoading" class="data-loader" style="padding:0;">
   <app-page-loading-spinner></app-page-loading-spinner>
 </div>
 
-<pagination-controls (pageChange)="page = $event"></pagination-controls>
+<pagination-controls (pageChange)="page = $event;getArrivalHistoryList($event)"></pagination-controls>
 
 <!--REVOKE MODAL-->
 <div class="reveal-overlay" [ngStyle]="{'display': modal_display}">
