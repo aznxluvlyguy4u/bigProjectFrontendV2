@@ -85,7 +85,7 @@
               <input type="text" [(ngModel)]="animal.nickname" [disabled]="!nickname_edit_mode">
             </div>
           </div>
-          <div class="row" *ngIf="changeEnabled && isAdmin">
+          <div class="row" *ngIf="changeEnabled">
             <div class="medium-offset-6 medium-6 columns end">
               <button type="button" *ngIf="nickname_edit_mode" (click)="toggleNicknameEditMode()"
                       class="tiny alert button pull-right">{{ 'CANCEL' | translate }}
@@ -131,7 +131,7 @@
               </div>
             </div>
           </div>
-          <div class="row" *ngIf="changeEnabled && isAdmin">
+          <div class="row" *ngIf="changeEnabled">
             <div class="medium-offset-6 medium-6 columns end">
               <button type="button" *ngIf="collar_edit_mode" (click)="toggleCollarEditMode()"
                       class="tiny alert button pull-right">{{ 'CANCEL' | translate }}
@@ -183,7 +183,7 @@
               </select>
             </div>
           </div>
-          <div class="row" *ngIf="changeEnabled && isAdmin">
+          <div class="row" *ngIf="changeEnabled">
             <div class="medium-offset-6 medium-6 columns end">
               <button type="button" *ngIf="gender_edit_mode" (click)="toggleGenderEditMode()"
                       class="tiny alert button pull-right">{{ 'CANCEL' | translate }}
@@ -415,7 +415,7 @@
             </div>
           </div>
 
-          <div class="row" *ngIf="changeEnabled && isAdmin">
+          <div class="row" *ngIf="changeEnabled">
             <div class="medium-offset-6 medium-6 columns end">
               <button type="button" *ngIf="birth_measurements_edit_mode" (click)="toggleBirthMeasurementsEditMode()"
                       class="tiny alert button pull-right">{{ 'CANCEL' | translate }}
