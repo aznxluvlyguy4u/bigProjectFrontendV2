@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {API_URI_ANIMALS} from '../../../shared/services/nsfo-api/nsfo.settings';
 import {NSFOService} from '../../../shared/services/nsfo-api/nsfo.service';
 import {SettingsService} from '../../../shared/services/settings/settings.service';
@@ -22,6 +22,10 @@ export class AnimalAnnotationsComponent {
   public changeEnabled: boolean;
   @Input()
   public isEditModeActive = false;
+  @Output()
+  public isEditModeActiveChange = new EventEmitter<boolean>();
+  @Input()
+  public isChangeButtonActive: boolean;
 
   private id: string = null;
 
@@ -43,6 +47,11 @@ export class AnimalAnnotationsComponent {
     this.isAdmin = settings.isAdmin();
   }
 
+  public updateIsEditModeActive(isEditModeActive) {
+    this.isEditModeActive = isEditModeActive;
+    this.isEditModeActiveChange.emit(isEditModeActive);
+  }
+
   private animalAnnotationsUrl() {
     return API_URI_ANIMALS + '/' + this.id + '/annotations';
   }
@@ -57,6 +66,7 @@ export class AnimalAnnotationsComponent {
 
   public toggleEditMode() {
     this.isEditModeActive = !this.isEditModeActive;
+    this.updateIsEditModeActive(this.isEditModeActive);
   }
 
   public cancel() {

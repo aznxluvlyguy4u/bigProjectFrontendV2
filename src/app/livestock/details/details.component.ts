@@ -679,8 +679,16 @@ export class LivestockDetailComponent {
     this.animal.work_number = tag.ulnLastFive;
   }
 
+  private isAdminOrIsHolderOfAnimal(): boolean {
+    return this.animal.is_own_animal || this.isAdmin;
+  }
+
+  public allowGenderEdit(): boolean {
+    return this.isAdminOrIsHolderOfAnimal();
+  }
+
   public toggleGenderEditMode() {
-    if (!this.animal.is_own_animal && !this.isAdmin) {
+    if (!this.allowGenderEdit()) {
       return;
     }
     this.gender_edit_mode = !this.gender_edit_mode;
@@ -692,8 +700,12 @@ export class LivestockDetailComponent {
     }
   }
 
+  public allowBirthMeasurementsEdit(): boolean {
+    return this.isAdminOrIsHolderOfAnimal();
+  }
+
   public toggleBirthMeasurementsEditMode() {
-    if (!this.isAdmin) {
+    if (!this.isAdminOrIsHolderOfAnimal()) {
       return;
     }
     this.birth_measurements_edit_mode = !this.birth_measurements_edit_mode;
@@ -705,8 +717,12 @@ export class LivestockDetailComponent {
     }
   }
 
+  public allowNickNameEdit(): boolean {
+    return this.isAdminOrIsHolderOfAnimal();
+  }
+
   public toggleNicknameEditMode() {
-    if (!this.animal.is_own_animal && !this.isAdmin) {
+    if (!this.allowNickNameEdit()) {
       return;
     }
     this.nickname_edit_mode = !this.nickname_edit_mode;
@@ -718,8 +734,12 @@ export class LivestockDetailComponent {
     }
   }
 
+  public allowCollarEdit(): boolean {
+    return this.isAdminOrIsHolderOfAnimal();
+  }
+
   public toggleCollarEditMode() {
-    if (!this.animal.is_own_animal && !this.isAdmin) {
+    if (!this.allowCollarEdit()) {
       return;
     }
     this.collar_edit_mode = !this.collar_edit_mode;
@@ -731,8 +751,12 @@ export class LivestockDetailComponent {
     }
   }
 
+  public allowPredicateEdit(): boolean {
+    return this.isAdmin;
+  }
+
   public togglePredicateEditMode() {
-    if (!this.animal.is_own_animal && !this.isAdmin) {
+    if (!this.allowPredicateEdit()) {
       return;
     }
     this.predicate_edit_mode = !this.predicate_edit_mode;
@@ -744,8 +768,12 @@ export class LivestockDetailComponent {
     }
   }
 
+  public allowBlindnessEdit(): boolean {
+    return this.isAdmin;
+  }
+
   public toggleBlindnessFactorEditMode() {
-    if (!this.animal.is_own_animal && !this.isAdmin) {
+    if (!this.allowBlindnessEdit) {
       return;
     }
     this.blindness_factor_edit_mode = !this.blindness_factor_edit_mode;
@@ -757,8 +785,12 @@ export class LivestockDetailComponent {
     }
   }
 
+  public allowBreedTypeEdit(): boolean {
+    return this.isAdmin;
+  }
+
   public toggleBreedTypeEditMode() {
-    if (!this.animal.is_own_animal && !this.isAdmin) {
+    if (!this.allowBreedTypeEdit()) {
       return;
     }
     this.breed_type_edit_mode = !this.breed_type_edit_mode;
@@ -770,22 +802,17 @@ export class LivestockDetailComponent {
     }
   }
 
+  public allowRearingEdit(): boolean {
+    return this.isAdminOrIsHolderOfAnimal();
+  }
+
   public updateRearing(rearing: Rearing) {
     this.animal.rearing = rearing;
     this.sendGeneralChangeRequest();
   }
 
-  public toggleNotesEditMode() {
-    if (!this.animal.is_own_animal && !this.isAdmin) {
-      return;
-    }
-    this.notes_edit_mode = !this.notes_edit_mode;
-
-    this.animal = _.cloneDeep(this.temp_animal);
-
-    if (this.notes_edit_mode) {
-      this.deactivateEditModes('notes');
-    }
+  public allowNotesEdit(): boolean {
+    return this.animal.is_own_animal;
   }
 
   public toggleScanMeasurementsEditMode() {

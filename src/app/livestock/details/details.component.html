@@ -93,7 +93,9 @@
               <button type="button" *ngIf="nickname_edit_mode" (click)="sendNicknameChangeRequest()"
                       class="tiny primary button pull-right">{{ 'SAVE' | translate }}
               </button>
-              <button type="button" *ngIf="!nickname_edit_mode" [disabled]="!changeEnabled || isAnyEditModeActive()" (click)="toggleNicknameEditMode()"
+              <button type="button" *ngIf="!nickname_edit_mode"
+                      [disabled]="!changeEnabled || isAnyEditModeActive() || !allowNickNameEdit()"
+                      (click)="toggleNicknameEditMode()"
                       class="tiny primary button pull-right"
               >
                             <span *ngIf="isLoadingPrimaryData">
@@ -139,7 +141,9 @@
               <button type="button" *ngIf="collar_edit_mode" (click)="sendGeneralChangeRequest()"
                       class="tiny primary button pull-right">{{ 'SAVE' | translate }}
               </button>
-              <button type="button" *ngIf="!collar_edit_mode" [disabled]="!changeEnabled || isAnyEditModeActive()" (click)="toggleCollarEditMode()"
+              <button type="button" *ngIf="!collar_edit_mode"
+                      [disabled]="!changeEnabled || isAnyEditModeActive() || !allowCollarEdit()"
+                      (click)="toggleCollarEditMode()"
                       class="tiny primary button pull-right">
                             <span *ngIf="isLoadingPrimaryData">
                                 <i class="fa fa-gear fa-spin fa-fw"></i>
@@ -191,7 +195,9 @@
               <button type="button" *ngIf="gender_edit_mode" (click)="sendGenderChangeRequest()"
                       class="tiny primary button pull-right">{{ 'SAVE' | translate }}
               </button>
-              <button type="button" *ngIf="!gender_edit_mode" [disabled]="!changeEnabled || isAnyEditModeActive()" (click)="toggleGenderEditMode()"
+              <button type="button" *ngIf="!gender_edit_mode"
+                      [disabled]="!changeEnabled || isAnyEditModeActive() || !allowGenderEdit()"
+                      (click)="toggleGenderEditMode()"
                       class="tiny primary button pull-right">
                             <span *ngIf="isLoadingPrimaryData">
                                 <i class="fa fa-gear fa-spin fa-fw"></i>
@@ -241,11 +247,11 @@
               <input type="text" [(ngModel)]="animal.rearing.label" [disabled]="true">
             </div>
           </div>
-          <div class="row" *ngIf="changeEnabled && isAdmin">
+          <div class="row" *ngIf="changeEnabled">
             <div class="medium-offset-6 medium-6 columns end">
               <app-rearing-selector-modal
                [isLoading]="false"
-               [disabled]="!changeEnabled || isAnyEditModeActive()"
+               [disabled]="!changeEnabled || isAnyEditModeActive() || !allowRearingEdit()"
                [rearing]="animal.rearing"
                [motherUln]="motherAnimal?.uln"
                [childUln]="animal?.uln"
@@ -268,7 +274,7 @@
               </select>
             </div>
           </div>
-          <div class="row" *ngIf="changeEnabled && isAdmin">
+          <div class="row" *ngIf="changeEnabled">
             <div class="medium-offset-6 medium-6 columns end">
               <button type="button" *ngIf="blindness_factor_edit_mode" (click)="toggleBlindnessFactorEditMode()"
                       class="tiny alert button pull-right">{{ 'CANCEL' | translate }}
@@ -276,7 +282,9 @@
               <button type="button" *ngIf="blindness_factor_edit_mode" (click)="sendGeneralChangeRequest()"
                       class="tiny primary button pull-right">{{ 'SAVE' | translate }}
               </button>
-              <button type="button" *ngIf="!blindness_factor_edit_mode" [disabled]="!changeEnabled || isAnyEditModeActive()" (click)="toggleBlindnessFactorEditMode()"
+              <button type="button" *ngIf="!blindness_factor_edit_mode"
+                      [disabled]="!changeEnabled || isAnyEditModeActive() || !allowBlindnessEdit()"
+                      (click)="toggleBlindnessFactorEditMode()"
                       class="tiny primary button pull-right">
                             <span *ngIf="isLoadingPrimaryData">
                                 <i class="fa fa-gear fa-spin fa-fw"></i>
@@ -423,7 +431,9 @@
               <button type="button" *ngIf="birth_measurements_edit_mode" (click)="sendBirthMeasurementsChangeRequest()"
                       class="tiny primary button pull-right">{{ 'SAVE' | translate }}
               </button>
-              <button type="button" *ngIf="!birth_measurements_edit_mode" [disabled]="!changeEnabled || isAnyEditModeActive()" (click)="toggleBirthMeasurementsEditMode()"
+              <button type="button" *ngIf="!birth_measurements_edit_mode"
+                      [disabled]="!changeEnabled || isAnyEditModeActive() || !allowBirthMeasurementsEdit()"
+                      (click)="toggleBirthMeasurementsEditMode()"
                       class="tiny primary button pull-right">
                             <span *ngIf="isLoadingPrimaryData">
                                 <i class="fa fa-gear fa-spin fa-fw"></i>
@@ -483,7 +493,7 @@
                 </div>
               </div>
             </div>
-            <div class="row" *ngIf="changeEnabled && isAdmin">
+            <div class="row" *ngIf="changeEnabled">
               <div class="medium-offset-6 medium-6 columns end">
                 <button type="button" *ngIf="predicate_edit_mode" (click)="togglePredicateEditMode()"
                         class="tiny alert button pull-right">{{ 'CANCEL' | translate }}
@@ -491,7 +501,9 @@
                 <button type="button" *ngIf="predicate_edit_mode" (click)="sendGeneralChangeRequest()"
                         class="tiny primary button pull-right">{{ 'SAVE' | translate }}
                 </button>
-                <button type="button" *ngIf="!predicate_edit_mode" [disabled]="!changeEnabled || isAnyEditModeActive()" (click)="togglePredicateEditMode()"
+                <button type="button" *ngIf="!predicate_edit_mode"
+                        [disabled]="!changeEnabled || isAnyEditModeActive() || !allowPredicateEdit()"
+                        (click)="togglePredicateEditMode()"
                         class="tiny primary button pull-right">
                             <span *ngIf="isLoadingPrimaryData">
                                 <i class="fa fa-gear fa-spin fa-fw"></i>
@@ -518,7 +530,7 @@
                 </select>
               </div>
             </div>
-            <div class="row" *ngIf="changeEnabled && isAdmin">
+            <div class="row" *ngIf="changeEnabled">
               <div class="medium-offset-6 medium-6 columns end">
                 <button type="button" *ngIf="breed_type_edit_mode" (click)="toggleBreedTypeEditMode()"
                         class="tiny alert button pull-right">{{ 'CANCEL' | translate }}
@@ -526,7 +538,9 @@
                 <button type="button" *ngIf="breed_type_edit_mode" (click)="sendGeneralChangeRequest()"
                         class="tiny primary button pull-right">{{ 'SAVE' | translate }}
                 </button>
-                <button type="button" *ngIf="!breed_type_edit_mode" [disabled]="!changeEnabled || isAnyEditModeActive()" (click)="toggleBreedTypeEditMode()"
+                <button type="button" *ngIf="!breed_type_edit_mode"
+                        [disabled]="!changeEnabled || isAnyEditModeActive() || !allowBreedTypeEdit()"
+                        (click)="toggleBreedTypeEditMode()"
                         class="tiny primary button pull-right">
                             <span *ngIf="isLoadingPrimaryData">
                                 <i class="fa fa-gear fa-spin fa-fw"></i>
@@ -830,8 +844,9 @@
 
           <app-animal-annotations
             [changeEnabled]="changeEnabled"
-            [isEditModeActive]="isAnyEditModeActive()"
+            [(isEditModeActive)]="notes_edit_mode"
             [ulnOrAnimalId]="selectedUlnOrAnimalId"
+            [isChangeButtonActive]="!isAnyEditModeActive() && allowNotesEdit()"
           ></app-animal-annotations>
 
         </div>
