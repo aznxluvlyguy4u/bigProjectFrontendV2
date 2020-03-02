@@ -35,6 +35,7 @@ import {ResponseResultModel} from '../../shared/models/response-result.model';
 import {BIRTH_PROGRESS_TYPES} from '../../rvo-declares/birth/birth.model';
 import {PREDICATE_TYPES} from '../../shared/models/predicate-details.model';
 import {HttpErrorResponse} from '@angular/common/http';
+import {BirthMeasurementsResponse} from '../birth-measurements-response.model';
 
 @Component({
   templateUrl: './details.component.html',
@@ -526,7 +527,8 @@ export class LivestockDetailComponent {
     this.apiService
       .doPostRequest(API_URI_ANIMAL_GENDER, request)
       .subscribe(
-        res => {
+        (result: Animal) => {
+          this.animal.gender = result.gender;
           this.actionsAfterSuccessfulSave();
         },
         err => {
@@ -579,18 +581,32 @@ export class LivestockDetailComponent {
       'reset_measurement_date_using_date_of_birth': false
     };
 
-    if (newBirthWeight === null || newBirthWeight === undefined || newBirthWeight === '') {
+    if (newBirthWeight === null || newBirthWeight === undefined || newBirthWeight === 0) {
       delete request.birth_weight;
     }
 
-    if (newTailLength === null || newTailLength === undefined || newTailLength === '') {
+    if (newTailLength === null || newTailLength === undefined || newTailLength === 0) {
       delete request.tail_length;
     }
 
     this.apiService
       .doPutRequest(API_URI_MEASUREMENTS + '/' + this.animal.id + '/birth-measurements', request)
       .subscribe(
-        res => {
+        (res: ResponseResultModel) => {
+          const result: BirthMeasurementsResponse = res.result;
+          this.animal.birth.birth_progress = result.birth_progress;
+          if (result.birth_weight != null) {
+            this.animal.birth.birth_weight = result.birth_weight.weight;
+          } else {
+            delete this.animal.birth.birth_weight;
+          }
+
+          if (result.tail_length != null) {
+            this.animal.birth.tail_length = result.tail_length.length;
+          } else {
+            delete this.animal.birth.tail_length;
+          }
+
           this.actionsAfterSuccessfulSave();
         },
         err => {

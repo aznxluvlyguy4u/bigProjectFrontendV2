@@ -11,9 +11,9 @@ export class MeasurementOutput {
 }
 
 export class BirthOutput {
-  public birth_weight: string;
+  public birth_weight: number;
   public birth_progress: string;
-  public tail_length: string;
+  public tail_length: number;
 }
 
 abstract class MeasurementBase {
