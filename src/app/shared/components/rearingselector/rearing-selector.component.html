@@ -1,0 +1,114 @@
+<span id="component-rearing-selector" class="rearing-selector">
+  <button type="button" [disabled]="disabled" (click)="openModal()"
+          class="tiny primary button pull-right">
+        <span *ngIf="isLoading">
+            <i class="fa fa-gear fa-spin fa-fw"></i>
+        </span>
+        <span *ngIf="!isLoading">
+            {{ 'CHANGE' | translate }}
+        </span>
+  </button>
+</span>
+
+<div class="reveal-overlay" [ngStyle]="{'display': displayModal}">
+  <div class="tiny reveal" [ngStyle]="{'display': displayModal}">
+    <div class="modal-header">
+      {{ 'REARING' | translate }}
+      <button *ngIf="!isSearchingSurrogate" type="button" (click)="clickCancel()" class="pull-right" aria-label="Close modal">
+        <i class="fa fa-times" aria-hidden="true"></i>
+      </button>
+    </div>
+
+    <div class="surrogate-modal-body">
+
+      <div class="row" style="margin-top: 2rem">
+        <div class="column text-center">
+          {{ 'CURRENT REARING' | translate }}: {{ initialRearingDisplayLabel }}
+        </div>
+      </div>
+
+      <hr>
+
+      <div class="row">
+        <div class="column large-offset-4">
+          <select [(ngModel)]="selectedRearingType" [disabled]="disabled" (click)="refreshRearingBySelection()">
+            <option *ngFor="let rearingType of rearingTypes" value="{{rearingType}}">
+              {{ rearingType | translate }}
+            </option>
+          </select>
+        </div>
+      </div>
+
+      <div *ngIf="openSurrogateSelection() && !disabled">
+
+        <div class="row">
+          <!--IDENTIFICATION NUMBER-->
+          <div class="large-3 columns large-offset-4">
+            <label>{{ 'ULN' | translate }}</label>
+            <div class="uid-input-group">
+              <select [(ngModel)]="searchUlnCountryCode" [disabled]="disabled">
+                <option
+                  *ngFor="let country_code of country_code_list"
+                  value="{{country_code.code}}">
+                  {{ country_code.code }}
+                </option>
+              </select>
+              <input type="text" maxlength="12" [(ngModel)]="searchUlnNumber">
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="columns small-6 align-center end large-offset-4">
+                    <span class="pull-right">
+                        <button
+                          class="tiny primary button"
+                          [disabled]="isSearchingSurrogate || !hasValidUlnSearchInput()"
+                          (click)="searchSurrogate();"
+                        >{{ 'SEARCH' | translate}}</button>
+                    </span>
+          </div>
+        </div>
+
+        <ng-template *ngIf="!isSearchingSurrogate">
+
+          <hr>
+
+          <p *ngIf="isSurrogateFound && foundSurrogate != null">
+            {{ 'SURROGATE' | translate }} {{ 'WAS FOUND' | translate }}
+          </p>
+        </ng-template>
+
+      </div>
+
+    </div>
+    <div class="modal-footer">
+
+      <hr *ngIf="!hasOriginalValues()">
+
+      <div class="row" *ngIf="!hasOriginalValues()">
+        <div class="column text-center">
+          {{ 'NEW SELECTED REARING' | translate }}: {{ rearingDisplayLabel }}
+        </div>
+      </div>
+
+      <hr>
+
+      <span class="pull-left">
+                <button
+                  class="tiny primary button"
+                  [disabled]="disabled || isSearchingSurrogate || hasOriginalValues()"
+                  (click)="clickOK()"
+                >{{ 'SAVE' | translate}}</button>
+            </span>
+
+      <span class="pull-right">
+                <button
+                  class="tiny alert button"
+                  [disabled]="isSearchingSurrogate"
+                  (click)="clickCancel();"
+                >{{ 'CANCEL' | translate}}</button>
+            </span>
+    </div>
+  </div>
+</div>

@@ -1,17 +1,19 @@
-import {Animal} from './animal.model';
 import {Inspector} from './person.model';
 
 // Used only in animal details output
 export class MeasurementOutput {
   public measurement_date: string;
+  public scan_weight: string;
   public fat_cover_one: number;
   public fat_cover_two: number;
   public fat_cover_three: number;
   public muscular_thickness: string;
-  public birth_weight: string;
+}
+
+export class BirthOutput {
+  public birth_weight: number;
   public birth_progress: string;
-  public scan_weight: string;
-  public tail_length: string;
+  public tail_length: number;
 }
 
 abstract class MeasurementBase {

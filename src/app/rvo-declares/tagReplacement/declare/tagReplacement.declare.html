@@ -5,5 +5,5 @@
   </div>
 </div>
 
-<selector #selector [columns]="['UNASSIGNED TAGS']" [list]="tags"
+<selector #selector [columns]="['UNASSIGNED TAGS', 'REPLACED AT']" [list]="tags" [isTagReplacement]="true" [tagReplacement]="objectForDatePicker"
           (selection)="declareTagReplacement($event)"></selector>

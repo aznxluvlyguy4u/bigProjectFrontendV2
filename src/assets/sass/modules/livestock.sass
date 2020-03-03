@@ -1,4 +1,10 @@
 #livestock
+
+  div
+    .sub-uln-text
+      font-size: 0.7rem
+      opacity: 0.6
+
   .detail-container
     display: block
     //white-space: nowrap
@@ -11,7 +17,7 @@
       padding-right: 0.5em
 
     table.animal-logs
-      margin-top: 2rem
+      margin-top: 0
       font-size: 0.75rem
 
     table.breed-value-table
@@ -24,6 +30,27 @@
 
     td.breed-value-and-accuracy-column
       text-align: right
+
+    table.contact-table
+      font-size: 0.75rem
+      white-space: nowrap
+      padding: 0.4rem
+      .th
+        color: $nsfo-green
+        font-size: 1rem
+
+    th.contact-table-header-row
+      text-align: center
+      color: $nsfo-green
+
+    td.contact-table-spanned-notification-row
+      text-align: center
+
+    td.contact-table-label-column
+      text-align: right
+
+    td.contact-table-data-column
+      text-align: left
 
   .ordinal-box
     width: 1.2rem

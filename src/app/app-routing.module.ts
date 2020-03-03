@@ -62,8 +62,10 @@ import {ReportInbreedingCoefficientComponent} from './report/inbreedingCoefficie
 import {ReportLivestockComponent} from './report/livestock/report.livestock';
 import {ReportOffspringComponent} from './report/offspring/report.offspring.component';
 import {ReportBirthListComponent} from './report/birthlist/report.birth-list.component';
+import {ReportEweCardComponent} from './report/eweCard/report.ewe-card.component';
 import {ReportCompanyRegisterComponent} from './report/companyRegister/report.company-register.component';
 import {ReportWeightsPerYearOfBirthComponent} from './report/weightsPerYearOfBirth/report.weights-per-year-of-birth.component';
+import {ReportAnimalFeaturesPerYearOfBirthComponent} from './report/animalFeaturesPerYearOfBirth/report.animal-features-per-year-of-birth.component';
 import {ReportFertilizerAccountingComponent} from './report/fertilityAccounting/report.fertilizer-accounting.component';
 
 // const appRoutes: Routes = [
@@ -159,8 +161,10 @@ const appRoutes = [
           {path: 'fertilizer_accounting', component: ReportFertilizerAccountingComponent},
           {path: 'offspring', component: ReportOffspringComponent},
           {path: 'birth_list', component: ReportBirthListComponent},
+          {path: 'ewe_card', component: ReportEweCardComponent},
           {path: 'company_register', component: ReportCompanyRegisterComponent},
-          {path: 'weights_per_year_of_birth', component: ReportWeightsPerYearOfBirthComponent}
+          {path: 'weights_per_year_of_birth', component: ReportWeightsPerYearOfBirthComponent},
+          {path: 'animal_features_per_year_of_birth', component: ReportAnimalFeaturesPerYearOfBirthComponent},
         ]
       },
       {

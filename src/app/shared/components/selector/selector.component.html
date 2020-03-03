@@ -70,13 +70,20 @@
           <tr
             *ngFor="let item of filteredList | selectorFilter:[searchValue.value, filter] | paginate: {itemsPerPage: 10, currentPage: page}">
             <td>{{ item.uln }}</td>
-            <td *ngIf="columns.length > 1">
+            <td *ngIf="columns.length > 1 && isTagReplacement === false">
                           <span *ngIf="item.pedigree">
                               {{ item.pedigree }}
                           </span>
               <span *ngIf="!item.pedigree">
                               --
                           </span>
+            </td>
+            <td *ngIf="isTagReplacement === true">
+              <app-datepicker
+                [formCtrl]="tagReplacement.formControl"
+                [viewFormat]="tagReplacement.view_date_format"
+                [modelFormat]="tagReplacement.model_datetime_format"
+              ></app-datepicker>
             </td>
             <td>
               <span class="success label" *ngIf="item.suggested">{{ SUGGESTION_LABEL | translate }}</span>

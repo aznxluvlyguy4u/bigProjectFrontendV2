@@ -1,6 +1,5 @@
-import { Component, EventEmitter, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
-import { PedigreeRegister } from '../../shared/models/pedigree-register.model';
 import { DownloadService } from '../../shared/services/download/download.service';
 import { Settings } from '../../shared/variables/settings';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
@@ -16,12 +15,6 @@ export class ReportCompanyRegisterComponent {
   public view_date_format;
   public form: FormGroup;
   public defaultFileType: string = CSV;
-
-  public breedCode: string;
-  public pedigreeRegister: PedigreeRegister;
-
-  public isBreedCodeActive = false;
-  public isPedigreeRegisterActive = false;
 
   constructor(
     private downloadService: DownloadService,

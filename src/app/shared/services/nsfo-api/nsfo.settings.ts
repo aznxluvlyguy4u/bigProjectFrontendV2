@@ -15,8 +15,9 @@ export const API_URI_GET_REPORTS = '/v1/reports';
 
 
 // LIVESTOCK
-export const API_URI_GET_ANIMALS = '/v1/animals-livestock';
-export const API_URI_GET_HISTORIC_ANIMALS = '/v1/animals-historic-livestock';
+export const API_URI_ANIMALS = '/v1/animals';
+export const API_URI_GET_ANIMALS_LIVESTOCK = '/v1/animals-livestock';
+export const API_URI_GET_ANIMALS_HISTORIC_LIVESTOCK = '/v1/animals-historic-livestock';
 export const API_URI_GET_ANIMAL_DETAILS = '/v1/animals-details';
 export const API_URI_CHANGE_ANIMAL_DETAILS = '/v1/animals-details';
 export const API_URI_SYNC_ANIMALS = '/v1/animals-sync';
@@ -114,8 +115,10 @@ export const API_URI_GET_LIVESTOCK_DOCUMENT = '/v1/reports/livestock';
 export const API_URI_GET_OFFSPRING_REPORT = '/v1/reports/offspring';
 export const API_URI_GET_FERTILIZER_ACCOUNTING_REPORT = '/v1/reports/fertilizer-accounting';
 export const API_URI_GET_BIRTH_LIST_REPORT = '/v1/reports/birth-list';
+export const API_URI_GET_EWE_CARD_REPORT = '/v1/reports/ewe-card';
 export const API_URI_GET_COMPANY_REGISTER_REPORT = '/v1/reports/company-register';
 export const API_URI_GET_WEIGHTS_PER_YEAR_OF_BIRTH_REPORT = '/v1/reports/weights-per-year-of-birth';
+export const API_URI_GET_ANIMAL_FEATURES_PER_YEAR_OF_BIRTH_REPORT = '/v1/reports/animal-features-per-year-of-birth';
 
 // Pedigree Register
 export const API_URI_GET_PEDIGREE_REGISTERS = '/v1/pedigreeregisters';

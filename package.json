@@ -34,6 +34,7 @@
     "core-js": "^2.5.7",
     "foundation-sites": "6.2.1",
     "hammerjs": "^2.0.8",
+    "http-status-codes": "^1.4.0",
     "lodash": "^4.17.10",
     "moment": "^2.22.1",
     "natives": "^1.1.6",

@@ -6,6 +6,7 @@ import {API_URI_GET_LOSS_ERRORS} from '../../shared/services/nsfo-api/nsfo.setti
 import {LossErrorResponse} from './loss.model';
 import {NSFOService} from '../../shared/services/nsfo-api/nsfo.service';
 import {JsonResponseModel} from '../../shared/models/json-response.model';
+import {POLLING_INTERVAL_DECLARE_ERRORS_SECONDS} from '../../shared/variables/timeout.constant';
 
 @Component({
   templateUrl: './loss.component.html',
@@ -55,7 +56,7 @@ export class LossComponent implements OnInit, OnDestroy {
       if (!this.cleanUpComponent && this.loopGetLossErrorList) {
         this.getLossErrorList();
       }
-    }, 10 * 1000);
+    }, POLLING_INTERVAL_DECLARE_ERRORS_SECONDS * 1000);
   }
 
   public navigateTo(route: string) {
