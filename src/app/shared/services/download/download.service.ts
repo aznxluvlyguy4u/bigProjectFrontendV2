@@ -165,10 +165,16 @@ export class DownloadService {
   }
 
   doLineageProofPostRequest(animals: Animal[], fileType = 'PDF') {
+    const request = {animals: []};
 
-    const request = {
-      'animals': animals
-    };
+    for (let i = 0; i < animals.length; i++) {
+      request.animals.push(
+        {
+          'uln_country_code': animals[i].uln_country_code,
+          'uln_number': animals[i].uln_number
+        }
+      );
+    }
 
     const queryParam = typeof fileType === 'string' ? '?' + QUERY_PARAM_FILE_TYPE + '=' + fileType.toLowerCase() : '';
     this.doDownloadPostRequestByReportWorker(API_URI_GET_LINEAGE_PROOF + queryParam, request);
@@ -320,7 +326,6 @@ export class DownloadService {
   }
 
   private doDownloadPostRequestByReportWorker(uri: string, request: any) {
-
     this.nsfo.doPostRequest(uri, request)
       .subscribe(
           (res: JsonResponseModel) => {
