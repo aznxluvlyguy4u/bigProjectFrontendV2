@@ -308,7 +308,6 @@ export class DownloadService {
   }
 
   private doDownloadPostRequestByReportWorker(uri: string, request: any) {
-    console.log(request);
     this.nsfo.doPostRequest(uri, request)
       .subscribe(
           (res: JsonResponseModel) => {
