@@ -175,10 +175,6 @@ export class DownloadService {
       );
     }
 
-    // const request = {
-    //   'animals': animals
-    // };
-
     const queryParam = typeof fileType === 'string' ? '?' + QUERY_PARAM_FILE_TYPE + '=' + fileType.toLowerCase() : '';
     this.doDownloadPostRequestByReportWorker(API_URI_GET_LINEAGE_PROOF + queryParam, request);
   }
