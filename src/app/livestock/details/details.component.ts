@@ -564,7 +564,7 @@ export class LivestockDetailComponent {
   }
 
   public sendBirthMeasurementsChangeRequest() {
-    if (!this.isAdmin) {
+    if (!this.allowBirthMeasurementsEdit()) {
       return;
     }
     this.birth_measurements_edit_mode = false;
