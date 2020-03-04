@@ -4,10 +4,10 @@ import {Inspector} from './person.model';
 export class MeasurementOutput {
   public measurement_date: string;
   public scan_weight: string;
-  public fat_cover_one: number;
-  public fat_cover_two: number;
-  public fat_cover_three: number;
-  public muscular_thickness: string;
+  public fat1: number;
+  public fat2: number;
+  public fat3: number;
+  public muscle_thickness: string;
 }
 
 export class BirthOutput {
