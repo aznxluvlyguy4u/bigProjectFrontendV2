@@ -339,7 +339,7 @@
               <label class="middle"> {{ 'FAT COVER' | translate }} 1 </label>
             </div>
             <div class="medium-6 columns">
-              <input type="text" [(ngModel)]="animal.scan_measurements.fat_cover_one" [disabled]="true">
+              <input type="text" [(ngModel)]="animal.scan_measurements.fat1" [disabled]="true">
             </div>
           </div>
 
@@ -349,7 +349,7 @@
               <label class="middle"> {{ 'FAT COVER' | translate }} 2 </label>
             </div>
             <div class="medium-6 columns">
-              <input type="text" [(ngModel)]="animal.scan_measurements.fat_cover_two" [disabled]="true">
+              <input type="text" [(ngModel)]="animal.scan_measurements.fat2" [disabled]="true">
             </div>
           </div>
 
@@ -359,7 +359,7 @@
               <label class="middle"> {{ 'FAT COVER' | translate }} 3 </label>
             </div>
             <div class="medium-6 columns">
-              <input type="text" [(ngModel)]="animal.scan_measurements.fat_cover_three" [disabled]="true">
+              <input type="text" [(ngModel)]="animal.scan_measurements.fat3" [disabled]="true">
             </div>
           </div>
 
@@ -369,7 +369,7 @@
               <label class="middle"> {{ 'MUSCULAR THICKNESS' | translate }} </label>
             </div>
             <div class="medium-6 columns">
-              <input type="text" [(ngModel)]="animal.scan_measurements.muscular_thickness" [disabled]="true">
+              <input type="text" [(ngModel)]="animal.scan_measurements.muscle_thickness" [disabled]="true">
             </div>
           </div>
 
@@ -484,11 +484,11 @@
               </div>
               <div class="medium-6 columns">
                 <div class="uid-input-group">
-                  <select [(ngModel)]="animal.predicate_details.type" [disabled]="!predicate_edit_mode">
+                  <select [(ngModel)]="predicate_type_edit_value" [disabled]="!predicate_edit_mode">
                     <option value=""></option>
                     <option *ngFor="let predicate_type of predicate_types" value="{{ predicate_type }}">{{ predicate_type | translate }}</option>
                   </select>
-                  <input type="number" [(ngModel)]="animal.predicate_details.score" [disabled]="!predicate_edit_mode"
+                  <input type="number" [(ngModel)]="predicate_score_edit_value" [disabled]="!predicate_edit_mode"
                          min="13" max="999" step="1">
                 </div>
               </div>

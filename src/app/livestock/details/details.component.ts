@@ -122,6 +122,9 @@ export class LivestockDetailComponent {
   public blindness_factor_types = BLINDNESS_FACTOR_TYPES;
   public predicate_types = PREDICATE_TYPES;
 
+  public predicate_type_edit_value: string;
+  public predicate_score_edit_value: number;
+
   constructor(private route: ActivatedRoute,
               private router: Router,
               private apiService: NSFOService,
@@ -273,6 +276,11 @@ export class LivestockDetailComponent {
       );
   }
 
+  private setPredicateEditValues() {
+    this.predicate_type_edit_value = this.animal.predicate_details.type;
+    this.predicate_score_edit_value = this.animal.predicate_details.score;
+  }
+
   public getAnimalDetails() {
     this.apiService
       .doGetRequest(API_URI_GET_ANIMAL_DETAILS + '/' + this.selectedUlnOrAnimalId)
@@ -310,6 +318,7 @@ export class LivestockDetailComponent {
           this.logs = this.animal.declare_log.length > 0 ? this.animal.declare_log : [];
 
           this.changeEnabled = false;
+          this.setPredicateEditValues();
           this.temp_animal = _.cloneDeep(this.animal);
 
           // this.getExteriorKinds();
@@ -564,7 +573,7 @@ export class LivestockDetailComponent {
   }
 
   public sendBirthMeasurementsChangeRequest() {
-    if (!this.isAdmin) {
+    if (!this.allowBirthMeasurementsEdit()) {
       return;
     }
     this.birth_measurements_edit_mode = false;
@@ -642,8 +651,8 @@ export class LivestockDetailComponent {
       request = {
         'collar': this.animal.collar,
         'predicate_details': {
-          'type': this.animal.predicate_details.type,
-          'score': this.animal.predicate_details.score
+          'type': this.predicate_type_edit_value,
+          'score': this.predicate_score_edit_value
         },
         'blindness_factor': this.animal.blindness_factor,
         'breed_type': this.animal.breed_type,
@@ -673,6 +682,8 @@ export class LivestockDetailComponent {
           this.animal.blindness_factor = result.blindness_factor;
           this.animal.predicate_details.formatted = result.predicate_details.formatted;
           this.animal.predicate_details.formatted = result.predicate_details.formatted;
+
+          this.setPredicateEditValues();
 
           this.actionsAfterSuccessfulSave();
         },
@@ -781,6 +792,8 @@ export class LivestockDetailComponent {
 
     if (this.predicate_edit_mode) {
       this.deactivateEditModes('predicate');
+    } else {
+      this.setPredicateEditValues();
     }
   }
 
