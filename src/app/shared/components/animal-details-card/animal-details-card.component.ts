@@ -25,7 +25,10 @@ export class AnimalDetailsCardComponent implements OnInit {
   dateOfBirth = '';
 
   redirectToAnimal(isEdit: boolean = false) {
-    if (!this.ulnIsEmpty()) {
+    if (!this.primaryKeyIsEmpty()) {
+      this.historyUpdate.emit(this.inputAnimal.id);
+      this.router.navigate(['/main/livestock/details/' + this.inputAnimal.id]);
+    } else if (!this.ulnIsEmpty()) {
       this.historyUpdate.emit(this.inputAnimal.uln);
       this.router.navigate(['/main/livestock/details/' + this.inputAnimal.uln]);
     }
@@ -52,6 +55,10 @@ export class AnimalDetailsCardComponent implements OnInit {
     }
 
     return '';
+  }
+
+  primaryKeyIsEmpty(): boolean {
+    return this.inputAnimal.id == null;
   }
 
   ulnIsEmpty(): boolean {

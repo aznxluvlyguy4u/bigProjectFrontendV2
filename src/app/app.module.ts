@@ -143,7 +143,7 @@ import {LineComponent} from './shared/components/googlechart/line.component';
 import {GoogleLineChartService} from './shared/services/google/googlelinechart.service';
 import {AnimalDetailsCardComponent} from './shared/components/animal-details-card/animal-details-card.component';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {MatButtonModule, MatProgressSpinnerModule, MatSnackBar, MatSnackBarModule} from '@angular/material';
+import {MAT_SNACK_BAR_DEFAULT_OPTIONS, MatButtonModule, MatProgressSpinnerModule, MatSnackBar, MatSnackBarModule} from '@angular/material';
 import {PageLoadingSpinnerComponent} from './shared/components/page-loading-spinner/page-loading-spinner.component';
 import {ButtonPrimaryComponent} from './shared/components/button-primary/button-primary.component';
 import {InsideComponentLoadingSpinnerComponent} from './shared/components/inside-component-loading-spinner/inside-component-loading-spinner.component';
@@ -156,6 +156,9 @@ import {InvoiceSortPipe} from './invoices/pipes/invoice-sort.pipe';
 import {YeardropdownComponent} from './shared/components/yeardropdown/yeardropdown.component';
 import {ReportAnimalFeaturesPerYearOfBirthComponent} from './report/animalFeaturesPerYearOfBirth/report.animal-features-per-year-of-birth.component';
 import {AnimalDetailsContactCardComponent} from './livestock/details/contact/animal-details-contact-card.component';
+import {RearingSelectorComponent} from './shared/components/rearingselector/rearing-selector.component';
+import {AnimalAnnotationsComponent} from './livestock/details/annotations/animal-annotations.component';
+import {AnimalAnnotationComponent} from './livestock/details/annotations/animal-annotation.component';
 
 // AoT requires an exported function for factories
 export function CreateTranslateLoader(http: HttpClient) {
@@ -186,6 +189,8 @@ export function CreateTranslateLoader(http: HttpClient) {
     ExteriorComponent,
     DownloadButtonComponent,
     ExteriorComponent,
+    AnimalAnnotationComponent,
+    AnimalAnnotationsComponent,
     LivestockComponent,
     LivestockMainOverviewComponent,
     MessagesComponent,
@@ -297,6 +302,7 @@ export function CreateTranslateLoader(http: HttpClient) {
     PageLoadingSpinnerComponent,
     InsideComponentLoadingSpinnerComponent,
     ButtonPrimaryComponent,
+    RearingSelectorComponent,
     ReportModalComponent,
     YeardropdownComponent
   ],
@@ -342,7 +348,8 @@ export function CreateTranslateLoader(http: HttpClient) {
     Constants,
     MatSnackBar,
     PedigreeRegisterStorage,
-    DatePipe
+    DatePipe,
+    {provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: {duration: 3500}}
   ],
   bootstrap: [AppComponent]
 })

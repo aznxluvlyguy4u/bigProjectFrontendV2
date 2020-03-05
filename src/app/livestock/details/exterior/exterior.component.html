@@ -10,13 +10,18 @@
   </select>
 
   <span *ngIf="isAdmin">
-        <!--[disabled]="edit_mode || !changeEnabled" -->
-        <button type="button" [disabled]="exteriors.length == 0" *ngIf="selectedExterior"
+        <button type="button"
+                *ngIf="selectedExterior"
+                [disabled]="exteriors.length == 0 || modificationDisabled"
                 (click)="openExteriorModal(true)"
                 class="tiny primary button pull-right"> {{ 'EDIT' | translate }} </button>
-    <!--[disabled]="edit_mode || !changeEnabled"-->
-        <button type="button" (click)="openExteriorModal(false)" class="tiny primary button pull-right"> {{ 'NEW EXTERIOR' | translate }} </button>
-        <button type="button" [disabled]="exteriors.length == 0" *ngIf="selectedExterior"
+        <button type="button"
+                (click)="openExteriorModal(false)"
+                [disabled]="modificationDisabled"
+                class="tiny primary button pull-right"> {{ 'NEW EXTERIOR' | translate }} </button>
+        <button type="button"
+                [disabled]="exteriors.length == 0 || modificationDisabled"
+                *ngIf="selectedExterior"
                 (click)="openConfirmDeleteModal()"
                 class="tiny alert button pull-right"> {{ 'DELETE' | translate }} </button>
     </span>

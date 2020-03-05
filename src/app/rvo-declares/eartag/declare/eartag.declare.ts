@@ -18,6 +18,7 @@ import {User} from '../../../shared/models/person.model';
 import {JsonResponseModel} from '../../../shared/models/json-response.model';
 import { UtilsService } from '../../../shared/services/utils/utils.services';
 import { CacheService } from '../../../shared/services/settings/cache.service';
+import {POLLING_INTERVAL_DECLARE_HISTORY_SECONDS} from '../../../shared/variables/timeout.constant';
 
 @Component({
   providers: [PaginationService],
@@ -204,7 +205,7 @@ export class EartagDeclareComponent implements OnInit, OnDestroy {
       if (this.areRecurrentApiCallsActivated && this.loopGetEartagsSyncStatusOverview) {
         this.getEartagsSyncStatusOverview();
       }
-    }, 10 * 1000);
+    }, POLLING_INTERVAL_DECLARE_HISTORY_SECONDS * 1000);
   }
 
   public selectEartag(eartag, event) {

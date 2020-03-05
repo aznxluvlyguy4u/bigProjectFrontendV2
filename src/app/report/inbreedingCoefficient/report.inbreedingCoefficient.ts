@@ -1,7 +1,7 @@
 import {Component} from '@angular/core';
 
 import {NSFOService} from '../../shared/services/nsfo-api/nsfo.service';
-import {API_URI_GET_ANIMALS} from '../../shared/services/nsfo-api/nsfo.settings';
+import {API_URI_GET_ANIMALS_LIVESTOCK} from '../../shared/services/nsfo-api/nsfo.settings';
 
 import { CSV, PDF } from '../../shared/variables/file-type.enum';
 import { QueryParamsService } from '../../shared/services/utils/query-params.service';
@@ -40,7 +40,7 @@ export class ReportInbreedingCoefficientComponent {
 
     public getLivestockList() {
         this.nsfo
-            .doGetRequest(API_URI_GET_ANIMALS)
+            .doGetRequest(API_URI_GET_ANIMALS_LIVESTOCK)
             .subscribe(
                 (res: JsonResponseModel) => {
                     this.livestock = <LivestockAnimal[]> res.result;

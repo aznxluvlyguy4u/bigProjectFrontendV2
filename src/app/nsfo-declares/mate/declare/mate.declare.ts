@@ -6,7 +6,7 @@ import {NSFOService} from '../../../shared/services/nsfo-api/nsfo.service';
 import {Constants} from '../../../shared/variables/constants';
 import {LIVESTOCK_TYPE_MATE} from '../../../shared/components/livestock/overview.component';
 import {SettingsService} from '../../../shared/services/settings/settings.service';
-import {API_URI_DECLARE_MATE, API_URI_GET_ANIMALS} from '../../../shared/services/nsfo-api/nsfo.settings';
+import {API_URI_DECLARE_MATE, API_URI_GET_ANIMALS_LIVESTOCK} from '../../../shared/services/nsfo-api/nsfo.settings';
 import {Router} from '@angular/router';
 import {Settings} from '../../../shared/variables/settings';
 import {Observable, Subject} from 'rxjs';
@@ -105,7 +105,7 @@ export class MateDeclareComponent implements OnInit, OnDestroy, AfterViewChecked
 
   public getLivestockList() {
     this.nsfo
-      .doGetRequest(API_URI_GET_ANIMALS)
+      .doGetRequest(API_URI_GET_ANIMALS_LIVESTOCK)
       .subscribe(
           (res: JsonResponseModel) => {
           this.livestock = <LivestockAnimal[]> res.result;

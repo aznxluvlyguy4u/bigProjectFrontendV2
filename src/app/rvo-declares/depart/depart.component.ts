@@ -6,6 +6,7 @@ import {DepartErrorResponse} from './depart.model';
 import {API_URI_GET_DEPARTS_ERRORS} from '../../shared/services/nsfo-api/nsfo.settings';
 import {NSFOService} from '../../shared/services/nsfo-api/nsfo.service';
 import {JsonResponseModel} from '../../shared/models/json-response.model';
+import {POLLING_INTERVAL_DECLARE_ERRORS_SECONDS} from '../../shared/variables/timeout.constant';
 
 @Component({
   templateUrl: './depart.component.html',
@@ -63,7 +64,7 @@ export class DepartComponent implements OnInit, OnDestroy {
       if (!this.cleanUpComponent && this.loopGetDepartErrorList) {
         this.getDepartErrorList();
       }
-    }, 60 * 1000);
+    }, POLLING_INTERVAL_DECLARE_ERRORS_SECONDS * 1000);
   }
 
   public navigateTo(route: string) {

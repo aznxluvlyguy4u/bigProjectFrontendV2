@@ -6,6 +6,7 @@ import {API_URI_GET_ARRIVALS_ERRORS} from '../../shared/services/nsfo-api/nsfo.s
 import {ArrivalErrorResponse} from './arrival.model';
 import {NSFOService} from '../../shared/services/nsfo-api/nsfo.service';
 import {JsonResponseModel} from '../../shared/models/json-response.model';
+import {POLLING_INTERVAL_DECLARE_ERRORS_SECONDS} from '../../shared/variables/timeout.constant';
 
 @Component({
   templateUrl: './arrival.component.html',
@@ -62,7 +63,7 @@ export class ArrivalComponent implements OnInit, OnDestroy {
       if (!this.cleanUpComponent && this.loopGetArrivalErrorList) {
         this.getArrivalErrorList();
       }
-    }, 60 * 1000);
+    }, POLLING_INTERVAL_DECLARE_ERRORS_SECONDS * 1000);
   }
 
   public navigateTo(route: string) {

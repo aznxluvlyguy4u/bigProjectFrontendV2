@@ -11,7 +11,7 @@ import {Router} from '@angular/router';
 
 import {NSFOService} from '../../services/nsfo-api/nsfo.service';
 import {Settings} from '../../variables/settings';
-import {API_URI_GET_ANIMALS, API_URI_GET_HISTORIC_ANIMALS} from '../../services/nsfo-api/nsfo.settings';
+import {API_URI_GET_ANIMALS_LIVESTOCK, API_URI_GET_ANIMALS_HISTORIC_LIVESTOCK} from '../../services/nsfo-api/nsfo.settings';
 import {UtilsService} from '../../services/utils/utils.services';
 import {DownloadService} from '../../services/download/download.service';
 import {Subscription} from 'rxjs';
@@ -225,7 +225,7 @@ export class LivestockOverviewComponent implements OnInit, OnDestroy {
     private getLivestockListBase(queryParam: string) {
         this.isLoading = true;
         this.apiService
-            .doGetRequest(API_URI_GET_ANIMALS + queryParam)
+            .doGetRequest(API_URI_GET_ANIMALS_LIVESTOCK + queryParam)
             .subscribe(
                 (res: JsonResponseModel) => {
                     // this.livestock_list = LivestockAnimal.apply(null, new Uint16Array(res));
@@ -270,7 +270,7 @@ export class LivestockOverviewComponent implements OnInit, OnDestroy {
 
     private getHistoricAnimals() {
         this.apiService
-            .doGetRequest(API_URI_GET_HISTORIC_ANIMALS)
+            .doGetRequest(API_URI_GET_ANIMALS_HISTORIC_LIVESTOCK)
             .subscribe(
                 (res: JsonResponseModel) => {
                     this.historic_livestock_list = <LivestockAnimal[]> res.result;
@@ -374,7 +374,11 @@ export class LivestockOverviewComponent implements OnInit, OnDestroy {
     }
 
     private viewAnimalDetails(animal: LivestockAnimal) {
-        this.router.navigate(['/main/livestock/details', animal.uln]);
+        if (animal.id != null) {
+          this.router.navigate(['/main/livestock/details', animal.id]);
+        } else {
+          this.router.navigate(['/main/livestock/details', animal.uln]);
+        }
     }
 
     private selectAnimal(event: Event, animal: LivestockAnimal): boolean {

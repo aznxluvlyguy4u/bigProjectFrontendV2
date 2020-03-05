@@ -71,6 +71,10 @@ export class SettingsService {
     return this.viewDateFormatInComponent;
   }
 
+  public stringAsViewDateTime(date) {
+    return moment(date).format(this.getViewDateTimeFormat());
+  }
+
   public setViewDateFormat(viewDateFormat) {
     this.viewDateFormat = viewDateFormat;
   }
