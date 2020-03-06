@@ -1,0 +1,58 @@
+<ng-container *ngIf="isLoading">
+  <app-inside-component-loading-spinner></app-inside-component-loading-spinner>
+</ng-container>
+
+<ng-container *ngIf="isAdmin && !isLoading && annotationsForAdmin != null">
+  <p *ngIf="annotationsForAdmin.length === 0">{{'THIS ANIMAL HAS NO ANNOTATIONS' | translate}}</p>
+
+  <div class="row" *ngFor="let annotation of annotationsForAdmin">
+    <div class="column large-8 large-offset-2">
+      <app-animal-annotation
+        [changeEnabled]="false"
+        [isEditModeActive]="false"
+        [showCompanyAndUbn]="true"
+        [annotation]="annotation"
+        [(editableBody)]="annotation.body"
+      ></app-animal-annotation>
+    </div>
+  </div>
+</ng-container>
+
+<ng-container *ngIf="!isAdmin && !isLoading">
+
+  <div class="row">
+    <div class="column large-8 large-offset-2">
+      <app-animal-annotation
+        [changeEnabled]="changeEnabled && isEditModeActive"
+        [isEditModeActive]="isEditModeActive"
+        [showCompanyAndUbn]="false"
+        [annotation]="annotationForUser"
+        [(editableBody)]="editableBody"
+      ></app-animal-annotation>
+    </div>
+  </div>
+  <div class="row" *ngIf="changeEnabled" style="margin-top: 1rem; margin-bottom: 2rem">
+    <div class="medium-offset-5 medium-6 columns end">
+      <button type="button" *ngIf="isEditModeActive" (click)="cancel()"
+              class="tiny alert button pull-right">{{ 'CANCEL' | translate }}
+      </button>
+      <button type="button" *ngIf="isEditModeActive" (click)="clearInput()"
+              class="tiny secondary button pull-right">
+        {{ 'CLEAR' | translate | titlecase }} {{ 'INPUT FIELD' | translate }}
+      </button>
+      <button type="button" *ngIf="isEditModeActive" (click)="updateAnimalAnnotation()"
+              class="tiny primary button pull-right">{{ 'SAVE' | translate }}
+      </button>
+      <button type="button" *ngIf="!isEditModeActive" [disabled]="!changeEnabled || !isChangeButtonActive" (click)="toggleEditMode()"
+              class="tiny primary button pull-right"
+      >
+        <span *ngIf="isLoading">
+            <i class="fa fa-gear fa-spin fa-fw"></i>
+        </span>
+        <span *ngIf="!isLoading">
+            {{ 'CHANGE' | translate }}
+        </span>
+      </button>
+    </div>
+  </div>
+</ng-container>

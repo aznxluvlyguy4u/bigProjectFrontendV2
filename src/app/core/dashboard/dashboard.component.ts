@@ -7,6 +7,7 @@ import {API_URI_GET_DASHBOARD_INFO, API_URI_SYNC_ANIMALS, API_URI_SYNC_EARTAGS} 
 import {SettingsService} from '../../shared/services/settings/settings.service';
 import {JsonResponseModel} from '../../shared/models/json-response.model';
 import {CacheService} from '../../shared/services/settings/cache.service';
+import {POLLING_INTERVAL_DASHBOARD_SECONDS} from '../../shared/variables/timeout.constant';
 
 @Component({
   templateUrl: './dashboard.component.html'
@@ -58,7 +59,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
       if (!this.cleanUpComponent && this.loopGetDashboardInfo) {
         this.getDashboardInfo();
       }
-    }, 10 * 1000);
+    }, POLLING_INTERVAL_DASHBOARD_SECONDS * 1000);
   }
 
   private syncLivestock() {
