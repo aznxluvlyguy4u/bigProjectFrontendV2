@@ -8,6 +8,8 @@ export class MeasurementOutput {
   public fat2: number;
   public fat3: number;
   public muscle_thickness: string;
+  public inspector_id: number;
+  public inspector_full_name: string;
 }
 
 export class BirthOutput {
