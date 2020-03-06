@@ -1,7 +1,7 @@
 import * as moment from 'moment';
 import * as _ from 'lodash';
 
-import {Component} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {MatSnackBar} from '@angular/material';
 import {ActivatedRoute, Router} from '@angular/router';
 import {LIVESTOCK_BREED_OPTIONS, LIVESTOCK_GENDER_OPTIONS} from '../livestock.model';
@@ -36,13 +36,16 @@ import {BIRTH_PROGRESS_TYPES} from '../../rvo-declares/birth/birth.model';
 import {PREDICATE_TYPES} from '../../shared/models/predicate-details.model';
 import {HttpErrorResponse} from '@angular/common/http';
 import {BirthMeasurementsResponse} from '../birth-measurements-response.model';
+import {ScanMeasurementsEditModalService} from './scanmeasurementseditmodal/scan-measurements-edit-modal.service';
+import {Subscription} from 'rxjs';
+import {RequestStatus} from '../../shared/models/request.status';
 
 @Component({
   templateUrl: './details.component.html',
-  providers: [PaginationService],
+  providers: [PaginationService, ScanMeasurementsEditModalService],
 })
 
-export class LivestockDetailComponent {
+export class LivestockDetailComponent implements OnInit, OnDestroy {
 
     public breedValueData: any[];
     public breedValueConfig: GoogleChartConfigModel;
@@ -125,6 +128,9 @@ export class LivestockDetailComponent {
   public predicate_type_edit_value: string;
   public predicate_score_edit_value: number;
 
+  // Subscriptions
+  public processStatus: Subscription;
+
   constructor(private route: ActivatedRoute,
               private router: Router,
               private apiService: NSFOService,
@@ -134,7 +140,8 @@ export class LivestockDetailComponent {
               private fb: FormBuilder,
               private translate: TranslateService,
               private downloadService: DownloadService,
-              public snackBar: MatSnackBar
+              public snackBar: MatSnackBar,
+              private scanMeasurementsEditService: ScanMeasurementsEditModalService
   ) {
     this.isAdmin = settings.isAdmin();
     this.view_date_format = settings.getViewDateFormat();
@@ -159,6 +166,31 @@ export class LivestockDetailComponent {
         this.loadingData();
       }
     });
+  }
+
+  ngOnInit(): void {
+    this.processStatus = this.scanMeasurementsEditService.processStatus.subscribe(
+      (requestStatus: RequestStatus) => {
+        if (requestStatus.isProcessing) {
+          this.changeEnabled = false;
+        } else {
+
+          if (requestStatus.isResponseSuccessful) {
+            this.animal.scan_measurements = requestStatus.response;
+            this.actionsAfterSuccessfulSave();
+          } else {
+            this.actionsAfterFailedSave(requestStatus.response);
+          }
+
+        }
+      }
+    );
+  }
+
+  ngOnDestroy(): void {
+    if (this.processStatus) {
+      this.processStatus.unsubscribe();
+    }
   }
 
   private openSaveConfirmationSnackBar() {
@@ -289,6 +321,9 @@ export class LivestockDetailComponent {
           this.animal.uln = this.animal.uln_country_code + this.animal.uln_number;
           this.animal.date_of_birth = moment(this.animal.date_of_birth).format(this.settings.getViewDateFormat());
           this.form.get('date_of_birth').setValue(this.animal.date_of_birth);
+
+          this.scanMeasurementsEditService.animalId = this.animal.id;
+          this.scanMeasurementsEditService.scanMeasurementsSet = this.animal.scan_measurements;
 
           if (!(!!this.animal.pedigree_country_code && !!this.animal.pedigree_number)) {
             this.form.get('pedigree_country_code').setValue('NL');
@@ -731,6 +766,10 @@ export class LivestockDetailComponent {
     return this.isAdminOrIsHolderOfAnimal();
   }
 
+  public allowScanMeasurementsEdit(): boolean {
+    return this.isAdmin;
+  }
+
   public toggleBirthMeasurementsEditMode() {
     if (!this.isAdminOrIsHolderOfAnimal()) {
       return;
@@ -844,17 +883,11 @@ export class LivestockDetailComponent {
     return this.animal.is_own_animal;
   }
 
-  public toggleScanMeasurementsEditMode() {
-    if (!this.animal.is_own_animal && !this.isAdmin) {
+  public activateScanMeasurementsEditModal() {
+    if (!this.allowScanMeasurementsEdit) {
       return;
     }
-    this.scan_measurements_edit_mode = !this.scan_measurements_edit_mode;
-
-    this.animal = _.cloneDeep(this.temp_animal);
-
-    if (this.scan_measurements_edit_mode) {
-      this.deactivateEditModes('scanMeasurements');
-    }
+    this.scanMeasurementsEditService.isModalActive.next(true);
   }
 
   public goBack() {

@@ -159,6 +159,7 @@ import {AnimalDetailsContactCardComponent} from './livestock/details/contact/ani
 import {RearingSelectorComponent} from './shared/components/rearingselector/rearing-selector.component';
 import {AnimalAnnotationsComponent} from './livestock/details/annotations/animal-annotations.component';
 import {AnimalAnnotationComponent} from './livestock/details/annotations/animal-annotation.component';
+import {ScanMeasurementsEditModalComponent} from './livestock/details/scanmeasurementseditmodal/scan-measurements-edit-modal.component';
 
 // AoT requires an exported function for factories
 export function CreateTranslateLoader(http: HttpClient) {
@@ -304,6 +305,7 @@ export function CreateTranslateLoader(http: HttpClient) {
     ButtonPrimaryComponent,
     RearingSelectorComponent,
     ReportModalComponent,
+    ScanMeasurementsEditModalComponent,
     YeardropdownComponent
   ],
   imports: [

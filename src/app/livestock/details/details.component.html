@@ -326,7 +326,7 @@
             {{ 'MEASUREMENTS' | translate }}
             <span class="hide-for-small-only">
                             | {{ 'LAST UPDATED' | translate }}:
-                            <span *ngIf="animal.scan_measurements.measurement_date"> {{ stringAsViewDateTime(animal.scan_measurements.measurement_date) }} </span>
+                            <span *ngIf="animal.scan_measurements.measurement_date"> {{ stringAsViewDate(animal.scan_measurements.measurement_date) }} </span>
                             <span *ngIf="!animal.scan_measurements.measurement_date"> --/--/---- --:-- </span>
                         </span>
           </div>
@@ -339,7 +339,8 @@
               <label class="middle"> {{ 'FAT COVER' | translate }} 1 </label>
             </div>
             <div class="medium-6 columns">
-              <input type="text" [(ngModel)]="animal.scan_measurements.fat1" [disabled]="true">
+              <input type="number" min="0" max="9" step="0.1"
+                     [(ngModel)]="animal.scan_measurements.fat1" [disabled]="true">
             </div>
           </div>
 
@@ -349,7 +350,8 @@
               <label class="middle"> {{ 'FAT COVER' | translate }} 2 </label>
             </div>
             <div class="medium-6 columns">
-              <input type="text" [(ngModel)]="animal.scan_measurements.fat2" [disabled]="true">
+              <input type="number" min="0" max="9" step="0.1"
+                     [(ngModel)]="animal.scan_measurements.fat2" [disabled]="true">
             </div>
           </div>
 
@@ -359,7 +361,8 @@
               <label class="middle"> {{ 'FAT COVER' | translate }} 3 </label>
             </div>
             <div class="medium-6 columns">
-              <input type="text" [(ngModel)]="animal.scan_measurements.fat3" [disabled]="true">
+              <input type="number" min="0" max="9" step="0.1"
+                     [(ngModel)]="animal.scan_measurements.fat3" [disabled]="true">
             </div>
           </div>
 
@@ -369,7 +372,8 @@
               <label class="middle"> {{ 'MUSCULAR THICKNESS' | translate }} </label>
             </div>
             <div class="medium-6 columns">
-              <input type="text" [(ngModel)]="animal.scan_measurements.muscle_thickness" [disabled]="true">
+              <input type="number" min="10" max="50" step="0.1"
+                     [(ngModel)]="animal.scan_measurements.muscle_thickness" [disabled]="true">
             </div>
           </div>
 
@@ -379,14 +383,31 @@
               <label class="middle"> {{ 'SCAN WEIGHT' | translate }} (kg)</label>
             </div>
             <div class="medium-6 columns">
-              <input type="text" [(ngModel)]="animal.scan_measurements.scan_weight" [disabled]="true">
+              <input type="number" min="10" max="99" step="0.01"
+                [(ngModel)]="animal.scan_measurements.scan_weight" [disabled]="!scan_measurements_edit_mode">
+            </div>
+          </div>
+
+          <div class="row" *ngIf="changeEnabled">
+            <div class="medium-offset-6 medium-6 columns end">
+              <button type="button" *ngIf="!scan_measurements_edit_mode"
+                      [disabled]="!changeEnabled || isAnyEditModeActive() || !allowScanMeasurementsEdit()"
+                      (click)="activateScanMeasurementsEditModal()"
+                      class="tiny primary button pull-right">
+                            <span *ngIf="isLoadingPrimaryData">
+                                <i class="fa fa-gear fa-spin fa-fw"></i>
+                            </span>
+                <span *ngIf="!isLoadingPrimaryData">
+                                {{ 'CHANGE' | translate }}
+                            </span>
+              </button>
             </div>
           </div>
 
           <hr *ngIf="birth_measurements_edit_mode">
 
           <!-- BIRTH WEIGHT -->
-          <div class="row">
+          <div class="row" style="margin-top: 1rem">
             <div class="medium-6 columns">
               <label class="middle"> {{ 'BIRTH WEIGHT' | translate }} (kg)</label>
             </div>
@@ -857,3 +878,5 @@
 
   </div>
 </div>
+
+<app-scan-measurement-edit-modal></app-scan-measurement-edit-modal>
