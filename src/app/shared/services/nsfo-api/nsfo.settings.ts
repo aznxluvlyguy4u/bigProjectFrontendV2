@@ -28,6 +28,9 @@ export const API_URI_GET_HISTORIC_EWES_IN_LIVESTOCK = '/v1/animals-historic-live
 // MEASUREMENTS
 export const API_URI_MEASUREMENTS = '/v1/measurements';
 
+// SCAN MEASUREMENTS
+export const API_URI_SCAN_MEASUREMENTS = '/v1/scan-measurements';
+
 // CONTACT PAGE
 export const API_URI_SEND_MESSAGE = '/v1/contacts';
 
