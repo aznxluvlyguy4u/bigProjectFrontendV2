@@ -468,7 +468,7 @@ export class LivestockOverviewComponent implements OnInit, OnDestroy {
         }
     }
 
-    private setOrderColumnOne() {
+    private setOrderColumnOne(direction = '') {
         this.order_column_one_asc = !this.order_column_one_asc;
         this.order_column_uln_asc = true;
         this.order_column_two_asc = true;
@@ -476,6 +476,11 @@ export class LivestockOverviewComponent implements OnInit, OnDestroy {
         let order = 'asc';
         if (!this.order_column_one_asc) {
             order = 'desc';
+        }
+
+        if (direction !== '') {
+            order = direction;
+            this.order_column_one_asc = true;
         }
 
         switch (this.selection_column_one) {
@@ -513,7 +518,7 @@ export class LivestockOverviewComponent implements OnInit, OnDestroy {
           this.translate.instant('BREED CODE') + ': ' + breedCodeValue;
     }
 
-    private setOrderColumnTwo() {
+    private setOrderColumnTwo(direction = '') {
         this.order_column_two_asc = !this.order_column_two_asc;
         this.order_column_uln_asc = true;
         this.order_column_one_asc = true;
@@ -521,6 +526,11 @@ export class LivestockOverviewComponent implements OnInit, OnDestroy {
         let order = 'asc';
         if (!this.order_column_two_asc) {
             order = 'desc';
+        }
+
+        if (direction !== '') {
+          order = direction;
+          this.order_column_two_asc = true;
         }
 
         switch (this.selection_column_two) {

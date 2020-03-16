@@ -136,7 +136,7 @@
                         </span>
         </th>
         <th class="padding-column">
-          <select [(ngModel)]="selection_column_one">
+          <select [(ngModel)]="selection_column_one" (ngModelChange)="setOrderColumnOne('asc')">
             <option *ngFor="let option of sort_options" value="{{option}}"> {{ option | translate }}</option>
           </select>
           <span (click)="setOrderColumnOne()">
@@ -146,7 +146,7 @@
         </th>
         <th class="padding-column">
                         <span *ngIf="!weightMode">
-                            <select [(ngModel)]="selection_column_two">
+                            <select [(ngModel)]="selection_column_two" (ngModelChange)="setOrderColumnTwo('asc')">
                                 <option *ngFor="let option of sort_options"
                                         value="{{option}}"> {{ option | translate }}</option>
                             </select>
