@@ -331,6 +331,8 @@ export class LivestockOverviewComponent implements OnInit, OnDestroy {
                 this.utils.showAlertPopup('NO ANIMALS SELECTED');
                 return;
             }
+        } else {
+          animals = this.livestock_list;
         }
 
         this.downloadService.doLivestockReportPostRequest(animals, fileType, concatBreedValueAndAccuracyColumns);
