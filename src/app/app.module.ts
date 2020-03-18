@@ -161,6 +161,8 @@ import {AnimalAnnotationsComponent} from './livestock/details/annotations/animal
 import {AnimalAnnotationComponent} from './livestock/details/annotations/animal-annotation.component';
 import {ScanMeasurementsEditModalComponent} from './livestock/details/scanmeasurementseditmodal/scan-measurements-edit-modal.component';
 
+import { StorageServiceModule } from 'ngx-webstorage-service';
+
 // AoT requires an exported function for factories
 export function CreateTranslateLoader(http: HttpClient) {
     return new TranslateHttpLoader(http, '../assets/i18n/', '.json');
@@ -330,6 +332,7 @@ export function CreateTranslateLoader(http: HttpClient) {
     MatProgressSpinnerModule,
     MatButtonModule,
     MatSnackBarModule,
+    StorageServiceModule,
   ],
   providers: [
     UtilsService,

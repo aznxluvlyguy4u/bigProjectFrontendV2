@@ -74,7 +74,7 @@
 
         <!--FILTER HISTORIC ANIMALS-->
         <label *ngIf="activateHistoricAnimalsFilter()">{{ 'SHOW HISTORIC ANIMALS' | translate }}
-          <select #filter_historic (change)="showHistoricAnimals(filter_historic.value)">
+          <select #filter_historic  [(ngModel)]="filterHistoric" (change)="showHistoricAnimals(filter_historic.value)">
             <option value="NO" selected>{{ 'NO' | translate}}</option>
             <option value="YES">{{ 'YES' | translate}}</option>
           </select>
