@@ -149,7 +149,7 @@
           </span>
         </th>
         <th class="padding-column">
-          <select [(ngModel)]="selection_column_one">
+          <select [(ngModel)]="selection_column_one" (ngModelChange)="setOrderColumnOne('asc')">
             <option *ngFor="let option of sort_options" value="{{option}}"> {{ option | translate }}</option>
           </select>
           <span (click)="setOrderColumnOne()">
@@ -159,7 +159,7 @@
         </th>
         <th class="padding-column">
           <span *ngIf="!weightMode">
-              <select [(ngModel)]="selection_column_two">
+              <select [(ngModel)]="selection_column_two" (ngModelChange)="setOrderColumnTwo('asc')">
                   <option *ngFor="let option of sort_options"
                           value="{{option}}"> {{ option | translate }}</option>
               </select>
@@ -174,8 +174,7 @@
         </th>
         <th *ngIf="weightMode"></th>
         <th *ngIf="mateMode" class="padding-column">
-          <span class="align-center">
-            {{'LAST MATE' | translate}}
+          <span class="align-center">{{'LAST MATE' | translate}}
             <i class="fa fa-info-circle" aria-hidden="true" title="{{ 'LAST MATE INFO' | translate }}"></i>
           </span>
         </th>
@@ -246,10 +245,16 @@
           </span>
         </td>
         <td class="padding-column">
-          <span *ngIf="!weightMode">
+          <div *ngIf="!weightMode">
+            <span *ngIf="(getSelectionValue(selection_column_two, animal))">
               <label class="show-for-small-only">{{ selection_column_two | translate }}</label>
               {{ getSelectionValue(selection_column_two, animal) | translate }}
           </span>
+            <span *ngIf="!(getSelectionValue(selection_column_two, animal))">
+              --
+          </span>
+          </div>
+
           <span *ngIf="weightMode" class="large-text-center">
               <label class="show-for-small-only">{{ 'PREVIOUS WEIGHT' | translate }}</label>
               <span *ngIf="animal.last_weight">
