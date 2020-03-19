@@ -101,7 +101,7 @@ export class LivestockFilterPipe implements PipeTransform {
           if (production === 'yes') {
             return animal.production !== null;
           } else if (production === 'no') {
-            return animal.production === null;
+            return animal.production == null;
           }
       });
     }
