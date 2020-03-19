@@ -55,6 +55,11 @@
           {{ 'FILTERS' | translate }}
         </div>
 
+        <!--FILTER BREED CODE-->
+        <label>{{ 'BREED CODE' | translate }}
+          <input [(ngModel)]="breedCodeFilter" type="text" #breedCodeField (keyup)="0">
+        </label>
+
         <!--FILTER BIRTH OF DATE-->
         <label>{{ 'DATE OF BIRTH' | translate }}
           <input [(ngModel)]="startDateFieldFilter" type="text" #startDateField (keyup)="0" id="filter_begindate"
@@ -63,6 +68,14 @@
         <label> {{'TILL' | translate }}
           <input [(ngModel)]="endDateFieldFilter" type="text" #endDateField (keyup)="0" id="filter_enddate"
                  placeholder="{{ 'VIEW_DATE_FORMAT' | translate }}">
+        </label>
+
+        <!--FILTER PRODUCTION-->
+        <label>{{ 'PRODUCTION' | translate }}
+          <select #filterProductionField [(ngModel)]="productionFilterValue">
+              <option value="yes">{{ 'YES' | translate }}</option>
+              <option value="no">{{ 'NO' | translate }}</option>
+          </select>
         </label>
 
         <!--FILTER GENDER-->
@@ -131,38 +144,40 @@
         <th class="padding-column">
           {{ 'ULN' | translate }}
           <span (click)="setOrderULN()">
-                            <i *ngIf="order_column_uln_asc" class="fa fa-arrow-down" aria-hidden="true"></i>
-                            <i *ngIf="!order_column_uln_asc" class="fa fa-arrow-up" aria-hidden="true"></i>
-                        </span>
+              <i *ngIf="order_column_uln_asc" class="fa fa-arrow-down" aria-hidden="true"></i>
+              <i *ngIf="!order_column_uln_asc" class="fa fa-arrow-up" aria-hidden="true"></i>
+          </span>
         </th>
         <th class="padding-column">
           <select [(ngModel)]="selection_column_one">
             <option *ngFor="let option of sort_options" value="{{option}}"> {{ option | translate }}</option>
           </select>
           <span (click)="setOrderColumnOne()">
-                            <i *ngIf="order_column_one_asc" class="fa fa-arrow-down" aria-hidden="true"></i>
-                            <i *ngIf="!order_column_one_asc" class="fa fa-arrow-up" aria-hidden="true"></i>
-                        </span>
+              <i *ngIf="order_column_one_asc" class="fa fa-arrow-down" aria-hidden="true"></i>
+              <i *ngIf="!order_column_one_asc" class="fa fa-arrow-up" aria-hidden="true"></i>
+          </span>
         </th>
         <th class="padding-column">
-                        <span *ngIf="!weightMode">
-                            <select [(ngModel)]="selection_column_two">
-                                <option *ngFor="let option of sort_options"
-                                        value="{{option}}"> {{ option | translate }}</option>
-                            </select>
-                            <span (click)="setOrderColumnTwo()">
-                                <i *ngIf="order_column_two_asc" class="fa fa-arrow-down" aria-hidden="true"></i>
-                                <i *ngIf="!order_column_two_asc" class="fa fa-arrow-up" aria-hidden="true"></i>
-                            </span>
-                        </span>
+          <span *ngIf="!weightMode">
+              <select [(ngModel)]="selection_column_two">
+                  <option *ngFor="let option of sort_options"
+                          value="{{option}}"> {{ option | translate }}</option>
+              </select>
+              <span (click)="setOrderColumnTwo()">
+                  <i *ngIf="order_column_two_asc" class="fa fa-arrow-down" aria-hidden="true"></i>
+                  <i *ngIf="!order_column_two_asc" class="fa fa-arrow-up" aria-hidden="true"></i>
+              </span>
+          </span>
           <span *ngIf="weightMode" class="text-center">
-                            {{ 'PREVIOUS WEIGHT' | translate }}
-                        </span>
+              {{ 'PREVIOUS WEIGHT' | translate }}
+          </span>
         </th>
         <th *ngIf="weightMode"></th>
         <th *ngIf="mateMode" class="padding-column">
-          <span class="align-center">{{'LAST MATE' | translate}}<i class="fa fa-info-circle" aria-hidden="true"
-                                                                   title="{{ 'LAST MATE INFO' | translate }}"></i></span>
+          <span class="align-center">
+            {{'LAST MATE' | translate}}
+            <i class="fa fa-info-circle" aria-hidden="true" title="{{ 'LAST MATE INFO' | translate }}"></i>
+          </span>
         </th>
         <th style="text-align: right">
           <ng-template [ngTemplateOutlet]="downloadButtons"></ng-template>
@@ -174,7 +189,6 @@
             [labelText]="(reportMode ? 'GENERATE' : 'DECLARE') | translate"
             (click)="declareAllAnimals()"
           ></app-download-button>
-
         </th>
       </tr>
       </thead>
@@ -190,23 +204,28 @@
                   [disabled]="!(selectionList.length > 0)">
             <span class="badge">{{selectionList.length}}</span>
             <span *ngIf="reportMode">
-                                {{ 'GENERATE' | translate }}
-                            </span>
+                {{ 'GENERATE' | translate }}
+            </span>
             <span *ngIf="!reportMode">
-                                 {{ 'DECLARE' | translate }}
-                            </span>
+                 {{ 'DECLARE' | translate }}
+            </span>
           </button>
         </td>
       </tr>
       <tr
-        *ngFor="let animal of livestock_list | livestockFilter:[searchField.value, startDateField.value, endDateField.value, filters_gender.value] | paginate: {itemsPerPage: items_per_page, currentPage: page}">
+        *ngFor="
+          let animal of livestock_list |
+          livestockFilter:[searchField.value, startDateField.value, endDateField.value, filters_gender.value, breedCodeField.value, filterProductionField.value] |
+          paginate: {itemsPerPage: items_per_page, currentPage: page}
+        "
+      >
         <td>
-                        <span *ngIf="!weightMode && !view_mode && !disableMultipleSelection">
-                            <input type="checkbox" [checked]="animal.selected"
-                                   [disabled]="animal.successful || animal.sending"
-                                   (click)="selectAnimal($event, animal)">
-                            <label class="show-for-small-only">{{ 'SELECT' | translate }}</label>
-                        </span>
+          <span *ngIf="!weightMode && !view_mode && !disableMultipleSelection">
+              <input type="checkbox" [checked]="animal.selected"
+                     [disabled]="animal.successful || animal.sending"
+                     (click)="selectAnimal($event, animal)">
+              <label class="show-for-small-only">{{ 'SELECT' | translate }}</label>
+          </span>
         </td>
         <td class="padding-column">
           <label class="show-for-small-only">{{ 'ULN' | translate }}</label>
@@ -220,27 +239,27 @@
         <td class="padding-column">
           <label class="show-for-small-only">{{ selection_column_one | translate }}</label>
           <span *ngIf="getSelectionValue(selection_column_one, animal)">
-                            {{ getSelectionValue(selection_column_one, animal) | translate }}
-                        </span>
+              {{ getSelectionValue(selection_column_one, animal) | translate }}
+          </span>
           <span *ngIf="!(getSelectionValue(selection_column_one, animal))">
-                            --
-                        </span>
+              --
+          </span>
         </td>
         <td class="padding-column">
-                        <span *ngIf="!weightMode">
-                            <label class="show-for-small-only">{{ selection_column_two | translate }}</label>
-                            {{ getSelectionValue(selection_column_two, animal) | translate }}
-                        </span>
+          <span *ngIf="!weightMode">
+              <label class="show-for-small-only">{{ selection_column_two | translate }}</label>
+              {{ getSelectionValue(selection_column_two, animal) | translate }}
+          </span>
           <span *ngIf="weightMode" class="large-text-center">
-                            <label class="show-for-small-only">{{ 'PREVIOUS WEIGHT' | translate }}</label>
-                            <span *ngIf="animal.last_weight">
-                                {{ animal.last_weight }}
-                            </span>
-                            <span *ngIf="!animal.last_weight">
-                                --
-                            </span>
-                            <span>kg</span>
-                        </span>
+              <label class="show-for-small-only">{{ 'PREVIOUS WEIGHT' | translate }}</label>
+              <span *ngIf="animal.last_weight">
+                  {{ animal.last_weight }}
+              </span>
+              <span *ngIf="!animal.last_weight">
+                  --
+              </span>
+              <span>kg</span>
+          </span>
         </td>
         <td *ngIf="weightMode" id="weight">
           <div class="row">

@@ -67,6 +67,8 @@ export class LivestockOverviewComponent implements OnInit, OnDestroy {
     public searchFieldFilter = '';
     @Input() public startDateFieldFilter = '';
     @Input() public endDateFieldFilter = '';
+    public breedCodeFilter = null;
+    public productionFilterValue = 'yes';
     public sort_options = LIVESTOCK_SORT_OPTIONS;
     public order_column_uln_asc = true;
     public order_column_one_asc = true;
@@ -377,6 +379,8 @@ export class LivestockOverviewComponent implements OnInit, OnDestroy {
                 this.utils.showAlertPopup('NO ANIMALS SELECTED');
                 return;
             }
+        } else {
+          animals = this.livestock_list;
         }
 
         this.downloadService.doLivestockReportPostRequest(animals, fileType, concatBreedValueAndAccuracyColumns);
