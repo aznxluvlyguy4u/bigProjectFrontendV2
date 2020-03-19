@@ -20,6 +20,9 @@ export class LivestockFilterPipe implements PipeTransform {
     const start_date = args[1];
     const end_date = args[2];
     const gender = args[3];
+    let breed_code = args[4];
+    const production = args[5];
+
     let filtered = value;
 
     for (const item of filtered) {
@@ -73,6 +76,33 @@ export class LivestockFilterPipe implements PipeTransform {
     if (gender !== 'ALL') {
       filtered = filtered.filter(animal => {
         return animal.gender === gender;
+      });
+    }
+
+    // Filter: Breed code
+    if (breed_code !== '') {
+      breed_code = breed_code.toLocaleUpperCase();
+      filtered = filtered.filter(animal => {
+        if (typeof animal.breed_code !== 'undefined') {
+            if (breed_code.length === 1) {
+              return animal.breed_code.indexOf(breed_code) === 0;
+            } else {
+              return animal.breed_code.includes(breed_code);
+            }
+        } else {
+          return false;
+        }
+      });
+    }
+
+    // Filter: production
+    if (production !== '') {
+      filtered = filtered.filter(animal => {
+          if (production === 'yes') {
+            return animal.production !== null;
+          } else if (production === 'no') {
+            return animal.production == null;
+          }
       });
     }
 
