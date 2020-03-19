@@ -84,7 +84,7 @@ export class LivestockOverviewComponent implements OnInit, OnDestroy {
     public report_options_toggled = false;
     public filterHistoric  = 'NO';
 
-    constructor(private apiService: NSFOService,
+  constructor(private apiService: NSFOService,
                 private router: Router,
                 private settings: Settings,
                 public element: ElementRef,
@@ -301,6 +301,8 @@ export class LivestockOverviewComponent implements OnInit, OnDestroy {
                         }
                         animal.is_public = true;
                         animal.selected = false;
+
+                        animal.collar_number = parseInt(String(animal.collar_number), 0);
                     }
 
                     this.livestock_list = _.orderBy(this.livestock_list, ['ulnLastFive'], ['asc']);
@@ -390,7 +392,9 @@ export class LivestockOverviewComponent implements OnInit, OnDestroy {
         return this.isUsedFilter(this.searchFieldFilter) ||
             this.isUsedFilter(this.startDateFieldFilter) ||
             this.isUsedFilter(this.endDateFieldFilter) ||
-            this.isUsedFilter(this.genderFilterValue, 'ALL')
+            this.isUsedFilter(this.genderFilterValue, 'ALL') ||
+            this.isUsedFilter(this.breedCodeFilter) ||
+            this.isUsedFilter(this.productionFilterValue)
             ;
     }
 
@@ -404,6 +408,8 @@ export class LivestockOverviewComponent implements OnInit, OnDestroy {
             this.startDateFieldFilter,
             this.endDateFieldFilter,
             this.genderFilterValue,
+            this.breedCodeFilter,
+            this.productionFilterValue
         ]);
     }
 
@@ -529,7 +535,7 @@ export class LivestockOverviewComponent implements OnInit, OnDestroy {
         }
     }
 
-    private setOrderColumnOne() {
+    private setOrderColumnOne(direction = '') {
         this.order_column_one_asc = !this.order_column_one_asc;
         this.order_column_uln_asc = true;
         this.order_column_two_asc = true;
@@ -537,6 +543,11 @@ export class LivestockOverviewComponent implements OnInit, OnDestroy {
         let order = 'asc';
         if (!this.order_column_one_asc) {
             order = 'desc';
+        }
+
+        if (direction !== '') {
+            order = direction;
+            this.order_column_one_asc = true;
         }
 
         switch (this.selection_column_one) {
@@ -553,7 +564,7 @@ export class LivestockOverviewComponent implements OnInit, OnDestroy {
                 break;
 
             case 'COLLAR NUMBER':
-                this.livestock_list = _.orderBy(this.livestock_list, ['collar_color', 'collar_number'], [order]);
+                this.livestock_list = _.orderBy(this.livestock_list, ['collar_color', 'collar_number'], [order, order]);
                 break;
 
             case 'INFLOW DATE':
@@ -574,7 +585,7 @@ export class LivestockOverviewComponent implements OnInit, OnDestroy {
           this.translate.instant('BREED CODE') + ': ' + breedCodeValue;
     }
 
-    private setOrderColumnTwo() {
+    private setOrderColumnTwo(direction = '') {
         this.order_column_two_asc = !this.order_column_two_asc;
         this.order_column_uln_asc = true;
         this.order_column_one_asc = true;
@@ -582,6 +593,11 @@ export class LivestockOverviewComponent implements OnInit, OnDestroy {
         let order = 'asc';
         if (!this.order_column_two_asc) {
             order = 'desc';
+        }
+
+        if (direction !== '') {
+          order = direction;
+          this.order_column_two_asc = true;
         }
 
         switch (this.selection_column_two) {
@@ -598,7 +614,7 @@ export class LivestockOverviewComponent implements OnInit, OnDestroy {
                 break;
 
             case 'COLLAR NUMBER':
-                this.livestock_list = _.orderBy(this.livestock_list, ['collar_color', 'collar_number'], [order]);
+                this.livestock_list = _.orderBy(this.livestock_list, ['collar_color', 'collar_number'], [order, order]);
                 break;
 
             case 'INFLOW DATE':
