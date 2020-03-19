@@ -344,7 +344,9 @@ export class LivestockOverviewComponent implements OnInit, OnDestroy {
         return this.isUsedFilter(this.searchFieldFilter) ||
             this.isUsedFilter(this.startDateFieldFilter) ||
             this.isUsedFilter(this.endDateFieldFilter) ||
-            this.isUsedFilter(this.genderFilterValue, 'ALL')
+            this.isUsedFilter(this.genderFilterValue, 'ALL') ||
+            this.isUsedFilter(this.breedCodeFilter) ||
+            this.isUsedFilter(this.productionFilterValue)
             ;
     }
 
@@ -358,6 +360,8 @@ export class LivestockOverviewComponent implements OnInit, OnDestroy {
             this.startDateFieldFilter,
             this.endDateFieldFilter,
             this.genderFilterValue,
+            this.breedCodeFilter,
+            this.productionFilterValue
         ]);
     }
 
