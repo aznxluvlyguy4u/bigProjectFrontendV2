@@ -84,6 +84,7 @@ export class Litter {
   public request_state: string;
   public message_number: string;
   public isRevokeButtonClicked = false;
+  public mother_collar_code: string;
 }
 
 export class BirthErrorResponse extends Animal {
