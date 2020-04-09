@@ -417,12 +417,7 @@ export class LivestockDetailComponent implements OnInit, OnDestroy {
             this.changeEnabled = true;
           }
 
-          if (typeof this.animal.inbreeding_coefficient === 'number') {
-            this.animal.inbreeding_coefficient = (new Intl.NumberFormat([], {
-              minimumFractionDigits: 1,
-              maximumFractionDigits: 1
-            }).format(Number(this.animal.inbreeding_coefficient * 100))) + '%';
-          }
+          this.formatInbreedingCoefficient();
 
           this.updatePrimaryDataLoadingStatus();
         },
@@ -757,6 +752,8 @@ export class LivestockDetailComponent implements OnInit, OnDestroy {
 
     this.animal = _.cloneDeep(this.temp_animal);
 
+    this.formatInbreedingCoefficient();
+
     if (this.gender_edit_mode) {
       this.deactivateEditModes('gender');
     }
@@ -778,6 +775,8 @@ export class LivestockDetailComponent implements OnInit, OnDestroy {
 
     this.animal = _.cloneDeep(this.temp_animal);
 
+    this.formatInbreedingCoefficient();
+
     if (this.birth_measurements_edit_mode) {
       this.deactivateEditModes('birthMeasurements');
     }
@@ -794,6 +793,8 @@ export class LivestockDetailComponent implements OnInit, OnDestroy {
     this.nickname_edit_mode = !this.nickname_edit_mode;
 
     this.animal = _.cloneDeep(this.temp_animal);
+
+    this.formatInbreedingCoefficient();
 
     if (this.nickname_edit_mode) {
       this.deactivateEditModes('nickname');
@@ -812,6 +813,8 @@ export class LivestockDetailComponent implements OnInit, OnDestroy {
 
     this.animal = _.cloneDeep(this.temp_animal);
 
+    this.formatInbreedingCoefficient();
+
     if (this.collar_edit_mode) {
       this.deactivateEditModes('collar');
     }
@@ -828,6 +831,8 @@ export class LivestockDetailComponent implements OnInit, OnDestroy {
     this.predicate_edit_mode = !this.predicate_edit_mode;
 
     this.animal = _.cloneDeep(this.temp_animal);
+
+    this.formatInbreedingCoefficient();
 
     if (this.predicate_edit_mode) {
       this.deactivateEditModes('predicate');
@@ -848,6 +853,8 @@ export class LivestockDetailComponent implements OnInit, OnDestroy {
 
     this.animal = _.cloneDeep(this.temp_animal);
 
+    this.formatInbreedingCoefficient();
+
     if (this.blindness_factor_edit_mode) {
       this.deactivateEditModes('blindnessFactor');
     }
@@ -864,6 +871,8 @@ export class LivestockDetailComponent implements OnInit, OnDestroy {
     this.breed_type_edit_mode = !this.breed_type_edit_mode;
 
     this.animal = _.cloneDeep(this.temp_animal);
+
+    this.formatInbreedingCoefficient();
 
     if (this.breed_type_edit_mode) {
       this.deactivateEditModes('breedType');
@@ -887,6 +896,9 @@ export class LivestockDetailComponent implements OnInit, OnDestroy {
     if (!this.allowScanMeasurementsEdit) {
       return;
     }
+
+    this.formatInbreedingCoefficient();
+
     this.scanMeasurementsEditService.isModalActive.next(true);
   }
 
@@ -912,5 +924,14 @@ export class LivestockDetailComponent implements OnInit, OnDestroy {
 
   public stringAsModelDate(date) {
     return moment(date).format(this.settings.getModelDateFormat());
+  }
+
+  private formatInbreedingCoefficient() {
+    if (typeof this.animal.inbreeding_coefficient === 'number') {
+      this.animal.inbreeding_coefficient = (new Intl.NumberFormat([], {
+        minimumFractionDigits: 1,
+        maximumFractionDigits: 1
+      }).format(Number(this.animal.inbreeding_coefficient * 100))) + '%';
+    }
   }
 }

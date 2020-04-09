@@ -20,7 +20,8 @@ export class DepartHistoryComponent implements OnInit {
   public modal_display = 'none';
   public isLoading = true;
   public page: number;
-  public searchValue: string;
+  public searchValue = '';
+  public totalDepartItems: number;
 
   constructor(private apiService: NSFOService, private settings: Settings, private cache: CacheService) {
   }
@@ -29,36 +30,58 @@ export class DepartHistoryComponent implements OnInit {
     this.getDepartHistoryList();
   }
 
-  public getDepartHistoryList() {
-    this.apiService
-      .doGetRequest(API_URI_GET_DEPARTS_HISTORY)
-      .subscribe((res: JsonResponseModel) => {
-          const departs = <DepartChangeResponse[]> res.result.departs;
+  public getDepartHistoryList(page = 1) {
+    this.isLoading = true;
+    // if (typeof this.page !== 'undefined') {
+    //   page = this.page;
+    // } else {
+      this.page = page;
+    // }
 
-          for (const depart of departs) {
-            depart.depart_date = moment(depart.depart_date).format(this.settings.VIEW_DATE_FORMAT);
-            depart.uln = depart.uln_country_code + depart.uln_number;
-            depart.pedigree = depart.pedigree_country_code + depart.pedigree_number;
-            depart.work_number = depart.uln_number.substr(depart.uln_number.length - 5);
-            this.departHistoryList.push(depart);
-          }
+    let queryParam = '';
 
-          const departs_exports = <DepartChangeResponse[]> res.result.exports;
+    let doRequest = true;
 
-          for (const depart of departs_exports) {
-            depart.depart_date = moment(depart.depart_date).format(this.settings.VIEW_DATE_FORMAT);
-            depart.uln = depart.uln_country_code + depart.uln_number;
-            depart.pedigree = depart.pedigree_country_code + depart.pedigree_number;
-            depart.work_number = depart.uln_number.substr(depart.uln_number.length - 5);
-            this.departHistoryList.push(depart);
-          }
+    if (this.searchValue.length >= 2) {
+      queryParam = `&query=${this.searchValue}`;
+      doRequest = true;
+    }
 
-          this.departHistoryList = _.orderBy(this.departHistoryList, ['log_date'], ['desc']);
-          this.isLoading = false;
-        },
-        error => {
-          alert(this.apiService.getErrorMessage(error));
-        });
+    if (doRequest) {
+      this.apiService
+        .doGetRequest(`${API_URI_GET_DEPARTS_HISTORY}?page=${page}${queryParam}`)
+        .subscribe((res: JsonResponseModel) => {
+            const departs = <DepartChangeResponse[]> res.result.departs.items;
+            this.totalDepartItems = res.result.departs.totalItems;
+            this.departHistoryList = [];
+
+            for (const depart of departs) {
+              depart.depart_date = moment(depart.depart_date).format(this.settings.VIEW_DATE_FORMAT);
+              depart.uln = depart.uln_country_code + depart.uln_number;
+              depart.pedigree = depart.pedigree_country_code + depart.pedigree_number;
+              depart.work_number = depart.uln_number.substr(depart.uln_number.length - 5);
+              this.departHistoryList.push(depart);
+            }
+
+            const departs_exports = <DepartChangeResponse[]> res.result.exports.items;
+            // this.totalDepartItems = this.totalDepartItems + res.result.exports.totalItems;
+
+            for (const depart of departs_exports) {
+              depart.depart_date = moment(depart.depart_date).format(this.settings.VIEW_DATE_FORMAT);
+              depart.uln = depart.uln_country_code + depart.uln_number;
+              depart.pedigree = depart.pedigree_country_code + depart.pedigree_number;
+              depart.work_number = depart.uln_number.substr(depart.uln_number.length - 5);
+              this.departHistoryList.push(depart);
+            }
+
+            this.departHistoryList = _.orderBy(this.departHistoryList, ['log_date'], ['desc']);
+            this.isLoading = false;
+            doRequest = false;
+          },
+          error => {
+            alert(this.apiService.getErrorMessage(error));
+          });
+    }
   }
 
   public selectDepart(event) {
