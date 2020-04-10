@@ -80,7 +80,7 @@ export class LivestockFilterPipe implements PipeTransform {
     }
 
     // Filter: Breed code
-    if (breed_code !== '') {
+    if (breed_code !== '' && breed_code != null) {
       breed_code = breed_code.toLocaleUpperCase();
       filtered = filtered.filter(animal => {
         if (typeof animal.breed_code !== 'undefined') {
@@ -96,11 +96,11 @@ export class LivestockFilterPipe implements PipeTransform {
     }
 
     // Filter: production
-    if (production !== '') {
+    if (production !== '' && production != null && production !== 'ALL') {
       filtered = filtered.filter(animal => {
-          if (production === 'yes') {
-            return animal.production !== null;
-          } else if (production === 'no') {
+          if (production === 'YES') {
+            return animal.production != null && animal.production !== '';
+          } else if (production === 'NO') {
             return animal.production == null;
           }
       });
