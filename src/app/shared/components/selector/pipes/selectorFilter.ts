@@ -33,8 +33,7 @@ export class SelectorFilterPipe implements PipeTransform {
             animal.uln +
             animal.pedigree +
             animal.work_number +
-            animal.ulnLastFive +
-            animal.collar
+            animal.ulnLastFive
           ).indexOf(search_query) !== -1);
         }
         return filtered;

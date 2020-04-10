@@ -217,7 +217,7 @@
   <label class="optional-message middle pull-right"> * {{ 'REQUIRED' | translate }} </label>
 </div>
 
-<selector #motherSelector [columns]="['ULN', 'PEDIGREE NUMBER']" [list]="suggestedCandidateMothers" [filter]="'FEMALES'"
+<selector #motherSelector [columns]="['ULN', 'COLLAR NUMBER', 'PEDIGREE NUMBER']" [list]="suggestedCandidateMothers" [filter]="'FEMALES'"
           [SUGGESTION_LABEL]="'POSSIBLE MOTHER'" [isLoading]="isLoadingCandidateMothers"
           (selection)="selectMother($event)"></selector>
 <selector #fatherSelector [columns]="['ULN', 'PEDIGREE NUMBER']" [list]="suggestedCandidateFathers" [filter]="'MALES'"

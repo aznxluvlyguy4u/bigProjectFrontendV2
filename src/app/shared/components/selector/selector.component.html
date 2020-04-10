@@ -70,13 +70,14 @@
           <tr
             *ngFor="let item of filteredList | selectorFilter:[searchValue.value, filter] | paginate: {itemsPerPage: 10, currentPage: page}">
             <td>{{ item.uln }}</td>
+            <td *ngIf="filter === 'FEMALES'">{{ item.collar }}</td>
             <td *ngIf="columns.length > 1 && isTagReplacement === false">
-                          <span *ngIf="item.pedigree">
-                              {{ item.pedigree }}
-                          </span>
+              <span *ngIf="item.pedigree">
+                  {{ item.pedigree }}
+              </span>
               <span *ngIf="!item.pedigree">
-                              --
-                          </span>
+                  --
+              </span>
             </td>
             <td *ngIf="isTagReplacement === true">
               <app-datepicker
