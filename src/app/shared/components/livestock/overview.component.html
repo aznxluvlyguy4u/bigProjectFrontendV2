@@ -73,8 +73,7 @@
         <!--FILTER PRODUCTION-->
         <label>{{ 'PRODUCTION' | translate }}
           <select #filterProductionField [(ngModel)]="productionFilterValue">
-              <option value="yes">{{ 'YES' | translate }}</option>
-              <option value="no">{{ 'NO' | translate }}</option>
+              <option *ngFor="let option of production_filter_options" value="{{ option }}">{{ option | translate }}</option>
           </select>
         </label>
 

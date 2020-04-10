@@ -3,8 +3,8 @@ import * as _ from 'lodash';
 import {Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
 
 import {
-    LIVESTOCK_GENDER_FILTER_OPTIONS,
-    LIVESTOCK_SORT_OPTIONS,
+  LIVESTOCK_GENDER_FILTER_OPTIONS, LIVESTOCK_PRODUCTION_FILTER_OPTIONS,
+  LIVESTOCK_SORT_OPTIONS,
 } from '../../models/animal.model';
 import {LivestockFilterPipe} from './pipes/livestockFilter';
 import {Router} from '@angular/router';
@@ -63,12 +63,13 @@ export class LivestockOverviewComponent implements OnInit, OnDestroy {
     public selection_column_two = LIVESTOCK_SORT_OPTIONS[1];
     public order_column_two = this.selection_column_two;
     public gender_filter_options = LIVESTOCK_GENDER_FILTER_OPTIONS;
+    public production_filter_options = LIVESTOCK_PRODUCTION_FILTER_OPTIONS;
     public genderFilterValue = 'ALL';
     public searchFieldFilter = '';
     @Input() public startDateFieldFilter = '';
     @Input() public endDateFieldFilter = '';
     public breedCodeFilter = null;
-    public productionFilterValue = 'yes';
+    public productionFilterValue = 'ALL';
     public sort_options = LIVESTOCK_SORT_OPTIONS;
     public order_column_uln_asc = true;
     public order_column_one_asc = true;

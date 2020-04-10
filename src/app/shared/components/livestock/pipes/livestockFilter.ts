@@ -96,11 +96,11 @@ export class LivestockFilterPipe implements PipeTransform {
     }
 
     // Filter: production
-    if (production !== '' && production != null) {
+    if (production !== '' && production != null && production !== 'ALL') {
       filtered = filtered.filter(animal => {
-          if (production === 'yes') {
-            return animal.production !== null;
-          } else if (production === 'no') {
+          if (production === 'YES') {
+            return animal.production != null && animal.production !== '';
+          } else if (production === 'NO') {
             return animal.production == null;
           }
       });
