@@ -4,8 +4,8 @@
 
 export const environment = {
   production: false,
-  nsfoApiServerUrl: 'http://localhost:8000/api',
-  nsfoUserEnvUrl: 'http://localhost:8080'
+  nsfoApiServerUrl: 'http://127.0.0.1:8000/api',
+  nsfoUserEnvUrl: 'http://127.0.0.1:8080'
 };
 
 /*

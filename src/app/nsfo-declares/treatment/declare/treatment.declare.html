@@ -1,0 +1,134 @@
+<form [formGroup]="form" class="form-declare">
+
+  <!--TREATMENT BEGIN DATE-->
+  <div class="medium-2 columns">
+    <label>
+      {{ 'TREATMENT PERIOD' | translate }} &nbsp;
+      <app-datepicker
+                  [formCtrl]="form.controls['mate_startdate']"
+                  [viewFormat]="view_date_format"
+                  [modelFormat]="model_datetime_format"
+                  (valueChange)="updateEndDate($event)"
+                  [name]="'mate_startdate'"
+                  [parentComponent]="self"
+      ></app-datepicker>
+      <div [hidden]="form.controls['mate_startdate'].valid" class="input-error-msg pull-right">{{ 'FILL IN THE TREATMENT PERIOD' | translate }}
+      </div>
+    </label>
+  </div>
+
+  <!--TREATMENT END DATE-->
+  <div class="medium-2 columns">
+    <label>
+      {{ 'TILL' | translate }} &nbsp;
+      <app-datepicker
+                  [formCtrl]="form.controls['mate_enddate']"
+                  [viewFormat]="view_date_format"
+                  [modelFormat]="model_datetime_format"
+                  (valueChange)="sendStartDateToDatePicker()"
+                  [name]="'mate_enddate'"
+                  [parentComponent]="self"
+      ></app-datepicker>
+      <div [hidden]="form.controls['mate_enddate'].valid" class="input-error-msg pull-right">{{ 'FILL IN THE TREATMENT PERIOD' | translate }}
+      </div>
+    </label>
+  </div>
+
+  <!--TREATMENT TEMPLATE-->
+  <div class="medium-3 columns">
+    <label *ngIf="treatmentTemplates.length > 0">
+      {{ 'TREATMENT TEMPLATE' | translate }}
+      <select name="selectedTreatmentTemplate" [(ngModel)]="selectedTreatmentTemplate" [ngModelOptions]="{standalone: true}" (ngModelChange)="logSelectedTemplate()">
+        <option *ngFor="let template of treatmentTemplates" [ngValue]="template">{{template.description}}</option>
+      </select>
+    </label>
+  </div>
+
+  <!--ERROR OVERVIEW-->
+  <div class="medium-1 columns">
+    <label> &nbsp;
+      <button
+        type="button"
+        class="button alert"
+        [disabled]="errorMessages == null || errorMessages.length == 0"
+        (click)="openModal()"
+        title="{{'THERE ERRORS ARE ONLY SAVED IN THIS BROWSER SESSION' | translate }}"
+      >
+        <span *ngIf="errorMessages !== null && errorMessages.length > 0" class="badge">{{errorMessages.length}}</span>
+        {{'ERRORS'|translate}}
+      </button>
+    </label>
+  </div>
+
+  <!--INBREEDING COEFFICIENT-->
+  <!--<div class="medium-1 columns end" >-->
+  <!--<label>&nbsp;-->
+  <!--<button type="button" class="small primary button" (click)="navigateTo('/main/report/inbreeding')"> {{ 'INBREEDING COEFFICIENT' | translate }}</button>-->
+  <!--</label>-->
+  <!--</div>-->
+</form>
+
+<!--SELECTED TEMPLATE INFORMATION-->
+<div class="row" *ngIf="selectedTreatmentTemplate">
+  <div class="medium-12 columns">
+      <ul>
+          <li><b>{{'DESCRIPTION' | translate}}:</b> {{selectedTreatmentTemplate.description}}</li>
+          <li><b>{{'DUTCH TYPE' | translate}}:</b> {{selectedTreatmentTemplate.dutchType}}</li>
+          <li><b>{{'MEDICATIONS' | translate}}:</b>
+              <ul *ngFor="let medication of selectedTreatmentTemplate.medications">
+                <li>
+                  <b>{{'NAME' | translate}}:</b> {{medication.treatment_medication.name}}
+                </li>
+                <li>
+                  <b>{{'DOSAGE' | translate}}:</b> {{medication.dosage}} {{medication.dosage_unit}}
+                </li>
+              </ul>
+          </li>
+      </ul>
+  </div>
+</div>
+
+<!--LIVESTOCK OVERVIEW-->
+<div class="row">
+  <div class="medium-12 columns">
+    <app-livestock-overview
+      [customType]="livestockType"
+      [items_per_page]="100"
+      [onlyFemales]="false"
+      (selected)="declareTreatment($event)"
+      [lastMateChanged]="lastDeclareUpdateSubject"
+    ></app-livestock-overview>
+  </div>
+</div>
+
+<!--ERROR MODAL-->
+<div class="reveal-overlay" [ngStyle]="{'display': modalDisplay}">
+  <div class="tiny reveal" [ngStyle]="{'display': modalDisplay}">
+    <div class="modal-header">
+      {{ 'ERROR' | translate }}
+      <button type="button" class="pull-right" aria-label="Close modal" (click)="closeModal()">
+        <i class="fa fa-times" aria-hidden="true"></i>
+      </button>
+    </div>
+    <div class="modal-body">
+
+      <p class="text-center">
+        {{'THERE ERRORS ARE ONLY SAVED IN THIS BROWSER SESSION' | translate }}
+      </p>
+
+      <hr>
+
+      <ul>
+        <li *ngFor="let errorMessage of errorMessages">
+          {{ errorMessage.message | translate }}
+        </li>
+      </ul>
+    </div>
+    <div class="modal-footer">
+      <button [disabled]="errorMessages == null || errorMessages.length == 0"
+              class="tiny alert button pull-left" (click)="purgeErrors()">{{ 'PURGE ERRORS' | translate}}
+      </button>
+      <button class="tiny primary button pull-right" (click)="closeModal()">{{ 'OK' | translate}}</button>
+    </div>
+  </div>
+</div>

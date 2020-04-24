@@ -28,6 +28,7 @@ const fileTypeDropdownMinCount = 2;
 
 export const LIVESTOCK_TYPE_MATE = 'LIVE_STOCK_TYPE_MATE';
 export const LIVESTOCK_TYPE_WEIGHT = 'LIVE_STOCK_TYPE_WEIGHT';
+export const LIVESTOCK_TYPE_TREATMENT = 'LIVE_STOCK_TYPE_TREATMENT';
 
 @Component({
     selector: 'app-livestock-overview',
