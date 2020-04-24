@@ -160,6 +160,8 @@ import {RearingSelectorComponent} from './shared/components/rearingselector/rear
 import {AnimalAnnotationsComponent} from './livestock/details/annotations/animal-annotations.component';
 import {AnimalAnnotationComponent} from './livestock/details/annotations/animal-annotation.component';
 import {ScanMeasurementsEditModalComponent} from './livestock/details/scanmeasurementseditmodal/scan-measurements-edit-modal.component';
+import {TreatmentComponent} from './nsfo-declares/treatment/treatment.component';
+import {TreatmentDeclareComponent} from './nsfo-declares/treatment/declare/treatment.declare';
 
 import { StorageServiceModule } from 'ngx-webstorage-service';
 
@@ -308,7 +310,9 @@ export function CreateTranslateLoader(http: HttpClient) {
     RearingSelectorComponent,
     ReportModalComponent,
     ScanMeasurementsEditModalComponent,
-    YeardropdownComponent
+    YeardropdownComponent,
+    TreatmentComponent,
+    TreatmentDeclareComponent
   ],
   imports: [
     BrowserAnimationsModule,
