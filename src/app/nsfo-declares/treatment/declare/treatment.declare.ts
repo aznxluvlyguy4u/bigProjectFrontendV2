@@ -11,7 +11,7 @@ import {Router} from '@angular/router';
 import {Settings} from '../../../shared/variables/settings';
 import {Observable, Subject} from 'rxjs';
 import {MateChangeResponse} from '../../../shared/models/nsfo-declare.model';
-import {LivestockAnimal} from '../../../shared/models/animal.model';
+import {Animal, LivestockAnimal} from '../../../shared/models/animal.model';
 import {AnimalsOverviewSelection} from '../../../shared/components/livestock/animals-overview-selection.model';
 import {ErrorMessage} from '../../../shared/models/error-message.model';
 import {JsonResponseModel} from '../../../shared/models/json-response.model';
@@ -87,10 +87,39 @@ export class TreatmentDeclareComponent implements OnInit, OnDestroy, AfterViewCh
   }
 
   declareTreatment(event) {
-  }
+    const animals = [];
 
-  logSelectedTemplate() {
-    console.log(this.selectedTreatmentTemplate);
+    event.animals.forEach((animal: Animal) => {
+      const type = animal.gender === 'MALE' ? 'Ram' : 'Ewe';
+        animals.push({
+          id: animal.id,
+          date_of_birth: animal.date_of_birth,
+          is_alive: animal.is_alive,
+          uln_country_code: animal.uln_country_code,
+          uln_number: animal.uln_number,
+          type: type
+        });
+    });
+
+    if (this.form.valid) {
+      const requestData: any = {};
+      requestData.treatment_template = {};
+      requestData.treatment_template.location = {};
+      requestData.description = this.selectedTreatmentTemplate.description;
+      requestData.start_date = this.form.get('mate_startdate').value;
+      requestData.end_date = this.form.get('mate_enddate').value;
+      requestData.animals = animals;
+      requestData.medication_selections = this.selectedTreatmentTemplate.medications;
+      requestData.treatment_template.id = this.selectedTreatmentTemplate.id;
+      requestData.treatment_template.is_active = this.selectedTreatmentTemplate.is_active;
+      requestData.treatment_template.location.id = this.selectedTreatmentTemplate.location.id;
+
+      this.nsfo
+        .doPostRequest(API_URI_GET_TREATMENT_TEMPLATES + '/' + this.selectedTreatmentTemplate.type.toLowerCase(), requestData)
+        .subscribe((res: JsonResponseModel) => {
+          console.log(res);
+        });
+    }
   }
 
   getTreatmentTemplates() {
@@ -101,6 +130,40 @@ export class TreatmentDeclareComponent implements OnInit, OnDestroy, AfterViewCh
           this.treatmentTemplates = res.result;
         }
       );
+
+    this.nsfo
+      .doGetRequest(API_URI_GET_TREATMENT_TEMPLATES + '/template/location/' + this.currentLocationUbn)
+      .subscribe(
+        (res: JsonResponseModel) => {
+          for (let x = 0; x < res.result.length; x++) {
+            this.treatmentTemplates.push(res.result[x]);
+          }
+        }
+      );
+
+    this.nsfo
+      .doGetRequest(API_URI_GET_TREATMENT_TEMPLATES + '/template/individual')
+      .subscribe(
+        (res: JsonResponseModel) => {
+          for (let x = 0; x < res.result.length; x++) {
+            this.treatmentTemplates.push(res.result[x]);
+          }
+        }
+      );
+
+    this.nsfo
+      .doGetRequest(API_URI_GET_TREATMENT_TEMPLATES + '/template/location')
+      .subscribe(
+        (res: JsonResponseModel) => {
+          for (let x = 0; x < res.result.length; x++) {
+            this.treatmentTemplates.push(res.result[x]);
+          }
+        }
+      );
+  }
+
+  public isTreatmentTemplateNotSelected() {
+    return typeof this.selectedTreatmentTemplate === 'undefined';
   }
 
   purgeErrors() {

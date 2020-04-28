@@ -795,5 +795,10 @@
   "TREATMENT TEMPLATE": "Behandelingstemplate",
   "CHOOSE TEMPLATE": "Kies een template",
   "GET TREATMENT TEMPLATES": "Haal behandelingstemplates op",
-  "FILL IN THE TREATMENT PERIOD": "Vul de behandelingsperiode in"
+  "FILL IN THE TREATMENT PERIOD": "Vul de behandelingsperiode in",
+  "DUTCH TYPE": "Type",
+  "DOSAGE": "Dosering",
+  "MEDICATIONS": "Medicijnen",
+  "REG NL": "Nederlands registratie nr.",
+  "WAITING DAYS": "Wacht tijd vlees (dagen)"
 }

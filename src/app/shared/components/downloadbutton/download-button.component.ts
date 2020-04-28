@@ -17,6 +17,7 @@ export class DownloadButtonComponent implements OnInit {
   @Input() isExpandedButton = true;
   @Input() extraDisabledCriteria = false;
   @Input() buttonSizeClass = 'tiny';
+  @Input() customType = '';
   @Output() click = new EventEmitter();
   public isActive = true;
   public showSuccess = false;

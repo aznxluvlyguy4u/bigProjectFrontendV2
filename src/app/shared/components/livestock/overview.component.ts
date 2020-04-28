@@ -50,6 +50,7 @@ export class LivestockOverviewComponent implements OnInit, OnDestroy {
     @Input() customType = '';
     @Input() lastMateChanged: Subject<MateChangeResponse>;
     @Input() displaySubUlnText = false;
+    @Input() extraDisabledCriteria = false;
     mateMode = false;
     weightMode = false;
     updateLastMateSubscription: Subscription;

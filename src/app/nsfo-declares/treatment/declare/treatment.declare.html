@@ -38,7 +38,7 @@
   <div class="medium-3 columns">
     <label *ngIf="treatmentTemplates.length > 0">
       {{ 'TREATMENT TEMPLATE' | translate }}
-      <select name="selectedTreatmentTemplate" [(ngModel)]="selectedTreatmentTemplate" [ngModelOptions]="{standalone: true}" (ngModelChange)="logSelectedTemplate()">
+      <select name="selectedTreatmentTemplate" [(ngModel)]="selectedTreatmentTemplate" [ngModelOptions]="{standalone: true}">
         <option *ngFor="let template of treatmentTemplates" [ngValue]="template">{{template.description}}</option>
       </select>
     </label>
@@ -69,22 +69,31 @@
 </form>
 
 <!--SELECTED TEMPLATE INFORMATION-->
-<div class="row" *ngIf="selectedTreatmentTemplate">
+<div class="row" style="background-color: #E1E1E1;margin-left: auto;margin-right: auto;" *ngIf="selectedTreatmentTemplate">
   <div class="medium-12 columns">
-      <ul>
-          <li><b>{{'DESCRIPTION' | translate}}:</b> {{selectedTreatmentTemplate.description}}</li>
-          <li><b>{{'DUTCH TYPE' | translate}}:</b> {{selectedTreatmentTemplate.dutchType}}</li>
-          <li><b>{{'MEDICATIONS' | translate}}:</b>
-              <ul *ngFor="let medication of selectedTreatmentTemplate.medications">
-                <li>
-                  <b>{{'NAME' | translate}}:</b> {{medication.treatment_medication.name}}
-                </li>
-                <li>
-                  <b>{{'DOSAGE' | translate}}:</b> {{medication.dosage}} {{medication.dosage_unit}}
-                </li>
-              </ul>
-          </li>
-      </ul>
+    <h3>{{ 'TREATMENT TEMPLATE' | translate }}</h3>
+    <p><b>{{'DESCRIPTION' | translate}}:</b> {{selectedTreatmentTemplate.description}}</p>
+    <p><b>{{'DUTCH TYPE' | translate}}:</b> {{selectedTreatmentTemplate.dutchType}}</p>
+    <p><b>{{'MEDICATIONS' | translate}}:</b></p>
+      <table class="stack">
+        <thead>
+          <tr>
+            <th class="padding-column">{{'NAME' | translate}}</th>
+            <th class="padding-column">{{'DOSAGE' | translate}}</th>
+            <th class="padding-column">{{'REG NL' | translate}}</th>
+            <th class="padding-column">{{'WAITING DAYS' | translate}}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let medication of selectedTreatmentTemplate.medications">
+            <td class="padding-column">{{medication.treatment_medication.name}}</td>
+            <td class="padding-column" *ngIf="medication.dosage_unit !== 'aantal'">{{medication.dosage}} {{medication.dosage_unit}}</td>
+            <td class="padding-column" *ngIf="medication.dosage_unit === 'aantal'">{{medication.dosage_unit}} {{medication.dosage}}</td>
+            <td class="padding-column">{{medication.reg_nl}}</td>
+            <td class="padding-column">{{medication.waiting_days}}</td>
+          </tr>
+        </tbody>
+      </table>
   </div>
 </div>
 
@@ -97,6 +106,7 @@
       [onlyFemales]="false"
       (selected)="declareTreatment($event)"
       [lastMateChanged]="lastDeclareUpdateSubject"
+      [extraDisabledCriteria]="isTreatmentTemplateNotSelected()"
     ></app-livestock-overview>
   </div>
 </div>

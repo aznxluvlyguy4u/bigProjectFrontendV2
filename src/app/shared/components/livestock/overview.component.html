@@ -185,6 +185,8 @@
             [badgeCount]="selectionList.length"
             [labelText]="(reportMode ? 'GENERATE' : 'DECLARE') | translate"
             (click)="declareAllAnimals()"
+            [extraDisabledCriteria]="extraDisabledCriteria"
+            [customType]="customType"
           ></app-download-button>
         </th>
       </tr>
