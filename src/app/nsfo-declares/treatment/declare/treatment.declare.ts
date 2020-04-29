@@ -115,7 +115,7 @@ export class TreatmentDeclareComponent implements OnInit, OnDestroy, AfterViewCh
       requestData.medication_selections = this.selectedTreatmentTemplate.medications;
       requestData.treatment_template.id = this.selectedTreatmentTemplate.id;
       requestData.treatment_template.is_active = this.selectedTreatmentTemplate.is_active;
-      requestData.treatment_template.location.id = this.selectedTreatmentTemplate.location.id;
+      requestData.treatment_template.location.id = this.cache.getLocation().id;
 
       this.nsfo
         .doPostRequest(API_URI_GET_TREATMENT_TEMPLATES + '/' + this.selectedTreatmentTemplate.type.toLowerCase(), requestData)
