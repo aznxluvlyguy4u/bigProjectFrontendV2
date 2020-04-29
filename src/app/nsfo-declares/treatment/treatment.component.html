@@ -24,8 +24,8 @@
   <div class="row show-for-small-only">
     <label> {{ 'TAB' | translate }}
       <select [(ngModel)]="selectedRoute" (change)="selectRoute($event)">
-        <option value="/main/mate/declare">{{ 'DECLARE TREATMENT' | translate }}</option>
-<!--        <option value="/main/mate/history">{{ 'HISTORY' | translate }}</option>-->
+        <option value="/main/treatment/declare">{{ 'DECLARE TREATMENT' | translate }}</option>
+        <option value="/main/treatment/history">{{ 'HISTORY' | translate }}</option>
       </select>
     </label>
   </div>
