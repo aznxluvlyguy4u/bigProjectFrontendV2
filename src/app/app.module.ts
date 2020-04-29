@@ -162,6 +162,9 @@ import {AnimalAnnotationComponent} from './livestock/details/annotations/animal-
 import {ScanMeasurementsEditModalComponent} from './livestock/details/scanmeasurementseditmodal/scan-measurements-edit-modal.component';
 import {TreatmentComponent} from './nsfo-declares/treatment/treatment.component';
 import {TreatmentDeclareComponent} from './nsfo-declares/treatment/declare/treatment.declare';
+import {TreatmentHistoryComponent} from './nsfo-declares/treatment/history/treatment.history';
+import {TreatmentHistoryRowComponent} from './nsfo-declares/treatment/history/treatment.history.row';
+import {TreatmentHistoryPipe} from './nsfo-declares/treatment/history/pipes/treatment.history.pipe';
 
 import { StorageServiceModule } from 'ngx-webstorage-service';
 
@@ -312,7 +315,10 @@ export function CreateTranslateLoader(http: HttpClient) {
     ScanMeasurementsEditModalComponent,
     YeardropdownComponent,
     TreatmentComponent,
-    TreatmentDeclareComponent
+    TreatmentDeclareComponent,
+    TreatmentHistoryComponent,
+    TreatmentHistoryRowComponent,
+    TreatmentHistoryPipe
   ],
   imports: [
     BrowserAnimationsModule,

@@ -68,7 +68,7 @@ export class TreatmentDeclareComponent implements OnInit, OnDestroy, AfterViewCh
     this.self = this;
     this.view_date_format = settingsService.getViewDateFormat();
     this.model_datetime_format = settingsService.getModelDateTimeFormat();
-    this.currentLocationUbn = this.cache.getLocation().ubn;
+    this.currentLocationUbn = this.cache.getUbn();
   }
 
   ngOnInit() {
@@ -91,9 +91,12 @@ export class TreatmentDeclareComponent implements OnInit, OnDestroy, AfterViewCh
 
     event.animals.forEach((animal: Animal) => {
       const type = animal.gender === 'MALE' ? 'Ram' : 'Ewe';
+
+      const dateOfBirthMoment = moment(animal.date_of_birth);
+
         animals.push({
           id: animal.id,
-          date_of_birth: animal.date_of_birth,
+          date_of_birth: dateOfBirthMoment.format(),
           is_alive: animal.is_alive,
           uln_country_code: animal.uln_country_code,
           uln_number: animal.uln_number,

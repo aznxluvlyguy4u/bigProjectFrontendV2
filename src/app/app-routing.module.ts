@@ -69,6 +69,7 @@ import {ReportAnimalFeaturesPerYearOfBirthComponent} from './report/animalFeatur
 import {ReportFertilizerAccountingComponent} from './report/fertilityAccounting/report.fertilizer-accounting.component';
 import {TreatmentComponent} from './nsfo-declares/treatment/treatment.component';
 import {TreatmentDeclareComponent} from './nsfo-declares/treatment/declare/treatment.declare';
+import {TreatmentHistoryComponent} from './nsfo-declares/treatment/history/treatment.history';
 
 // const appRoutes: Routes = [
 const appRoutes = [
@@ -135,7 +136,8 @@ const appRoutes = [
       {
         path: 'treatment', component: TreatmentComponent,
         children: [
-          {path: 'declare', component: TreatmentDeclareComponent}
+          {path: 'declare', component: TreatmentDeclareComponent},
+          {path: 'history', component: TreatmentHistoryComponent}
         ]
       },
       {
