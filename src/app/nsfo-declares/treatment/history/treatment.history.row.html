@@ -46,11 +46,16 @@
   </div>
 </td>
 
+<!--TREATMENT STATUS  -->
+<td>
+  <label class="show-for-small-only">{{ 'STATUS' | translate }}</label>
+  <span>{{ treatment.status | translate }}</span>
+</td>
+
 <!--ROW BUTTONS-->
 <td>
   <div class="row">
-    <span
-      [hidden]="editMode">
+    <span [hidden]="editMode || treatment.status == 'REVOKED'">
       <div class="small-6 columns">
         <button class="tiny primary button expanded" (click)="enableEditing()">{{ 'EDIT' | translate }}</button>
       </div>
@@ -72,6 +77,12 @@
         </div>
         <div class="small-6 columns">
             <button class="tiny alert button expanded" (click)="cancelEditing()" [disabled]="isSending">{{ 'CANCEL' | translate }}</button>
+        </div>
+    </span>
+
+    <span *ngIf="treatment.status == 'REVOKED' && treatment.revoke_date" style="font-size: 0.8em;font-weight: 400;">
+        <div class="small-12 columns">
+            ({{ stringAsViewDateTime(treatment.revoke_date) }})
         </div>
     </span>
   </div>

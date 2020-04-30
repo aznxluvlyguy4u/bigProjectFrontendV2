@@ -60,7 +60,7 @@ export class TreatmentHistoryComponent implements OnInit {
     this.apiService
       .doPutRequest(API_URI_GET_TREATMENT_TEMPLATES + '/' + this.selectedTreatment.id + '/revoke', '')
       .subscribe(
-        res => {
+        () => {
           this.isSending = false;
           this.closeModal();
 
@@ -70,7 +70,7 @@ export class TreatmentHistoryComponent implements OnInit {
           const index = _.findIndex(this.treatmentHistoryList, {id: this.selectedTreatment.id});
           this.treatmentHistoryList.splice(index, 1, this.selectedTreatment);
         },
-        err => {
+        () => {
           this.isSending = false;
           this.closeModal();
         }
