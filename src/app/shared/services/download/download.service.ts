@@ -30,6 +30,7 @@ import {Invoice} from '../../models/invoice.model';
 import {JsonResponseModel} from '../../models/json-response.model';
 import {QueryParamSetModel} from '../../models/query-param-set.model';
 import {ReportService} from '../report/report.service';
+import {UlnRequestModel} from '../../request/UlnRequestModel';
 
 export const INBREEDING_COEFFICIENT_REPORT = 'INBREEDING_COEFFICIENT_REPORT';
 export const LINEAGE_PROOF_REPORT = 'LINEAGE_PROOF_REPORT';
@@ -195,13 +196,10 @@ export class DownloadService {
     this.doDownloadPostRequestByReportWorker(API_URI_GET_LIVESTOCK_DOCUMENT + queryParam, data);
   }
 
-  doInbreedingCoefficientReportPostRequest(ram: Animal, ewes: LivestockAnimal[], fileType: string) {
+  doInbreedingCoefficientReportPostRequest(rams: UlnRequestModel[], ewes: UlnRequestModel[], fileType: string) {
 
     const request = {
-      'ram': {
-        'uln_country_code': ram.uln_country_code,
-        'uln_number': ram.uln_number
-      },
+      'rams': rams,
       'ewes': ewes
     };
     this.doDownloadPostRequestByReportWorker(API_URI_GET_INBREEDING_COEFFICIENT + QueryParamsService.getFileTypeQueryParam(fileType),
