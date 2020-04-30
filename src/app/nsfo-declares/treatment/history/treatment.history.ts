@@ -17,20 +17,31 @@ import {TreatmentTemplate} from '../../../shared/models/treatment-template.model
 })
 
 export class TreatmentHistoryComponent implements OnInit {
+
   searchValue: string;
   public treatmentHistoryList = <TreatmentTemplate[]>[];
+  public treatmentTemplates = <TreatmentTemplate[]>[];
   public selectedTreatment: TreatmentTemplate;
   public isSending = false;
   public modal_display = 'none';
   public errorModalDisplay = 'none';
   public errorMessages: ErrorMessage[] = [];
+  private currentLocationUbn;
 
   public isLoading: boolean;
 
-  constructor(private apiService: NSFOService, private settings: SettingsService, private cache: CacheService) {}
+  constructor(
+    private apiService: NSFOService,
+    private settings: SettingsService,
+    private cache: CacheService,
+    private nsfo: NSFOService
+  ) {
+    this.currentLocationUbn = this.cache.getUbn();
+  }
 
   ngOnInit() {
     this.getTreatmentHistoryList();
+    this.getTreatmentTemplates();
   }
 
   public getTreatmentHistoryList() {
@@ -51,6 +62,46 @@ export class TreatmentHistoryComponent implements OnInit {
         error => {
           alert(this.apiService.getErrorMessage(error));
           this.isLoading = false;
+        }
+      );
+  }
+
+  getTreatmentTemplates() {
+    this.nsfo
+      .doGetRequest(API_URI_GET_TREATMENT_TEMPLATES + '/template/individual/' + this.currentLocationUbn)
+      .subscribe(
+        (res: JsonResponseModel) => {
+          this.treatmentTemplates = res.result;
+        }
+      );
+
+    this.nsfo
+      .doGetRequest(API_URI_GET_TREATMENT_TEMPLATES + '/template/location/' + this.currentLocationUbn)
+      .subscribe(
+        (res: JsonResponseModel) => {
+          for (let x = 0; x < res.result.length; x++) {
+            this.treatmentTemplates.push(res.result[x]);
+          }
+        }
+      );
+
+    this.nsfo
+      .doGetRequest(API_URI_GET_TREATMENT_TEMPLATES + '/template/individual')
+      .subscribe(
+        (res: JsonResponseModel) => {
+          for (let x = 0; x < res.result.length; x++) {
+            this.treatmentTemplates.push(res.result[x]);
+          }
+        }
+      );
+
+    this.nsfo
+      .doGetRequest(API_URI_GET_TREATMENT_TEMPLATES + '/template/location')
+      .subscribe(
+        (res: JsonResponseModel) => {
+          for (let x = 0; x < res.result.length; x++) {
+            this.treatmentTemplates.push(res.result[x]);
+          }
         }
       );
   }
