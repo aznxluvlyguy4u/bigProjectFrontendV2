@@ -198,9 +198,9 @@
                  (click)="selectAllAnimals($event)">
           <label class="show-for-small-only">{{ 'SELECT ALL' | translate }}</label>
         </td>
-        <td *ngIf="!weightMode && !view_mode && customType !== 'LIVE_STOCK_TYPE_TREATMENT'">
+        <td *ngIf="!weightMode && !view_mode">
           <button type="button" class="tiny primary button expanded" (click)="declareAllAnimals()"
-                  [disabled]="!(selectionList.length > 0)">
+                  [disabled]="!(selectionList.length > 0) || extraDisabledCriteria">
             <span class="badge">{{selectionList.length}}</span>
             <span *ngIf="reportMode">
                 {{ 'GENERATE' | translate }}

@@ -36,12 +36,18 @@
 
   <!--TREATMENT TEMPLATE-->
   <div class="medium-3 columns">
-    <label *ngIf="treatmentTemplates.length > 0">
+      <label *ngIf="showTreatmentTemplates; else noTreatmentTemplates">
       {{ 'TREATMENT TEMPLATE' | translate }}
-      <select name="selectedTreatmentTemplate" [(ngModel)]="selectedTreatmentTemplate" [ngModelOptions]="{standalone: true}">
+          <select name="selectedTreatmentTemplate" [(ngModel)]="selectedTreatmentTemplate" [ngModelOptions]="{standalone: true}">
         <option *ngFor="let template of treatmentTemplates" [ngValue]="template">{{template.description}}</option>
       </select>
     </label>
+    <ng-template #noTreatmentTemplates>
+      <p>
+        Er zijn voor deze UBN nog geen behandelingen ingesteld.
+        Neem contact op met ons kantoor voor meer informatie.
+      </p>
+    </ng-template>
   </div>
 
   <!--ERROR OVERVIEW-->
@@ -86,11 +92,26 @@
         </thead>
         <tbody>
           <tr *ngFor="let medication of selectedTreatmentTemplate.medications">
-            <td class="padding-column">{{medication.treatment_medication.name}}</td>
-            <td class="padding-column" *ngIf="medication.dosage_unit !== 'aantal'">{{medication.dosage}} {{medication.dosage_unit}}</td>
-            <td class="padding-column" *ngIf="medication.dosage_unit === 'aantal'">{{medication.dosage_unit}} {{medication.dosage}}</td>
-            <td class="padding-column">{{medication.reg_nl}}</td>
-            <td class="padding-column">{{medication.waiting_days}}</td>
+            <td class="padding-column">
+              <label class="show-for-small-only">{{ 'NAME' | translate }}</label>
+              {{medication.treatment_medication.name}}
+            </td>
+            <td class="padding-column" *ngIf="medication.dosage_unit !== 'aantal'">
+              <label class="show-for-small-only">{{ 'DOSAGE' | translate }}</label>
+              {{medication.dosage}} {{medication.dosage_unit}}
+            </td>
+            <td class="padding-column" *ngIf="medication.dosage_unit === 'aantal'">
+              <label class="show-for-small-only">{{ 'DOSAGE' | translate }}</label>
+              {{medication.dosage_unit}} {{medication.dosage}}
+            </td>
+            <td class="padding-column">
+              <label class="show-for-small-only">{{ 'REG NL' | translate }}</label>
+              {{medication.reg_nl}}
+            </td>
+            <td class="padding-column">
+              <label class="show-for-small-only">{{ 'WAITING DAYS' | translate }}</label>
+              {{medication.waiting_days}}
+            </td>
           </tr>
         </tbody>
       </table>
@@ -105,7 +126,6 @@
       [items_per_page]="100"
       [onlyFemales]="false"
       (selected)="declareTreatment($event)"
-      [lastMateChanged]="lastDeclareUpdateSubject"
       [extraDisabledCriteria]="isTreatmentTemplateNotSelected()"
     ></app-livestock-overview>
   </div>

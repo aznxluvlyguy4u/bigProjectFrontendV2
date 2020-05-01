@@ -27,7 +27,6 @@ import {CacheService} from '../../../shared/services/settings/cache.service';
 
 export class TreatmentDeclareComponent implements OnInit, OnDestroy, AfterViewChecked {
   livestockType = LIVESTOCK_TYPE_TREATMENT;
-  lastDeclareUpdateSubject = new Subject<MateChangeResponse>();
   public countryCode$;
   public country_code_list = [];
   public isSendingDeclare = false;
@@ -55,6 +54,7 @@ export class TreatmentDeclareComponent implements OnInit, OnDestroy, AfterViewCh
   private startDate;
   private currentLocationUbn;
   public selectedTreatmentTemplate: TreatmentTemplate;
+  public showTreatmentTemplates = true;
 
   constructor(private fb: FormBuilder,
               private nsfo: NSFOService,
@@ -88,7 +88,6 @@ export class TreatmentDeclareComponent implements OnInit, OnDestroy, AfterViewCh
 
   declareTreatment(event) {
     const animals = [];
-
     event.animals.forEach((animal: Animal) => {
       const type = animal.gender === 'MALE' ? 'Ram' : 'Ewe';
 
@@ -160,6 +159,9 @@ export class TreatmentDeclareComponent implements OnInit, OnDestroy, AfterViewCh
         (res: JsonResponseModel) => {
           for (let x = 0; x < res.result.length; x++) {
             this.treatmentTemplates.push(res.result[x]);
+          }
+          if (this.treatmentTemplates.length === 0) {
+            this.showTreatmentTemplates = false;
           }
         }
       );
