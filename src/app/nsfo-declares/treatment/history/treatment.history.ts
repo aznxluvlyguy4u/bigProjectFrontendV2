@@ -55,26 +55,26 @@ export class TreatmentHistoryComponent implements OnInit {
       );
   }
 
-  public revokeMate() {
-    // this.isSending = true;
-    // this.apiService
-    //   .doPutRequest(API_URI_REVOKE_MATE + '/' + this.selectedAnimal.message_id, '')
-    //   .subscribe(
-    //     res => {
-    //       this.isSending = false;
-    //       this.closeModal();
-    //
-    //       this.selectedAnimal.request_state = 'REVOKED';
-    //       this.selectedAnimal.revoke_date = moment().toISOString();
-    //
-    //       const index = _.findIndex(this.mateHistoryList, {message_id: this.selectedAnimal.message_id});
-    //       this.mateHistoryList.splice(index, 1, this.selectedAnimal);
-    //     },
-    //     err => {
-    //       this.isSending = false;
-    //       this.closeModal();
-    //     }
-    //   );
+  public revokeTreatment() {
+    this.isSending = true;
+    this.apiService
+      .doPutRequest(API_URI_GET_TREATMENT_TEMPLATES + '/' + this.selectedTreatment.id + '/revoke', '')
+      .subscribe(
+        () => {
+          this.isSending = false;
+          this.closeModal();
+
+          this.selectedTreatment.status = 'REVOKED';
+          this.selectedTreatment.revoke_date = moment().toISOString();
+
+          const index = _.findIndex(this.treatmentHistoryList, {id: this.selectedTreatment.id});
+          this.treatmentHistoryList.splice(index, 1, this.selectedTreatment);
+        },
+        () => {
+          this.isSending = false;
+          this.closeModal();
+        }
+      );
   }
 
   public selectTreatment(event) {

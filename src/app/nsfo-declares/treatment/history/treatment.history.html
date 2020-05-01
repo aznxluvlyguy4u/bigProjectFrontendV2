@@ -20,13 +20,14 @@
     <th>{{'END DATE' | translate }}</th>
     <th>{{'DESCRIPTION' | translate}}</th>
     <th>{{ 'DUTCH TYPE' | translate }}</th>
+    <th>{{ 'STATUS' | translate }}</th>
     <th></th>
     </tr>
     </thead>
     <tbody>
     <tr app-treatment-history-row
       *ngFor="let treatment of treatmentHistoryList | treatmentHistoryFilter: searchValue | paginate: {itemsPerPage: 10, currentPage: page};"
-      (showError)="showError($event)" [treatment]="treatment"></tr>
+      (revokeTreatment)="selectTreatment($event)" (showError)="showError($event)" [treatment]="treatment"></tr>
     </tbody>
   </table>
 
@@ -46,7 +47,7 @@
     <div class="modal-body"> {{ 'ARE YOU SURE YOU WANT TO REVOKE DECLARATION' | translate }}</div>
     <div class="modal-footer">
             <span class="pull-right">
-                <button class="tiny alert button" (click)="revokeMate()" [disabled]="isSending">
+                <button class="tiny alert button" (click)="revokeTreatment()" [disabled]="isSending">
                     <span *ngIf="!isSending">
                         {{ 'REVOKE' | translate}}
                     </span>

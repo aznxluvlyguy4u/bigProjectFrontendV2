@@ -16,6 +16,7 @@ export class TreatmentHistoryRowComponent {
   @Input() treatment: TreatmentTemplate;
   // @Output() revokeTreatment = new EventEmitter();
   @Output() showError = new EventEmitter();
+  @Output() revokeTreatment = new EventEmitter();
   public editMode = false;
   public temp_treatment: TreatmentTemplate;
   public isSending = false;
@@ -74,9 +75,9 @@ export class TreatmentHistoryRowComponent {
     }
   }
 
-  // public sendRevokeRequest() {
-  //   this.revokeMate.emit(this.treatment);
-  // }
+  public sendRevokeRequest() {
+    this.revokeTreatment.emit(this.treatment);
+  }
 
   public enableEditing() {
     if (this.editMode) {
