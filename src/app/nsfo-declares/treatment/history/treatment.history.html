@@ -27,7 +27,7 @@
     <tbody>
     <tr app-treatment-history-row
       *ngFor="let treatment of treatmentHistoryList | treatmentHistoryFilter: searchValue | paginate: {itemsPerPage: 10, currentPage: page};"
-      (revokeTreatment)="selectTreatment($event)" (showError)="showError($event)" [treatment]="treatment"></tr>
+      (revokeTreatment)="selectTreatment($event)" [treatmentTemplatesToSelect]="treatmentTemplates" (showError)="showError($event)" [treatment]="treatment"></tr>
     </tbody>
   </table>
 
