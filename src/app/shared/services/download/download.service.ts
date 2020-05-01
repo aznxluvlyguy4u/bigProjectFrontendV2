@@ -31,6 +31,7 @@ import {JsonResponseModel} from '../../models/json-response.model';
 import {QueryParamSetModel} from '../../models/query-param-set.model';
 import {ReportService} from '../report/report.service';
 import {UlnRequestModel} from '../../request/UlnRequestModel';
+import {ReportType} from '../report/report-request.model';
 
 export const INBREEDING_COEFFICIENT_REPORT = 'INBREEDING_COEFFICIENT_REPORT';
 export const LINEAGE_PROOF_REPORT = 'LINEAGE_PROOF_REPORT';
@@ -203,7 +204,7 @@ export class DownloadService {
       'ewes': ewes
     };
     this.doDownloadPostRequestByReportWorker(API_URI_GET_INBREEDING_COEFFICIENT + QueryParamsService.getFileTypeQueryParam(fileType),
-      request);
+      request, ReportType.INBREEDING_COEFFICIENT, fileType);
   }
 
   doOffspringReportPostRequest(animals: Animal[], concatBreedValueAndAccuracyColumns: boolean) {
@@ -323,7 +324,12 @@ export class DownloadService {
     this.downloadsShownInModalChanged.next(this.downloadRequestShownInModal.slice());
   }
 
-  private doDownloadPostRequestByReportWorker(uri: string, request: any) {
+  private doDownloadPostRequestByReportWorker(uri: string, request: any,
+                                              reportType?: ReportType, fileType?: string) {
+
+    if (reportType != null && fileType != null) {
+      this.reportService.addPlaceHolderReportRecord(reportType, fileType);
+    }
     this.nsfo.doPostRequest(uri, request)
       .subscribe(
           (res: JsonResponseModel) => {
