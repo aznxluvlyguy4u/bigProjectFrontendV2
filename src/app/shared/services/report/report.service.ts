@@ -5,7 +5,9 @@ import { API_URI_GET_REPORTS } from '../nsfo-api/nsfo.settings';
 
 import * as _ from 'lodash';
 import {JsonResponseModel} from '../../models/json-response.model';
-import {ReportRequest} from './report-request.model';
+import {ReportRequest, ReportType} from './report-request.model';
+import * as moment from 'moment';
+import {SettingsService} from '../settings/settings.service';
 
 @Injectable()
 export class ReportService implements OnInit {
@@ -18,12 +20,26 @@ export class ReportService implements OnInit {
 
   private isFirstFetch = true;
 
-  constructor(private nsfo: NSFOService) {
+  constructor(
+    private nsfo: NSFOService,
+    private settings: SettingsService
+  ) {
       this.resetReportList();
       this.fetchReports();
   }
 
   ngOnInit() {
+  }
+
+  addPlaceHolderReportRecord(reportType: ReportType, fileType: string) {
+    const report = new ReportRequest();
+    report.id = 99999;
+    report.started_at = (new Date()).toLocaleString();
+    report.worker_type = 1;
+    report.report_type = reportType;
+    report.file_type = fileType.toLocaleLowerCase();
+    this.reportRequestShownInModal.push(report);
+    this.reportsShownInModelChanged.next(this.reportRequestShownInModal.slice());
   }
 
   fetchReports() {
