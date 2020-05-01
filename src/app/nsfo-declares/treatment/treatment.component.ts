@@ -17,6 +17,8 @@ export class TreatmentComponent implements OnInit {
     if (this.location.path() === '/main/treatment') {
       this.selectedRoute = '/main/treatment/declare';
       this.router.navigate(['/main/treatment/declare']);
+    } else {
+      this.selectedRoute = this.location.path();
     }
   }
 
