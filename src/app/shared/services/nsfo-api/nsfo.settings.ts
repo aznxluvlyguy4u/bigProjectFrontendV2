@@ -135,5 +135,5 @@ export const API_URI_ANIMAL_NICKNAME = '/v1/animals-nickname';
 // COLLAR Colors
 export const API_URI_GET_COLLAR_COLORS = '/v1/collars';
 
-// TREATMENT TEMPLATES
+// TREATMENT TEMPLATES & TREATMENTS
 export const API_URI_GET_TREATMENT_TEMPLATES = '/v1/treatments';

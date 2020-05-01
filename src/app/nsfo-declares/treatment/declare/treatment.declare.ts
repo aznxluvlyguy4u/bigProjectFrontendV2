@@ -25,7 +25,7 @@ import {CacheService} from '../../../shared/services/settings/cache.service';
   templateUrl: './treatment.declare.html',
 })
 
-export class TreatmentDeclareComponent implements OnInit, OnDestroy, AfterViewChecked {
+export class TreatmentDeclareComponent implements OnInit, AfterViewChecked {
   livestockType = LIVESTOCK_TYPE_TREATMENT;
   public countryCode$;
   public country_code_list = [];
@@ -72,7 +72,6 @@ export class TreatmentDeclareComponent implements OnInit, OnDestroy, AfterViewCh
   }
 
   ngOnInit() {
-    this.getCountryCodeList();
     this.getLivestockList();
     this.getTreatmentTemplates();
     this.errorMessages = [];
@@ -80,10 +79,6 @@ export class TreatmentDeclareComponent implements OnInit, OnDestroy, AfterViewCh
 
   ngAfterViewChecked() {
       this.startDate = moment(this.form.get('mate_startdate').value);
-  }
-
-  ngOnDestroy() {
-    this.countryCode$.unsubscribe();
   }
 
   declareTreatment(event) {

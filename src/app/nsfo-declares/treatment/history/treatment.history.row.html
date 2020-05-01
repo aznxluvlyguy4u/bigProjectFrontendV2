@@ -26,12 +26,14 @@
   </div>
 </td>
 
-<!--TREATMENT DESCRIPTION-->
+<!--TREATMENT TEMPLATE-->
 <td>
-  <label class="show-for-small-only">{{ 'DESCRIPTION' | translate }}</label>
+  <label class="show-for-small-only">{{ 'TREATMENT TEMPLATE' | translate }}</label>
   <span *ngIf="!editMode">{{ treatment.description }}</span>
-  <div *ngIf="editMode" [formGroup]="form">
-    <input type="text" formControlName="description" [value]="treatment.description">
+  <div *ngIf="editMode && treatmentTemplatesToSelect.length > 0" [formGroup]="form">
+      <select name="selectedTreatmentTemplate" [(ngModel)]="selectedTreatmentTemplate" [ngModelOptions]="{standalone: true}">
+        <option *ngFor="let template of treatmentTemplatesToSelect" [ngValue]="template">{{template.description}}</option>
+      </select>
     <div *ngIf="!form.controls['description'].valid" class="input-error-msg text-center">{{ 'FILL IN THE TREATMENT DESCRIPTION' | translate }}</div>
   </div>
 </td>
@@ -39,11 +41,7 @@
 <!--TREATMENT DUTCH TYPE  -->
 <td>
   <label class="show-for-small-only">{{ 'DUTCH TYPE' | translate }}</label>
-  <span *ngIf="!editMode">{{ treatment.dutchType }}</span>
-  <div *ngIf="editMode" [formGroup]="form">
-    <input type="text" formControlName="dutch_type" [value]="treatment.dutchType">
-    <div *ngIf="!form.controls['dutch_type'].valid" class="input-error-msg text-center">{{ 'FILL IN THE TREATMENT TYPE' | translate }}</div>
-  </div>
+  <span>{{ treatment.dutchType }}</span>
 </td>
 
 <!--TREATMENT STATUS  -->
