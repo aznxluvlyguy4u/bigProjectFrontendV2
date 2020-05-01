@@ -89,16 +89,21 @@ export class TreatmentDeclareComponent implements OnInit, OnDestroy, AfterViewCh
   declareTreatment(event) {
     const animals = [];
     event.animals.forEach((animal: Animal) => {
-      const type = animal.gender === 'MALE' ? 'Ram' : 'Ewe';
-
-      const dateOfBirthMoment = moment(animal.date_of_birth);
+      let type = '';
+      switch (animal.gender) {
+        case 'MALE':
+          type = 'Ram';
+        break;
+        case 'FEMALE':
+          type = 'Ewe';
+        break;
+        case 'NEUTER':
+          type = 'Neuter';
+        break;
+      }
 
         animals.push({
           id: animal.id,
-          date_of_birth: dateOfBirthMoment.format(),
-          is_alive: animal.is_alive,
-          uln_country_code: animal.uln_country_code,
-          uln_number: animal.uln_number,
           type: type
         });
     });
