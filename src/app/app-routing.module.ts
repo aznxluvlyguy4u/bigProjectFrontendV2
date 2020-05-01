@@ -67,6 +67,9 @@ import {ReportCompanyRegisterComponent} from './report/companyRegister/report.co
 import {ReportWeightsPerYearOfBirthComponent} from './report/weightsPerYearOfBirth/report.weights-per-year-of-birth.component';
 import {ReportAnimalFeaturesPerYearOfBirthComponent} from './report/animalFeaturesPerYearOfBirth/report.animal-features-per-year-of-birth.component';
 import {ReportFertilizerAccountingComponent} from './report/fertilityAccounting/report.fertilizer-accounting.component';
+import {TreatmentComponent} from './nsfo-declares/treatment/treatment.component';
+import {TreatmentDeclareComponent} from './nsfo-declares/treatment/declare/treatment.declare';
+import {TreatmentHistoryComponent} from './nsfo-declares/treatment/history/treatment.history';
 
 // const appRoutes: Routes = [
 const appRoutes = [
@@ -128,6 +131,13 @@ const appRoutes = [
         children: [
           {path: 'declare', component: WeightDeclareComponent},
           {path: 'history', component: WeightHistoryComponent},
+        ]
+      },
+      {
+        path: 'treatment', component: TreatmentComponent,
+        children: [
+          {path: 'declare', component: TreatmentDeclareComponent},
+          {path: 'history', component: TreatmentHistoryComponent}
         ]
       },
       {

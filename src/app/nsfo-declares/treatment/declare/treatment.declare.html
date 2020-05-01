@@ -1,0 +1,164 @@
+<form [formGroup]="form" class="form-declare">
+
+  <!--TREATMENT BEGIN DATE-->
+  <div class="medium-2 columns">
+    <label>
+      {{ 'TREATMENT PERIOD' | translate }} &nbsp;
+      <app-datepicker
+                  [formCtrl]="form.controls['mate_startdate']"
+                  [viewFormat]="view_date_format"
+                  [modelFormat]="model_datetime_format"
+                  (valueChange)="updateEndDate($event)"
+                  [name]="'mate_startdate'"
+                  [parentComponent]="self"
+      ></app-datepicker>
+      <div [hidden]="form.controls['mate_startdate'].valid" class="input-error-msg pull-right">{{ 'FILL IN THE TREATMENT PERIOD' | translate }}
+      </div>
+    </label>
+  </div>
+
+  <!--TREATMENT END DATE-->
+  <div class="medium-2 columns">
+    <label>
+      {{ 'TILL' | translate }} &nbsp;
+      <app-datepicker
+                  [formCtrl]="form.controls['mate_enddate']"
+                  [viewFormat]="view_date_format"
+                  [modelFormat]="model_datetime_format"
+                  (valueChange)="sendStartDateToDatePicker()"
+                  [name]="'mate_enddate'"
+                  [parentComponent]="self"
+      ></app-datepicker>
+      <div [hidden]="form.controls['mate_enddate'].valid" class="input-error-msg pull-right">{{ 'FILL IN THE TREATMENT PERIOD' | translate }}
+      </div>
+    </label>
+  </div>
+
+  <!--TREATMENT TEMPLATE-->
+  <div class="medium-3 columns">
+      <label *ngIf="showTreatmentTemplates; else noTreatmentTemplates">
+      {{ 'TREATMENT TEMPLATE' | translate }}
+          <select name="selectedTreatmentTemplate" [(ngModel)]="selectedTreatmentTemplate" [ngModelOptions]="{standalone: true}">
+        <option *ngFor="let template of treatmentTemplates" [ngValue]="template">{{template.description}}</option>
+      </select>
+    </label>
+    <ng-template #noTreatmentTemplates>
+      <p>
+        Er zijn voor deze UBN nog geen behandelingen ingesteld.
+        Neem contact op met ons kantoor voor meer informatie.
+      </p>
+    </ng-template>
+  </div>
+
+  <!--ERROR OVERVIEW-->
+  <div class="medium-1 columns">
+    <label> &nbsp;
+      <button
+        type="button"
+        class="button alert"
+        [disabled]="errorMessages == null || errorMessages.length == 0"
+        (click)="openModal()"
+        title="{{'THERE ERRORS ARE ONLY SAVED IN THIS BROWSER SESSION' | translate }}"
+      >
+        <span *ngIf="errorMessages !== null && errorMessages.length > 0" class="badge">{{errorMessages.length}}</span>
+        {{'ERRORS'|translate}}
+      </button>
+    </label>
+  </div>
+
+  <!--INBREEDING COEFFICIENT-->
+  <!--<div class="medium-1 columns end" >-->
+  <!--<label>&nbsp;-->
+  <!--<button type="button" class="small primary button" (click)="navigateTo('/main/report/inbreeding')"> {{ 'INBREEDING COEFFICIENT' | translate }}</button>-->
+  <!--</label>-->
+  <!--</div>-->
+</form>
+
+<!--SELECTED TEMPLATE INFORMATION-->
+<div class="row" style="background-color: #E1E1E1;margin-left: auto;margin-right: auto;" *ngIf="selectedTreatmentTemplate">
+  <div class="medium-12 columns">
+    <h3>{{ 'TREATMENT TEMPLATE' | translate }}</h3>
+    <p><b>{{'DESCRIPTION' | translate}}:</b> {{selectedTreatmentTemplate.description}}</p>
+    <p><b>{{'DUTCH TYPE' | translate}}:</b> {{selectedTreatmentTemplate.dutchType}}</p>
+    <p><b>{{'MEDICATIONS' | translate}}:</b></p>
+      <table class="stack">
+        <thead>
+          <tr>
+            <th class="padding-column">{{'NAME' | translate}}</th>
+            <th class="padding-column">{{'DOSAGE' | translate}}</th>
+            <th class="padding-column">{{'REG NL' | translate}}</th>
+            <th class="padding-column">{{'WAITING DAYS' | translate}}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let medication of selectedTreatmentTemplate.medications">
+            <td class="padding-column">
+              <label class="show-for-small-only">{{ 'NAME' | translate }}</label>
+              {{medication.treatment_medication.name}}
+            </td>
+            <td class="padding-column" *ngIf="medication.dosage_unit !== 'aantal'">
+              <label class="show-for-small-only">{{ 'DOSAGE' | translate }}</label>
+              {{medication.dosage}} {{medication.dosage_unit}}
+            </td>
+            <td class="padding-column" *ngIf="medication.dosage_unit === 'aantal'">
+              <label class="show-for-small-only">{{ 'DOSAGE' | translate }}</label>
+              {{medication.dosage_unit}} {{medication.dosage}}
+            </td>
+            <td class="padding-column">
+              <label class="show-for-small-only">{{ 'REG NL' | translate }}</label>
+              {{medication.reg_nl}}
+            </td>
+            <td class="padding-column">
+              <label class="show-for-small-only">{{ 'WAITING DAYS' | translate }}</label>
+              {{medication.waiting_days}}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+  </div>
+</div>
+
+<!--LIVESTOCK OVERVIEW-->
+<div class="row">
+  <div class="medium-12 columns">
+    <app-livestock-overview
+      [customType]="livestockType"
+      [items_per_page]="100"
+      [onlyFemales]="false"
+      (selected)="declareTreatment($event)"
+      [extraDisabledCriteria]="isTreatmentTemplateNotSelected()"
+    ></app-livestock-overview>
+  </div>
+</div>
+
+<!--ERROR MODAL-->
+<div class="reveal-overlay" [ngStyle]="{'display': modalDisplay}">
+  <div class="tiny reveal" [ngStyle]="{'display': modalDisplay}">
+    <div class="modal-header">
+      {{ 'ERROR' | translate }}
+      <button type="button" class="pull-right" aria-label="Close modal" (click)="closeModal()">
+        <i class="fa fa-times" aria-hidden="true"></i>
+      </button>
+    </div>
+    <div class="modal-body">
+
+      <p class="text-center">
+        {{'THERE ERRORS ARE ONLY SAVED IN THIS BROWSER SESSION' | translate }}
+      </p>
+
+      <hr>
+
+      <ul>
+        <li *ngFor="let errorMessage of errorMessages">
+          {{ errorMessage.message | translate }}
+        </li>
+      </ul>
+    </div>
+    <div class="modal-footer">
+      <button [disabled]="errorMessages == null || errorMessages.length == 0"
+              class="tiny alert button pull-left" (click)="purgeErrors()">{{ 'PURGE ERRORS' | translate}}
+      </button>
+      <button class="tiny primary button pull-right" (click)="closeModal()">{{ 'OK' | translate}}</button>
+    </div>
+  </div>
+</div>

@@ -179,13 +179,14 @@
         </th>
         <th style="text-align: right">
           <ng-template [ngTemplateOutlet]="downloadButtons"></ng-template>
-
           <app-download-button
             *ngIf="!weightMode && !view_mode && !disableMultipleSelection"
             [includeBadgeCount]="true"
             [badgeCount]="selectionList.length"
             [labelText]="(reportMode ? 'GENERATE' : 'DECLARE') | translate"
             (click)="declareAllAnimals()"
+            [extraDisabledCriteria]="extraDisabledCriteria"
+            [customType]="customType"
           ></app-download-button>
         </th>
       </tr>
@@ -199,7 +200,7 @@
         </td>
         <td *ngIf="!weightMode && !view_mode">
           <button type="button" class="tiny primary button expanded" (click)="declareAllAnimals()"
-                  [disabled]="!(selectionList.length > 0)">
+                  [disabled]="!(selectionList.length > 0) || extraDisabledCriteria">
             <span class="badge">{{selectionList.length}}</span>
             <span *ngIf="reportMode">
                 {{ 'GENERATE' | translate }}
@@ -243,7 +244,7 @@
               --
           </span>
         </td>
-        <td class="padding-column">
+        <td class="padding-column" [colSpan]="(customType === 'LIVE_STOCK_TYPE_TREATMENT') ? 2 : 1">
           <div *ngIf="!weightMode">
             <span *ngIf="(getSelectionValue(selection_column_two, animal))">
               <label class="show-for-small-only">{{ selection_column_two | translate }}</label>
@@ -292,14 +293,14 @@
             <span>-</span>
           </ng-template>
         </td>
-        <td>
+        <td *ngIf="reportMode || customType !== 'LIVE_STOCK_TYPE_TREATMENT'">
           <app-download-button
             *ngIf="reportMode"
             [labelText]="'GENERATE'"
             (click)="declareAnimal(animal, $event)"
           ></app-download-button>
 
-          <button type="button" *ngIf="!view_mode && !reportMode" class="tiny button expanded"
+          <button type="button" *ngIf="!view_mode && !reportMode && customType !== 'LIVE_STOCK_TYPE_TREATMENT'" class="tiny button expanded"
                   [ngClass]="{'primary': !animal.successful, 'success': animal.successful}"
                   [disabled]="animal.successful || animal.sending" (click)="declareAnimal(animal)">
             <span
