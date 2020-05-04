@@ -66,6 +66,23 @@
               "extractLicenses": true,
               "vendorChunk": false,
               "buildOptimizer": true
+            },
+            "staging-local": {
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.staging-local.ts"
+                }
+              ],
+              "optimization": false,
+              "outputHashing": "all",
+              "sourceMap": true,
+              "extractCss": true,
+              "namedChunks": false,
+              "aot": false,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": false
             }
           }
         },
@@ -81,6 +98,9 @@
             },
             "staging": {
               "browserTarget": "nsfo-frontend-new:build:staging"
+            },
+            "staging-local": {
+              "browserTarget": "nsfo-frontend-new:build:staging-local"
             }
           }
         },
