@@ -18,7 +18,6 @@ import {TreatmentTemplate} from '../../../shared/models/treatment-template.model
 
 export class TreatmentHistoryComponent implements OnInit {
 
-  searchValue: string;
   public treatmentHistoryList = <TreatmentTemplate[]>[];
   public treatmentTemplates = <TreatmentTemplate[]>[];
   public selectedTreatment: TreatmentTemplate;
@@ -29,6 +28,11 @@ export class TreatmentHistoryComponent implements OnInit {
   private currentLocationUbn;
 
   public isLoading: boolean;
+
+  public page: number;
+  public searchValue: string;
+
+  public totalTreatments: number;
 
   constructor(
     private apiService: NSFOService,
@@ -44,13 +48,24 @@ export class TreatmentHistoryComponent implements OnInit {
     this.getTreatmentTemplates();
   }
 
-  public getTreatmentHistoryList() {
+  public getTreatmentHistoryList(page = 1) {
     this.isLoading = true;
+
+    this.page = page;
+
+    let queryParam = '?page=' + this.page;
+
+    if (this.searchValue && this.searchValue.length >= 2) {
+      queryParam += `&query=${this.searchValue}`;
+    }
+
     this.apiService
-      .doGetRequest(API_URI_GET_TREATMENT_TEMPLATES + '/historic?minimal_output=true')
+      .doGetRequest(API_URI_GET_TREATMENT_TEMPLATES + '/historic' + queryParam)
       .subscribe(
           (res: JsonResponseModel) => {
-            const treatments = <TreatmentTemplate[]>res.result;
+            const result = res.result;
+            const treatments = <TreatmentTemplate[]>result.items;
+            this.totalTreatments = result.totalItems;
             for (const treatment of treatments) {
               treatment.start_date = moment(treatment.start_date).format(this.settings.getViewDateFormat());
               treatment.end_date = moment(treatment.end_date).format(this.settings.getViewDateFormat());
