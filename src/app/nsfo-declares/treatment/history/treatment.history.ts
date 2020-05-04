@@ -142,16 +142,21 @@ export class TreatmentHistoryComponent implements OnInit {
   }
 
   public showError(event) {
-    this.errorMessages = event.result;
+    const result = event.result;
+    this.errorMessages = [];
+    let errorMessage = {
+      code: 403,
+      message: 'SOMETHING WENT WRONG! TRY AGAIN AT LATER TIME!'
+    };
 
-    if (this.errorMessages.length === 0) {
-      const errorMessage = {
-        code: 403,
-        message: 'SOMETHING WENT WRONG! TRY AGAIN AT LATER TIME!'
+    if (result.code && result.message) {
+      errorMessage = {
+        code: result.code,
+        message: result.message
       };
-      this.errorMessages.push(errorMessage);
     }
 
+    this.errorMessages.push(errorMessage);
     this.openErrorModal();
   }
 
