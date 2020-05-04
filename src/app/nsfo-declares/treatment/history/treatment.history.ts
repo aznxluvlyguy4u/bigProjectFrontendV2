@@ -1,23 +1,25 @@
 import * as moment from 'moment';
 import * as _ from 'lodash';
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {NSFOService} from '../../../shared/services/nsfo-api/nsfo.service';
 import {API_URI_GET_TREATMENT_TEMPLATES} from '../../../shared/services/nsfo-api/nsfo.settings';
 import {SettingsService} from '../../../shared/services/settings/settings.service';
 import {PaginationService} from 'ngx-pagination';
-import {MateChangeResponse} from '../../../shared/models/nsfo-declare.model';
 import {ErrorMessage} from '../../../shared/models/error-message.model';
 import {JsonResponseModel} from '../../../shared/models/json-response.model';
 import {CacheService} from '../../../shared/services/settings/cache.service';
 import {TreatmentTemplate} from '../../../shared/models/treatment-template.model';
+import {TreatmentService} from '../treatment.service';
+import {Subscription} from 'rxjs';
 
 @Component({
   providers: [PaginationService],
   templateUrl: './treatment.history.html',
 })
 
-export class TreatmentHistoryComponent implements OnInit {
+export class TreatmentHistoryComponent implements OnInit, OnDestroy {
 
+  private treatmentTemplatesSubscription: Subscription;
   public treatmentHistoryList = <TreatmentTemplate[]>[];
   public treatmentTemplates = <TreatmentTemplate[]>[];
   public selectedTreatment: TreatmentTemplate;
@@ -37,15 +39,25 @@ export class TreatmentHistoryComponent implements OnInit {
   constructor(
     private apiService: NSFOService,
     private settings: SettingsService,
-    private cache: CacheService,
-    private nsfo: NSFOService
+    private treatmentService: TreatmentService,
+    private cache: CacheService
   ) {
     this.currentLocationUbn = this.cache.getUbn();
   }
 
   ngOnInit() {
     this.getTreatmentHistoryList();
-    this.getTreatmentTemplates();
+
+    this.treatmentTemplatesSubscription = this.treatmentService.treatmentTemplatesChanged.subscribe(
+      (templates: TreatmentTemplate[]) => {
+        this.treatmentTemplates = templates;
+      }
+    );
+    this.treatmentTemplates = this.treatmentService.getTreatmentTemplates();
+  }
+
+  ngOnDestroy(): void {
+    this.treatmentTemplatesSubscription.unsubscribe();
   }
 
   public getTreatmentHistoryList(page = 1) {
@@ -63,9 +75,8 @@ export class TreatmentHistoryComponent implements OnInit {
       .doGetRequest(API_URI_GET_TREATMENT_TEMPLATES + '/historic' + queryParam)
       .subscribe(
           (res: JsonResponseModel) => {
-            const result = res.result;
-            const treatments = <TreatmentTemplate[]>result.items;
-            this.totalTreatments = result.totalItems;
+            const treatments: TreatmentTemplate[] = res.result.items;
+            this.totalTreatments = res.result.totalItems;
             for (const treatment of treatments) {
               treatment.start_date = moment(treatment.start_date).format(this.settings.getViewDateFormat());
               treatment.end_date = moment(treatment.end_date).format(this.settings.getViewDateFormat());
@@ -77,46 +88,6 @@ export class TreatmentHistoryComponent implements OnInit {
         error => {
           alert(this.apiService.getErrorMessage(error));
           this.isLoading = false;
-        }
-      );
-  }
-
-  getTreatmentTemplates() {
-    this.nsfo
-      .doGetRequest(API_URI_GET_TREATMENT_TEMPLATES + '/template/individual/' + this.currentLocationUbn)
-      .subscribe(
-        (res: JsonResponseModel) => {
-          this.treatmentTemplates = res.result;
-        }
-      );
-
-    this.nsfo
-      .doGetRequest(API_URI_GET_TREATMENT_TEMPLATES + '/template/location/' + this.currentLocationUbn)
-      .subscribe(
-        (res: JsonResponseModel) => {
-          for (let x = 0; x < res.result.length; x++) {
-            this.treatmentTemplates.push(res.result[x]);
-          }
-        }
-      );
-
-    this.nsfo
-      .doGetRequest(API_URI_GET_TREATMENT_TEMPLATES + '/template/individual')
-      .subscribe(
-        (res: JsonResponseModel) => {
-          for (let x = 0; x < res.result.length; x++) {
-            this.treatmentTemplates.push(res.result[x]);
-          }
-        }
-      );
-
-    this.nsfo
-      .doGetRequest(API_URI_GET_TREATMENT_TEMPLATES + '/template/location')
-      .subscribe(
-        (res: JsonResponseModel) => {
-          for (let x = 0; x < res.result.length; x++) {
-            this.treatmentTemplates.push(res.result[x]);
-          }
         }
       );
   }

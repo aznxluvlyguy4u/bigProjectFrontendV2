@@ -9,7 +9,7 @@ import {SettingsService} from '../../../shared/services/settings/settings.servic
 import {API_URI_GET_ANIMALS_LIVESTOCK, API_URI_GET_TREATMENT_TEMPLATES} from '../../../shared/services/nsfo-api/nsfo.settings';
 import {Router} from '@angular/router';
 import {Settings} from '../../../shared/variables/settings';
-import {Observable, Subject} from 'rxjs';
+import {Observable, Subject, Subscription} from 'rxjs';
 import {MateChangeResponse} from '../../../shared/models/nsfo-declare.model';
 import {Animal, LivestockAnimal} from '../../../shared/models/animal.model';
 import {AnimalsOverviewSelection} from '../../../shared/components/livestock/animals-overview-selection.model';
@@ -19,19 +19,22 @@ import {HttpErrorResponse} from '@angular/common/http';
 import * as moment from 'moment';
 import {TreatmentTemplate} from '../../../shared/models/treatment-template.model';
 import {CacheService} from '../../../shared/services/settings/cache.service';
+import {TreatmentService} from '../treatment.service';
 
 @Component({
   providers: [NSFOService, Constants],
   templateUrl: './treatment.declare.html',
 })
 
-export class TreatmentDeclareComponent implements OnInit, AfterViewChecked {
+export class TreatmentDeclareComponent implements OnInit, OnDestroy, AfterViewChecked {
   livestockType = LIVESTOCK_TYPE_TREATMENT;
   public countryCode$;
   public country_code_list = [];
   public isSendingDeclare = false;
   public isValidForm = true;
   public livestock = <LivestockAnimal[]>[];
+
+  private treatmentTemplatesSubscription: Subscription;
   public treatmentTemplates = <TreatmentTemplate[]>[];
   public modalDisplay = 'none';
   public errorMessages: ErrorMessage[] = [];
@@ -63,6 +66,7 @@ export class TreatmentDeclareComponent implements OnInit, AfterViewChecked {
               private settingsService: SettingsService,
               private settings: Settings,
               private translate: TranslateService,
+              private treatmentService: TreatmentService,
               private cache: CacheService
   ) {
     this.self = this;
@@ -73,8 +77,18 @@ export class TreatmentDeclareComponent implements OnInit, AfterViewChecked {
 
   ngOnInit() {
     this.getLivestockList();
-    this.getTreatmentTemplates();
     this.errorMessages = [];
+
+    this.treatmentTemplatesSubscription = this.treatmentService.treatmentTemplatesChanged.subscribe(
+      (templates: TreatmentTemplate[]) => {
+        this.treatmentTemplates = templates;
+      }
+    );
+    this.treatmentTemplates = this.treatmentService.getTreatmentTemplates();
+  }
+
+  ngOnDestroy(): void {
+    this.treatmentTemplatesSubscription.unsubscribe();
   }
 
   ngAfterViewChecked() {
@@ -122,49 +136,6 @@ export class TreatmentDeclareComponent implements OnInit, AfterViewChecked {
           console.log(res);
         });
     }
-  }
-
-  getTreatmentTemplates() {
-    this.nsfo
-      .doGetRequest(API_URI_GET_TREATMENT_TEMPLATES + '/template/individual/' + this.currentLocationUbn)
-      .subscribe(
-        (res: JsonResponseModel) => {
-          this.treatmentTemplates = res.result;
-        }
-      );
-
-    this.nsfo
-      .doGetRequest(API_URI_GET_TREATMENT_TEMPLATES + '/template/location/' + this.currentLocationUbn)
-      .subscribe(
-        (res: JsonResponseModel) => {
-          for (let x = 0; x < res.result.length; x++) {
-            this.treatmentTemplates.push(res.result[x]);
-          }
-        }
-      );
-
-    this.nsfo
-      .doGetRequest(API_URI_GET_TREATMENT_TEMPLATES + '/template/individual')
-      .subscribe(
-        (res: JsonResponseModel) => {
-          for (let x = 0; x < res.result.length; x++) {
-            this.treatmentTemplates.push(res.result[x]);
-          }
-        }
-      );
-
-    this.nsfo
-      .doGetRequest(API_URI_GET_TREATMENT_TEMPLATES + '/template/location')
-      .subscribe(
-        (res: JsonResponseModel) => {
-          for (let x = 0; x < res.result.length; x++) {
-            this.treatmentTemplates.push(res.result[x]);
-          }
-          if (this.treatmentTemplates.length === 0) {
-            this.showTreatmentTemplates = false;
-          }
-        }
-      );
   }
 
   public isTreatmentTemplateNotSelected() {
