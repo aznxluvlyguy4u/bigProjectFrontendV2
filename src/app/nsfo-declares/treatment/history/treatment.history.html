@@ -1,6 +1,8 @@
 <div class="large-12 table-search">
-  <div class="large-2 large-push-10">
-    <input type="text" [(ngModel)]="searchValue" maxlength="20" placeholder="{{ 'SEARCH' | translate }}">
+  <div class="large-2 large-push-7" id="treatment-search-container">
+    <input type="text" style="height: 40px;" class="search-field" name="searchValue" [(ngModel)]="searchValue" maxlength="20" placeholder="{{ 'SEARCH' | translate }}">
+    <button style="height: 40px;margin-left:8px;" (click)="getTreatmentHistoryList()" class="primary button">{{ 'SEARCH' | translate }}</button>
+    <button style="height: 40px;margin-left:8px;" (click)="searchValue = '';getTreatmentHistoryList()" class="alert button">Reset</button>
   </div>
 </div>
 
@@ -26,12 +28,12 @@
     </thead>
     <tbody>
     <tr app-treatment-history-row
-      *ngFor="let treatment of treatmentHistoryList | treatmentHistoryFilter: searchValue | paginate: {itemsPerPage: 10, currentPage: page};"
+      *ngFor="let treatment of treatmentHistoryList | paginate: {itemsPerPage: 10, currentPage: page, totalItems: totalTreatments};"
       (revokeTreatment)="selectTreatment($event)" [treatmentTemplatesToSelect]="treatmentTemplates" (showError)="showError($event)" [treatment]="treatment"></tr>
     </tbody>
   </table>
 
-  <pagination-controls (pageChange)="page = $event"></pagination-controls>
+  <pagination-controls (pageChange)="page = $event;getTreatmentHistoryList($event)"></pagination-controls>
 
 </div>
 
