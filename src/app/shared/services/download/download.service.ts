@@ -231,7 +231,7 @@ export class DownloadService {
   doFertilizerAccountingReportGetRequest(referenceDateString: string, fileType: string) {
 
     const queryParam = '?' + QUERY_PARAM_REFERENCE_DATE + '=' + referenceDateString + '&' + QUERY_PARAM_FILE_TYPE + '=' + fileType;
-    this.doDownloadGetRequestByReportWorker(API_URI_GET_FERTILIZER_ACCOUNTING_REPORT + queryParam);
+    this.doDownloadPostRequestByReportWorker(API_URI_GET_FERTILIZER_ACCOUNTING_REPORT + queryParam, {});
   }
 
   doBirthListReportGetRequest(breedCode?: string, pedigreeRegisterAbbreviation?: string) {
