@@ -12,14 +12,19 @@ import {
   API_URI_INVOICES,
   API_URI_GET_EWE_CARD_REPORT,
   API_URI_GET_COMPANY_REGISTER_REPORT,
-  API_URI_GET_WEIGHTS_PER_YEAR_OF_BIRTH_REPORT, API_URI_GET_ANIMAL_FEATURES_PER_YEAR_OF_BIRTH_REPORT
+  API_URI_GET_WEIGHTS_PER_YEAR_OF_BIRTH_REPORT,
+  API_URI_GET_ANIMAL_FEATURES_PER_YEAR_OF_BIRTH_REPORT,
+  API_URI_GET_ANIMAL_TREATMENTS_PER_YEAR_REPORT
 } from '../nsfo-api/nsfo.settings';
 import {
   QUERY_PARAM_CONCAT_VALUE_AND_ACCURACY,
   QUERY_PARAM_FILE_TYPE,
   QUERY_PARAM_REFERENCE_DATE,
   QUERY_PARAM_BREED_CODE,
-  QUERY_PARAM_PEDIGREE_REGISTER, QUERY_PARAM_SAMPLE_DATE, QUERY_PARAM_YEAR_OF_BIRTH
+  QUERY_PARAM_PEDIGREE_REGISTER,
+  QUERY_PARAM_SAMPLE_DATE,
+  QUERY_PARAM_YEAR_OF_BIRTH,
+  QUERY_PARAM_PROCESS_AS_WORKER_TASK, QUERY_PARAM_YEAR,
 } from '../../variables/query-param.constant';
 import {UtilsService} from '../utils/utils.services';
 import {QueryParamsService} from '../utils/query-params.service';
@@ -288,6 +293,22 @@ export class DownloadService {
 
     const queryParamString = QueryParamsService.getQueryParamsAsString(queryParams);
     this.doDownloadPostRequestByReportWorker(API_URI_GET_ANIMAL_FEATURES_PER_YEAR_OF_BIRTH_REPORT + queryParamString, {});
+  }
+
+  doAnimalTreatmentsPerYearReportGetRequest(year: string) {
+    const queryParams: QueryParamSetModel[] = [];
+    queryParams.push({
+      key: QUERY_PARAM_YEAR,
+      value: year
+    });
+
+    queryParams.push({
+      key: QUERY_PARAM_PROCESS_AS_WORKER_TASK,
+      value: true
+    });
+
+    const queryParamString = QueryParamsService.getQueryParamsAsString(queryParams);
+    this.doDownloadGetRequestByReportWorker(API_URI_GET_ANIMAL_TREATMENTS_PER_YEAR_REPORT + queryParamString);
   }
 
   doInvoicePdfGetRequest(invoice: Invoice) {

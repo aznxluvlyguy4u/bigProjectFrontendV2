@@ -122,6 +122,7 @@ export const API_URI_GET_EWE_CARD_REPORT = '/v1/reports/ewe-card';
 export const API_URI_GET_COMPANY_REGISTER_REPORT = '/v1/reports/company-register';
 export const API_URI_GET_WEIGHTS_PER_YEAR_OF_BIRTH_REPORT = '/v1/reports/weights-per-year-of-birth';
 export const API_URI_GET_ANIMAL_FEATURES_PER_YEAR_OF_BIRTH_REPORT = '/v1/reports/animal-features-per-year-of-birth';
+export const API_URI_GET_ANIMAL_TREATMENTS_PER_YEAR_REPORT = '/v1/reports/animal-treatments-per-year';
 
 // Pedigree Register
 export const API_URI_GET_PEDIGREE_REGISTERS = '/v1/pedigreeregisters';
