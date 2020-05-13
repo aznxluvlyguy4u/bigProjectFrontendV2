@@ -165,6 +165,7 @@ import {TreatmentDeclareComponent} from './nsfo-declares/treatment/declare/treat
 import {TreatmentHistoryComponent} from './nsfo-declares/treatment/history/treatment.history';
 import {TreatmentHistoryRowComponent} from './nsfo-declares/treatment/history/treatment.history.row';
 import {TreatmentHistoryPipe} from './nsfo-declares/treatment/history/pipes/treatment.history.pipe';
+import {ReportAnimalTreatmentsPerYearComponent} from './report/animalTreatmentsPerYear/report.animal-treatments-per-year.component';
 
 import { StorageServiceModule } from 'ngx-webstorage-service';
 
@@ -318,7 +319,8 @@ export function CreateTranslateLoader(http: HttpClient) {
     TreatmentDeclareComponent,
     TreatmentHistoryComponent,
     TreatmentHistoryRowComponent,
-    TreatmentHistoryPipe
+    TreatmentHistoryPipe,
+    ReportAnimalTreatmentsPerYearComponent
   ],
   imports: [
     BrowserAnimationsModule,

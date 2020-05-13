@@ -5,3 +5,5 @@ export const QUERY_PARAM_BREED_CODE = 'breed_code';
 export const QUERY_PARAM_PEDIGREE_REGISTER = 'pedigree_register';
 export const QUERY_PARAM_SAMPLE_DATE = 'sample_date';
 export const QUERY_PARAM_YEAR_OF_BIRTH = 'year_of_birth';
+export const QUERY_PARAM_YEAR = 'year';
+export const QUERY_PARAM_PROCESS_AS_WORKER_TASK = 'process_as_worker_task';
