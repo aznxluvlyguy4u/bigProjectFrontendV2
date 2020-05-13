@@ -4,7 +4,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "start:staging": "ng serve --configuration=staging-local",
+    "start:staging-local": "ng serve --configuration=staging-local",
     "build": "ng build",
     "deploy:reader": "ng build --configuration=staging && gulp deploy:reader",
     "deploy:staging": "ng build --configuration=staging && gulp deploy:staging",
