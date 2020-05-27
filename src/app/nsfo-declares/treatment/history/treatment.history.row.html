@@ -64,7 +64,8 @@
 
     <span *ngIf="editMode">
         <div class="small-6 columns">
-            <button class="tiny primary button expanded" (click)="sendChangeRequest()" [disabled]="isSending || treatmentTemplatesToSelect.length == 0">
+            <button class="tiny primary button expanded" (click)="sendChangeRequest()"
+                    [disabled]="isSending || treatmentTemplatesToSelect.length == 0 || selectedTreatmentTemplate == null">
                 <span *ngIf="!isSending">
                     {{ 'SEND' | translate }}
                 </span>

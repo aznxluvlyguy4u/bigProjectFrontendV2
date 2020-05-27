@@ -1,9 +1,11 @@
 import {Component, OnInit} from '@angular/core';
 import {Location} from '@angular/common';
 import {Router} from '@angular/router';
+import {TreatmentService} from './treatment.service';
 
 
 @Component({
+  providers: [TreatmentService],
   templateUrl: './treatment.component.html',
 })
 
