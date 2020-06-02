@@ -3,7 +3,7 @@ import {TreatmentMedication} from './treatment-medication.model';
 export class MedicationOption {
   dosage: number;
   dosage_unit: string;
-  waiting_days: number;
+  treatment_duration: string;
   reg_nl: string;
   treatment_medication: TreatmentMedication;
 }
