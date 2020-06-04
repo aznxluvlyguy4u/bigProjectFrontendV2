@@ -17,10 +17,12 @@
   <table class="stack confirmation">
     <thead>
     <tr>
-    <th>{{'CREATED AT' | translate}}</th>
-    <th>{{'START DATE' | translate }}</th>
-    <th>{{'END DATE' | translate }}</th>
-    <th>{{'TREATMENT TEMPLATE' | translate}}</th>
+    <th>{{ 'CREATED AT' | translate }}</th>
+    <th>{{ 'START DATE' | translate }}</th>
+    <th>{{ 'END DATE' | translate }}</th>
+    <th>{{ 'TREATMENT TEMPLATE' | translate }}</th>
+    <th>{{ 'MEDICATIONS' | translate }}</th>
+    <th>{{ 'ANIMALS' | translate }}</th>
     <th>{{ 'DUTCH TYPE' | translate }}</th>
     <th>{{ 'STATUS' | translate }}</th>
     <th></th>
@@ -29,12 +31,91 @@
     <tbody>
     <tr app-treatment-history-row
       *ngFor="let treatment of treatmentHistoryList | paginate: {itemsPerPage: 10, currentPage: page, totalItems: totalTreatments};"
-      (revokeTreatment)="selectTreatment($event)" [treatmentTemplatesToSelect]="treatmentTemplates" (showError)="showError($event)" [treatment]="treatment"></tr>
+      (revokeTreatment)="selectTreatment($event)"
+        [treatmentTemplatesToSelect]="treatmentTemplates"
+        (showError)="showError($event)"
+        (openMedicationModal)="openModal('medicine', treatment.treatment_id)"
+        (openAnimalModal)="openModal('animal', treatment.treatment_id)"
+        [treatment]="treatment"></tr>
     </tbody>
   </table>
 
   <pagination-controls (pageChange)="page = $event;getTreatmentHistoryList($event)"></pagination-controls>
 
+</div>
+
+<!--MEDICATION MODAL-->
+<div class="reveal-overlay" *ngFor="let treatment of treatmentHistoryList" [ngStyle]="{'display': medicine_modal_display[treatment.treatment_id]}" >
+  <div class="tiny reveal" [ngStyle]="{'display': medicine_modal_display[treatment.treatment_id]}">
+    <div class="modal-header">
+      {{ 'MEDICATIONS' | translate }}
+      <button type="button" (click)="closeModal('medicine', treatment.treatment_id)" class="pull-right" aria-label="Close modal">
+        <i class="fa fa-times" aria-hidden="true"></i>
+      </button>
+    </div>
+
+    <table class="stacked">
+      <thead>
+      <tr>
+        <td>{{ 'NAME' | translate}}</td>
+        <td>{{ 'DOSAGE' | translate}}</td>
+        <td>{{ 'TREATMENT DURATION' | translate}}</td>
+        <td>{{ 'WAITING TIME END DATE' | translate }}</td>
+        <td>{{ 'REG NL' | translate}}</td>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let medication of treatment.medications">
+        <td>{{ medication.name }}</td>
+        <td>{{ medication.dosage }} {{ medication.dosage_unit }}</td>
+        <td>{{ medication.treatment_duration }}</td>
+        <td>{{ formatDate(medication.waiting_time_end) }}</td>
+        <td>{{ medication.reg_nl }}</td>
+      </tr>
+      </tbody>
+    </table>
+
+    <div class="modal-footer">
+        <span class="pull-right">
+          <button class="tiny alert button" [disabled]="isSaving" (click)="closeModal('medicine', treatment.treatment_id)">{{ 'CLOSE' | translate}}</button>
+        </span>
+    </div>
+  </div>
+</div>
+
+<!--ANIMAL MODAL-->
+<div class="reveal-overlay" [ngStyle]="{'display': animal_modal_display[treatment.treatment_id]}" *ngFor="let treatment of treatmentHistoryList">
+  <div class="tiny reveal" [ngStyle]="{'display': animal_modal_display[treatment.treatment_id]}">
+    <div class="modal-header">
+      {{ 'ANIMALS' | translate }}
+      <button type="button" (click)="closeModal('animal', treatment.treatment_id)" class="pull-right" aria-label="Close modal">
+        <i class="fa fa-times" aria-hidden="true"></i>
+      </button>
+    </div>
+
+    <table class="stacked">
+      <thead>
+      <tr>
+        <td>{{ 'ULN' | translate}}</td>
+        <td>{{ 'GENDER' | translate}}</td>
+        <td>{{ 'DATE OF BIRTH' | translate}}</td>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let animal of treatment.animals">
+        <td>{{ animal.uln_country_code + animal.uln_number }}</td>
+        <td>{{ animal.gender | translate }}</td>
+        <td>{{ formatDate(animal.date_of_birth) }}</td>
+      </tr>
+      </tbody>
+    </table>
+
+    <div class="modal-footer">
+        <span class="pull-right">
+          <button class="tiny alert button" [disabled]="isSaving" (click)="closeModal('animal', treatment.treatment_id)">{{ 'CLOSE' | translate}}</button>
+        </span>
+    </div>
+  </div>
 </div>
 
 <!--REVOKE MODAL-->

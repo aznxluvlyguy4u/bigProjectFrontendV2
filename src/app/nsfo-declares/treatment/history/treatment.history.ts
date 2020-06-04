@@ -25,6 +25,8 @@ export class TreatmentHistoryComponent implements OnInit, OnDestroy {
   public selectedTreatment: TreatmentTemplate;
   public isSending = false;
   public modal_display = 'none';
+  public medicine_modal_display = [];
+  public animal_modal_display = [];
   public errorModalDisplay = 'none';
   public errorMessages: ErrorMessage[] = [];
   private currentLocationUbn;
@@ -83,6 +85,10 @@ export class TreatmentHistoryComponent implements OnInit, OnDestroy {
               treatment.create_date = moment(treatment.create_date).format(this.settings.getViewDateTimeFormat());
             }
             this.treatmentHistoryList = _.orderBy(treatments, ['create_date'], ['desc']);
+            this.treatmentHistoryList.forEach((treatment) => {
+                this.medicine_modal_display[treatment.id] = 'none';
+                this.animal_modal_display[treatment.id] = 'none';
+            });
             this.isLoading = false;
         },
         error => {
@@ -90,6 +96,11 @@ export class TreatmentHistoryComponent implements OnInit, OnDestroy {
           this.isLoading = false;
         }
       );
+  }
+
+  public formatDate(date) {
+    // console.log(date);
+    return moment(date).format('DD-MM-YYYY');
   }
 
   public revokeTreatment() {
@@ -119,12 +130,32 @@ export class TreatmentHistoryComponent implements OnInit, OnDestroy {
     this.openModal();
   }
 
-  public openModal() {
-    this.modal_display = 'block';
+  public openModal(type= 'default', treatment_id = 0) {
+    switch (type) {
+      case 'default':
+        this.modal_display = 'block';
+        break;
+      case 'medicine':
+        this.medicine_modal_display[treatment_id] = 'block';
+        break;
+      case 'animal':
+        this.animal_modal_display[treatment_id] = 'block';
+        break;
+    }
   }
 
-  public closeModal() {
-    this.modal_display = 'none';
+  public closeModal(type = 'default', treatment_id = 0) {
+    switch (type) {
+      case 'default':
+        this.modal_display = 'none';
+        break;
+      case 'medicine':
+        this.medicine_modal_display[treatment_id] = 'none';
+        break;
+      case 'animal':
+        this.animal_modal_display[treatment_id] = 'none';
+        break;
+    }
   }
 
   public showError(event) {

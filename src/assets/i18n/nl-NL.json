@@ -558,6 +558,7 @@
   "DISPLAY AMOUNT": "Aantal tonen",
   "UNPAID": "Niet betaald",
   "DAYS": "Dagen",
+  "DAYS LOWER": "dagen",
   "INVOICE OVERVIEW": "Factuur overzicht",
   "YOUR INFORMATION": "Uw gegevens",
   "SENDER INFORMATION": "Verzender gegevens",
@@ -801,7 +802,12 @@
   "DOSAGE": "Dosering",
   "MEDICATIONS": "Medicijnen",
   "REG NL": "Nederlands registratie nr.",
-  "TREATMENT DURATION": "Behandelingsduur (dagen)",
+  "WAITING DAYS": "Wachttijd vlees",
+  "HOUR": "uur",
+  "TREATMENT DURATION": "Behandelingsduur",
+  "TIME BETWEEN": "Tussentijd",
   "CREATED AT": "Melding gedaan op",
-  "CREATED": "Melding gedaan"
+  "ANIMALS": "Dieren",
+  "CREATED": "Melding gedaan",
+  "WAITING TIME END DATE": "Wachtijd einddatum"
 }

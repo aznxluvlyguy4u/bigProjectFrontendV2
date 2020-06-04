@@ -87,6 +87,7 @@
             <th class="padding-column">{{'NAME' | translate}}</th>
             <th class="padding-column">{{'DOSAGE' | translate}}</th>
             <th class="padding-column">{{'REG NL' | translate}}</th>
+            <th class="padding-column">{{'WAITING DAYS' | translate }}</th>
             <th class="padding-column">{{'TREATMENT DURATION' | translate}}</th>
           </tr>
         </thead>
@@ -102,15 +103,19 @@
             </td>
             <td class="padding-column" *ngIf="medication.dosage_unit === 'aantal'">
               <label class="show-for-small-only">{{ 'DOSAGE' | translate }}</label>
-              {{medication.dosage_unit}} {{medication.dosage}}
+              {{medication.dosage_unit}}: {{medication.dosage}}
             </td>
             <td class="padding-column">
               <label class="show-for-small-only">{{ 'REG NL' | translate }}</label>
               {{medication.reg_nl}}
             </td>
             <td class="padding-column">
+              <label class="show-for-small-only">{{ 'WAITING DAYS' | translate }}</label>
+              {{medication.waiting_days}}
+            </td>
+            <td class="padding-column">
               <label class="show-for-small-only">{{ 'TREATMENT DURATION' | translate }}</label>
-              {{medication.treatment_duration}}
+              {{medication.treatment_duration}} {{ 'DAYS LOWER' | translate }}
             </td>
           </tr>
         </tbody>

@@ -131,7 +131,9 @@ export class TreatmentDeclareComponent implements OnInit, OnDestroy, AfterViewCh
       this.nsfo
         .doPostRequest(API_URI_GET_TREATMENT_TEMPLATES + '/' + this.selectedTreatmentTemplate.type.toLowerCase(), requestData)
         .subscribe((res: JsonResponseModel) => {
-          console.log(res);
+          if (typeof res.result.code !== 'undefined' && res.result.code === 500) {
+            alert(res.result.message);
+          }
         });
     }
   }

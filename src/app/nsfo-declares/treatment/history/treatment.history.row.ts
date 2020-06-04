@@ -19,6 +19,9 @@ export class TreatmentHistoryRowComponent implements OnInit {
   // @Output() revokeTreatment = new EventEmitter();
   @Output() showError = new EventEmitter();
   @Output() revokeTreatment = new EventEmitter();
+  @Output() openMedicationModal = new EventEmitter();
+  @Output() openAnimalModal = new EventEmitter();
+
   public editMode = false;
   public temp_treatment: TreatmentTemplate;
   public isSending = false;
@@ -40,6 +43,14 @@ export class TreatmentHistoryRowComponent implements OnInit {
       const selectedTreatmentIndex = _.findIndex(this.treatmentTemplatesToSelect, {description: this.treatment.description});
       this.selectedTreatmentTemplate = this.treatmentTemplatesToSelect[selectedTreatmentIndex];
     }, 3000);
+  }
+
+  public openMedicineModal() {
+    this.openMedicationModal.emit();
+  }
+
+  public openAnimalsModal() {
+    this.openAnimalModal.emit();
   }
 
   public sendChangeRequest() {
