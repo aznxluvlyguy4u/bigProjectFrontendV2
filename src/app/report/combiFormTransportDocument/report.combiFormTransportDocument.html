@@ -1,3 +1,26 @@
+<form [formGroup]="form">
+  <div class='row'>
+    <div class='large-4 large-centered columns form-controls'>
+      <div class='row'>
+        <div class='large-6 columns'>
+          <label class='middle'>
+            {{ 'TRANSPORT DATE' | translate }}
+          </label>
+        </div>
+        <div class='large-6 columns end'>
+          <app-datepicker
+            [formCtrl]="form.controls['transport_date']"
+            [viewFormat]="view_date_format"
+            [modelFormat]="model_datetime_format"
+            (valueChange)="setTransportDate($event)"
+            [name]="'transport_date'"
+          ></app-datepicker>
+      </div>
+      </div>
+
+    </div>
+  </div>
+</form>
 <!--LIVESTOCK OVERVIEW-->
 <div class='large-10 columns'>
     <app-livestock-overview
@@ -7,6 +30,5 @@
             [file_types_list]='getFileTypesList()'
             [selectedFileType]='defaultFileType'
             (selected)='generateReport($event)'
-            [maxSelectionCount]='lineageProofMaxSelectionCount'
     ></app-livestock-overview>
 </div>
