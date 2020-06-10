@@ -119,21 +119,21 @@ export class TreatmentDeclareComponent implements OnInit, OnDestroy, AfterViewCh
 
     if (this.form.valid) {
       const requestData: any = {};
-      requestData.treatment_template = {};
+      requestData.treatment_template = this.selectedTreatmentTemplate;
       requestData.treatment_template.location = {};
       requestData.description = this.selectedTreatmentTemplate.description;
       requestData.start_date = this.form.get('mate_startdate').value;
       requestData.end_date = this.form.get('mate_enddate').value;
       requestData.animals = animals;
-      requestData.medication_selections = this.selectedTreatmentTemplate.medications;
-      requestData.treatment_template.id = this.selectedTreatmentTemplate.id;
-      requestData.treatment_template.is_active = this.selectedTreatmentTemplate.is_active;
+
       requestData.treatment_template.location.id = this.cache.getLocation().id;
 
       this.nsfo
         .doPostRequest(API_URI_GET_TREATMENT_TEMPLATES + '/' + this.selectedTreatmentTemplate.type.toLowerCase(), requestData)
         .subscribe((res: JsonResponseModel) => {
-          console.log(res);
+          if (typeof res.result.code !== 'undefined' && res.result.code === 500) {
+            alert(res.result.message);
+          }
         });
     }
   }

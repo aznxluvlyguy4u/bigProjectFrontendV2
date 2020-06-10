@@ -38,6 +38,26 @@
   </div>
 </td>
 
+<!-- TREATMENT MEDICATIONS -->
+<td>
+  {{treatment.medications ? treatment.medications.length: '0'}}x
+  <span>
+      <a (click)="openMedicineModal()" class="overview-controls">
+          <i class="fa fa-info-circle" aria-hidden="true"></i>
+      </a>
+  </span>
+</td>
+
+<!-- TREATMENT ANIMALS -->
+<td>
+  {{treatment.animals ? treatment.animals.length: '0'}}x
+  <span>
+      <a (click)="openAnimalsModal()" class="overview-controls">
+          <i class="fa fa-info-circle" aria-hidden="true"></i>
+      </a>
+  </span>
+</td>
+
 <!--TREATMENT DUTCH TYPE  -->
 <td>
   <label class="show-for-small-only">{{ 'DUTCH TYPE' | translate }}</label>
