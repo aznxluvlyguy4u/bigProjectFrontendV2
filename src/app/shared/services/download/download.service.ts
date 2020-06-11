@@ -190,10 +190,11 @@ export class DownloadService {
     this.doDownloadPostRequestByReportWorker(API_URI_GET_LINEAGE_PROOF + queryParam, request);
   }
 
-  doCombiFormTransportDocumentPostRequest(animals: Animal[], form: FormGroup ) {
+  doCombiFormTransportDocumentPostRequest(animals: Animal[], form: FormGroup, exportUbn = '') {
     const request = {
       animals: [],
-      transport_date: moment(form.get('transport_date').value).format('DD-MM-YYYY')
+      transport_date: moment(form.get('transport_date').value).format('DD-MM-YYYY'),
+      export_ubn: exportUbn
     };
 
     for (let i = 0; i < animals.length; i++) {

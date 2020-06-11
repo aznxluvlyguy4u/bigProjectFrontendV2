@@ -139,3 +139,6 @@ export const API_URI_GET_COLLAR_COLORS = '/v1/collars';
 
 // TREATMENT TEMPLATES & TREATMENTS
 export const API_URI_GET_TREATMENT_TEMPLATES = '/v1/treatments';
+
+// OVERIG
+export const API_URI_GET_LOCATIONS_WITH_EXPORT_OR_DEPART = '/v1/animals-location-with-exports-or-departs';
