@@ -66,7 +66,7 @@ export class ReportCombiFormTransportDocumentComponent {
 
     private getLocationsWithExportsOrDeparts() {
       this.nsfo.doGetRequest(API_URI_GET_LOCATIONS_WITH_EXPORT_OR_DEPART + '?depart_date=' + moment(this.transport_date).format('D-M-YYYY'))
-        .subscribe((response) => {
+        .subscribe((response: any) => {
           this.locations = response.result;
           this.isLoadingLocations = false;
           if (this.locations.length > 0) {
