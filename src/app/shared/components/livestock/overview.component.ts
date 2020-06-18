@@ -29,6 +29,7 @@ const fileTypeDropdownMinCount = 2;
 export const LIVESTOCK_TYPE_MATE = 'LIVE_STOCK_TYPE_MATE';
 export const LIVESTOCK_TYPE_WEIGHT = 'LIVE_STOCK_TYPE_WEIGHT';
 export const LIVESTOCK_TYPE_TREATMENT = 'LIVE_STOCK_TYPE_TREATMENT';
+export const LIVESTOCK_TYPE_EXPORT = 'LIVE_STOCK_TYPE_EXPORT';
 
 @Component({
     selector: 'app-livestock-overview',
@@ -51,6 +52,7 @@ export class LivestockOverviewComponent implements OnInit, OnDestroy {
     @Input() lastMateChanged: Subject<MateChangeResponse>;
     @Input() displaySubUlnText = false;
     @Input() extraDisabledCriteria = false;
+    @Input() exportDate = null;
     mateMode = false;
     weightMode = false;
     updateLastMateSubscription: Subscription;
@@ -87,6 +89,18 @@ export class LivestockOverviewComponent implements OnInit, OnDestroy {
     public report_options_toggled = false;
     public filterHistoric  = 'NO';
 
+    private _export_date;
+
+    get export_date(): any {
+      return this._export_date;
+    }
+
+    @Input()
+    set export_date(val) {
+      this._export_date = val;
+      this.getLiveStockExport();
+    }
+
   constructor(private apiService: NSFOService,
                 private router: Router,
                 private settings: Settings,
@@ -122,7 +136,11 @@ export class LivestockOverviewComponent implements OnInit, OnDestroy {
                 this.weightMode = true;
                 this.getLivestockLastWeight();
                 break;
-
+            case LIVESTOCK_TYPE_EXPORT:
+                setTimeout(() => {
+                  this.getLiveStockExport();
+                }, 3000);
+                break;
           default:
                 if (typeof livestockListInStorage !== 'undefined') {
                   this.livestock_list = livestockListInStorage;
@@ -234,6 +252,10 @@ export class LivestockOverviewComponent implements OnInit, OnDestroy {
 
     private getLivestockLastWeight() {
       this.getLivestockListBase('?type=last_weight');
+    }
+
+    private getLiveStockExport() {
+      this.getLivestockListBase('?type=export&export_date=' + moment(this.export_date).format('D-M-YYYY'));
     }
 
     private getLivestockList() {
