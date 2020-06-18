@@ -1,0 +1,64 @@
+<form [formGroup]="form">
+  <div class='row'>
+    <div class='large-4 large-centered columns form-controls'>
+      <div class='row'>
+        <div class='large-6 columns'>
+          <label class='middle' for="export_ubn">
+            {{ 'EXPORT UBN' | translate }}
+          </label>
+        </div>
+        <div class='large-6 columns'>
+          <input type="text" id="export_ubn" class="form-control" [value]="exportUBN" (click)="openModal()">
+        </div>
+        <div class='large-6 columns'>
+          <label class='middle'>
+            {{ 'TRANSPORT DATE' | translate }}
+          </label>
+        </div>
+        <div class='large-6 columns end'>
+          <app-datepicker
+            [formCtrl]="form.controls['transport_date']"
+            [viewFormat]="view_date_format"
+            [modelFormat]="model_datetime_format"
+            (valueChange)="setTransportDate($event)"
+            [name]="'transport_date'"
+          ></app-datepicker>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
+<div class="row">
+  <div class="large-4 large-centered columns">
+      <div class="large-12 columns">
+        <app-download-button
+          (click)="generateReport()"
+        ></app-download-button>
+      </div>
+  </div>
+</div>
+<div class="reveal-overlay" [ngStyle]="{'display': modalDisplay}">
+  <div class="tiny reveal" [ngStyle]="{'display': modalDisplay}">
+    <div class="modal-header">
+      {{ 'EXPORT UBN' | translate }}
+      <button type="button" class="pull-right" aria-label="Close modal" (click)="closeModal()">
+        <i class="fa fa-times" aria-hidden="true"></i>
+      </button>
+    </div>
+    <div class="modal-body">
+        <app-page-loading-spinner *ngIf="isLoadingLocations"></app-page-loading-spinner>
+        <div *ngIf="!isLoadingLocations">
+          <label for="exportUBN">{{ 'UBN' | translate }}</label>
+          <select id="exportUBN" name="exportUBN" [(ngModel)]="exportUBN">
+            <option *ngFor="let location of locations" [ngValue]="location.ubn">{{location.companyName}} ({{ location.ubn }})</option>
+          </select>
+          <div *ngFor="let location of locations">
+            <p *ngIf="exportUBN === location.ubn"><b>Aantal geëxporteerde dieren:</b> {{location.animal_count}}</p>
+          </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+      <button class="tiny primary button pull-right" *ngIf="exportUBN !== ''" (click)="closeModal()">{{ 'CHOOSE' | translate}}</button>
+    </div>
+  </div>
+</div>

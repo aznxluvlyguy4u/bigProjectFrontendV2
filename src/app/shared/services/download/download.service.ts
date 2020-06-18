@@ -14,7 +14,8 @@ import {
   API_URI_GET_COMPANY_REGISTER_REPORT,
   API_URI_GET_WEIGHTS_PER_YEAR_OF_BIRTH_REPORT,
   API_URI_GET_ANIMAL_FEATURES_PER_YEAR_OF_BIRTH_REPORT,
-  API_URI_GET_ANIMAL_TREATMENTS_PER_YEAR_REPORT
+  API_URI_GET_ANIMAL_TREATMENTS_PER_YEAR_REPORT,
+  API_URI_GET_COMBI_FORM_TRANSPORT_DOCUMENT
 } from '../nsfo-api/nsfo.settings';
 import {
   QUERY_PARAM_CONCAT_VALUE_AND_ACCURACY,
@@ -37,6 +38,8 @@ import {QueryParamSetModel} from '../../models/query-param-set.model';
 import {ReportService} from '../report/report.service';
 import {UlnRequestModel} from '../../request/UlnRequestModel';
 import {ReportType} from '../report/report-request.model';
+import {FormGroup} from '@angular/forms';
+import * as moment from 'moment';
 
 export const INBREEDING_COEFFICIENT_REPORT = 'INBREEDING_COEFFICIENT_REPORT';
 export const LINEAGE_PROOF_REPORT = 'LINEAGE_PROOF_REPORT';
@@ -185,6 +188,15 @@ export class DownloadService {
 
     const queryParam = typeof fileType === 'string' ? '?' + QUERY_PARAM_FILE_TYPE + '=' + fileType.toLowerCase() : '';
     this.doDownloadPostRequestByReportWorker(API_URI_GET_LINEAGE_PROOF + queryParam, request);
+  }
+
+  doCombiFormTransportDocumentPostRequest(form: FormGroup, exportUbn = '') {
+    const request = {
+      transport_date: moment(form.get('transport_date').value).format('DD-MM-YYYY'),
+      export_ubn: exportUbn
+    };
+
+    this.doDownloadPostRequestByReportWorker(API_URI_GET_COMBI_FORM_TRANSPORT_DOCUMENT, request);
   }
 
   doLivestockReportPostRequest(animals: LivestockAnimal[], fileType: string, concatBreedValueAndAccuracyColumns: boolean) {
