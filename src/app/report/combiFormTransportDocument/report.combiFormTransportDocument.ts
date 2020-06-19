@@ -68,12 +68,7 @@ export class ReportCombiFormTransportDocumentComponent {
         .subscribe((response: any) => {
           this.transportDates = response.result;
           this.selectedTransportDate = this.transportDates[0];
-          this.setFirstUbnOfSelectedTransportDate();
-          // this.locations = response.result;
-          // this.isLoadingLocations = false;
-          // if (this.locations.length > 0) {
-          //   this.exportUBN = this.locations[0].ubn;
-          // }
+          this.isLoadingLocations = false;
         });
     }
 
@@ -82,7 +77,9 @@ export class ReportCombiFormTransportDocumentComponent {
         typeof this.selectedTransportDate.destination_ubns !== 'undefined' &&
         this.selectedTransportDate.destination_ubns.length > 0
       ) {
-        this.exportUBN = this.selectedTransportDate.destination_ubns[0];
+        setTimeout(() => {
+          this.exportUBN = this.selectedTransportDate.destination_ubns[0];
+        }, 1000);
       }
     }
 }
