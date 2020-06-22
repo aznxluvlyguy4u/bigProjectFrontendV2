@@ -1,6 +1,7 @@
 import {TreatmentLocation} from './treatment-location.model';
 import {MedicationOption} from './medication-option.model';
 import {Animal} from './animal.model';
+import {TreatmentMedication} from './treatment-medication.model';
 
 export class TreatmentTemplate {
   id: number;
@@ -8,7 +9,7 @@ export class TreatmentTemplate {
   dutchType: string;
   location: TreatmentLocation;
   description: string;
-  medications: MedicationOption[];
+  treatment_medications: TreatmentMedication[];
   is_active: boolean;
   type: string;
   start_date: string;

@@ -26,7 +26,7 @@ export class TreatmentService {
 
   private doGetTreatmentTemplates() {
     this.nsfo
-      .doGetRequest(API_URI_GET_TREATMENT_TEMPLATES + '/template')
+      .doGetRequest(API_URI_GET_TREATMENT_TEMPLATES + '/template?minimal_output=false')
       .subscribe(
         (res: JsonResponseModel) => {
           this.treatmentTemplates = res.result;

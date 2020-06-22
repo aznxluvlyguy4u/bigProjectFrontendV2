@@ -7,6 +7,7 @@ import {NSFOService} from '../../../shared/services/nsfo-api/nsfo.service';
 import {SettingsService} from '../../../shared/services/settings/settings.service';
 import {TreatmentTemplate} from '../../../shared/models/treatment-template.model';
 import {API_URI_GET_TREATMENT_TEMPLATES} from '../../../shared/services/nsfo-api/nsfo.settings';
+import {Treatment} from '../../../shared/models/treatment-model';
 
 @Component({
   selector: '[app-treatment-history-row]',
@@ -14,16 +15,15 @@ import {API_URI_GET_TREATMENT_TEMPLATES} from '../../../shared/services/nsfo-api
 })
 
 export class TreatmentHistoryRowComponent implements OnInit {
-  @Input() treatment: TreatmentTemplate;
+  @Input() treatment: Treatment;
   @Input() treatmentTemplatesToSelect = <TreatmentTemplate[]>[];
-  // @Output() revokeTreatment = new EventEmitter();
   @Output() showError = new EventEmitter();
   @Output() revokeTreatment = new EventEmitter();
   @Output() openMedicationModal = new EventEmitter();
   @Output() openAnimalModal = new EventEmitter();
 
   public editMode = false;
-  public temp_treatment: TreatmentTemplate;
+  public temp_treatment: Treatment;
   public isSending = false;
   public form: FormGroup;
   public selectedTreatmentTemplate: TreatmentTemplate;
@@ -64,7 +64,7 @@ export class TreatmentHistoryRowComponent implements OnInit {
       };
 
       this.nsfo
-        .doPutRequest(API_URI_GET_TREATMENT_TEMPLATES + '/' + this.treatment.id, request)
+        .doPutRequest(API_URI_GET_TREATMENT_TEMPLATES + '/' + this.treatment.treatment_id, request)
         .subscribe(
           res => {
             this.treatment.start_date = moment(request.start_date).format(this.settings.getViewDateFormat());

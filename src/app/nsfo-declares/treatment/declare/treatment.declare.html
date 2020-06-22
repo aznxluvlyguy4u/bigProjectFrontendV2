@@ -92,10 +92,10 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let medication of selectedTreatmentTemplate.medications">
+          <tr *ngFor="let medication of selectedTreatmentTemplate.treatment_medications">
             <td class="padding-column">
               <label class="show-for-small-only">{{ 'NAME' | translate }}</label>
-              {{medication.treatment_medication.name}}
+              {{medication.name}}
             </td>
             <td class="padding-column" *ngIf="medication.dosage_unit !== 'aantal'">
               <label class="show-for-small-only">{{ 'DOSAGE' | translate }}</label>
