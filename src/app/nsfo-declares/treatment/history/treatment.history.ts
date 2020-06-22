@@ -127,7 +127,7 @@ export class TreatmentHistoryComponent implements OnInit, OnDestroy {
   }
 
   public selectTreatment(event) {
-    this.selectedTreatment = <TreatmentTemplate> event;
+    this.selectedTreatment = <Treatment> event;
     this.openModal();
   }
 
