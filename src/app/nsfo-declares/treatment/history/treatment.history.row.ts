@@ -94,18 +94,6 @@ export class TreatmentHistoryRowComponent implements OnInit {
     }
     this.editMode = true;
     this.temp_treatment = _.cloneDeep(this.treatment);
-
-    // if (this.treatment.pmsg === 'YES') {
-    //   this.form.get('pmsg').setValue('YES');
-    // } else {
-    //   this.form.get('pmsg').setValue('NO');
-    // }
-    //
-    // if (this.mate.ki === 'YES') {
-    //   this.form.get('ki').setValue('YES');
-    // } else {
-    //   this.form.get('ki').setValue('NO');
-    // }
   }
 
   public cancelEditing() {

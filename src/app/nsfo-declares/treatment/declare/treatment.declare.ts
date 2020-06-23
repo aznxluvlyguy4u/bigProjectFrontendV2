@@ -9,13 +9,10 @@ import {SettingsService} from '../../../shared/services/settings/settings.servic
 import {API_URI_GET_ANIMALS_LIVESTOCK, API_URI_GET_TREATMENT_TEMPLATES} from '../../../shared/services/nsfo-api/nsfo.settings';
 import {Router} from '@angular/router';
 import {Settings} from '../../../shared/variables/settings';
-import {Observable, Subject, Subscription} from 'rxjs';
-import {MateChangeResponse} from '../../../shared/models/nsfo-declare.model';
+import {Subject, Subscription} from 'rxjs';
 import {Animal, LivestockAnimal} from '../../../shared/models/animal.model';
-import {AnimalsOverviewSelection} from '../../../shared/components/livestock/animals-overview-selection.model';
 import {ErrorMessage} from '../../../shared/models/error-message.model';
 import {JsonResponseModel} from '../../../shared/models/json-response.model';
-import {HttpErrorResponse} from '@angular/common/http';
 import * as moment from 'moment';
 import {TreatmentTemplate} from '../../../shared/models/treatment-template.model';
 import {CacheService} from '../../../shared/services/settings/cache.service';
