@@ -55,6 +55,7 @@ export class TreatmentDeclareComponent implements OnInit, OnDestroy, AfterViewCh
   private currentLocationUbn;
   public selectedTreatmentTemplate: TreatmentTemplate;
   public showTreatmentTemplates = true;
+  public displayTreatmentLocationIndividualType = this.treatmentService.displayTreatmentLocationIndividualType;
 
   constructor(private fb: FormBuilder,
               private nsfo: NSFOService,

@@ -38,6 +38,7 @@ export class TreatmentHistoryComponent implements OnInit, OnDestroy {
   public searchValue: string;
 
   public totalTreatments: number;
+  public displayTreatmentLocationIndividualType = this.treatmentService.displayTreatmentLocationIndividualType;
 
   constructor(
     private apiService: NSFOService,

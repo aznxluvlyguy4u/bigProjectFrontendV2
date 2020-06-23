@@ -17,6 +17,8 @@ import {Treatment} from '../../../shared/models/treatment-model';
 export class TreatmentHistoryRowComponent implements OnInit {
   @Input() treatment: Treatment;
   @Input() treatmentTemplatesToSelect = <TreatmentTemplate[]>[];
+  @Input() displayTreatmentLocationIndividualType: boolean;
+
   @Output() showError = new EventEmitter();
   @Output() revokeTreatment = new EventEmitter();
   @Output() openMedicationModal = new EventEmitter();

@@ -73,7 +73,7 @@
   <div class="medium-12 columns">
     <h3>{{ 'TREATMENT TEMPLATE' | translate }}</h3>
     <p><b>{{'DESCRIPTION' | translate}}:</b> {{selectedTreatmentTemplate.description}}</p>
-    <p><b>{{'DUTCH TYPE' | translate}}:</b> {{selectedTreatmentTemplate.dutchType}}</p>
+    <p *ngIf="displayTreatmentLocationIndividualType"><b>{{'DUTCH TYPE' | translate}}:</b> {{selectedTreatmentTemplate.dutchType}}</p>
     <p><b>{{'MEDICATIONS' | translate}}:</b></p>
       <table class="stack">
         <thead>

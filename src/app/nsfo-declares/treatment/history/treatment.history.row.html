@@ -59,7 +59,7 @@
 </td>
 
 <!--TREATMENT DUTCH TYPE  -->
-<td>
+<td *ngIf="displayTreatmentLocationIndividualType">
   <label class="show-for-small-only">{{ 'DUTCH TYPE' | translate }}</label>
   <span>{{ treatment.dutchType }}</span>
 </td>

@@ -23,7 +23,7 @@
     <th>{{ 'TREATMENT TEMPLATE' | translate }}</th>
     <th>{{ 'MEDICATIONS' | translate }}</th>
     <th>{{ 'ANIMALS' | translate }}</th>
-    <th>{{ 'DUTCH TYPE' | translate }}</th>
+    <th *ngIf="displayTreatmentLocationIndividualType">{{ 'DUTCH TYPE' | translate }}</th>
     <th>{{ 'STATUS' | translate }}</th>
     <th></th>
     </tr>
@@ -36,7 +36,9 @@
         (showError)="showError($event)"
         (openMedicationModal)="openModal('medicine', treatment.treatment_id)"
         (openAnimalModal)="openModal('animal', treatment.treatment_id)"
-        [treatment]="treatment"></tr>
+        [treatment]="treatment"
+        [displayTreatmentLocationIndividualType]="displayTreatmentLocationIndividualType"
+    ></tr>
     </tbody>
   </table>
 

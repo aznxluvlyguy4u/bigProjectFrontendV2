@@ -10,6 +10,8 @@ export class TreatmentService {
   treatmentTemplatesChanged = new Subject<TreatmentTemplate[]>();
   private treatmentTemplates: TreatmentTemplate[] = [];
 
+  public displayTreatmentLocationIndividualType = false;
+
   constructor(
     private nsfo: NSFOService
   ) {
