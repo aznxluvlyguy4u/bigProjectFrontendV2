@@ -15,13 +15,17 @@ export class TreatmentHistoryPipe implements PipeTransform {
     return value.filter((treatment: TreatmentTemplate) => {
       const needle = term.toLowerCase();
 
-      const haystack =
+      let haystack =
         treatment.description +
         treatment.dutchType +
         treatment.create_date +
         treatment.start_date +
         treatment.end_date
       ;
+
+      for (const animal of treatment.animals) {
+        haystack = haystack + animal.uln_country_code + animal.uln_number;
+      }
 
       return haystack.toLowerCase().indexOf(needle) !== -1;
     });
