@@ -479,7 +479,7 @@ export class LivestockOverviewComponent implements OnInit, OnDestroy {
                 return animal.date_of_birth;
 
             case 'WORK NUMBER':
-                return animal.work_number;
+                return animal.worker_number;
 
             case 'COLLAR NUMBER':
                 return animal.collar_color && animal.collar_number ?
