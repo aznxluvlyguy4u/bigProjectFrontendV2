@@ -250,8 +250,8 @@ export class LivestockOverviewComponent implements OnInit, OnDestroy {
                     this.livestock_list = <LivestockAnimal[]> res.result;
                     for (const animal of this.livestock_list) {
                         animal.date_of_birth_sort = animal.date_of_birth;
-                        animal.date_of_birth = moment(animal.date_of_birth).format(this.settings.VIEW_DATE_FORMAT);
-                        animal.inflow_date = moment(animal.inflow_date).format(this.settings.VIEW_DATE_FORMAT);
+                        animal.date_of_birth = this.getNullCheckedDate(animal.date_of_birth);
+                        animal.inflow_date = this.getNullCheckedDate(animal.inflow_date);
 
                         if (animal.last_mate) {
                             if (animal.last_mate.start_date) {
@@ -288,6 +288,14 @@ export class LivestockOverviewComponent implements OnInit, OnDestroy {
             );
     }
 
+    private getNullCheckedDate(dateString: string): string {
+      if (dateString == null) {
+        return '--';
+      } else {
+        return moment(dateString).format(this.settings.VIEW_DATE_FORMAT);
+      }
+    }
+
     private getHistoricAnimals() {
         this.apiService
             .doGetRequest(API_URI_GET_ANIMALS_HISTORIC_LIVESTOCK)
@@ -296,8 +304,8 @@ export class LivestockOverviewComponent implements OnInit, OnDestroy {
                     this.historic_livestock_list = <LivestockAnimal[]> res.result;
                     for (const animal of this.historic_livestock_list) {
                         animal.date_of_birth_sort = animal.date_of_birth;
-                        animal.date_of_birth = moment(animal.date_of_birth).format(this.settings.VIEW_DATE_FORMAT);
-                        animal.inflow_date = moment(animal.inflow_date).format(this.settings.VIEW_DATE_FORMAT);
+                        animal.date_of_birth = this.getNullCheckedDate(animal.date_of_birth);
+                        animal.inflow_date = this.getNullCheckedDate(animal.inflow_date);
 
                         if (animal.last_mate) {
                             if (animal.last_mate.start_date) {
