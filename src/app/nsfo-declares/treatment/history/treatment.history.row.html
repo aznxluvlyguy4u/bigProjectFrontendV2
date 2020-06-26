@@ -28,7 +28,7 @@
 
 <!--TREATMENT TEMPLATE-->
 <td>
-  <label class="show-for-small-only">{{ 'TREATMENT TEMPLATE' | translate }}</label>
+  <label class="show-for-small-only">{{ 'TREATMENT' | translate }}</label>
   <span *ngIf="!editMode">{{ treatment.description }}</span>
   <div *ngIf="editMode && treatmentTemplatesToSelect.length > 0" [formGroup]="form">
       <select name="selectedTreatmentTemplate" [(ngModel)]="selectedTreatmentTemplate" [ngModelOptions]="{standalone: true}">

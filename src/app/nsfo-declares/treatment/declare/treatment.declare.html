@@ -37,7 +37,7 @@
   <!--TREATMENT TEMPLATE-->
   <div class="medium-3 columns">
       <label *ngIf="showTreatmentTemplates; else noTreatmentTemplates">
-      {{ 'TREATMENT TEMPLATE' | translate }}
+      {{ 'TREATMENT' | translate }}
           <select name="selectedTreatmentTemplate" [(ngModel)]="selectedTreatmentTemplate" [ngModelOptions]="{standalone: true}">
         <option *ngFor="let template of treatmentTemplates" [ngValue]="template">{{template.description}}</option>
       </select>
@@ -71,7 +71,7 @@
 <!--SELECTED TEMPLATE INFORMATION-->
 <div class="row" style="background-color: #E1E1E1;margin-left: auto;margin-right: auto;" *ngIf="selectedTreatmentTemplate">
   <div class="medium-12 columns">
-    <h3>{{ 'TREATMENT TEMPLATE' | translate }}</h3>
+    <h3>{{ 'TREATMENT' | translate }}</h3>
     <p><b>{{'DESCRIPTION' | translate}}:</b> {{selectedTreatmentTemplate.description}}</p>
     <p *ngIf="displayTreatmentLocationIndividualType"><b>{{'DUTCH TYPE' | translate}}:</b> {{selectedTreatmentTemplate.dutchType}}</p>
     <p><b>{{'MEDICATIONS' | translate}}:</b></p>
