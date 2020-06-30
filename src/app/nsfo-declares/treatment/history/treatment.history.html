@@ -12,9 +12,9 @@
   </div>
 </div>
 
-<div *ngIf="!isLoading">
+<div *ngIf="!isLoading" id="treatment">
 
-  <table class="stack confirmation">
+  <table class="stack history">
     <thead>
     <tr>
     <th>{{ 'CREATED AT' | translate }}</th>
@@ -95,7 +95,7 @@
       </button>
     </div>
 
-    <table class="stacked">
+    <table class="stacked history">
       <thead>
       <tr>
         <td>{{ 'ULN' | translate}}</td>
