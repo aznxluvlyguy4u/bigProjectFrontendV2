@@ -1,12 +1,44 @@
+<app-page-loading-spinner *ngIf="isLoadingLocations"></app-page-loading-spinner>
+<form [formGroup]="form" *ngIf="!isLoadingLocations">
+  <div class='row'>
+    <div class='large-4 large-centered columns form-controls'>
+      <div class='row'>
+        <div class='large-6 columns'>
+          <label class='middle' for="exportUBN">
+            {{ 'EXPORT UBN' | translate }}
+          </label>
+        </div>
+        <div class='large-6 columns'>
+          <select id="exportUBN" formControlName="exportUBN" [(ngModel)]="exportUBN">
+            <option *ngFor="let ubn of selectedTransportDate.destination_ubns" [ngValue]="ubn">{{ ubn }}</option>
+          </select>
+        </div>
+        <div class='large-6 columns'>
+          <label class='middle' for="transport_date">
+            {{ 'TRANSPORT DATE' | translate }}
+          </label>
+        </div>
+        <div class='large-6 columns end'>
+          <select id="transport_date" formControlName="transport_date" [(ngModel)]="selectedTransportDate" (ngModelChange)="setFirstUbnOfSelectedTransportDate()">
+              <option *ngFor="let transportDate of transportDates" [ngValue]="transportDate">
+                {{transportDate.day}}-{{transportDate.month}}-{{transportDate.year}}
+              </option>
+          </select>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
 <!--LIVESTOCK OVERVIEW-->
 <div class='large-10 columns'>
-    <app-livestock-overview
-            [load_historic_animals_in_non_view_mode]='true'
-            [reportMode]='true'
-            [items_per_page]='100'
-            [file_types_list]='getFileTypesList()'
-            [selectedFileType]='defaultFileType'
-            (selected)='generateReport($event)'
-            [maxSelectionCount]='lineageProofMaxSelectionCount'
-    ></app-livestock-overview>
+  <app-livestock-overview
+    [load_historic_animals_in_non_view_mode]='true'
+    [reportMode]='true'
+    [items_per_page]='100'
+    [file_types_list]='getFileTypesList()'
+    [selectedFileType]='defaultFileType'
+    [export_date]="selectedTransportDate.depart_date"
+    [customType]="'LIVE_STOCK_TYPE_EXPORT'"
+    (selected)='generateReport($event)'
+  ></app-livestock-overview>
 </div>
