@@ -29,16 +29,12 @@
     </div>
   </div>
 </form>
-<!--LIVESTOCK OVERVIEW-->
-<div class='large-10 columns'>
-  <app-livestock-overview
-    [load_historic_animals_in_non_view_mode]='true'
-    [reportMode]='true'
-    [items_per_page]='100'
-    [file_types_list]='getFileTypesList()'
-    [selectedFileType]='defaultFileType'
-    [export_date]="selectedTransportDate.depart_date"
-    [customType]="'LIVE_STOCK_TYPE_EXPORT'"
-    (selected)='generateReport($event)'
-  ></app-livestock-overview>
+<div class="row">
+  <div class="large-4 large-centered columns">
+      <div class="large-12 columns">
+        <app-download-button
+          (click)="generateReport()"
+        ></app-download-button>
+      </div>
+  </div>
 </div>

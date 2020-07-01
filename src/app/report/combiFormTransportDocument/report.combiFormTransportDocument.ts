@@ -47,8 +47,8 @@ export class ReportCombiFormTransportDocumentComponent {
       setTimeout(this.getLocationsWithExportsOrDeparts(), 3000);
     }
 
-    public generateReport(event: AnimalsOverviewSelection) {
-        this.downloadService.doCombiFormTransportDocumentPostRequest(event.animals, this.form, this.exportUBN);
+    public generateReport() {
+        this.downloadService.doCombiFormTransportDocumentPostRequest(this.form, this.exportUBN);
     }
 
     public getFileTypesList(): string[] {
