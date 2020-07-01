@@ -20,10 +20,13 @@ export class LossChangeResponse extends Loss implements HistoryResponseModel {
   public log_date: string;
   public uln_country_code: string;
   public uln_number: string;
+  public collar_color: string;
+  public collar_number: string;
   public pedigree_country_code: string;
   public pedigree_number: string;
   public reason_of_loss: string;
   public request_state: string;
+  public status: string;
   error_code: string;
   error_message: string;
 }

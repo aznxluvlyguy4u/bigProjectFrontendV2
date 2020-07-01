@@ -20,7 +20,7 @@
   </thead>
   <tbody>
   <tr app-loss-history-row
-    *ngFor="let loss of lossHistoryList | lossHistoryFilter:[searchValue] | paginate: {itemsPerPage: 10, currentPage: page}; let i = index"
+    *ngFor="let loss of lossHistoryList | lossHistoryFilter: searchValue | paginate: {itemsPerPage: 10, currentPage: page}; let i = index"
     (revokeLoss)="selectLoss($event)" [loss]="loss" [loss_index]="i"></tr>
   </tbody>
 </table>
