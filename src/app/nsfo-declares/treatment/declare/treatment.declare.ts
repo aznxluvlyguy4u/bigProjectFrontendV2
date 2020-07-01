@@ -117,13 +117,19 @@ export class TreatmentDeclareComponent implements OnInit, OnDestroy, AfterViewCh
 
     if (this.form.valid) {
       const requestData: any = {};
-      requestData.treatment_template = this.selectedTreatmentTemplate;
+
+      const clonedTreatmentTemplate = _.cloneDeep(this.selectedTreatmentTemplate);
+
+      _.remove(clonedTreatmentTemplate.treatment_medications, (treatment_medication) => {
+        return treatment_medication.marked_for_remove;
+      });
+
+      requestData.treatment_template = clonedTreatmentTemplate;
       requestData.treatment_template.location = {};
       requestData.description = this.selectedTreatmentTemplate.description;
       requestData.start_date = this.form.get('mate_startdate').value;
       requestData.end_date = this.form.get('mate_enddate').value;
       requestData.animals = animals;
-
       requestData.treatment_template.location.id = this.cache.getLocation().id;
 
       this.nsfo

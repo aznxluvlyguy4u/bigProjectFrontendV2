@@ -83,33 +83,37 @@
             <th class="padding-column">{{'REG NL' | translate}}</th>
             <th class="padding-column">{{'WAITING DAYS' | translate }}</th>
             <th class="padding-column">{{'TREATMENT DURATION' | translate}}</th>
+            <th class="padding-column"></th>
           </tr>
         </thead>
         <tbody>
           <tr *ngFor="let medication of selectedTreatmentTemplate.treatment_medications">
-            <td class="padding-column">
+            <td class="padding-column" [style.text-decoration]="medication.marked_for_remove ? 'line-through' : ''">
               <label class="show-for-small-only">{{ 'NAME' | translate }}</label>
               {{medication.name}}
             </td>
-            <td class="padding-column" *ngIf="medication.dosage_unit !== 'aantal'">
+            <td class="padding-column" *ngIf="medication.dosage_unit !== 'aantal'" [style.text-decoration]="medication.marked_for_remove ? 'line-through' : ''">
               <label class="show-for-small-only">{{ 'DOSAGE' | translate }}</label>
               {{medication.dosage}} {{medication.dosage_unit}}
             </td>
-            <td class="padding-column" *ngIf="medication.dosage_unit === 'aantal'">
+            <td class="padding-column" *ngIf="medication.dosage_unit === 'aantal'" [style.text-decoration]="medication.marked_for_remove ? 'line-through' : ''">
               <label class="show-for-small-only">{{ 'DOSAGE' | translate }}</label>
               {{medication.dosage_unit}}: {{medication.dosage}}
             </td>
-            <td class="padding-column">
+            <td class="padding-column" [style.text-decoration]="medication.marked_for_remove ? 'line-through' : ''">
               <label class="show-for-small-only">{{ 'REG NL' | translate }}</label>
               {{medication.reg_nl}}
             </td>
-            <td class="padding-column">
+            <td class="padding-column" [style.text-decoration]="medication.marked_for_remove ? 'line-through' : ''">
               <label class="show-for-small-only">{{ 'WAITING DAYS' | translate }}</label>
               {{medication.waiting_days}}
             </td>
-            <td class="padding-column">
+            <td class="padding-column" [style.text-decoration]="medication.marked_for_remove ? 'line-through' : ''">
               <label class="show-for-small-only">{{ 'TREATMENT DURATION' | translate }}</label>
               {{medication.treatment_duration}} {{ 'DAYS LOWER' | translate }}
+            </td>
+            <td>
+              <input type="checkbox" [(ngModel)]="medication.marked_for_remove" class="mat-checkbox">
             </td>
           </tr>
         </tbody>
