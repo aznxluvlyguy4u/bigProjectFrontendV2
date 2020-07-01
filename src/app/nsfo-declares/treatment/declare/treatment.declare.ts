@@ -94,6 +94,9 @@ export class TreatmentDeclareComponent implements OnInit, OnDestroy, AfterViewCh
   }
 
   declareTreatment(event) {
+
+    console.log(this.selectedTreatmentTemplate);
+
     const animals = [];
     event.animals.forEach((animal: Animal) => {
       let type = '';

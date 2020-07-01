@@ -143,7 +143,14 @@ import {LineComponent} from './shared/components/googlechart/line.component';
 import {GoogleLineChartService} from './shared/services/google/googlelinechart.service';
 import {AnimalDetailsCardComponent} from './shared/components/animal-details-card/animal-details-card.component';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {MAT_SNACK_BAR_DEFAULT_OPTIONS, MatButtonModule, MatProgressSpinnerModule, MatSnackBar, MatSnackBarModule} from '@angular/material';
+import {
+  MAT_SNACK_BAR_DEFAULT_OPTIONS,
+  MatButtonModule,
+  MatCheckboxModule,
+  MatProgressSpinnerModule,
+  MatSnackBar,
+  MatSnackBarModule
+} from '@angular/material';
 import {PageLoadingSpinnerComponent} from './shared/components/page-loading-spinner/page-loading-spinner.component';
 import {ButtonPrimaryComponent} from './shared/components/button-primary/button-primary.component';
 import {InsideComponentLoadingSpinnerComponent} from './shared/components/inside-component-loading-spinner/inside-component-loading-spinner.component';
@@ -344,6 +351,7 @@ export function CreateTranslateLoader(http: HttpClient) {
     MatProgressSpinnerModule,
     MatButtonModule,
     MatSnackBarModule,
+    MatCheckboxModule,
     StorageServiceModule,
   ],
   providers: [

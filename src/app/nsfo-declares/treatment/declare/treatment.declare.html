@@ -113,7 +113,7 @@
               {{medication.treatment_duration}} {{ 'DAYS LOWER' | translate }}
             </td>
             <td>
-              <input type="checkbox" [(ngModel)]="medication.marked_for_remove" class="mat-checkbox">
+              <mat-checkbox class="mat-checkbox" [(ngModel)]="medication.marked_for_remove" [color]="'primary'"></mat-checkbox>
             </td>
           </tr>
         </tbody>
