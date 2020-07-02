@@ -193,7 +193,7 @@ export class DownloadService {
 
   doCombiFormTransportDocumentPostRequest(form: FormGroup, exportUbn = '') {
     const request = {
-      transport_date: moment(form.get('transport_date').value).format('DD-MM-YYYY'),
+      transport_date: moment(form.get('transport_date').value.depart_date).format('DD-MM-YYYY'),
       export_ubn: exportUbn
     };
 
