@@ -34,7 +34,7 @@
 
 <!-- TREATMENT MEDICATIONS -->
 <td>
-  {{hasMedications(treatment) ? treatment.medications.length : 'NONE' | translate }}<span *ngIf="hasMedications(treatment) > 0">x</span>
+  {{hasMedications(treatment) ? treatment.medications.length : 'NONE' | translate }}<span *ngIf="hasMedications(treatment)">x</span>
   <span *ngIf="hasMedications(treatment)">
       <a (click)="openMedicineModal()" class="overview-controls">
           <i class="fa fa-info-circle" aria-hidden="true"></i>
