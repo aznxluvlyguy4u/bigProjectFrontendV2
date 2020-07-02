@@ -86,7 +86,7 @@
 </div>
 
 <!--ANIMAL MODAL-->
-<div class="reveal-overlay" [ngStyle]="{'display': animal_modal_display[treatment.treatment_id]}" *ngFor="let treatment of treatmentHistoryList">
+<div id="treatment-animal-modal" class="reveal-overlay" [ngStyle]="{'display': animal_modal_display[treatment.treatment_id]}" *ngFor="let treatment of treatmentHistoryList">
   <div class="tiny reveal" [ngStyle]="{'display': animal_modal_display[treatment.treatment_id]}">
     <div class="modal-header">
       {{ 'ANIMALS' | translate }}
@@ -95,22 +95,26 @@
       </button>
     </div>
 
-    <table class="stacked history">
-      <thead>
-      <tr>
-        <td>{{ 'ULN' | translate}}</td>
-        <td>{{ 'GENDER' | translate}}</td>
-        <td>{{ 'DATE OF BIRTH' | translate}}</td>
-      </tr>
-      </thead>
-      <tbody>
-      <tr *ngFor="let animal of treatment.animals">
-        <td>{{ animal.uln_country_code + animal.uln_number }}</td>
-        <td>{{ animal.gender | translate }}</td>
-        <td>{{ formatDate(animal.date_of_birth) }}</td>
-      </tr>
-      </tbody>
-    </table>
+    <div class="modal-body animal-modal-body">
+      <table class="stacked history animal-modal-table">
+        <thead>
+        <tr>
+          <td>{{ 'ULN' | translate}}</td>
+          <td>{{ 'COLLAR NUMBER' | translate}}</td>
+          <td>{{ 'GENDER' | translate}}</td>
+          <td>{{ 'DATE OF BIRTH' | translate}}</td>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let animal of treatment.animals">
+          <td>{{ animal.uln_country_code + animal.uln_number }}</td>
+          <td>{{ animal.collar_color != null && animal.collar_number != null ? animal.collar_color + ' ' + animal.collar_number : '-' }}</td>
+          <td>{{ animal.gender | translate }}</td>
+          <td>{{ formatDate(animal.date_of_birth) }}</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
 
     <div class="modal-footer">
         <span class="pull-right">

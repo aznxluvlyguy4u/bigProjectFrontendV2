@@ -35,8 +35,7 @@ export class TreatmentHistoryRowComponent implements OnInit {
               private settings: SettingsService) {
     this.form = new FormGroup({
       start_date: new FormControl(''),
-      end_date: new FormControl(''),
-      description: new FormControl('')
+      end_date: new FormControl('')
     });
   }
 
@@ -61,17 +60,15 @@ export class TreatmentHistoryRowComponent implements OnInit {
 
       const request = {
         start_date: this.form.get('start_date').value,
-        end_date: this.form.get('end_date').value,
-        description: this.selectedTreatmentTemplate.description
+        end_date: this.form.get('end_date').value
       };
 
       this.nsfo
         .doPutRequest(API_URI_GET_TREATMENT_TEMPLATES + '/' + this.treatment.treatment_id, request)
         .subscribe(
-          res => {
+          () => {
             this.treatment.start_date = moment(request.start_date).format(this.settings.getViewDateFormat());
             this.treatment.end_date = moment(request.end_date).format(this.settings.getViewDateFormat());
-            this.treatment.description = request.description;
 
             this.editMode = false;
             this.isSending = false;
@@ -84,6 +81,10 @@ export class TreatmentHistoryRowComponent implements OnInit {
           }
         );
     }
+  }
+
+  public hasMedications(treatment: Treatment): boolean {
+    return treatment && treatment.medications && treatment.medications.length > 0;
   }
 
   public sendRevokeRequest() {

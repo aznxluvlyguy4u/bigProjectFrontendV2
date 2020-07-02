@@ -9,4 +9,5 @@ export class TreatmentMedication {
   waiting_days: number;
   is_active: boolean;
   waiting_time_end;
+  marked_to_keep: boolean | null;
 }
