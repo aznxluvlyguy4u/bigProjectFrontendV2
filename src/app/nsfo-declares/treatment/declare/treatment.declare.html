@@ -5,14 +5,14 @@
     <label>
       {{ 'TREATMENT PERIOD' | translate }} &nbsp;
       <app-datepicker
-                  [formCtrl]="form.controls['mate_startdate']"
+                  [formCtrl]="form.controls['start_date']"
                   [viewFormat]="view_date_format"
                   [modelFormat]="model_datetime_format"
                   (valueChange)="updateEndDate($event)"
-                  [name]="'mate_startdate'"
+                  [name]="'start_date'"
                   [parentComponent]="self"
       ></app-datepicker>
-      <div [hidden]="form.controls['mate_startdate'].valid" class="input-error-msg pull-right">{{ 'FILL IN THE TREATMENT PERIOD' | translate }}
+      <div [hidden]="form.controls['start_date'].valid" class="input-error-msg pull-right">{{ 'FILL IN THE TREATMENT PERIOD' | translate }}
       </div>
     </label>
   </div>
@@ -22,14 +22,14 @@
     <label>
       {{ 'TILL' | translate }} &nbsp;
       <app-datepicker
-                  [formCtrl]="form.controls['mate_enddate']"
+                  [formCtrl]="form.controls['end_date']"
                   [viewFormat]="view_date_format"
                   [modelFormat]="model_datetime_format"
                   (valueChange)="sendStartDateToDatePicker()"
-                  [name]="'mate_enddate'"
+                  [name]="'end_date'"
                   [parentComponent]="self"
       ></app-datepicker>
-      <div [hidden]="form.controls['mate_enddate'].valid" class="input-error-msg pull-right">{{ 'FILL IN THE TREATMENT PERIOD' | translate }}
+      <div [hidden]="form.controls['end_date'].valid" class="input-error-msg pull-right">{{ 'FILL IN THE TREATMENT PERIOD' | translate }}
       </div>
     </label>
   </div>
@@ -38,7 +38,7 @@
   <div class="medium-3 columns">
       <label *ngIf="showTreatmentTemplates; else noTreatmentTemplates">
       {{ 'TREATMENT' | translate }}
-          <select name="selectedTreatmentTemplate" [(ngModel)]="selectedTreatmentTemplate" [ngModelOptions]="{standalone: true}">
+          <select name="selectedTreatmentTemplate" [(ngModel)]="selectedTreatmentTemplate" (ngModelChange)="setDefaultMarkedForRemoval()" [ngModelOptions]="{standalone: true}">
         <option *ngFor="let template of treatmentTemplates" [ngValue]="template">{{template.description}}</option>
       </select>
     </label>
@@ -88,32 +88,32 @@
         </thead>
         <tbody>
           <tr *ngFor="let medication of selectedTreatmentTemplate.treatment_medications">
-            <td class="padding-column" [style.text-decoration]="medication.marked_for_remove ? 'line-through' : ''">
+            <td class="padding-column" [class]="!medication.marked_to_keep ? 'disabled-medication' : ''">
               <label class="show-for-small-only">{{ 'NAME' | translate }}</label>
               {{medication.name}}
             </td>
-            <td class="padding-column" *ngIf="medication.dosage_unit !== 'aantal'" [style.text-decoration]="medication.marked_for_remove ? 'line-through' : ''">
+            <td class="padding-column" *ngIf="medication.dosage_unit !== 'aantal'" [class]="!medication.marked_to_keep ? 'disabled-medication' : ''">
               <label class="show-for-small-only">{{ 'DOSAGE' | translate }}</label>
               {{medication.dosage}} {{medication.dosage_unit}}
             </td>
-            <td class="padding-column" *ngIf="medication.dosage_unit === 'aantal'" [style.text-decoration]="medication.marked_for_remove ? 'line-through' : ''">
+            <td class="padding-column" *ngIf="medication.dosage_unit === 'aantal'" [class]="!medication.marked_to_keep ? 'disabled-medication' : ''">
               <label class="show-for-small-only">{{ 'DOSAGE' | translate }}</label>
               {{medication.dosage_unit}}: {{medication.dosage}}
             </td>
-            <td class="padding-column" [style.text-decoration]="medication.marked_for_remove ? 'line-through' : ''">
+            <td class="padding-column" [class]="!medication.marked_to_keep ? 'disabled-medication' : ''">
               <label class="show-for-small-only">{{ 'REG NL' | translate }}</label>
               {{medication.reg_nl}}
             </td>
-            <td class="padding-column" [style.text-decoration]="medication.marked_for_remove ? 'line-through' : ''">
+            <td class="padding-column" [class]="!medication.marked_to_keep ? 'disabled-medication' : ''">
               <label class="show-for-small-only">{{ 'WAITING DAYS' | translate }}</label>
               {{medication.waiting_days}}
             </td>
-            <td class="padding-column" [style.text-decoration]="medication.marked_for_remove ? 'line-through' : ''">
+            <td class="padding-column" [class]="!medication.marked_to_keep ? 'disabled-medication' : ''">
               <label class="show-for-small-only">{{ 'TREATMENT DURATION' | translate }}</label>
               {{medication.treatment_duration}} {{ 'DAYS LOWER' | translate }}
             </td>
             <td>
-              <mat-checkbox class="mat-checkbox" [(ngModel)]="medication.marked_for_remove" [color]="'primary'"></mat-checkbox>
+              <mat-checkbox class="mat-checkbox" [(ngModel)]="medication.marked_to_keep" [color]="'primary'"></mat-checkbox>
             </td>
           </tr>
         </tbody>

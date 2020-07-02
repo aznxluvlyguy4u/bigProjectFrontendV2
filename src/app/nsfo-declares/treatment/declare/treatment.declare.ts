@@ -17,6 +17,7 @@ import * as moment from 'moment';
 import {TreatmentTemplate} from '../../../shared/models/treatment-template.model';
 import {CacheService} from '../../../shared/services/settings/cache.service';
 import {TreatmentService} from '../treatment.service';
+import {TreatmentMedication} from '../../../shared/models/treatment-medication.model';
 
 @Component({
   providers: [NSFOService, Constants],
@@ -41,8 +42,8 @@ export class TreatmentDeclareComponent implements OnInit, OnDestroy, AfterViewCh
         uln: new FormControl(''),
         pmsg: new FormControl('NO'),
         ki: new FormControl('NO'),
-        mate_startdate: new FormControl(),
-        mate_enddate: new FormControl()
+        start_date: new FormControl(),
+        end_date: new FormControl()
     });
   public uidPattern = '[0-9]';
   public successDurationSeconds = 3;
@@ -90,13 +91,10 @@ export class TreatmentDeclareComponent implements OnInit, OnDestroy, AfterViewCh
   }
 
   ngAfterViewChecked() {
-      this.startDate = moment(this.form.get('mate_startdate').value);
+      this.startDate = moment(this.form.get('start_date').value);
   }
 
   declareTreatment(event) {
-
-    console.log(this.selectedTreatmentTemplate);
-
     const animals = [];
     event.animals.forEach((animal: Animal) => {
       let type = '';
@@ -124,14 +122,14 @@ export class TreatmentDeclareComponent implements OnInit, OnDestroy, AfterViewCh
       const clonedTreatmentTemplate = _.cloneDeep(this.selectedTreatmentTemplate);
 
       _.remove(clonedTreatmentTemplate.treatment_medications, (treatment_medication) => {
-        return treatment_medication.marked_for_remove;
+        return !treatment_medication.marked_to_keep;
       });
 
       requestData.treatment_template = clonedTreatmentTemplate;
       requestData.treatment_template.location = {};
       requestData.description = this.selectedTreatmentTemplate.description;
-      requestData.start_date = this.form.get('mate_startdate').value;
-      requestData.end_date = this.form.get('mate_enddate').value;
+      requestData.start_date = this.form.get('start_date').value;
+      requestData.end_date = this.form.get('end_date').value;
       requestData.animals = animals;
       requestData.treatment_template.location.id = this.cache.getLocation().id;
 
@@ -146,6 +144,12 @@ export class TreatmentDeclareComponent implements OnInit, OnDestroy, AfterViewCh
             alert(this.nsfo.getErrorMessage(error));
           });
     }
+  }
+
+  public setDefaultMarkedForRemoval() {
+    this.selectedTreatmentTemplate.treatment_medications.forEach((treatmentMedication: TreatmentMedication) => {
+      treatmentMedication.marked_to_keep = true;
+    });
   }
 
   public isTreatmentTemplateNotSelected() {

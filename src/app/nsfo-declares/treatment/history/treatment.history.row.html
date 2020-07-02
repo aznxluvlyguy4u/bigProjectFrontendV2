@@ -29,13 +29,7 @@
 <!--TREATMENT TEMPLATE-->
 <td>
   <label class="show-for-small-only">{{ 'TREATMENT' | translate }}</label>
-  <span *ngIf="!editMode">{{ treatment.description }}</span>
-  <div *ngIf="editMode && treatmentTemplatesToSelect.length > 0" [formGroup]="form">
-      <select name="selectedTreatmentTemplate" [(ngModel)]="selectedTreatmentTemplate" [ngModelOptions]="{standalone: true}">
-        <option *ngFor="let template of treatmentTemplatesToSelect" [ngValue]="template">{{template.description}}</option>
-      </select>
-    <div *ngIf="!form.controls['description'].valid" class="input-error-msg text-center">{{ 'FILL IN THE TREATMENT DESCRIPTION' | translate }}</div>
-  </div>
+  <span>{{ treatment.description }}</span>
 </td>
 
 <!-- TREATMENT MEDICATIONS -->
