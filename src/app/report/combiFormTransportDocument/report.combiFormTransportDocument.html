@@ -1,0 +1,42 @@
+<app-page-loading-spinner *ngIf="isLoadingLocations"></app-page-loading-spinner>
+<form [formGroup]="form" *ngIf="!isLoadingLocations">
+  <div class='row'>
+    <div class='large-4 large-centered columns form-controls'>
+      <div class="row">
+        <div class='large-6 columns'>
+          <label class='middle' for="transport_date">
+            {{ 'TRANSPORT DATE' | translate }}
+          </label>
+        </div>
+        <div class='large-6 columns'>
+          <select id="transport_date" formControlName="transport_date" [(ngModel)]="selectedTransportDate" (ngModelChange)="setFirstUbnOfSelectedTransportDate()">
+            <option *ngFor="let transportDate of transportDates" [ngValue]="transportDate">
+              {{transportDate.day}}-{{transportDate.month}}-{{transportDate.year}}
+            </option>
+          </select>
+        </div>
+      </div>
+      <div class='row'>
+        <div class='large-6 columns'>
+          <label class='middle' for="exportUBN">
+            {{ 'EXPORT UBN' | translate }}
+          </label>
+        </div>
+        <div class='large-6 columns end'>
+          <select id="exportUBN" formControlName="exportUBN" [(ngModel)]="exportUBN">
+            <option *ngFor="let ubn of selectedTransportDate.destination_ubns" [ngValue]="ubn">{{ ubn }}</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
+<div class="row">
+  <div class="large-4 large-centered columns">
+      <div class="large-12 columns">
+        <app-download-button
+          (click)="generateReport()"
+        ></app-download-button>
+      </div>
+  </div>
+</div>

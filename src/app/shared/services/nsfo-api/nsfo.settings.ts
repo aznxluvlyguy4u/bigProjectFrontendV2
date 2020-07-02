@@ -123,6 +123,7 @@ export const API_URI_GET_COMPANY_REGISTER_REPORT = '/v1/reports/company-register
 export const API_URI_GET_WEIGHTS_PER_YEAR_OF_BIRTH_REPORT = '/v1/reports/weights-per-year-of-birth';
 export const API_URI_GET_ANIMAL_FEATURES_PER_YEAR_OF_BIRTH_REPORT = '/v1/reports/animal-features-per-year-of-birth';
 export const API_URI_GET_ANIMAL_TREATMENTS_PER_YEAR_REPORT = '/v1/reports/animal-treatments-per-year';
+export const API_URI_GET_COMBI_FORM_TRANSPORT_DOCUMENT = '/v1/reports/combi-form-transport-document';
 
 // Pedigree Register
 export const API_URI_GET_PEDIGREE_REGISTERS = '/v1/pedigreeregisters';
@@ -138,3 +139,6 @@ export const API_URI_GET_COLLAR_COLORS = '/v1/collars';
 
 // TREATMENT TEMPLATES & TREATMENTS
 export const API_URI_GET_TREATMENT_TEMPLATES = '/v1/treatments';
+
+// OVERIG
+export const API_URI_GET_LOCATIONS_WITH_DEPART_DATES = '/v1/departs-history/depart-dates-and-ubn-new-owners';
