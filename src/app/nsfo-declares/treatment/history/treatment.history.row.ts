@@ -83,6 +83,10 @@ export class TreatmentHistoryRowComponent implements OnInit {
     }
   }
 
+  public hasMedications(treatment: Treatment): boolean {
+    return treatment && treatment.medications && treatment.medications.length > 0;
+  }
+
   public sendRevokeRequest() {
     this.revokeTreatment.emit(this.treatment);
   }
