@@ -86,7 +86,7 @@ export class TreatmentHistoryComponent implements OnInit, OnDestroy {
               treatment.end_date = moment(treatment.end_date).format(this.settings.getViewDateFormat());
               treatment.create_date = moment(treatment.create_date).format(this.settings.getViewDateTimeFormat());
             }
-            this.treatmentHistoryList = _.orderBy(treatments, ['create_date'], ['desc']);
+            this.treatmentHistoryList = treatments; // Sorting is done in the backend
             this.treatmentHistoryList.forEach((treatment) => {
                 this.medicine_modal_display[treatment.treatment_id] = 'none';
                 this.animal_modal_display[treatment.treatment_id] = 'none';
