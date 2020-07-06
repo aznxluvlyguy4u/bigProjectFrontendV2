@@ -1,0 +1,120 @@
+<div class="reveal-overlay" [ngStyle]="{'display': modalDisplay}">
+  <div class="reveal tiny" [ngStyle]="{'display': modalDisplay}">
+
+    <div class="modal-header-download">
+      {{ title | translate }}
+      <button type="button" class="pull-right" aria-label="Close modal" (click)="closeModal()">
+        <i class="fa fa-times" aria-hidden="true"></i>
+      </button>
+    </div>
+
+    <ng-container *ngIf="editedScanMeasurement != null">
+      <!-- MEASUREMENTS -->
+      <div class="info-container">
+        <div class="info-header">
+
+          <div class="row">
+            <div class="medium-6 columns">
+              <label class="middle"> {{ 'DELETE' | translate }}</label>
+            </div>
+            <div class="medium-6 columns">
+              <app-boolean-switch
+                [boolVal]="deleteScanMeasurement"
+                (boolValChanged)="deleteScanMeasurement = $event"
+              ></app-boolean-switch>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="info-body" *ngIf="!deleteScanMeasurement">
+
+          <div class="row">
+            <div class="medium-6 columns">
+              <label class="middle"> {{ 'LAST UPDATED' | translate }}</label>
+            </div>
+            <div class="medium-6 columns">
+              <app-datepicker-v2
+                id="component-datepicker-v2" class="datepicker-v2-group"
+                [dateString]='measurementDateString'
+                [modelFormat]='settings.getModelDateTimeFormat()'
+                [disabled]='false'
+                [updateInitialValues]='(initialValuesChanged)'
+                [activateSetNullButton]='false'
+                (isDateStringChanged)=updateReferenceDateString($event)
+              ></app-datepicker-v2>
+            </div>
+          </div>
+
+          <!-- FAT COVER 1 -->
+          <div class="row">
+            <div class="medium-6 columns">
+              <label class="middle"> {{ 'FAT COVER' | translate }} 1 </label>
+            </div>
+            <div class="medium-6 columns">
+              <input type="number" min="0" max="9" step="0.1"
+                     [(ngModel)]="editedScanMeasurement.fat1">
+            </div>
+          </div>
+
+          <!-- FAT COVER 2 -->
+          <div class="row">
+            <div class="medium-6 columns">
+              <label class="middle"> {{ 'FAT COVER' | translate }} 2 </label>
+            </div>
+            <div class="medium-6 columns">
+              <input type="number" min="0" max="9" step="0.1"
+                     [(ngModel)]="editedScanMeasurement.fat2">
+            </div>
+          </div>
+
+          <!-- FAT COVER 3 -->
+          <div class="row">
+            <div class="medium-6 columns">
+              <label class="middle"> {{ 'FAT COVER' | translate }} 3 </label>
+            </div>
+            <div class="medium-6 columns">
+              <input type="number" min="0" max="9" step="0.1"
+                     [(ngModel)]="editedScanMeasurement.fat3">
+            </div>
+          </div>
+
+          <!-- MUSCULAR THICKNESS -->
+          <div class="row">
+            <div class="medium-6 columns">
+              <label class="middle"> {{ 'MUSCULAR THICKNESS' | translate }} </label>
+            </div>
+            <div class="medium-6 columns">
+              <input type="number" min="10" max="50" step="0.1"
+                     [(ngModel)]="editedScanMeasurement.muscle_thickness">
+            </div>
+          </div>
+
+          <!-- SCAN WEIGHT -->
+          <div class="row">
+            <div class="medium-6 columns">
+              <label class="middle"> {{ 'SCAN WEIGHT' | translate }} (kg)</label>
+            </div>
+            <div class="medium-6 columns">
+              <input type="number" min="10" max="99" step="0.01"
+                [(ngModel)]="editedScanMeasurement.scan_weight">
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </ng-container>
+
+
+    <div class="medium-offset-6 medium-6 columns end">
+      <button type="button" (click)="closeModal()"
+              class="tiny alert button pull-right">{{ 'CANCEL' | translate }}
+      </button>
+      <button type="button" (click)="save()"
+              class="tiny primary button pull-right">{{ 'SAVE' | translate }}
+      </button>
+    </div>
+
+
+  </div>
+</div>

@@ -1,0 +1,26 @@
+<div class="row"
+     style="font-size: 1rem; margin-top: 3rem">
+  <textarea style="min-height: 5em; resize: vertical; overflow: auto"
+    [(ngModel)]="editableBody" (change)="updateEditableBody(editableBody)" [disabled]="!changeEnabled || !isEditModeActive">
+    {{editableBody}}
+  </textarea>
+</div>
+<div class="row" *ngIf="annotation != null"
+     style="font-size: 0.75rem">
+  <div class="column large-2" *ngIf="showCompanyAndUbn">
+    UBN {{annotation.ubn}}
+  </div>
+  <div class="column large-4" *ngIf="showCompanyAndUbn">
+    {{'FROM'|translate}} {{annotation.company_name}}
+  </div>
+
+  <div *ngIf="!showCompanyAndUbn" class="column large-8 large-offset-2 text-center">
+    {{'EDITED'|translate|titlecase}} {{'ON'|translate}} {{settings.stringAsViewDateTime(annotation.updated_at)}}
+    {{'BY' | translate}} {{annotation.action_by_full_name}}
+  </div>
+
+  <div *ngIf="showCompanyAndUbn" class="column large-6">
+    {{'EDITED'|translate|titlecase}} {{'ON'|translate}} {{settings.stringAsViewDateTime(annotation.updated_at)}}
+    {{'BY' | translate}} {{annotation.action_by_full_name}}
+  </div>
+</div>

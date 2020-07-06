@@ -18,6 +18,7 @@ import {JsonResponseModel} from '../../shared/models/json-response.model';
 import {CacheService} from '../../shared/services/settings/cache.service';
 import {ReportService} from '../../shared/services/report/report.service';
 import {IS_INVOICES_ACTIVE} from '../../shared/variables/feature.activation';
+import {POLLING_INTERVAL_MESSAGES_SECONDS} from '../../shared/variables/timeout.constant';
 
 @Component({
   templateUrl: './home.component.html'
@@ -178,7 +179,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterContentChecked {
       if (this.recheckMessages) {
         this.getMessages();
       }
-    }, 30 * 1000);
+    }, POLLING_INTERVAL_MESSAGES_SECONDS * 1000);
   }
 
   private removeMenuMessage(message) {

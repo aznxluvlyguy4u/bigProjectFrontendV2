@@ -1,5 +1,5 @@
 export const environment = {
   production: false,
-  nsfoApiServerUrl: 'https://nsfo-dev-api.jongensvantechniek.nl/api',
+  nsfoApiServerUrl: 'https://dev-api.nsfo.nl/api',
   nsfoUserEnvUrl: 'https://dev-online.nsfo.nl'
 };

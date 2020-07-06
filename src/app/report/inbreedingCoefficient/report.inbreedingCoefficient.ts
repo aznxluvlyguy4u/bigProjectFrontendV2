@@ -1,7 +1,7 @@
 import {Component} from '@angular/core';
 
 import {NSFOService} from '../../shared/services/nsfo-api/nsfo.service';
-import {API_URI_GET_ANIMALS} from '../../shared/services/nsfo-api/nsfo.settings';
+import {API_URI_GET_ANIMALS_LIVESTOCK} from '../../shared/services/nsfo-api/nsfo.settings';
 
 import { CSV, PDF } from '../../shared/variables/file-type.enum';
 import { QueryParamsService } from '../../shared/services/utils/query-params.service';
@@ -13,6 +13,7 @@ import {FormBuilder, FormControl, FormGroup} from '@angular/forms';
 import {Animal, LivestockAnimal} from '../../shared/models/animal.model';
 import {JsonResponseModel} from '../../shared/models/json-response.model';
 import {TranslateService} from '@ngx-translate/core';
+import {UlnRequestModel} from '../../shared/request/UlnRequestModel';
 
 @Component({
     templateUrl: './report.inbreedingCoefficient.html',
@@ -20,10 +21,32 @@ import {TranslateService} from '@ngx-translate/core';
 
 export class ReportInbreedingCoefficientComponent {
     public livestock = <LivestockAnimal[]>[];
-    public selectedRam: Animal = new Animal;
+    public selectedRam1: Animal = new Animal;
+    public selectedRam2: Animal = new Animal;
+    public selectedRam3: Animal = new Animal;
+    public selectedRam4: Animal = new Animal;
+    public selectedRam5: Animal = new Animal;
     public form: FormGroup;
     defaultFileType: string = PDF;
-    public inbreedingMaxSelectionCount = 50;
+    public inbreedingMaxSelectionCount = 200;
+
+    private static isRamSelected(ram ?: Animal): boolean {
+      return !!(ram && ram.uln_number && ram.uln_country_code);
+    }
+
+    private static getMinimalParentRequestBodyData(ram: Animal): UlnRequestModel {
+      return new UlnRequestModel(
+        ram.uln_country_code,
+        ram.uln_number
+      );
+    }
+
+    private static cleanEmptyRam(ram?: Animal): Animal {
+      if (ram && ram.uln_number) {
+        return ram;
+      }
+      return new Animal();
+    }
 
     constructor(
         private nsfo: NSFOService,
@@ -33,14 +56,18 @@ export class ReportInbreedingCoefficientComponent {
         private translate: TranslateService,
     ) {
         this.form = fb.group({
-            uln: new FormControl(''),
+            uln1: new FormControl(''),
+            uln2: new FormControl(''),
+            uln3: new FormControl(''),
+            uln4: new FormControl(''),
+            uln5: new FormControl(''),
         });
         this.getLivestockList();
     }
 
-    public getLivestockList() {
+    private getLivestockList() {
         this.nsfo
-            .doGetRequest(API_URI_GET_ANIMALS)
+            .doGetRequest(API_URI_GET_ANIMALS_LIVESTOCK)
             .subscribe(
                 (res: JsonResponseModel) => {
                     this.livestock = <LivestockAnimal[]> res.result;
@@ -65,18 +92,67 @@ export class ReportInbreedingCoefficientComponent {
     }
 
     public generateReport(event: AnimalsOverviewSelection) {
-        if (!this.selectedRam || !this.selectedRam.uln_number || !this.selectedRam.uln_country_code) {
+
+        const rams: UlnRequestModel[] = [];
+        if (ReportInbreedingCoefficientComponent.isRamSelected(this.selectedRam1)) {
+          rams.push(ReportInbreedingCoefficientComponent.getMinimalParentRequestBodyData(this.selectedRam1));
+        }
+        if (ReportInbreedingCoefficientComponent.isRamSelected(this.selectedRam2)) {
+          rams.push(ReportInbreedingCoefficientComponent.getMinimalParentRequestBodyData(this.selectedRam2));
+        }
+        if (ReportInbreedingCoefficientComponent.isRamSelected(this.selectedRam3)) {
+          rams.push(ReportInbreedingCoefficientComponent.getMinimalParentRequestBodyData(this.selectedRam3));
+        }
+        if (ReportInbreedingCoefficientComponent.isRamSelected(this.selectedRam4)) {
+          rams.push(ReportInbreedingCoefficientComponent.getMinimalParentRequestBodyData(this.selectedRam4));
+        }
+        if (ReportInbreedingCoefficientComponent.isRamSelected(this.selectedRam5)) {
+          rams.push(ReportInbreedingCoefficientComponent.getMinimalParentRequestBodyData(this.selectedRam5));
+        }
+
+        console.log(rams);
+
+        if (rams.length === 0) {
           alert(this.translate.instant('NO RAM SELECTED'));
           return;
         }
-        this.downloadService.doInbreedingCoefficientReportPostRequest(this.selectedRam, event.animals, event.fileType);
+
+        const ewesRequestBodyModel: UlnRequestModel[] = [];
+
+        for (const animal of event.animals) {
+            ewesRequestBodyModel.push(new UlnRequestModel(
+              animal.uln_country_code,
+              animal.uln_number
+            ));
+        }
+
+        this.downloadService.doInbreedingCoefficientReportPostRequest(rams, ewesRequestBodyModel, event.fileType);
     }
 
-    public selectRam(ram: Animal) {
-        this.selectedRam = ram;
-        this.form.get('uln').setValue(ram.uln);
+    public selectRam1(ram: Animal) {
+        this.selectedRam1 = ReportInbreedingCoefficientComponent.cleanEmptyRam(ram);
+        this.form.get('uln1').setValue(this.selectedRam1.uln);
     }
 
+    public selectRam2(ram: Animal) {
+      this.selectedRam2 = ReportInbreedingCoefficientComponent.cleanEmptyRam(ram);
+      this.form.get('uln2').setValue(this.selectedRam2.uln);
+    }
+
+    public selectRam3(ram: Animal) {
+      this.selectedRam3 = ReportInbreedingCoefficientComponent.cleanEmptyRam(ram);
+      this.form.get('uln3').setValue(this.selectedRam3.uln);
+    }
+
+    public selectRam4(ram: Animal) {
+      this.selectedRam4 = ReportInbreedingCoefficientComponent.cleanEmptyRam(ram);
+      this.form.get('uln4').setValue(this.selectedRam4.uln);
+    }
+
+    public selectRam5(ram: Animal) {
+      this.selectedRam5 = ReportInbreedingCoefficientComponent.cleanEmptyRam(ram);
+      this.form.get('uln5').setValue(this.selectedRam5.uln);
+    }
 
     public getFileTypesList(): string[] {
         return [ CSV, PDF ];

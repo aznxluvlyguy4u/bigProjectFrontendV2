@@ -60,11 +60,20 @@ import {ReportComponent} from './report/report.component';
 import {ReportLineageProofComponent} from './report/lineageProof/report.lineageProof';
 import {ReportInbreedingCoefficientComponent} from './report/inbreedingCoefficient/report.inbreedingCoefficient';
 import {ReportLivestockComponent} from './report/livestock/report.livestock';
-import {ReportFertilizerAccountingComponent} from './report/fertilityAccounting/report.fertilizer-accounting.component';
 import {ReportOffspringComponent} from './report/offspring/report.offspring.component';
 import {AnimalHealthComponent} from './animal-health/animal-health.component';
 import {AnimalHealthRequestComponent} from './animal-health/request/animal-health.request';
 import {ReportBirthListComponent} from './report/birthlist/report.birth-list.component';
+import {ReportEweCardComponent} from './report/eweCard/report.ewe-card.component';
+import {ReportCompanyRegisterComponent} from './report/companyRegister/report.company-register.component';
+import {ReportWeightsPerYearOfBirthComponent} from './report/weightsPerYearOfBirth/report.weights-per-year-of-birth.component';
+import {ReportAnimalFeaturesPerYearOfBirthComponent} from './report/animalFeaturesPerYearOfBirth/report.animal-features-per-year-of-birth.component';
+import {ReportFertilizerAccountingComponent} from './report/fertilityAccounting/report.fertilizer-accounting.component';
+import {TreatmentComponent} from './nsfo-declares/treatment/treatment.component';
+import {TreatmentDeclareComponent} from './nsfo-declares/treatment/declare/treatment.declare';
+import {TreatmentHistoryComponent} from './nsfo-declares/treatment/history/treatment.history';
+import {ReportAnimalTreatmentsPerYearComponent} from './report/animalTreatmentsPerYear/report.animal-treatments-per-year.component';
+import {ReportCombiFormTransportDocumentComponent} from './report/combiFormTransportDocument/report.combiFormTransportDocument';
 
 // const appRoutes: Routes = [
 const appRoutes = [
@@ -137,6 +146,13 @@ const appRoutes = [
         ]
       },
       {
+        path: 'treatment', component: TreatmentComponent,
+        children: [
+          {path: 'declare', component: TreatmentDeclareComponent},
+          {path: 'history', component: TreatmentHistoryComponent}
+        ]
+      },
+      {
         path: 'tag-replacement', component: TagReplacementComponent,
         children: [
           {path: 'declare', component: TagReplacementDeclareComponent},
@@ -164,9 +180,15 @@ const appRoutes = [
           {path: 'lineage_proof', component: ReportLineageProofComponent},
           {path: 'inbreeding', component: ReportInbreedingCoefficientComponent},
           {path: 'livestock', component: ReportLivestockComponent},
-          // {path: 'fertilizer_accounting', component: ReportFertilizerAccountingComponent},
+          {path: 'fertilizer_accounting', component: ReportFertilizerAccountingComponent},
           {path: 'offspring', component: ReportOffspringComponent},
           {path: 'birth_list', component: ReportBirthListComponent},
+          {path: 'ewe_card', component: ReportEweCardComponent},
+          {path: 'company_register', component: ReportCompanyRegisterComponent},
+          {path: 'weights_per_year_of_birth', component: ReportWeightsPerYearOfBirthComponent},
+          {path: 'animal_features_per_year_of_birth', component: ReportAnimalFeaturesPerYearOfBirthComponent},
+          {path: 'animal_treatments_per_year', component: ReportAnimalTreatmentsPerYearComponent},
+          {path: 'combi_form_transport_document', component: ReportCombiFormTransportDocumentComponent},
         ]
       },
       {
@@ -193,8 +215,8 @@ const appRoutes = [
   },
   {path: 'login', component: LoginComponent},
   {path: 'ghostlogin/:ghostToken/:accessToken', component: GhostLoginComponent},
-  {path: 'loading', component: LoadingComponent},
-  {path: 'downloaded', component: DownloadLandingPageComponent},
+  {path: 'loading/:encodedUrl', component: LoadingComponent},
+  {path: 'downloaded/:encodedUrl', component: DownloadLandingPageComponent},
   {path: '', redirectTo: '/main', pathMatch: 'full'}
 ];
 

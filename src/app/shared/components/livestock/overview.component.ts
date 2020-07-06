@@ -3,15 +3,15 @@ import * as _ from 'lodash';
 import {Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
 
 import {
-    LIVESTOCK_GENDER_FILTER_OPTIONS,
-    LIVESTOCK_SORT_OPTIONS,
+  LIVESTOCK_GENDER_FILTER_OPTIONS, LIVESTOCK_PRODUCTION_FILTER_OPTIONS,
+  LIVESTOCK_SORT_OPTIONS,
 } from '../../models/animal.model';
 import {LivestockFilterPipe} from './pipes/livestockFilter';
 import {Router} from '@angular/router';
 
 import {NSFOService} from '../../services/nsfo-api/nsfo.service';
 import {Settings} from '../../variables/settings';
-import {API_URI_GET_ANIMALS, API_URI_GET_HISTORIC_ANIMALS} from '../../services/nsfo-api/nsfo.settings';
+import {API_URI_GET_ANIMALS_LIVESTOCK, API_URI_GET_ANIMALS_HISTORIC_LIVESTOCK} from '../../services/nsfo-api/nsfo.settings';
 import {UtilsService} from '../../services/utils/utils.services';
 import {DownloadService} from '../../services/download/download.service';
 import {Subscription} from 'rxjs';
@@ -21,11 +21,15 @@ import {Mate, MateChangeResponse} from '../../models/nsfo-declare.model';
 import {Animal, LivestockAnimal} from '../../models/animal.model';
 import {JsonResponseModel} from '../../models/json-response.model';
 import {TranslateService} from '@ngx-translate/core';
+import { Inject, Injectable } from '@angular/core';
+import { LOCAL_STORAGE, StorageService } from 'ngx-webstorage-service';
 
 const fileTypeDropdownMinCount = 2;
 
 export const LIVESTOCK_TYPE_MATE = 'LIVE_STOCK_TYPE_MATE';
 export const LIVESTOCK_TYPE_WEIGHT = 'LIVE_STOCK_TYPE_WEIGHT';
+export const LIVESTOCK_TYPE_TREATMENT = 'LIVE_STOCK_TYPE_TREATMENT';
+export const LIVESTOCK_TYPE_EXPORT = 'LIVE_STOCK_TYPE_EXPORT';
 
 @Component({
     selector: 'app-livestock-overview',
@@ -46,6 +50,9 @@ export class LivestockOverviewComponent implements OnInit, OnDestroy {
     @Output() selected = new EventEmitter();
     @Input() customType = '';
     @Input() lastMateChanged: Subject<MateChangeResponse>;
+    @Input() displaySubUlnText = false;
+    @Input() extraDisabledCriteria = false;
+    @Input() exportDate = null;
     mateMode = false;
     weightMode = false;
     updateLastMateSubscription: Subscription;
@@ -60,10 +67,13 @@ export class LivestockOverviewComponent implements OnInit, OnDestroy {
     public selection_column_two = LIVESTOCK_SORT_OPTIONS[1];
     public order_column_two = this.selection_column_two;
     public gender_filter_options = LIVESTOCK_GENDER_FILTER_OPTIONS;
+    public production_filter_options = LIVESTOCK_PRODUCTION_FILTER_OPTIONS;
     public genderFilterValue = 'ALL';
     public searchFieldFilter = '';
     @Input() public startDateFieldFilter = '';
     @Input() public endDateFieldFilter = '';
+    public breedCodeFilter = null;
+    public productionFilterValue = 'ALL';
     public sort_options = LIVESTOCK_SORT_OPTIONS;
     public order_column_uln_asc = true;
     public order_column_one_asc = true;
@@ -75,21 +85,37 @@ export class LivestockOverviewComponent implements OnInit, OnDestroy {
     public concatBreedValueAndAccuracyColumns = 'YES';
 
     public isLoading: boolean;
+    public filter_toggled = false;
+    public report_options_toggled = false;
+    public filterHistoric  = 'NO';
 
-    constructor(private apiService: NSFOService,
+    private _export_date;
+
+    get export_date(): any {
+      return this._export_date;
+    }
+
+    @Input()
+    set export_date(val) {
+      this._export_date = val;
+      this.getLiveStockExport();
+    }
+
+  constructor(private apiService: NSFOService,
                 private router: Router,
                 private settings: Settings,
                 public element: ElementRef,
                 private filter: LivestockFilterPipe,
                 private downloadService: DownloadService,
                 private translate: TranslateService,
-                private utils: UtilsService) {
+                private utils: UtilsService,
+                @Inject(LOCAL_STORAGE) private storage: StorageService) {
         this.view_date_format = settings.VIEW_DATE_FORMAT;
         this.model_datetime_format = settings.MODEL_DATETIME_FORMAT;
     }
 
     ngOnInit() {
-
+      const livestockListInStorage = this.storage.get('livestock_list');
         switch (this.customType) {
             case LIVESTOCK_TYPE_MATE:
                 this.mateMode = true;
@@ -110,9 +136,20 @@ export class LivestockOverviewComponent implements OnInit, OnDestroy {
                 this.weightMode = true;
                 this.getLivestockLastWeight();
                 break;
+            case LIVESTOCK_TYPE_EXPORT:
+                setTimeout(() => {
+                  this.getLiveStockExport();
+                }, 3000);
+                break;
+          default:
+                if (typeof livestockListInStorage !== 'undefined') {
+                  this.livestock_list = livestockListInStorage;
+                } else {
+                  this.getLivestockList();
+                }
 
-            default:
-                this.getLivestockList();
+                this.getListValuesFromStorageAndSetAttributes();
+                this.clearListValuesFromStorage();
                 break;
         }
 
@@ -217,6 +254,10 @@ export class LivestockOverviewComponent implements OnInit, OnDestroy {
       this.getLivestockListBase('?type=last_weight');
     }
 
+    private getLiveStockExport() {
+      this.getLivestockListBase('?type=export&export_date=' + moment(this.export_date).format('D-M-YYYY'));
+    }
+
     private getLivestockList() {
         this.getLivestockListBase('');
     }
@@ -224,15 +265,15 @@ export class LivestockOverviewComponent implements OnInit, OnDestroy {
     private getLivestockListBase(queryParam: string) {
         this.isLoading = true;
         this.apiService
-            .doGetRequest(API_URI_GET_ANIMALS + queryParam)
+            .doGetRequest(API_URI_GET_ANIMALS_LIVESTOCK + queryParam)
             .subscribe(
                 (res: JsonResponseModel) => {
                     // this.livestock_list = LivestockAnimal.apply(null, new Uint16Array(res));
                     this.livestock_list = <LivestockAnimal[]> res.result;
                     for (const animal of this.livestock_list) {
                         animal.date_of_birth_sort = animal.date_of_birth;
-                        animal.date_of_birth = moment(animal.date_of_birth).format(this.settings.VIEW_DATE_FORMAT);
-                        animal.inflow_date = moment(animal.inflow_date).format(this.settings.VIEW_DATE_FORMAT);
+                        animal.date_of_birth = this.getNullCheckedDate(animal.date_of_birth);
+                        animal.inflow_date = this.getNullCheckedDate(animal.inflow_date);
 
                         if (animal.last_mate) {
                             if (animal.last_mate.start_date) {
@@ -253,6 +294,8 @@ export class LivestockOverviewComponent implements OnInit, OnDestroy {
                         }
                         animal.is_public = true;
                         animal.selected = false;
+
+                        animal.collar_number = parseInt(String(animal.collar_number), 0);
                     }
 
                     this.livestock_list = _.orderBy(this.livestock_list, ['ulnLastFive'], ['asc']);
@@ -267,16 +310,24 @@ export class LivestockOverviewComponent implements OnInit, OnDestroy {
             );
     }
 
+    private getNullCheckedDate(dateString: string): string {
+      if (dateString == null) {
+        return '--';
+      } else {
+        return moment(dateString).format(this.settings.VIEW_DATE_FORMAT);
+      }
+    }
+
     private getHistoricAnimals() {
         this.apiService
-            .doGetRequest(API_URI_GET_HISTORIC_ANIMALS)
+            .doGetRequest(API_URI_GET_ANIMALS_HISTORIC_LIVESTOCK)
             .subscribe(
                 (res: JsonResponseModel) => {
                     this.historic_livestock_list = <LivestockAnimal[]> res.result;
                     for (const animal of this.historic_livestock_list) {
                         animal.date_of_birth_sort = animal.date_of_birth;
-                        animal.date_of_birth = moment(animal.date_of_birth).format(this.settings.VIEW_DATE_FORMAT);
-                        animal.inflow_date = moment(animal.inflow_date).format(this.settings.VIEW_DATE_FORMAT);
+                        animal.date_of_birth = this.getNullCheckedDate(animal.date_of_birth);
+                        animal.inflow_date = this.getNullCheckedDate(animal.inflow_date);
 
                         if (animal.last_mate) {
                             if (animal.last_mate.start_date) {
@@ -308,6 +359,7 @@ export class LivestockOverviewComponent implements OnInit, OnDestroy {
     }
 
     private showHistoricAnimals(value: string) {
+
         if (value === 'YES') {
             const combined_list = this.livestock_list.concat(this.historic_livestock_list);
             this.livestock_list = combined_list; // this.historic_livestock_list;
@@ -330,6 +382,8 @@ export class LivestockOverviewComponent implements OnInit, OnDestroy {
                 this.utils.showAlertPopup('NO ANIMALS SELECTED');
                 return;
             }
+        } else {
+          animals = this.livestock_list;
         }
 
         this.downloadService.doLivestockReportPostRequest(animals, fileType, concatBreedValueAndAccuracyColumns);
@@ -339,7 +393,9 @@ export class LivestockOverviewComponent implements OnInit, OnDestroy {
         return this.isUsedFilter(this.searchFieldFilter) ||
             this.isUsedFilter(this.startDateFieldFilter) ||
             this.isUsedFilter(this.endDateFieldFilter) ||
-            this.isUsedFilter(this.genderFilterValue, 'ALL')
+            this.isUsedFilter(this.genderFilterValue, 'ALL') ||
+            this.isUsedFilter(this.breedCodeFilter) ||
+            this.isUsedFilter(this.productionFilterValue)
             ;
     }
 
@@ -353,6 +409,8 @@ export class LivestockOverviewComponent implements OnInit, OnDestroy {
             this.startDateFieldFilter,
             this.endDateFieldFilter,
             this.genderFilterValue,
+            this.breedCodeFilter,
+            this.productionFilterValue
         ]);
     }
 
@@ -373,7 +431,13 @@ export class LivestockOverviewComponent implements OnInit, OnDestroy {
     }
 
     private viewAnimalDetails(animal: LivestockAnimal) {
-        this.router.navigate(['/main/livestock/details', animal.uln]);
+        this.storeListValues();
+
+        if (animal.id != null) {
+          this.router.navigate(['/main/livestock/details', animal.id]);
+        } else {
+          this.router.navigate(['/main/livestock/details', animal.uln]);
+        }
     }
 
     private selectAnimal(event: Event, animal: LivestockAnimal): boolean {
@@ -437,7 +501,7 @@ export class LivestockOverviewComponent implements OnInit, OnDestroy {
                 return animal.date_of_birth;
 
             case 'WORK NUMBER':
-                return animal.work_number;
+                return animal.worker_number;
 
             case 'COLLAR NUMBER':
                 return animal.collar_color && animal.collar_number ?
@@ -463,7 +527,7 @@ export class LivestockOverviewComponent implements OnInit, OnDestroy {
         }
     }
 
-    private setOrderColumnOne() {
+    private setOrderColumnOne(direction = '') {
         this.order_column_one_asc = !this.order_column_one_asc;
         this.order_column_uln_asc = true;
         this.order_column_two_asc = true;
@@ -471,6 +535,11 @@ export class LivestockOverviewComponent implements OnInit, OnDestroy {
         let order = 'asc';
         if (!this.order_column_one_asc) {
             order = 'desc';
+        }
+
+        if (direction !== '') {
+            order = direction;
+            this.order_column_one_asc = true;
         }
 
         switch (this.selection_column_one) {
@@ -487,7 +556,7 @@ export class LivestockOverviewComponent implements OnInit, OnDestroy {
                 break;
 
             case 'COLLAR NUMBER':
-                this.livestock_list = _.orderBy(this.livestock_list, ['collar_color', 'collar_number'], [order]);
+                this.livestock_list = _.orderBy(this.livestock_list, ['collar_color', 'collar_number'], [order, order]);
                 break;
 
             case 'INFLOW DATE':
@@ -500,7 +569,15 @@ export class LivestockOverviewComponent implements OnInit, OnDestroy {
         }
     }
 
-    private setOrderColumnTwo() {
+    public getSubUlnText(animal: LivestockAnimal): string {
+        const productionValue = animal.production != null ? animal.production : '-';
+        const breedCodeValue = animal.breed_code != null ? animal.breed_code : '-';
+
+        return this.translate.instant('PRODUCTION') + ': ' + productionValue + ', ' +
+          this.translate.instant('BREED CODE') + ': ' + breedCodeValue;
+    }
+
+    private setOrderColumnTwo(direction = '') {
         this.order_column_two_asc = !this.order_column_two_asc;
         this.order_column_uln_asc = true;
         this.order_column_one_asc = true;
@@ -508,6 +585,11 @@ export class LivestockOverviewComponent implements OnInit, OnDestroy {
         let order = 'asc';
         if (!this.order_column_two_asc) {
             order = 'desc';
+        }
+
+        if (direction !== '') {
+          order = direction;
+          this.order_column_two_asc = true;
         }
 
         switch (this.selection_column_two) {
@@ -524,7 +606,7 @@ export class LivestockOverviewComponent implements OnInit, OnDestroy {
                 break;
 
             case 'COLLAR NUMBER':
-                this.livestock_list = _.orderBy(this.livestock_list, ['collar_color', 'collar_number'], [order]);
+                this.livestock_list = _.orderBy(this.livestock_list, ['collar_color', 'collar_number'], [order, order]);
                 break;
 
             case 'INFLOW DATE':
@@ -537,4 +619,67 @@ export class LivestockOverviewComponent implements OnInit, OnDestroy {
         }
     }
 
+    private storeListValues() {
+      this.storage.set('livestock_list', this.livestock_list);
+      this.storage.set('selection_column_one', this.selection_column_one);
+      this.storage.set('selection_column_two', this.selection_column_two);
+      this.storage.set('order_column_one_asc', this.order_column_one_asc);
+      this.storage.set('order_column_two_asc', this.order_column_two_asc);
+      this.storage.set('startDateFieldFilter', this.startDateFieldFilter);
+      this.storage.set('endDateFieldFilter', this.endDateFieldFilter);
+      this.storage.set('genderFilterValue', this.genderFilterValue);
+      this.storage.set('filter_toggled', this.filter_toggled);
+      this.storage.set('filterHistoric', this.filterHistoric);
+      this.storage.set('breedCodeFilter', this.breedCodeFilter);
+      this.storage.set('productionFilterValue', this.productionFilterValue);
+      this.storage.set('searchFieldFilter', this.searchFieldFilter);
+  }
+
+  private getListValuesFromStorageAndSetAttributes() {
+    const selectionColOne = this.storage.get('selection_column_one');
+    const selectionColTwo = this.storage.get('selection_column_two');
+    const orderColOneAsc = this.storage.get('order_column_one_asc');
+    const orderColTwoAsc = this.storage.get('order_column_two_asc');
+
+    const startDateFieldFilter = this.storage.get('startDateFieldFilter');
+    const endDateFieldFilter = this.storage.get('endDateFieldFilter');
+    const genderFilterValue = this.storage.get('genderFilterValue');
+    const filter_toggled = this.storage.get('filter_toggled');
+    const filterHistoric = this.storage.get('filterHistoric');
+    const breedCodeFilter = this.storage.get('breedCodeFilter');
+    const productionFilterValue = this.storage.get('productionFilterValue');
+    const searchFieldFilter = this.storage.get('searchFieldFilter');
+
+    this.selection_column_one = (typeof selectionColOne !== 'undefined' ? selectionColOne : this.selection_column_one);
+    this.selection_column_two = (typeof selectionColTwo !== 'undefined' ? selectionColTwo : this.selection_column_two);
+    this.order_column_one_asc = (typeof orderColOneAsc !== 'undefined' ? orderColOneAsc : this.order_column_one_asc);
+    this.order_column_two_asc = (typeof orderColTwoAsc !== 'undefined' ? orderColTwoAsc : this.order_column_two_asc);
+
+    this.startDateFieldFilter = (
+      typeof startDateFieldFilter !== 'undefined' ? startDateFieldFilter : ''
+    );
+    this.endDateFieldFilter = (typeof endDateFieldFilter !== 'undefined' ? endDateFieldFilter : '');
+    this.genderFilterValue = (typeof genderFilterValue !== 'undefined' ? genderFilterValue : 'ALL');
+    this.filter_toggled = (typeof filter_toggled !== 'undefined' ? filter_toggled : this.filter_toggled);
+    this.filterHistoric = (typeof filterHistoric !== 'undefined' ? filterHistoric : this.filterHistoric);
+    this.breedCodeFilter = (typeof breedCodeFilter !== 'undefined' ? breedCodeFilter : this.breedCodeFilter);
+    this.productionFilterValue = (typeof productionFilterValue !== 'undefined' ? productionFilterValue : this.productionFilterValue);
+    this.searchFieldFilter = (typeof searchFieldFilter !== 'undefined' ? searchFieldFilter : this.searchFieldFilter);
+  }
+
+  private clearListValuesFromStorage() {
+    this.storage.remove('livestock_list');
+    this.storage.remove('selection_column_one');
+    this.storage.remove('selection_column_two');
+    this.storage.remove('order_column_one_asc');
+    this.storage.remove('order_column_two_asc');
+    this.storage.remove('startDateFieldFilter');
+    this.storage.remove('endDateFieldFilter');
+    this.storage.remove('genderFilterValue');
+    this.storage.remove('filter_toggled');
+    this.storage.remove('filterHistoric');
+    this.storage.remove('breedCodeFilter');
+    this.storage.remove('productionFilterValue');
+    this.storage.remove('searchFieldFilter');
+  }
 }

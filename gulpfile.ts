@@ -1,9 +1,6 @@
 const gulp = require('gulp');
 const env = require('gulp-env');
 
-const staging_user_frontend_bucket = 'dev-online.nsfo.nl';
-const production_user_frontend_bucket = 'online.nsfo.nl';
-const reader_user_frontend_bucket = 'reader.nsfo.nl';
 const public_read = 'public-read';
 const retry_count = 5;
 const build_folder = 'dist/nsfo-frontend-new';
@@ -26,6 +23,10 @@ const awsConfig = {
     secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
     useIAM: true
 };
+
+const staging_user_frontend_bucket = process.env.STAGING_S3_BUCKET;
+const production_user_frontend_bucket = process.env.PRODUCTION_S3_BUCKET;
+const reader_user_frontend_bucket = process.env.READER_S3_BUCKET;
 
 const s3 = require('gulp-s3-upload')(awsConfig);
 

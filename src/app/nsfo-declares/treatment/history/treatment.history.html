@@ -1,0 +1,173 @@
+<div class="large-12 table-search">
+  <div class="large-2 large-push-7" id="treatment-search-container">
+    <input type="text" style="height: 40px;" class="search-field" name="searchValue" [(ngModel)]="searchValue" maxlength="20" placeholder="{{ 'SEARCH' | translate }}">
+    <button style="height: 40px;margin-left:8px;" (click)="getTreatmentHistoryList()" class="primary button">{{ 'SEARCH' | translate }}</button>
+    <button style="height: 40px;margin-left:8px;" (click)="searchValue = '';getTreatmentHistoryList()" class="alert button">Reset</button>
+  </div>
+</div>
+
+<div class="row" *ngIf="isLoading">
+  <div class="medium-12 columns">
+    <app-page-loading-spinner></app-page-loading-spinner>
+  </div>
+</div>
+
+<div *ngIf="!isLoading" id="treatment">
+
+  <table class="stack history">
+    <thead>
+    <tr>
+    <th>{{ 'CREATED AT' | translate }}</th>
+    <th>{{ 'START DATE' | translate }}</th>
+    <th>{{ 'END DATE' | translate }}</th>
+    <th>{{ 'TREATMENT' | translate }}</th>
+    <th>{{ 'MEDICATIONS' | translate }}</th>
+    <th>{{ 'ANIMALS' | translate }}</th>
+    <th *ngIf="displayTreatmentLocationIndividualType">{{ 'DUTCH TYPE' | translate }}</th>
+    <th>{{ 'STATUS' | translate }}</th>
+    <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr app-treatment-history-row
+      *ngFor="let treatment of treatmentHistoryList | paginate: {itemsPerPage: 10, currentPage: page, totalItems: totalTreatments};"
+      (revokeTreatment)="selectTreatment($event)"
+        [treatmentTemplatesToSelect]="treatmentTemplates"
+        (showError)="showError($event)"
+        (openMedicationModal)="openModal('medicine', treatment.treatment_id)"
+        (openAnimalModal)="openModal('animal', treatment.treatment_id)"
+        [treatment]="treatment"
+        [displayTreatmentLocationIndividualType]="displayTreatmentLocationIndividualType"
+    ></tr>
+    </tbody>
+  </table>
+
+  <pagination-controls (pageChange)="page = $event;getTreatmentHistoryList($event)"></pagination-controls>
+
+</div>
+
+<!--MEDICATION MODAL-->
+<div class="reveal-overlay" *ngFor="let treatment of treatmentHistoryList" [ngStyle]="{'display': medicine_modal_display[treatment.treatment_id]}" >
+  <div class="tiny reveal" [ngStyle]="{'display': medicine_modal_display[treatment.treatment_id]}">
+    <div class="modal-header">
+      {{ 'MEDICATIONS' | translate }}
+      <button type="button" (click)="closeModal('medicine', treatment.treatment_id)" class="pull-right" aria-label="Close modal">
+        <i class="fa fa-times" aria-hidden="true"></i>
+      </button>
+    </div>
+
+    <table class="stacked">
+      <thead>
+      <tr>
+        <td>{{ 'NAME' | translate}}</td>
+        <td>{{ 'DOSAGE' | translate}}</td>
+        <td>{{ 'TREATMENT DURATION' | translate}}</td>
+        <td>{{ 'WAITING TIME END DATE' | translate }}</td>
+        <td>{{ 'REG NL' | translate}}</td>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let medication of treatment.medications">
+        <td>{{ medication.name }}</td>
+        <td>{{ medication.dosage }} {{ medication.dosage_unit }}</td>
+        <td>{{ medication.treatment_duration }}</td>
+        <td>{{ formatDate(medication.waiting_time_end) }}</td>
+        <td>{{ medication.reg_nl }}</td>
+      </tr>
+      </tbody>
+    </table>
+
+    <div class="modal-footer">
+        <span class="pull-right">
+          <button class="tiny alert button" [disabled]="isSaving" (click)="closeModal('medicine', treatment.treatment_id)">{{ 'CLOSE' | translate}}</button>
+        </span>
+    </div>
+  </div>
+</div>
+
+<!--ANIMAL MODAL-->
+<div id="treatment-animal-modal" class="reveal-overlay" [ngStyle]="{'display': animal_modal_display[treatment.treatment_id]}" *ngFor="let treatment of treatmentHistoryList">
+  <div class="tiny reveal" [ngStyle]="{'display': animal_modal_display[treatment.treatment_id]}">
+    <div class="modal-header">
+      {{ 'ANIMALS' | translate }}
+      <button type="button" (click)="closeModal('animal', treatment.treatment_id)" class="pull-right" aria-label="Close modal">
+        <i class="fa fa-times" aria-hidden="true"></i>
+      </button>
+    </div>
+
+    <div class="modal-body animal-modal-body">
+      <table class="stacked history animal-modal-table">
+        <thead>
+        <tr>
+          <td>{{ 'ULN' | translate}}</td>
+          <td>{{ 'COLLAR NUMBER' | translate}}</td>
+          <td>{{ 'GENDER' | translate}}</td>
+          <td>{{ 'DATE OF BIRTH' | translate}}</td>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let animal of treatment.animals">
+          <td>{{ animal.uln_country_code + animal.uln_number }}</td>
+          <td>{{ animal.collar_color != null && animal.collar_number != null ? animal.collar_color + ' ' + animal.collar_number : '-' }}</td>
+          <td>{{ animal.gender | translate }}</td>
+          <td>{{ formatDate(animal.date_of_birth) }}</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="modal-footer">
+        <span class="pull-right">
+          <button class="tiny alert button" [disabled]="isSaving" (click)="closeModal('animal', treatment.treatment_id)">{{ 'CLOSE' | translate}}</button>
+        </span>
+    </div>
+  </div>
+</div>
+
+<!--REVOKE MODAL-->
+<div class="reveal-overlay" [ngStyle]="{'display': modal_display}">
+  <div class="tiny reveal" [ngStyle]="{'display': modal_display}">
+    <div class="modal-header">
+      {{ 'REVOKE DECLARATION' | translate }}
+      <button type="button" (click)="closeModal()" [disabled]="isSending" class="pull-right" aria-label="Close modal">
+        <i class="fa fa-times" aria-hidden="true"></i>
+      </button>
+    </div>
+    <div class="modal-body"> {{ 'ARE YOU SURE YOU WANT TO REVOKE DECLARATION' | translate }}</div>
+    <div class="modal-footer">
+            <span class="pull-right">
+                <button class="tiny alert button" (click)="revokeTreatment()" [disabled]="isSending">
+                    <span *ngIf="!isSending">
+                        {{ 'REVOKE' | translate}}
+                    </span>
+                    <span *ngIf="isSending">
+                        <i class="fa fa-gear fa-spin fa-fw"></i>
+                    </span>
+                </button>
+                <button class="tiny primary button" (click)="closeModal()" [disabled]="isSending">{{ 'CANCEL' | translate}}</button>
+            </span>
+    </div>
+  </div>
+</div>
+
+<!--ERROR MODAL-->
+<div class="reveal-overlay" [ngStyle]="{'display': errorModalDisplay}">
+  <div class="tiny reveal" [ngStyle]="{'display': errorModalDisplay}">
+    <div class="modal-header">
+      {{ 'ERROR' | translate }}
+      <button type="button" (click)="closeErrorModal()" class="pull-right" aria-label="Close modal">
+        <i class="fa fa-times" aria-hidden="true"></i>
+      </button>
+    </div>
+    <div class="modal-body">
+      <ul>
+        <li *ngFor="let errorMessage of errorMessages">
+          {{ errorMessage.message | translate }}
+        </li>
+      </ul>
+    </div>
+    <div class="modal-footer">
+      <button class="tiny primary button pull-right" (click)="closeErrorModal()">{{ 'OK' | translate}}</button>
+    </div>
+  </div>
+</div>

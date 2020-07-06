@@ -1,17 +1,65 @@
-<div class='row'>
-    <div class='large-4 large-centered columns form-controls'>
-        <form [formGroup]="form">
-        <div class='large-6 columns'>
+<form [formGroup]="form">
+  <div class='row'>
+      <div class='large-4 large-centered columns form-controls'>
+
+          <div class='row'>
+              <div class='large-6 columns'>
+                  <label class='middle'>
+                      {{ 'ULN (RAM #1)' | translate }}
+                  </label>
+              </div>
+              <div class='large-6 columns end'>
+                  <input type='text' formControlName='uln1' (focus)='selector1.openModal()'>
+              </div>
+          </div>
+
+          <div class='row'>
+            <div class='large-6 columns'>
+              <label class='middle'>
+                {{ 'ULN (RAM #2)' | translate }}
+              </label>
+            </div>
+            <div class='large-6 columns end'>
+              <input type='text' formControlName='uln2' (focus)='selector2.openModal()'>
+            </div>
+          </div>
+
+        <div class='row'>
+          <div class='large-6 columns'>
             <label class='middle'>
-                {{ 'ULN (RAM)' | translate }}
+              {{ 'ULN (RAM #3)' | translate }}
             </label>
+          </div>
+          <div class='large-6 columns end'>
+            <input type='text' formControlName='uln3' (focus)='selector3.openModal()'>
+          </div>
         </div>
-        <div class='large-6 columns end'>
-            <input type='text' formControlName='uln' (focus)='selector.openModal()'>
+
+        <div class='row'>
+          <div class='large-6 columns'>
+            <label class='middle'>
+              {{ 'ULN (RAM #4)' | translate }}
+            </label>
+          </div>
+          <div class='large-6 columns end'>
+            <input type='text' formControlName='uln4' (focus)='selector4.openModal()'>
+          </div>
         </div>
-        </form>
-    </div>
-</div>
+
+        <div class='row'>
+          <div class='large-6 columns'>
+            <label class='middle'>
+              {{ 'ULN (RAM #5)' | translate }}
+            </label>
+          </div>
+          <div class='large-6 columns end'>
+            <input type='text' formControlName='uln5' (focus)='selector5.openModal()'>
+          </div>
+        </div>
+
+      </div>
+  </div>
+</form>
 
 <!--LIVESTOCK OVERVIEW-->
 <div class='large-10 columns'>
@@ -27,7 +75,7 @@
 </div>
 
 <selector
-        #selector
+        #selector1
         [title]='"SELECT A STUD RAM"'
         [sectionTitles]='["SEARCH A RAM FROM NSFO DATABASE", "OR SEARCH FOR A RAM FROM OWN LIVESTOCK"]'
         [columns]='["ULN", "PEDIGREE NUMBER"]'
@@ -35,5 +83,53 @@
         [allowCustomSelection]='true'
         [filter]="'MALES'"
         [size]="'small'"
-        (selection)='selectRam($event)'>
+        (selection)='selectRam1($event)'>
+</selector>
+
+<selector
+  #selector2
+  [title]='"SELECT A STUD RAM"'
+  [sectionTitles]='["SEARCH A RAM FROM NSFO DATABASE", "OR SEARCH FOR A RAM FROM OWN LIVESTOCK"]'
+  [columns]='["ULN", "PEDIGREE NUMBER"]'
+  [list]='livestock'
+  [allowCustomSelection]='true'
+  [filter]="'MALES'"
+  [size]="'small'"
+  (selection)='selectRam2($event)'>
+</selector>
+
+<selector
+  #selector3
+  [title]='"SELECT A STUD RAM"'
+  [sectionTitles]='["SEARCH A RAM FROM NSFO DATABASE", "OR SEARCH FOR A RAM FROM OWN LIVESTOCK"]'
+  [columns]='["ULN", "PEDIGREE NUMBER"]'
+  [list]='livestock'
+  [allowCustomSelection]='true'
+  [filter]="'MALES'"
+  [size]="'small'"
+  (selection)='selectRam3($event)'>
+</selector>
+
+<selector
+  #selector4
+  [title]='"SELECT A STUD RAM"'
+  [sectionTitles]='["SEARCH A RAM FROM NSFO DATABASE", "OR SEARCH FOR A RAM FROM OWN LIVESTOCK"]'
+  [columns]='["ULN", "PEDIGREE NUMBER"]'
+  [list]='livestock'
+  [allowCustomSelection]='true'
+  [filter]="'MALES'"
+  [size]="'small'"
+  (selection)='selectRam4($event)'>
+</selector>
+
+<selector
+  #selector5
+  [title]='"SELECT A STUD RAM"'
+  [sectionTitles]='["SEARCH A RAM FROM NSFO DATABASE", "OR SEARCH FOR A RAM FROM OWN LIVESTOCK"]'
+  [columns]='["ULN", "PEDIGREE NUMBER"]'
+  [list]='livestock'
+  [allowCustomSelection]='true'
+  [filter]="'MALES'"
+  [size]="'small'"
+  (selection)='selectRam5($event)'>
 </selector>

@@ -1,12 +1,28 @@
 <div class="large-12 table-search">
-  <div class="large-2 large-push-10">
-    <input
-      title="{{'ULN OF FATHER OR MOTHER'|translate}}"
-      type="text"
-      [(ngModel)]="searchValue"
-      maxlength="20"
-      placeholder="{{ 'SEARCH' | translate }}"
-    >
+  <div class="row">
+    <div class="large-3 large-offset-7 columns">
+      <ng-container *ngIf="showResendDeclaresOption()">
+            <span class="button-label">{{ 'RESEND OPEN DECLARES' | translate }}
+              <i class="fa fa-info-circle" aria-hidden="true"
+                 title="{{ ('RESEND OPEN DECLARES INFO TOOLTIP TEXT' | translate) }}"></i>
+            </span>
+            <app-boolean-switch
+              [isLarge]="false"
+              [boolVal]="allowResendOpenDeclares"
+              (boolValChanged)="allowResendOpenDeclares = $event"
+            >
+            </app-boolean-switch>
+      </ng-container>
+    </div>
+    <div class="large-2 columns end">
+      <input
+        title="{{'ULN OF FATHER OR MOTHER'|translate}}"
+        type="text"
+        [(ngModel)]="searchValue"
+        maxlength="20"
+        placeholder="{{ 'SEARCH' | translate }}"
+      >
+    </div>
   </div>
 </div>
 
@@ -29,13 +45,26 @@
   <th class="text-center">{{ 'ABORTED' | translate }}</th>
   <th class="text-center">{{ 'PSEUDOPREGNANCY' | translate }}</th>
   <th>{{ 'STATUS' | translate }}</th>
-  <th></th>
+  <th>
+    <ng-container *ngIf="showForcedRevokeOption()">
+    {{ 'FORCED REVOKE' | translate }} <i class="fa fa-info-circle" aria-hidden="true"
+                                         title="{{ ('FORCED REVOKE INFO TOOLTIP TEXT' | translate) }}"></i>
+    <app-boolean-switch
+      [isLarge]="false"
+      [boolVal]="allowForcedRevokes"
+      (boolValChanged)="allowForcedRevokes = $event"
+    >
+    </app-boolean-switch>
+    </ng-container>
+  </th>
   </tr>
   </thead>
   <tbody>
   <tr app-birth-history-row
     *ngFor="let litter of litters | birthHistoryFilter: searchValue | paginate: {itemsPerPage: 10, currentPage: page}; let i = index"
-    (revokeLitter)="selectLitter($event)" [litter-object]="litter"></tr>
+    (revokeLitter)="selectLitter($event)" [litter-object]="litter" [allow-forced-revokes]="allowForcedRevokes"
+      [allow-resend-open-declares]="allowResendOpenDeclares"
+  ></tr>
   </tbody>
 </table>
 

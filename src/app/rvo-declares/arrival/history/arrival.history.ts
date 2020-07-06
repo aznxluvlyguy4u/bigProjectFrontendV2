@@ -3,7 +3,6 @@ import * as _ from 'lodash';
 import {Component, OnInit} from '@angular/core';
 import {ArrivalChangeResponse} from '../arrival.model';
 
-
 import {NSFOService} from '../../../shared/services/nsfo-api/nsfo.service';
 import {API_URI_GET_ARRIVALS_HISTORY, API_URI_REVOKE_DECLARATION} from '../../../shared/services/nsfo-api/nsfo.settings';
 import {Settings} from '../../../shared/variables/settings';
@@ -26,6 +25,7 @@ export class ArrivalHistoryComponent implements OnInit {
   public error_number = '';
   public isLoading = true;
   public page: number;
+  public totalArrivalItems: number;
 
   constructor(private apiService: NSFOService, private settings: Settings, private cache: CacheService) {
   }
@@ -34,31 +34,38 @@ export class ArrivalHistoryComponent implements OnInit {
     this.getArrivalHistoryList();
   }
 
-  public getArrivalHistoryList() {
-    this.apiService
-      .doGetRequest(API_URI_GET_ARRIVALS_HISTORY)
-      .subscribe((res: JsonResponseModel) => {
-        const arrivals = <ArrivalChangeResponse[]> res.result.arrivals;
-        for (const arrival of arrivals) {
-          arrival.arrival_date = moment(arrival.arrival_date).format(this.settings.VIEW_DATE_FORMAT);
-          arrival.uln = arrival.uln_country_code + arrival.uln_number;
-          arrival.pedigree = arrival.pedigree_country_code + arrival.pedigree_number;
-          arrival.work_number = arrival.uln_number.substr(arrival.uln_number.length - 5);
-          this.arrivalHistoryList.push(arrival);
-        }
+  public getArrivalHistoryList(page = 1) {
+    this.isLoading = true;
 
-        const arrival_imports = <ArrivalChangeResponse[]> res.result.imports;
-        for (const arrival_import of arrival_imports) {
-          arrival_import.arrival_date = moment(arrival_import.arrival_date).format(this.settings.VIEW_DATE_FORMAT);
-          arrival_import.uln = arrival_import.uln_country_code + arrival_import.uln_number;
-          arrival_import.pedigree = arrival_import.pedigree_country_code + arrival_import.pedigree_number;
-          arrival_import.work_number = arrival_import.uln_number.substr(arrival_import.uln_number.length - 5);
-          this.arrivalHistoryList.push(arrival_import);
-        }
+    this.page = page;
 
-        this.arrivalHistoryList = _.orderBy(this.arrivalHistoryList, ['log_date'], ['desc']);
-        this.isLoading = false;
-      });
+      this.apiService
+        .doGetRequest(`${API_URI_GET_ARRIVALS_HISTORY}?page=${page}&query=${this.searchValue}`)
+        .subscribe((res: JsonResponseModel) => {
+          const arrivals = <ArrivalChangeResponse[]> res.result.arrivals.items;
+          this.totalArrivalItems = res.result.arrivals.totalItems;
+          this.arrivalHistoryList = [];
+
+          for (const arrival of arrivals) {
+            arrival.arrival_date = moment(arrival.arrival_date).format(this.settings.VIEW_DATE_FORMAT);
+            arrival.uln = arrival.uln_country_code + arrival.uln_number;
+            arrival.pedigree = arrival.pedigree_country_code + arrival.pedigree_number;
+            arrival.work_number = arrival.uln_number.substr(arrival.uln_number.length - 5);
+            this.arrivalHistoryList.push(arrival);
+          }
+
+          const arrival_imports = <ArrivalChangeResponse[]> res.result.imports.items;
+          for (const arrival_import of arrival_imports) {
+            arrival_import.arrival_date = moment(arrival_import.arrival_date).format(this.settings.VIEW_DATE_FORMAT);
+            arrival_import.uln = arrival_import.uln_country_code + arrival_import.uln_number;
+            arrival_import.pedigree = arrival_import.pedigree_country_code + arrival_import.pedigree_number;
+            arrival_import.work_number = arrival_import.uln_number.substr(arrival_import.uln_number.length - 5);
+            this.arrivalHistoryList.push(arrival_import);
+          }
+
+          this.arrivalHistoryList = _.orderBy(this.arrivalHistoryList, ['log_date'], ['desc']);
+          this.isLoading = false;
+        });
   }
 
   public selectArrival(event) {

@@ -3,30 +3,44 @@ import {Subject} from 'rxjs';
 import {DownloadRequest} from './download-request.model';
 import {NSFOService} from '../nsfo-api/nsfo.service';
 import {
+  API_URI_GET_ANIMAL_FEATURES_PER_YEAR_OF_BIRTH_REPORT,
+  API_URI_GET_ANIMAL_TREATMENTS_PER_YEAR_REPORT,
+  API_URI_GET_BIRTH_LIST_REPORT,
+  API_URI_GET_COMBI_FORM_TRANSPORT_DOCUMENT,
+  API_URI_GET_COMPANY_REGISTER_REPORT,
+  API_URI_GET_EWE_CARD_REPORT,
   API_URI_GET_FERTILIZER_ACCOUNTING_REPORT,
   API_URI_GET_INBREEDING_COEFFICIENT,
-  API_URI_GET_BIRTH_LIST_REPORT,
   API_URI_GET_LINEAGE_PROOF,
   API_URI_GET_LIVESTOCK_DOCUMENT,
   API_URI_GET_OFFSPRING_REPORT,
+  API_URI_GET_WEIGHTS_PER_YEAR_OF_BIRTH_REPORT,
   API_URI_INVOICES
 } from '../nsfo-api/nsfo.settings';
 import {
+  QUERY_PARAM_BREED_CODE,
   QUERY_PARAM_CONCAT_VALUE_AND_ACCURACY,
   QUERY_PARAM_FILE_TYPE,
+  QUERY_PARAM_PEDIGREE_REGISTER,
+  QUERY_PARAM_PROCESS_AS_WORKER_TASK,
   QUERY_PARAM_REFERENCE_DATE,
-  QUERY_PARAM_BREED_CODE,
-  QUERY_PARAM_PEDIGREE_REGISTER
+  QUERY_PARAM_SAMPLE_DATE,
+  QUERY_PARAM_YEAR,
+  QUERY_PARAM_YEAR_OF_BIRTH,
 } from '../../variables/query-param.constant';
 import {UtilsService} from '../utils/utils.services';
 import {QueryParamsService} from '../utils/query-params.service';
-import {CSV, PDF} from '../../variables/file-type.enum';
+import {PDF} from '../../variables/file-type.enum';
 import * as _ from 'lodash';
 import {Animal, LivestockAnimal} from '../../models/animal.model';
 import {Invoice} from '../../models/invoice.model';
 import {JsonResponseModel} from '../../models/json-response.model';
 import {QueryParamSetModel} from '../../models/query-param-set.model';
 import {ReportService} from '../report/report.service';
+import {UlnRequestModel} from '../../request/UlnRequestModel';
+import {ReportType} from '../report/report-request.model';
+import {FormGroup} from '@angular/forms';
+import * as moment from 'moment';
 
 export const INBREEDING_COEFFICIENT_REPORT = 'INBREEDING_COEFFICIENT_REPORT';
 export const LINEAGE_PROOF_REPORT = 'LINEAGE_PROOF_REPORT';
@@ -162,13 +176,34 @@ export class DownloadService {
   }
 
   doLineageProofPostRequest(animals: Animal[], fileType = 'PDF') {
+    const request = {animals: []};
 
-    const request = {
-      'animals': animals
-    };
+    for (let i = 0; i < animals.length; i++) {
+      request.animals.push(
+        {
+          'uln_country_code': animals[i].uln_country_code,
+          'uln_number': animals[i].uln_number
+        }
+      );
+    }
 
     const queryParam = typeof fileType === 'string' ? '?' + QUERY_PARAM_FILE_TYPE + '=' + fileType.toLowerCase() : '';
     this.doDownloadPostRequestByReportWorker(API_URI_GET_LINEAGE_PROOF + queryParam, request);
+  }
+
+  doCombiFormTransportDocumentPostRequest(form: FormGroup, exportUbn = '') {
+    const request = {
+      transport_date: moment(form.get('transport_date').value.depart_date).format('DD-MM-YYYY'),
+      export_ubn: exportUbn
+    };
+
+    const queryParam = '?' + QUERY_PARAM_FILE_TYPE + '=pdf&' + QUERY_PARAM_PROCESS_AS_WORKER_TASK + '=true';
+
+    this.doDownloadPostRequestByReportWorker(
+      API_URI_GET_COMBI_FORM_TRANSPORT_DOCUMENT + queryParam,
+      request,
+      ReportType.COMBI_FORMS_VKI_AND_TRANSPORT_DOCUMENTS
+    );
   }
 
   doLivestockReportPostRequest(animals: LivestockAnimal[], fileType: string, concatBreedValueAndAccuracyColumns: boolean) {
@@ -186,17 +221,14 @@ export class DownloadService {
     this.doDownloadPostRequestByReportWorker(API_URI_GET_LIVESTOCK_DOCUMENT + queryParam, data);
   }
 
-  doInbreedingCoefficientReportPostRequest(ram: Animal, ewes: LivestockAnimal[], fileType: string) {
+  doInbreedingCoefficientReportPostRequest(rams: UlnRequestModel[], ewes: UlnRequestModel[], fileType: string) {
 
     const request = {
-      'ram': {
-        'uln_country_code': ram.uln_country_code,
-        'uln_number': ram.uln_number
-      },
+      'rams': rams,
       'ewes': ewes
     };
     this.doDownloadPostRequestByReportWorker(API_URI_GET_INBREEDING_COEFFICIENT + QueryParamsService.getFileTypeQueryParam(fileType),
-      request);
+      request, ReportType.INBREEDING_COEFFICIENT, fileType);
   }
 
   doOffspringReportPostRequest(animals: Animal[], concatBreedValueAndAccuracyColumns: boolean) {
@@ -210,14 +242,24 @@ export class DownloadService {
     this.doDownloadPostRequestByReportWorker(API_URI_GET_OFFSPRING_REPORT + queryParam, request);
   }
 
+  doEweCardReportPostRequest(animals: Animal[]) {
+
+    const request = {
+      animals: NSFOService.cleanAnimalsInput(animals)
+    };
+
+    const queryParam = '?' + QUERY_PARAM_FILE_TYPE + '=' + PDF.toLowerCase();
+    this.doDownloadPostRequestByReportWorker(API_URI_GET_EWE_CARD_REPORT + queryParam, request);
+  }
+
   doFertilizerAccountingReportGetRequest(referenceDateString: string, fileType: string) {
 
     const queryParam = '?' + QUERY_PARAM_REFERENCE_DATE + '=' + referenceDateString + '&' + QUERY_PARAM_FILE_TYPE + '=' + fileType;
-    this.doDownloadGetRequestByReportWorker(API_URI_GET_FERTILIZER_ACCOUNTING_REPORT + queryParam);
+    this.doDownloadPostRequestByReportWorker(API_URI_GET_FERTILIZER_ACCOUNTING_REPORT + queryParam, {});
   }
 
   doBirthListReportGetRequest(breedCode?: string, pedigreeRegisterAbbreviation?: string) {
-    let queryParams: QueryParamSetModel[] = [];
+    const queryParams: QueryParamSetModel[] = [];
     if (breedCode !== null && breedCode !== undefined) {
       queryParams.push({
         key: QUERY_PARAM_BREED_CODE,
@@ -233,6 +275,59 @@ export class DownloadService {
     }
     const queryParamString = QueryParamsService.getQueryParamsAsString(queryParams);
     this.doDownloadPostRequestByReportWorker(API_URI_GET_BIRTH_LIST_REPORT + queryParamString, {});
+  }
+
+  doCompanyRegisterReportGetRequest(sampleDate: string, fileType: string) {
+    const queryParams: QueryParamSetModel[] = [];
+    queryParams.push({
+      key: QUERY_PARAM_SAMPLE_DATE,
+      value: sampleDate
+    });
+
+    queryParams.push({
+      key: QUERY_PARAM_FILE_TYPE,
+      value: fileType
+    });
+    const queryParamString = QueryParamsService.getQueryParamsAsString(queryParams);
+    this.doDownloadPostRequestByReportWorker(API_URI_GET_COMPANY_REGISTER_REPORT + queryParamString, {});
+  }
+
+  doWeightsPerYearOfBirthReportGetRequest(year: string) {
+    const queryParams: QueryParamSetModel[] = [];
+    queryParams.push({
+      key: QUERY_PARAM_YEAR_OF_BIRTH,
+      value: year
+    });
+
+    const queryParamString = QueryParamsService.getQueryParamsAsString(queryParams);
+    this.doDownloadPostRequestByReportWorker(API_URI_GET_WEIGHTS_PER_YEAR_OF_BIRTH_REPORT + queryParamString, {});
+  }
+
+  doAnimalFeaturesPerYearOfBirthReportGetRequest(year: string) {
+    let queryParams: QueryParamSetModel[] = [];
+    queryParams.push({
+      key: QUERY_PARAM_YEAR_OF_BIRTH,
+      value: year
+    });
+
+    const queryParamString = QueryParamsService.getQueryParamsAsString(queryParams);
+    this.doDownloadPostRequestByReportWorker(API_URI_GET_ANIMAL_FEATURES_PER_YEAR_OF_BIRTH_REPORT + queryParamString, {});
+  }
+
+  doAnimalTreatmentsPerYearReportGetRequest(year: string) {
+    const queryParams: QueryParamSetModel[] = [];
+    queryParams.push({
+      key: QUERY_PARAM_YEAR,
+      value: year
+    });
+
+    queryParams.push({
+      key: QUERY_PARAM_PROCESS_AS_WORKER_TASK,
+      value: true
+    });
+
+    const queryParamString = QueryParamsService.getQueryParamsAsString(queryParams);
+    this.doDownloadGetRequestByReportWorker(API_URI_GET_ANIMAL_TREATMENTS_PER_YEAR_REPORT + queryParamString);
   }
 
   doInvoicePdfGetRequest(invoice: Invoice) {
@@ -269,8 +364,12 @@ export class DownloadService {
     this.downloadsShownInModalChanged.next(this.downloadRequestShownInModal.slice());
   }
 
-  private doDownloadPostRequestByReportWorker(uri: string, request: any) {
+  private doDownloadPostRequestByReportWorker(uri: string, request: any,
+                                              reportType?: ReportType, fileType?: string) {
 
+    if (reportType != null && fileType != null) {
+      this.reportService.addPlaceHolderReportRecord(reportType, fileType);
+    }
     this.nsfo.doPostRequest(uri, request)
       .subscribe(
           (res: JsonResponseModel) => {

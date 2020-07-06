@@ -64,14 +64,13 @@ export class MateHistoryRowComponent {
               this.mate.ki = 'NO';
             }
 
-            this.mate.request_state = 'OPEN';
             this.editMode = false;
             this.isSending = false;
           },
           err => {
-            const error = err;
+            const error = err.error === undefined || err.error === null ? err : err.error;
             this.showError.emit(error);
-            this.editMode = false;
+            this.cancelEditing();
             this.isSending = false;
           }
         );

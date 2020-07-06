@@ -8,6 +8,8 @@ import {HttpClient, HttpErrorResponse, HttpHeaders} from '@angular/common/http';
 import {environment} from '../../../../environments/environment';
 import {CacheService} from '../settings/cache.service';
 
+import * as HttpStatus from 'http-status-codes';
+
 @Injectable()
 export class NSFOService {
 
@@ -93,22 +95,40 @@ export class NSFOService {
       });
   }
 
-  doGetRequest(uri: string) {
-    return this.httpClient.get(this.apiUrl + uri,
-      {
-        headers: this.getDefaultHeaders(),
-        observe: 'body', // returning full response, default = body
-        responseType: 'json', // response will be treated as this, default = json
-      });
+  doGetRequest(uri: string, includeFullResponse: boolean = false) {
+    if (includeFullResponse) {
+      return this.httpClient.get(this.apiUrl + uri,
+        {
+          headers: this.getDefaultHeaders(),
+          observe: 'response', // returning full response, default = body
+          responseType: 'json', // response will be treated as this, default = json
+        });
+    } else {
+      return this.httpClient.get(this.apiUrl + uri,
+        {
+          headers: this.getDefaultHeaders(),
+          observe: 'body', // returning full response, default = body
+          responseType: 'json', // response will be treated as this, default = json
+        });
+    }
   }
 
-  doPutRequest(uri: string, data) {
-    return this.httpClient.put(this.apiUrl + uri, JSON.stringify(data),
-      {
-        headers: this.getDefaultHeaders(),
-        observe: 'body', // returning full response, default = body
-        responseType: 'json', // response will be treated as this, default = json
-      });
+  doPutRequest(uri: string, data, includeFullResponse: boolean = false) {
+    if (includeFullResponse) {
+      return this.httpClient.put(this.apiUrl + uri, JSON.stringify(data),
+        {
+          headers: this.getDefaultHeaders(),
+          observe: 'response', // returning full response, default = body
+          responseType: 'json', // response will be treated as this, default = json
+        });
+    } else {
+      return this.httpClient.put(this.apiUrl + uri, JSON.stringify(data),
+        {
+          headers: this.getDefaultHeaders(),
+          observe: 'body', // returning full response, default = body
+          responseType: 'json', // response will be treated as this, default = json
+        });
+    }
   }
 
   doDeleteRequest(uri: string, id) {
@@ -127,13 +147,13 @@ export class NSFOService {
 
   public getErrorMessage(err: HttpErrorResponse): string {
     switch (err.status) {
-      case 500:
+      case HttpStatus.INTERNAL_SERVER_ERROR:
         return this.translate.instant('SOMETHING WENT WRONG. TRY ANOTHER TIME.');
       case 524:
         return this.translate.instant(
           'A TIMEOUT OCCURED. TRY AGAIN LATER, PERHAPS WHEN THE SERVER IS LESS BUSY OR TRY IT WITH LESS DATA.'
         );
-      case 403:
+      case HttpStatus.FORBIDDEN:
         this.logout();
         return this.translate.instant('YOU ARE UNAUTHORIZED');
 

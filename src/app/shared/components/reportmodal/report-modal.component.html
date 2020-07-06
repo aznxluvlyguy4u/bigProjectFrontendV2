@@ -44,16 +44,25 @@
               <i class="fa fa-spinner fa-pulse fa-2x fa-fw"
                  title="{{ 'YOUR FILE IS NOW BEING GENERATED' | translate }}"></i>
             </td>
-            <td *ngIf="reportRequest.finished_at && !reportRequest.error_code">
-              <button type="button"
-                      class="button primary pull-left"
-                      aria-label="Download file"
-                      (click)="downloadFile(reportRequest)">
+            <td *ngIf="reportRequest.finished_at != null && reportRequest.download_url != null && !reportRequest.error_code">
+                <a
+                  class="button primary pull-left margin-top-1"
+                  aria-label="Download file"
+                  href="{{reportRequest.download_url}}"
+                  target="_blank"
+                  >
                 {{ 'DOWNLOAD' | translate }}
-              </button>
+                </a>
             </td>
-            <td *ngIf="reportRequest.error_code">
+            <td *ngIf="displayFailedMessage(reportRequest)">
               {{ 'FAILED' | translate }}
+              <i class="fa fa-info-circle"
+                 aria-hidden="true"
+                 title="{{(reportRequest.error_message != null ? reportRequest.error_message : 'DOWNLOAD MODAL FAILED DEFAULT INFO TEXT') | translate}}">
+              </i>
+            </td>
+            <td *ngIf="displayMissingDataMessage(reportRequest)">
+              {{ 'NO DATA' | translate }}
               <i class="fa fa-info-circle"
                  aria-hidden="true"
                  title="{{(reportRequest.error_message != null ? reportRequest.error_message : 'DOWNLOAD MODAL FAILED DEFAULT INFO TEXT') | translate}}">

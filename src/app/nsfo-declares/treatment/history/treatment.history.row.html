@@ -1,0 +1,103 @@
+<!--TREATMENT CREATED AT-->
+<td>
+  <label class="show-for-small-only">{{ 'CREATED AT' | translate }}</label>
+  <span>{{ treatment.create_date }}</span>
+</td>
+
+<!--TREATMENT START DATE-->
+<td>
+  <label class="show-for-small-only">{{ 'START DATE' | translate }}</label>
+  <span *ngIf="!editMode">{{ treatment.start_date }}</span>
+  <div *ngIf="editMode" [formGroup]="form">
+        <app-datepicker [formCtrl]="form.controls['start_date']" [initDate]="treatment.start_date"
+                    [viewFormat]="view_date_format" [modelFormat]="model_datetime_format"></app-datepicker>
+        <div *ngIf="!form.controls['start_date'].valid" class="input-error-msg text-center">{{ 'FILL IN THE TREATMENT START DATE' | translate }}</div>
+  </div>
+</td>
+
+<!--TREATMENT END DATE-->
+<td>
+  <label class="show-for-small-only">{{ 'TILL' | translate }}</label>
+  <span *ngIf="!editMode">{{ treatment.end_date }}</span>
+  <div *ngIf="editMode" [formGroup]="form">
+        <app-datepicker [formCtrl]="form.controls['end_date']" [initDate]="treatment.end_date" [viewFormat]="view_date_format"
+                    [modelFormat]="model_datetime_format"></app-datepicker>
+        <div *ngIf="!form.controls['end_date'].valid" class="input-error-msg text-center">{{ 'FILL IN THE TREATMENT END DATE' | translate }}</div>
+  </div>
+</td>
+
+<!--TREATMENT TEMPLATE-->
+<td>
+  <label class="show-for-small-only">{{ 'TREATMENT' | translate }}</label>
+  <span>{{ treatment.description }}</span>
+</td>
+
+<!-- TREATMENT MEDICATIONS -->
+<td>
+  {{hasMedications(treatment) ? treatment.medications.length : 'NONE' | translate }}<span *ngIf="hasMedications(treatment)">x</span>
+  <span *ngIf="hasMedications(treatment)">
+      <a (click)="openMedicineModal()" class="overview-controls">
+          <i class="fa fa-info-circle" aria-hidden="true"></i>
+      </a>
+  </span>
+</td>
+
+<!-- TREATMENT ANIMALS -->
+<td>
+  {{treatment.animals ? treatment.animals.length: '0'}}x
+  <span>
+      <a (click)="openAnimalsModal()" class="overview-controls">
+          <i class="fa fa-info-circle" aria-hidden="true"></i>
+      </a>
+  </span>
+</td>
+
+<!--TREATMENT DUTCH TYPE  -->
+<td *ngIf="displayTreatmentLocationIndividualType">
+  <label class="show-for-small-only">{{ 'DUTCH TYPE' | translate }}</label>
+  <span>{{ treatment.dutchType }}</span>
+</td>
+
+<!--TREATMENT STATUS  -->
+<td>
+  <label class="show-for-small-only">{{ 'STATUS' | translate }}</label>
+  <span>{{ treatment.status | translate }}</span>
+</td>
+
+<!--ROW BUTTONS-->
+<td>
+  <div class="row">
+    <span [hidden]="editMode || treatment.status == 'REVOKED'">
+      <div class="small-6 columns">
+        <button class="tiny primary button" (click)="enableEditing()">{{ 'EDIT' | translate }}</button>
+      </div>
+      <div class="small-6 columns">
+        <button class="tiny alert button" (click)="sendRevokeRequest()">{{ 'REVOKE' | translate }}</button>
+      </div>
+    </span>
+
+    <span *ngIf="editMode">
+        <div class="small-6 columns">
+            <button class="tiny primary button" (click)="sendChangeRequest()"
+                    [disabled]="isSending || treatmentTemplatesToSelect.length == 0 || selectedTreatmentTemplate == null">
+                <span *ngIf="!isSending">
+                    {{ 'SEND' | translate }}
+                </span>
+                <span *ngIf="isSending">
+                    <i class="fa fa-gear fa-spin fa-fw"></i>
+                </span>
+            </button>
+        </div>
+        <div class="small-6 columns">
+            <button class="tiny alert button" (click)="cancelEditing()" [disabled]="isSending">{{ 'CANCEL' | translate }}</button>
+        </div>
+    </span>
+
+    <span *ngIf="treatment.status == 'REVOKED' && treatment.revoke_date" style="font-size: 0.8em;font-weight: 400;">
+        <div class="small-12 columns">
+            ({{ stringAsViewDateTime(treatment.revoke_date) }})
+        </div>
+    </span>
+  </div>
+</td>
+

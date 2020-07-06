@@ -9,6 +9,7 @@ import {API_URI_INVOICE_PAYMENT, API_URI_INVOICES} from '../../shared/services/n
 import {DownloadService} from '../../shared/services/download/download.service';
 import {PaginationService} from 'ngx-pagination';
 import {JsonResponseModel} from '../../shared/models/json-response.model';
+import {POLLING_INTERVAL_INVOICES_SECONDS} from '../../shared/variables/timeout.constant';
 
 @Component({
   providers: [PaginationService],
@@ -61,7 +62,7 @@ export class InvoiceOverviewComponent implements OnInit, OnDestroy {
       if (this.areRecurrentApiCallsActivated && this.loopGetInvoicesList) {
         this.getInvoicesList();
       }
-    }, 10 * 1000);
+    }, POLLING_INTERVAL_INVOICES_SECONDS * 1000);
   }
 
   private calculateDays(date: string) {

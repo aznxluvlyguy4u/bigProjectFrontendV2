@@ -9,4 +9,5 @@ export class Address {
   public city: string;
   public state: string;
   public country: Country;
+  public country_name: string;
 }

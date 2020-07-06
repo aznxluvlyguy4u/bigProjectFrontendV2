@@ -1,6 +1,6 @@
 import {BrowserModule} from '@angular/platform-browser';
 import {enableProdMode, NgModule} from '@angular/core';
-import { CommonModule } from '@angular/common';
+import {CommonModule, DatePipe} from '@angular/common';
 
 import {AppComponent} from './app.component';
 import {HttpClient, HttpClientModule} from '@angular/common/http';
@@ -67,12 +67,15 @@ import {DownloadLandingPageComponent} from './redirect/download/download-landing
 import {LoadingComponent} from './redirect/loading/loading.component';
 import {DatepickerV2Component} from './shared/components/datepickerV2/datepicker-v2.component';
 import {FileTypeDropdownComponent} from './shared/components/filetypedropdown/file-type-dropdown.component';
+import {ReportBirthListComponent} from './report/birthlist/report.birth-list.component';
+import {ReportCompanyRegisterComponent} from './report/companyRegister/report.company-register.component';
 import {ReportFertilizerAccountingComponent} from './report/fertilityAccounting/report.fertilizer-accounting.component';
 import {ReportInbreedingCoefficientComponent} from './report/inbreedingCoefficient/report.inbreedingCoefficient';
 import {ReportLineageProofComponent} from './report/lineageProof/report.lineageProof';
 import {ReportLivestockComponent} from './report/livestock/report.livestock';
 import {ReportOffspringComponent} from './report/offspring/report.offspring.component';
-import {ReportBirthListComponent} from './report/birthlist/report.birth-list.component';
+import {ReportEweCardComponent} from './report/eweCard/report.ewe-card.component';
+import {ReportWeightsPerYearOfBirthComponent} from './report/weightsPerYearOfBirth/report.weights-per-year-of-birth.component';
 import {BooleanSwitchComponent} from './shared/components/booleanswitch/boolean-switch.component';
 import {ReportComponent} from './report/report.component';
 import {ArrivalDeclareComponent} from './rvo-declares/arrival/declare/arrival.declare';
@@ -140,7 +143,14 @@ import {LineComponent} from './shared/components/googlechart/line.component';
 import {GoogleLineChartService} from './shared/services/google/googlelinechart.service';
 import {AnimalDetailsCardComponent} from './shared/components/animal-details-card/animal-details-card.component';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {MatButtonModule, MatProgressSpinnerModule, MatSnackBar, MatSnackBarModule} from '@angular/material';
+import {
+  MAT_SNACK_BAR_DEFAULT_OPTIONS,
+  MatButtonModule,
+  MatCheckboxModule,
+  MatProgressSpinnerModule,
+  MatSnackBar,
+  MatSnackBarModule
+} from '@angular/material';
 import {PageLoadingSpinnerComponent} from './shared/components/page-loading-spinner/page-loading-spinner.component';
 import {ButtonPrimaryComponent} from './shared/components/button-primary/button-primary.component';
 import {InsideComponentLoadingSpinnerComponent} from './shared/components/inside-component-loading-spinner/inside-component-loading-spinner.component';
@@ -152,6 +162,22 @@ import {ReportModalComponent} from './shared/components/reportmodal/report-modal
 import {SortService} from './shared/services/utils/sort.service';
 import {PedigreeRegisterStorage} from './shared/services/storage/pedigree-register.storage';
 import {InvoiceSortPipe} from './invoices/pipes/invoice-sort.pipe';
+import {YeardropdownComponent} from './shared/components/yeardropdown/yeardropdown.component';
+import {ReportAnimalFeaturesPerYearOfBirthComponent} from './report/animalFeaturesPerYearOfBirth/report.animal-features-per-year-of-birth.component';
+import {AnimalDetailsContactCardComponent} from './livestock/details/contact/animal-details-contact-card.component';
+import {RearingSelectorComponent} from './shared/components/rearingselector/rearing-selector.component';
+import {AnimalAnnotationsComponent} from './livestock/details/annotations/animal-annotations.component';
+import {AnimalAnnotationComponent} from './livestock/details/annotations/animal-annotation.component';
+import {ScanMeasurementsEditModalComponent} from './livestock/details/scanmeasurementseditmodal/scan-measurements-edit-modal.component';
+import {TreatmentComponent} from './nsfo-declares/treatment/treatment.component';
+import {TreatmentDeclareComponent} from './nsfo-declares/treatment/declare/treatment.declare';
+import {TreatmentHistoryComponent} from './nsfo-declares/treatment/history/treatment.history';
+import {TreatmentHistoryRowComponent} from './nsfo-declares/treatment/history/treatment.history.row';
+import {TreatmentHistoryPipe} from './nsfo-declares/treatment/history/pipes/treatment.history.pipe';
+import {ReportAnimalTreatmentsPerYearComponent} from './report/animalTreatmentsPerYear/report.animal-treatments-per-year.component';
+import {ReportCombiFormTransportDocumentComponent} from './report/combiFormTransportDocument/report.combiFormTransportDocument';
+
+import { StorageServiceModule } from 'ngx-webstorage-service';
 
 // AoT requires an exported function for factories
 export function CreateTranslateLoader(http: HttpClient) {
@@ -278,11 +304,14 @@ export function CreateTranslateLoader(http: HttpClient) {
     LivestockOverviewComponent,
     LivestockDetailComponent,
     AnimalDetailsCardComponent,
+    AnimalDetailsContactCardComponent,
     DatepickerComponent,
     DatepickerV2Component,
     ExteriorComponent,
     DownloadButtonComponent,
     ExteriorComponent,
+    AnimalAnnotationComponent,
+    AnimalAnnotationsComponent,
     LivestockComponent,
     LivestockMainOverviewComponent,
     MessagesComponent,
@@ -307,6 +336,10 @@ export function CreateTranslateLoader(http: HttpClient) {
     ReportLivestockComponent,
     ReportOffspringComponent,
     ReportBirthListComponent,
+    ReportEweCardComponent,
+    ReportCompanyRegisterComponent,
+    ReportWeightsPerYearOfBirthComponent,
+    ReportAnimalFeaturesPerYearOfBirthComponent,
     BooleanSwitchComponent,
     ReportComponent,
     ReportOffspringComponent,
@@ -390,7 +423,17 @@ export function CreateTranslateLoader(http: HttpClient) {
     PageLoadingSpinnerComponent,
     InsideComponentLoadingSpinnerComponent,
     ButtonPrimaryComponent,
-    ReportModalComponent
+    RearingSelectorComponent,
+    ReportModalComponent,
+    ScanMeasurementsEditModalComponent,
+    YeardropdownComponent,
+    TreatmentComponent,
+    TreatmentDeclareComponent,
+    TreatmentHistoryComponent,
+    TreatmentHistoryRowComponent,
+    TreatmentHistoryPipe,
+    ReportAnimalTreatmentsPerYearComponent,
+    ReportCombiFormTransportDocumentComponent
   ],
   imports: [
     BrowserAnimationsModule,
@@ -414,6 +457,8 @@ export function CreateTranslateLoader(http: HttpClient) {
     MatProgressSpinnerModule,
     MatButtonModule,
     MatSnackBarModule,
+    MatCheckboxModule,
+    StorageServiceModule,
   ],
   providers: [
     UtilsService,
@@ -434,6 +479,8 @@ export function CreateTranslateLoader(http: HttpClient) {
     Constants,
     MatSnackBar,
     PedigreeRegisterStorage,
+    DatePipe,
+    {provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: {duration: 3500}}
   ],
   bootstrap: [AppComponent]
 })

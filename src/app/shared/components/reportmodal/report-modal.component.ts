@@ -151,16 +151,19 @@ export class ReportModalComponent implements OnInit, OnDestroy {
     }
   }
 
-
   public downloadFile(downloadRequest: ReportRequest) {
+    const encodedDownloadUrl = ReportModalComponent.encodeUri(downloadRequest.download_url);
+    const isPdf = downloadRequest.file_type != null && downloadRequest.file_type.toUpperCase( ) === PDF;
+    const path = isPdf ? '/loading' : '/downloaded';
+    const win = window.open(path + '/' + encodedDownloadUrl, '_blank');
+  }
 
-    if (downloadRequest.file_type === PDF) {
-      const win = window.open('/loading', '_blank');
-      win.location.href = downloadRequest.download_url;
-    } else {
-      const win = window.open('/downloaded', '_blank');
-      win.location.href = downloadRequest.download_url;
-    }
+  public static encodeUri(uri: string): string {
+    return encodeURI(btoa(uri));
+  }
+
+  public static decodeUri(encodedUri: string): string {
+    return decodeURI(atob(encodedUri));
   }
 
   public resetDownloadList() {
@@ -173,5 +176,18 @@ export class ReportModalComponent implements OnInit, OnDestroy {
 
   public hasFailedDownloads() {
     return this.reportService.failedReportsCount > 0;
+  }
+
+  public displayFailedMessage(reportRequest: ReportRequest) {
+    return reportRequest != null && reportRequest.error_code !== null && reportRequest.error_code !== undefined
+      && !this.has404ErrorCode(reportRequest.error_code);
+  }
+
+  public displayMissingDataMessage(reportRequest: ReportRequest) {
+    return reportRequest != null && this.has404ErrorCode(reportRequest.error_code);
+  }
+
+  private has404ErrorCode(code: string|number): boolean {
+    return code === 404 || code === '404';
   }
 }

@@ -5,21 +5,14 @@
       <button type="button" (click)="goBack()" class="tiny primary button">{{ 'GO BACK' | translate }}</button>
     </div>
 
-    <div class="show-for-small-only small-9 columns end">
-            <span class="pull-right">
-                <ng-template [ngTemplateOutlet]="changeButton"></ng-template>
-            </span>
-    </div>
-
-    <div class="large-6 medium-3 hide-for-small-only columns" style="color:transparent">
+    <div class="large-7 medium-3 hide-for-small-only columns" style="color:transparent">
       <span> - </span>
     </div>
 
     <div class="large-2 medium-3 small-6 columns">
             <span class="pull-right">
                 <app-download-button
-                  *ngIf="!edit_mode"
-                  [extraDisabledCriteria]="!changeEnabled"
+                  [extraDisabledCriteria]="isAnyEditModeActive()"
                   [labelText]="'LINEAGE PROOF CSV'"
                   [includeDownloadIcon]="true"
                   [fontSize]="'10px'"
@@ -31,8 +24,7 @@
     <div class="large-2 medium-3 small-6 columns">
             <span class="pull-right">
                 <app-download-button
-                  *ngIf="!edit_mode"
-                  [extraDisabledCriteria]="!changeEnabled"
+                  [extraDisabledCriteria]="isAnyEditModeActive()"
                   [labelText]="'LINEAGE PROOF PDF'"
                   [includeDownloadIcon]="true"
                   [fontSize]="'10px'"
@@ -41,42 +33,21 @@
             </span>
     </div>
 
-    <div *ngIf="!edit_mode"
-         class="large-1 medium-2 small-6 hide-for-small-only columns">
-            <span class="pull-right">
-                <ng-template [ngTemplateOutlet]="changeButton"></ng-template>
-            </span>
-    </div>
-
-    <div *ngIf="edit_mode"
-         class="small-6 hide-for-small-only columns">
-            <span class="pull-right">
-                <ng-template [ngTemplateOutlet]="changeButton"></ng-template>
-            </span>
-    </div>
-
   </div>
 
-  <label *ngIf="changed_animal_info" class="middle input-success-msg pull-right">{{ 'THE ANIMAL INFO HAS BEEN SAVED' |
-    translate }}</label>
-  <label *ngIf="changed_animal_info_error" class="middle input-error-msg pull-right">{{ error_message | translate }} {{
-    gender_change_error }}</label>
-  <label *ngIf="gender_changed_animal_info_error" class="middle input-error-msg pull-right">{{ gender_change_error
-    }}</label>
-
-  <div class="row" *ngIf="isLoading">
+  <div class="row" *ngIf="isLoadingPrimaryData">
     <div class="medium-12 columns">
       <app-page-loading-spinner></app-page-loading-spinner>
     </div>
   </div>
 
-  <div class="row" *ngIf="!isLoading">
+  <div class="row" *ngIf="!isLoadingPrimaryData">
     <div class="medium-6 columns">
 
       <!-- ANIMAL DETAIL -->
       <div class="info-container">
         <div class="info-header">
-          {{ 'ANIMAL DETAIL' | translate }}
+          {{ 'ANIMAL DETAIL' | translate }} <span class="extra-info">{{animalDetailHeaderExtraInfo()}}</span>
         </div>
         <div class="info-body">
 
@@ -113,21 +84,28 @@
             <div class="medium-6 columns">
               <input type="text" [(ngModel)]="animal.nickname" [disabled]="!nickname_edit_mode">
             </div>
-            <button type="button" *ngIf="nickname_edit_mode" (click)="toggleNicknameEditMode()"
-                    class="tiny alert button pull-right">{{ 'CANCEL' | translate }}
-            </button>
-            <button type="button" *ngIf="nickname_edit_mode" (click)="sendNicknameChangeRequest()"
-                    class="tiny primary button pull-right">{{ 'SAVE' | translate }}
-            </button>
-            <button type="button" *ngIf="!nickname_edit_mode" [disabled]="!changeEnabled" (click)="toggleNicknameEditMode()"
-                    class="tiny primary button pull-right">
-                            <span *ngIf="isLoading">
+          </div>
+          <div class="row" *ngIf="changeEnabled">
+            <div class="medium-offset-6 medium-6 columns end">
+              <button type="button" *ngIf="nickname_edit_mode" (click)="toggleNicknameEditMode()"
+                      class="tiny alert button pull-right">{{ 'CANCEL' | translate }}
+              </button>
+              <button type="button" *ngIf="nickname_edit_mode" (click)="sendNicknameChangeRequest()"
+                      class="tiny primary button pull-right">{{ 'SAVE' | translate }}
+              </button>
+              <button type="button" *ngIf="!nickname_edit_mode"
+                      [disabled]="!changeEnabled || isAnyEditModeActive() || !allowNickNameEdit()"
+                      (click)="toggleNicknameEditMode()"
+                      class="tiny primary button pull-right"
+              >
+                            <span *ngIf="isLoadingPrimaryData">
                                 <i class="fa fa-gear fa-spin fa-fw"></i>
                             </span>
-              <span *ngIf="!isLoading">
+                <span *ngIf="!isLoadingPrimaryData">
                                 {{ 'CHANGE' | translate }}
                             </span>
-            </button>
+              </button>
+            </div>
           </div>
 
           <!-- WORK NUMBER -->
@@ -147,12 +125,33 @@
             </div>
             <div class="medium-6 columns">
               <div class="uid-input-group">
-                <select [(ngModel)]="animal.collar.color" [disabled]="!edit_mode">
+                <select [(ngModel)]="animal.collar.color" [disabled]="!collar_edit_mode">
                   <option value=""></option>
                   <option *ngFor="let collar of collar_color_list" value="{{ collar.name }}">{{ collar.name }}</option>
                 </select>
-                <input type="text" [(ngModel)]="animal.collar.number" [disabled]="!edit_mode" maxlength="4">
+                <input type="text" [(ngModel)]="animal.collar.number" [disabled]="!collar_edit_mode" maxlength="4">
               </div>
+            </div>
+          </div>
+          <div class="row" *ngIf="changeEnabled">
+            <div class="medium-offset-6 medium-6 columns end">
+              <button type="button" *ngIf="collar_edit_mode" (click)="toggleCollarEditMode()"
+                      class="tiny alert button pull-right">{{ 'CANCEL' | translate }}
+              </button>
+              <button type="button" *ngIf="collar_edit_mode" (click)="sendGeneralChangeRequest()"
+                      class="tiny primary button pull-right">{{ 'SAVE' | translate }}
+              </button>
+              <button type="button" *ngIf="!collar_edit_mode"
+                      [disabled]="!changeEnabled || isAnyEditModeActive() || !allowCollarEdit()"
+                      (click)="toggleCollarEditMode()"
+                      class="tiny primary button pull-right">
+                            <span *ngIf="isLoadingPrimaryData">
+                                <i class="fa fa-gear fa-spin fa-fw"></i>
+                            </span>
+                <span *ngIf="!isLoadingPrimaryData">
+                                {{ 'CHANGE' | translate }}
+                            </span>
+              </button>
             </div>
           </div>
 
@@ -163,6 +162,16 @@
             </div>
             <div class="medium-6 columns">
               <input type="text" [(ngModel)]="animal.date_of_birth" [disabled]="true">
+            </div>
+          </div>
+
+          <!-- COUNTRY OF BIRTH -->
+          <div class="row">
+            <div class="medium-6 columns">
+              <label class="middle">{{ 'COUNTRY OF BIRTH' | translate }}</label>
+            </div>
+            <div class="medium-6 columns">
+              <input type="text" [(ngModel)]="animal.country_of_birth" [disabled]="true">
             </div>
           </div>
 
@@ -177,30 +186,46 @@
                 </option>
               </select>
             </div>
-            <button type="button" *ngIf="gender_edit_mode" (click)="toggleGenderEditMode()"
-                    class="tiny alert button pull-right">{{ 'CANCEL' | translate }}
-            </button>
-            <button type="button" *ngIf="gender_edit_mode" (click)="sendGenderChangeRequest()"
-                    class="tiny primary button pull-right">{{ 'SAVE' | translate }}
-            </button>
-            <button type="button" *ngIf="!gender_edit_mode" [disabled]="!changeEnabled" (click)="toggleGenderEditMode()"
-                    class="tiny primary button pull-right">
-                            <span *ngIf="isLoading">
+          </div>
+          <div class="row" *ngIf="changeEnabled">
+            <div class="medium-offset-6 medium-6 columns end">
+              <button type="button" *ngIf="gender_edit_mode" (click)="toggleGenderEditMode()"
+                      class="tiny alert button pull-right">{{ 'CANCEL' | translate }}
+              </button>
+              <button type="button" *ngIf="gender_edit_mode" (click)="sendGenderChangeRequest()"
+                      class="tiny primary button pull-right">{{ 'SAVE' | translate }}
+              </button>
+              <button type="button" *ngIf="!gender_edit_mode"
+                      [disabled]="!changeEnabled || isAnyEditModeActive() || !allowGenderEdit()"
+                      (click)="toggleGenderEditMode()"
+                      class="tiny primary button pull-right">
+                            <span *ngIf="isLoadingPrimaryData">
                                 <i class="fa fa-gear fa-spin fa-fw"></i>
                             </span>
-              <span *ngIf="!isLoading">
+                <span *ngIf="!isLoadingPrimaryData">
                                 {{ 'CHANGE' | translate }}
                             </span>
-            </button>
+              </button>
+            </div>
           </div>
 
           <!-- LITTER SIZE -->
           <div class="row">
             <div class="medium-6 columns">
-              <label class="middle">{{ 'LITTER SIZE' | translate }}</label>
+              <label class="middle">{{ 'BORN AS' | translate }}</label>
             </div>
             <div class="medium-6 columns">
               <input type="number" [ngModel]="animal.litter_size" disabled>
+            </div>
+          </div>
+
+          <!-- SUCKLE COUNT -->
+          <div class="row">
+            <div class="medium-6 columns">
+              <label class="middle">{{ 'SUCKLE COUNT' | translate }}</label>
+            </div>
+            <div class="medium-6 columns">
+              <input type="number" [ngModel]="animal.suckle_count" disabled>
             </div>
           </div>
 
@@ -213,45 +238,63 @@
             </div>
           </div>
 
-          <!--&lt;!&ndash; INBREEDING INDEX &ndash;&gt;-->
-          <!--<div class="row">-->
-          <!--<div class="medium-6 columns">-->
-          <!--<label class="middle">{{ 'INBREEDING INDEX' | translate }}</label>-->
-          <!--</div>-->
-          <!--<div class="medium-6 columns">-->
-          <!--<input type="text" [(ngModel)]="animal.inbreeding_index" [disabled]="true">-->
-          <!--</div>-->
-          <!--</div>-->
+          <!-- REARING -->
+          <div class="row">
+            <div class="medium-6 columns">
+              <label class="middle">{{ 'REARING' | translate }}</label>
+            </div>
+            <div class="medium-6 columns">
+              <input type="text" [(ngModel)]="animal.rearing.label" [disabled]="true">
+            </div>
+          </div>
+          <div class="row" *ngIf="changeEnabled">
+            <div class="medium-offset-6 medium-6 columns end">
+              <app-rearing-selector-modal
+               [isLoading]="false"
+               [disabled]="!changeEnabled || isAnyEditModeActive() || !allowRearingEdit()"
+               [rearing]="animal.rearing"
+               [motherUln]="motherAnimal?.uln"
+               [childUln]="animal?.uln"
+               (rearingChange)="updateRearing($event)"
+              ></app-rearing-selector-modal>
+            </div>
+          </div>
 
-          <!--&lt;!&ndash; REARING &ndash;&gt;-->
-          <!--<div class="row">-->
-          <!--<div class="medium-6 columns">-->
-          <!--<label class="middle">{{ 'REARING' | translate }}</label>-->
-          <!--</div>-->
-          <!--<div class="medium-6 columns">-->
-          <!--<input type="text" [(ngModel)]="animal.rearing" [disabled]="true">-->
-          <!--</div>-->
-          <!--</div>-->
-
-          <!--&lt;!&ndash; SUCTION SIZE &ndash;&gt;-->
-          <!--<div class="row">-->
-          <!--<div class="medium-6 columns">-->
-          <!--<label class="middle">{{ 'SUCTION SIZE' | translate }}</label>-->
-          <!--</div>-->
-          <!--<div class="medium-6 columns">-->
-          <!--<input type="text" [(ngModel)]="animal.suction_size" [disabled]="true">-->
-          <!--</div>-->
-          <!--</div>-->
-
-          <!--&lt;!&ndash; BLIND FACTOR &ndash;&gt;-->
-          <!--<div class="row">-->
-          <!--<div class="medium-6 columns">-->
-          <!--<label class="middle">{{ 'BLIND FACTOR' | translate }}</label>-->
-          <!--</div>-->
-          <!--<div class="medium-6 columns">-->
-          <!--<input type="text" [(ngModel)]="animal.blind_factor" [disabled]="true">-->
-          <!--</div>-->
-          <!--</div>-->
+          <!-- BLIND FACTOR -->
+          <div class="row">
+            <div class="medium-6 columns">
+              <label class="middle">{{ 'BLIND FACTOR' | translate }}</label>
+            </div>
+            <div class="medium-6 columns">
+              <select
+                style="width: 8.5rem"
+                [(ngModel)]="animal.blindness_factor" [disabled]="!blindness_factor_edit_mode">
+                <option value=""></option>
+                <option *ngFor="let blindness_factor_type of blindness_factor_types" value="{{ blindness_factor_type }}">{{ blindness_factor_type | translate }}</option>
+              </select>
+            </div>
+          </div>
+          <div class="row" *ngIf="changeEnabled">
+            <div class="medium-offset-6 medium-6 columns end">
+              <button type="button" *ngIf="blindness_factor_edit_mode" (click)="toggleBlindnessFactorEditMode()"
+                      class="tiny alert button pull-right">{{ 'CANCEL' | translate }}
+              </button>
+              <button type="button" *ngIf="blindness_factor_edit_mode" (click)="sendGeneralChangeRequest()"
+                      class="tiny primary button pull-right">{{ 'SAVE' | translate }}
+              </button>
+              <button type="button" *ngIf="!blindness_factor_edit_mode"
+                      [disabled]="!changeEnabled || isAnyEditModeActive() || !allowBlindnessEdit()"
+                      (click)="toggleBlindnessFactorEditMode()"
+                      class="tiny primary button pull-right">
+                            <span *ngIf="isLoadingPrimaryData">
+                                <i class="fa fa-gear fa-spin fa-fw"></i>
+                            </span>
+                <span *ngIf="!isLoadingPrimaryData">
+                                {{ 'CHANGE' | translate }}
+                            </span>
+              </button>
+            </div>
+          </div>
 
           <!-- SCRAPIE GENOTYPE -->
           <div class="row">
@@ -262,6 +305,17 @@
               <input type="text" [(ngModel)]="animal.scrapie_genotype" [disabled]="true">
             </div>
           </div>
+
+          <!-- INBREEDING COEFFICIENT -->
+          <div class="row">
+            <div class="medium-6 columns">
+              <label class="middle">{{ 'INBREEDING COEFFICIENT' | translate }}</label>
+            </div>
+            <div class="medium-6 columns">
+              <input type="text" [(ngModel)]="animal.inbreeding_coefficient" [disabled]="true">
+            </div>
+          </div>
+
         </div>
       </div>
 
@@ -272,8 +326,8 @@
             {{ 'MEASUREMENTS' | translate }}
             <span class="hide-for-small-only">
                             | {{ 'LAST UPDATED' | translate }}:
-                            <span *ngIf="animal.measurement.measurement_date"> {{ stringAsViewDateTime(animal.measurement.measurement_date) }} </span>
-                            <span *ngIf="!animal.measurement.measurement_date"> --/--/---- --:-- </span>
+                            <span *ngIf="animal.scan_measurements.measurement_date"> {{ stringAsViewDate(animal.scan_measurements.measurement_date) }} </span>
+                            <span *ngIf="!animal.scan_measurements.measurement_date"> --/--/---- --:-- </span>
                         </span>
           </div>
         </div>
@@ -285,7 +339,8 @@
               <label class="middle"> {{ 'FAT COVER' | translate }} 1 </label>
             </div>
             <div class="medium-6 columns">
-              <input type="text" [(ngModel)]="animal.measurement.fat_cover_one" [disabled]="true">
+              <input type="number" min="0" max="9" step="0.1"
+                     [(ngModel)]="animal.scan_measurements.fat1" [disabled]="true">
             </div>
           </div>
 
@@ -295,7 +350,8 @@
               <label class="middle"> {{ 'FAT COVER' | translate }} 2 </label>
             </div>
             <div class="medium-6 columns">
-              <input type="text" [(ngModel)]="animal.measurement.fat_cover_two" [disabled]="true">
+              <input type="number" min="0" max="9" step="0.1"
+                     [(ngModel)]="animal.scan_measurements.fat2" [disabled]="true">
             </div>
           </div>
 
@@ -305,7 +361,8 @@
               <label class="middle"> {{ 'FAT COVER' | translate }} 3 </label>
             </div>
             <div class="medium-6 columns">
-              <input type="text" [(ngModel)]="animal.measurement.fat_cover_three" [disabled]="true">
+              <input type="number" min="0" max="9" step="0.1"
+                     [(ngModel)]="animal.scan_measurements.fat3" [disabled]="true">
             </div>
           </div>
 
@@ -315,7 +372,8 @@
               <label class="middle"> {{ 'MUSCULAR THICKNESS' | translate }} </label>
             </div>
             <div class="medium-6 columns">
-              <input type="text" [(ngModel)]="animal.measurement.muscular_thickness" [disabled]="true">
+              <input type="number" min="10" max="50" step="0.1"
+                     [(ngModel)]="animal.scan_measurements.muscle_thickness" [disabled]="true">
             </div>
           </div>
 
@@ -325,29 +383,54 @@
               <label class="middle"> {{ 'SCAN WEIGHT' | translate }} (kg)</label>
             </div>
             <div class="medium-6 columns">
-              <input type="text" [(ngModel)]="animal.measurement.scan_weight" [disabled]="true">
+              <input type="number" min="10" max="99" step="0.01"
+                [(ngModel)]="animal.scan_measurements.scan_weight" [disabled]="!scan_measurements_edit_mode">
             </div>
           </div>
 
+          <div class="row" *ngIf="changeEnabled">
+            <div class="medium-offset-6 medium-6 columns end">
+              <button type="button" *ngIf="!scan_measurements_edit_mode"
+                      [disabled]="!changeEnabled || isAnyEditModeActive() || !allowScanMeasurementsEdit()"
+                      (click)="activateScanMeasurementsEditModal()"
+                      class="tiny primary button pull-right">
+                            <span *ngIf="isLoadingPrimaryData">
+                                <i class="fa fa-gear fa-spin fa-fw"></i>
+                            </span>
+                <span *ngIf="!isLoadingPrimaryData">
+                                {{ 'CHANGE' | translate }}
+                            </span>
+              </button>
+            </div>
+          </div>
+
+          <hr *ngIf="birth_measurements_edit_mode">
+
           <!-- BIRTH WEIGHT -->
-          <div class="row">
+          <div class="row" style="margin-top: 1rem">
             <div class="medium-6 columns">
               <label class="middle"> {{ 'BIRTH WEIGHT' | translate }} (kg)</label>
             </div>
             <div class="medium-6 columns">
-              <input type="text" [(ngModel)]="animal.measurement.birth_weight" [disabled]="true">
+              <input type="number" [(ngModel)]="animal.birth.birth_weight" [disabled]="!birth_measurements_edit_mode"
+                     min="0" max="9.9" step="0.1">
             </div>
           </div>
 
           <!-- BIRTH PROGRESS -->
-          <!--<div class="row">-->
-          <!--<div class="medium-6 columns">-->
-          <!--<label class="middle"> {{ 'BIRTH PROGRESS' | translate }} </label>-->
-          <!--</div>-->
-          <!--<div class="medium-6 columns">-->
-          <!--<input type="text" [(ngModel)]="animal.measurement.birth_progress" [disabled]="true">-->
-          <!--</div>-->
-          <!--</div>-->
+          <div class="row">
+            <div class="medium-5 columns">
+              <label class="middle"> {{ 'BIRTH PROGRESS' | translate }} </label>
+            </div>
+            <div class="medium-7 columns" style="text-align: right;">
+              <select
+                style="width: 15.7rem"
+                [(ngModel)]="animal.birth.birth_progress" [disabled]="!birth_measurements_edit_mode">
+                <option value=""></option>
+                <option *ngFor="let birth_progress of birth_progress_types" value="{{ birth_progress }}">{{ birth_progress | translate }}</option>
+              </select>
+            </div>
+          </div>
 
           <!-- TAIL LENGTH -->
           <div class="row">
@@ -355,32 +438,44 @@
               <label class="middle"> {{ 'TAIL LENGTH' | translate }} {{ '(CM)' | translate }} </label>
             </div>
             <div class="medium-6 columns">
-              <input type="text" [(ngModel)]="animal.measurement.tail_length" [disabled]="true">
+              <input type="number" [(ngModel)]="animal.birth.tail_length" [disabled]="!birth_measurements_edit_mode"
+                     min="0" max="30" step="0.01"
+              >
             </div>
           </div>
+
+          <div class="row" *ngIf="changeEnabled">
+            <div class="medium-offset-6 medium-6 columns end">
+              <button type="button" *ngIf="birth_measurements_edit_mode" (click)="toggleBirthMeasurementsEditMode()"
+                      class="tiny alert button pull-right">{{ 'CANCEL' | translate }}
+              </button>
+              <button type="button" *ngIf="birth_measurements_edit_mode" (click)="sendBirthMeasurementsChangeRequest()"
+                      class="tiny primary button pull-right">{{ 'SAVE' | translate }}
+              </button>
+              <button type="button" *ngIf="!birth_measurements_edit_mode"
+                      [disabled]="!changeEnabled || isAnyEditModeActive() || !allowBirthMeasurementsEdit()"
+                      (click)="toggleBirthMeasurementsEditMode()"
+                      class="tiny primary button pull-right">
+                            <span *ngIf="isLoadingPrimaryData">
+                                <i class="fa fa-gear fa-spin fa-fw"></i>
+                            </span>
+                <span *ngIf="!isLoadingPrimaryData">
+                                {{ 'CHANGE' | translate }}
+                            </span>
+              </button>
+            </div>
+          </div>
+
         </div>
       </div>
     </div>
     <div class="medium-6 columns">
 
-      <!-- NOTES -->
-      <!--<div class="info-container">-->
-      <!--<div class="info-header">-->
-      <!--{{ 'NOTES' | translate }}-->
-      <!--</div>-->
-      <!--<div class="info-body">-->
-      <!--<div class="row">-->
-      <!--<div class="textarea">-->
-      <!--<textarea rows="6" [(ngModel)]="animal.note" [disabled]="!edit_mode"></textarea>-->
-      <!--</div>-->
-      <!--</div>-->
-      <!--</div>-->
-      <!--</div>-->
-
       <!-- EXTERIOR -->
       <div class="info-container">
         <app-exterior-component
           *ngIf="animal.uln != ''"
+          [modificationDisabled]="isAnyEditModeActive()"
           (latestExteriors)="setLatestExteriors($event)"
           [uln]="animal.uln"
           [exteriors]="animal.exteriors"
@@ -403,89 +498,85 @@
               </div>
             </div>
 
-            <!-- PREDICATES -->
-            <!--<div class="row">-->
-            <!--<div class="medium-6 columns">-->
-            <!--<label class="middle">{{ 'PREDICATE' | translate }}</label>-->
-            <!--</div>-->
-            <!--<div class="medium-6 columns">-->
-            <!--<input type="text" [(ngModel)]="animal.predicate" [disabled]="true">-->
-            <!--</div>-->
-            <!--</div>-->
+            <!-- PREDICATE -->
+            <div class="row">
+              <div class="medium-6 columns">
+                <label class="middle">{{ 'PREDICATE' | translate }}</label>
+              </div>
+              <div class="medium-6 columns">
+                <div class="uid-input-group">
+                  <select [(ngModel)]="predicate_type_edit_value" [disabled]="!predicate_edit_mode">
+                    <option value=""></option>
+                    <option *ngFor="let predicate_type of predicate_types" value="{{ predicate_type }}">{{ predicate_type | translate }}</option>
+                  </select>
+                  <input type="number" [(ngModel)]="predicate_score_edit_value" [disabled]="!predicate_edit_mode"
+                         min="13" max="999" step="1">
+                </div>
+              </div>
+            </div>
+            <div class="row" *ngIf="changeEnabled">
+              <div class="medium-offset-6 medium-6 columns end">
+                <button type="button" *ngIf="predicate_edit_mode" (click)="togglePredicateEditMode()"
+                        class="tiny alert button pull-right">{{ 'CANCEL' | translate }}
+                </button>
+                <button type="button" *ngIf="predicate_edit_mode" (click)="sendGeneralChangeRequest()"
+                        class="tiny primary button pull-right">{{ 'SAVE' | translate }}
+                </button>
+                <button type="button" *ngIf="!predicate_edit_mode"
+                        [disabled]="!changeEnabled || isAnyEditModeActive() || !allowPredicateEdit()"
+                        (click)="togglePredicateEditMode()"
+                        class="tiny primary button pull-right">
+                            <span *ngIf="isLoadingPrimaryData">
+                                <i class="fa fa-gear fa-spin fa-fw"></i>
+                            </span>
+                  <span *ngIf="!isLoadingPrimaryData">
+                                {{ 'CHANGE' | translate }}
+                            </span>
+                </button>
+              </div>
+            </div>
+
 
             <!-- STATUS -->
             <div class="row">
               <div class="medium-6 columns">
-                <label class="middle">{{ 'STATUS' | translate }}</label>
+                <label class="middle">{{ 'STATUS SLASH CLASS' | translate }}</label>
               </div>
               <div class="medium-6 columns">
-                <select [(ngModel)]="animal.breed_status" [disabled]="true">
-                  <option *ngFor="let option of livestock_breed_options" value="{{ option }}">{{ option | translate }}
-                  </option>
+                <select
+                  style="width: 9.3rem"
+                  [(ngModel)]="animal.breed_type" [disabled]="!breed_type_edit_mode">
+                  <option value=""></option>
+                  <option *ngFor="let option of livestock_breed_options" value="{{ option }}">{{ option | translate }}</option>
                 </select>
               </div>
             </div>
+            <div class="row" *ngIf="changeEnabled">
+              <div class="medium-offset-6 medium-6 columns end">
+                <button type="button" *ngIf="breed_type_edit_mode" (click)="toggleBreedTypeEditMode()"
+                        class="tiny alert button pull-right">{{ 'CANCEL' | translate }}
+                </button>
+                <button type="button" *ngIf="breed_type_edit_mode" (click)="sendGeneralChangeRequest()"
+                        class="tiny primary button pull-right">{{ 'SAVE' | translate }}
+                </button>
+                <button type="button" *ngIf="!breed_type_edit_mode"
+                        [disabled]="!changeEnabled || isAnyEditModeActive() || !allowBreedTypeEdit()"
+                        (click)="toggleBreedTypeEditMode()"
+                        class="tiny primary button pull-right">
+                            <span *ngIf="isLoadingPrimaryData">
+                                <i class="fa fa-gear fa-spin fa-fw"></i>
+                            </span>
+                  <span *ngIf="!isLoadingPrimaryData">
+                                {{ 'CHANGE' | translate }}
+                            </span>
+                </button>
+              </div>
+            </div>
+
+
           </div>
         </div>
 
-        <!-- BREEDER AND/OR CO-OWNER -->
-        <!--<div class="info-container">-->
-        <!--<div class="info-header">-->
-        <!--{{ 'BREEDER AND OR CO-OWNER' | translate }}-->
-        <!--</div>-->
-        <!--<div class="info-body">-->
-
-        <!--&lt;!&ndash; BREEDER &ndash;&gt;-->
-        <!--<div class="row">-->
-        <!--<div class="medium-6 columns">-->
-        <!--<label> {{ 'BREEDER' | translate }} </label>-->
-        <!--</div>-->
-        <!--<div class="medium-6 columns">-->
-        <!--<input type="text" [(ngModel)]="animal.breeder.breeder" [disabled]="!edit_mode">-->
-        <!--</div>-->
-        <!--</div>-->
-
-        <!--&lt;!&ndash; UBN BREEDER &ndash;&gt;-->
-        <!--<div class="row">-->
-        <!--<div class="medium-6 columns">-->
-        <!--<label> {{ 'UBN BREEDER' | translate }} </label>-->
-        <!--</div>-->
-        <!--<div class="medium-6 columns">-->
-        <!--<input type="text" [(ngModel)]="animal.breeder.ubn" [disabled]="!edit_mode">-->
-        <!--</div>-->
-        <!--</div>-->
-
-        <!--&lt;!&ndash; E-MAIL ADDRESS &ndash;&gt;-->
-        <!--<div class="row">-->
-        <!--<div class="medium-6 columns">-->
-        <!--<label> {{ 'E-MAIL ADDRESS' | translate }} </label>-->
-        <!--</div>-->
-        <!--<div class="medium-6 columns">-->
-        <!--<input type="text" [(ngModel)]="animal.breeder.email" [disabled]="!edit_mode">-->
-        <!--</div>-->
-        <!--</div>-->
-
-        <!--&lt;!&ndash; TELEPHONE &ndash;&gt;-->
-        <!--<div class="row">-->
-        <!--<div class="medium-6 columns">-->
-        <!--<label> {{ 'TELEPHONE' | translate }} </label>-->
-        <!--</div>-->
-        <!--<div class="medium-6 columns">-->
-        <!--<input type="text" [(ngModel)]="animal.breeder.telephone" [disabled]="!edit_mode">-->
-        <!--</div>-->
-        <!--</div>-->
-
-        <!--&lt;!&ndash; CO-OWNER &ndash;&gt;-->
-        <!--<div class="row">-->
-        <!--<div class="medium-6 columns">-->
-        <!--<label> {{ 'CO-OWNER' | translate }} </label>-->
-        <!--</div>-->
-        <!--<div class="medium-6 columns">-->
-        <!--<input type="text" [disabled]="!edit_mode">-->
-        <!--</div>-->
-        <!--</div>-->
-        <!--</div>-->
-        <!--</div>-->
       </div>
     </div>
 
@@ -524,6 +615,34 @@
 
 
     <div class="large-12 columns">
+      <div class="info-container">
+        <div class="info-header">
+          <label>
+            {{ "CONTACT" | translate }}
+          </label>
+        </div>
+        <div class="row">
+          <div class="large-12 columns">
+            <div class="large-6 columns info-body">
+              <app-animal-details-contact-card
+                [header]="'BREEDER'|translate"
+                [location]="animal.breeder"
+              ></app-animal-details-contact-card>
+            </div>
+            <div class="large-6 columns info-body">
+              <app-animal-details-contact-card
+                [header]="'HOLDER'|translate"
+                [location]="animal.holder"
+              >
+              </app-animal-details-contact-card>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="large-12 columns">
 
       <div class="info-container">
         <div class="info-header">
@@ -551,6 +670,13 @@
                   <td>{{ breedValue.chart_label}}</td>
                   <td class="breed-value-and-accuracy-column">{{ breedValue.prioritize_normalized_values_in_table ? breedValue.normalized_value : breedValue.value}} / {{ breedValue.accuracy}}%</td>
                 </tr>
+
+                <tr style="font-style: italic">
+                  <td></td>
+                  <td>{{ 'EVALUATION DATE'|translate }}</td>
+                  <td class="breed-value-and-accuracy-column">{{animal.breed_value_max_generation_date}}</td>
+                </tr>
+
                 </tbody>
               </table>
             </div>
@@ -645,98 +771,112 @@
     </div>
 
 
+    <div class="large-12 columns">
 
+      <div class="info-container">
+        <div class="info-header">
+          <label>{{ "LOG" | translate }}</label>
+        </div>
 
-    <div class="row">
-      <div class="large-12 columns">
-        <table class="animal-logs">
-          <thead>
-          <tr>
-            <td>{{ 'DATE' | translate }}</td>
-            <td>{{ 'EVENT DATE' | translate }}</td>
-            <td>{{ 'EVENT' | translate }}</td>
-            <td>{{ 'BY' | translate }}</td>
-          </tr>
-          </thead>
-          <tbody>
-          <tr *ngIf="logs.length == 0">
-            <td colspan="4" class="text-center">{{ 'NO LOGS ARE AVAILABLE' | translate }}</td>
-          </tr>
-          <tr *ngFor="let log of logs">
-            <td>
-                            <span *ngIf="log.log_date">
-                                {{ stringAsViewDateTime(log.log_date) }}
-                            </span>
-              <span *ngIf="!log.log_date"> -- </span>
-            </td>
-            <td>
-                            <span *ngIf="log.start_date">
-                                {{ stringAsViewDate(log.start_date) }}
-                                <span *ngIf="log.end_date">{{ '- ' + stringAsViewDate(log.end_date) }}</span>
-                            </span>
-              <span *ngIf="!log.start_date"> -- </span>
-            </td>
-            <td>
-                            <span *ngIf="log.action == 'MATE'">
-                                {{ 'DECLARED MATE' | translate }}
-                            </span>
-              <span *ngIf="log.action == 'BIRTH'">
-                                {{ 'DECLARED BIRTH' | translate }}
-                            </span>
-              <span *ngIf="log.action == 'WEIGHT MEASUREMENT KG'">
-                                {{ 'DECLARED WEIGHT' | translate }}
-                                <span *ngIf="log.data"> ({{log.data}}kg)</span>
-                            </span>
-              <span *ngIf="log.action == 'ARRIVAL FROM UBN'">
-                                {{ 'DECLARED ARRIVAL' | translate }}
-                                <span *ngIf="log.data"> ({{'PREVIOUS OWNER' | translate}}: {{log.data}})</span>
-                            </span>
-              <span *ngIf="log.action == 'IMPORT FROM'">
-                                {{ 'DECLARED IMPORT' | translate }}
-                                <span *ngIf="log.data"> ({{'COUNTRY ORIGIN' | translate}}: {{log.data}})</span>
-                            </span>
-              <span *ngIf="log.action == 'DEPARTURE TO UBN'">
-                                {{ 'DECLARED DEPART' | translate }}
-                                <span *ngIf="log.data"> ({{'NEW OWNER' | translate }}: {{log.data}})</span>
-                            </span>
-              <span *ngIf="log.action == 'EXPORT'">
-                                {{ 'DECLARED EXPORT' | translate }}
-                            </span>
-              <span *ngIf="log.action == 'LOSS'">
-                                {{ 'DECLARED LOSS' | translate }}
-                            </span>
-              <span *ngIf="log.action == 'TAG REPLACE REPLACED ULN'">
-                                {{ 'DECLARED TAG REPLACE' | translate }}
-                                <span *ngIf="log.data"> ({{'OLD TAG' | translate }}: {{log.data}})</span>
-                            </span>
-            </td>
-            <td>
-              {{ log.first_name + ' ' + log.last_name }}
-            </td>
-          </tr>
-          </tbody>
-        </table>
+        <div class="info-body">
+
+          <table class="animal-logs">
+            <thead>
+            <tr>
+              <th>{{ 'DATE' | translate }}</th>
+              <th>{{ 'EVENT DATE' | translate }}</th>
+              <th>{{ 'EVENT' | translate }}</th>
+              <th>{{ 'BY' | translate | titlecase}}</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngIf="logs.length == 0">
+              <td colspan="4" class="text-center">{{ 'NO LOGS ARE AVAILABLE' | translate }}</td>
+            </tr>
+            <tr *ngFor="let log of logs">
+              <td>
+                                  <span *ngIf="log.log_date">
+                                      {{ stringAsViewDateTime(log.log_date) }}
+                                  </span>
+                <span *ngIf="!log.log_date"> -- </span>
+              </td>
+              <td>
+                                  <span *ngIf="log.start_date">
+                                      {{ stringAsViewDate(log.start_date) }}
+                                    <span *ngIf="log.end_date">{{ '- ' + stringAsViewDate(log.end_date) }}</span>
+                                  </span>
+                <span *ngIf="!log.start_date"> -- </span>
+              </td>
+              <td>
+                                  <span *ngIf="log.action == 'MATE'">
+                                      {{ 'DECLARED MATE' | translate }}
+                                  </span>
+                <span *ngIf="log.action == 'BIRTH'">
+                                      {{ 'DECLARED BIRTH' | translate }}
+                                  </span>
+                <span *ngIf="log.action == 'WEIGHT MEASUREMENT KG'">
+                                      {{ 'DECLARED WEIGHT' | translate }}
+                  <span *ngIf="log.data"> ({{log.data}}kg)</span>
+                                  </span>
+                <span *ngIf="log.action == 'ARRIVAL FROM UBN'">
+                                      {{ 'DECLARED ARRIVAL' | translate }}
+                  <span *ngIf="log.data"> ({{'PREVIOUS OWNER' | translate}}: {{log.data}})</span>
+                                  </span>
+                <span *ngIf="log.action == 'IMPORT FROM'">
+                                      {{ 'DECLARED IMPORT' | translate }}
+                  <span *ngIf="log.data"> ({{'COUNTRY ORIGIN' | translate}}: {{log.data}})</span>
+                                  </span>
+                <span *ngIf="log.action == 'DEPARTURE TO UBN'">
+                                      {{ 'DECLARED DEPART' | translate }}
+                  <span *ngIf="log.data"> ({{'NEW OWNER' | translate }}: {{log.data}})</span>
+                                  </span>
+                <span *ngIf="log.action == 'EXPORT'">
+                                      {{ 'DECLARED EXPORT' | translate }}
+                                  </span>
+                <span *ngIf="log.action == 'LOSS'">
+                                      {{ 'DECLARED LOSS' | translate }}
+                                  </span>
+                <span *ngIf="log.action == 'TAG REPLACE REPLACED ULN'">
+                                      {{ 'DECLARED TAG REPLACE' | translate }}
+                  <span *ngIf="log.data"> ({{'OLD TAG' | translate }}: {{log.data}})</span>
+                                  </span>
+              </td>
+              <td>
+                {{ log.first_name + ' ' + log.last_name }}
+              </td>
+            </tr>
+            </tbody>
+          </table>
+
+        </div>
+
       </div>
+
     </div>
+
+    <div class="large-12 columns">
+
+      <div class="info-container">
+        <div class="info-header">
+          <label>{{ "NOTES" | translate }}</label>
+        </div>
+
+        <div class="info-body">
+
+          <app-animal-annotations
+            [changeEnabled]="changeEnabled"
+            [(isEditModeActive)]="notes_edit_mode"
+            [ulnOrAnimalId]="selectedUlnOrAnimalId"
+            [isChangeButtonActive]="!isAnyEditModeActive() && allowNotesEdit()"
+          ></app-animal-annotations>
+
+        </div>
+
+      </div>
+
+    </div>
+
   </div>
 </div>
 
-<ng-template #changeButton>
-  <button type="button" *ngIf="!edit_mode" [disabled]="!changeEnabled" (click)="toggleEditMode()"
-          class="tiny primary button">
-                    <span *ngIf="isLoading">
-                        <i class="fa fa-gear fa-spin fa-fw"></i>
-                    </span>
-    <span *ngIf="!isLoading">
-                        {{ 'CHANGE' | translate }}
-                    </span>
-  </button>
-
-  <button type="button" *ngIf="edit_mode" (click)="toggleEditMode()" class="tiny alert button pull-right">{{ 'CANCEL' |
-    translate }}
-  </button>
-  <button type="button" *ngIf="edit_mode" (click)="sendChangeRequest()" class="tiny primary button pull-right">{{ 'SAVE'
-    | translate }}
-  </button>
-
-</ng-template>
+<app-scan-measurement-edit-modal></app-scan-measurement-edit-modal>

@@ -1,7 +1,9 @@
 <!--TABLE SEARCH-->
 <div class="large-12 table-search">
-  <div class="large-2 large-push-10">
-    <input type="text" [(ngModel)]="searchValue" maxlength="20" placeholder="{{ 'SEARCH' | translate }}">
+  <div class="large-2 large-push-7" style="display:flex;width: 40%;">
+    <input type="text" style="height: 40px;" class="search-field" [(ngModel)]="searchValue" maxlength="20" placeholder="{{ 'SEARCH' | translate }}">
+    <button style="height: 40px;margin-left:8px;" (click)="getDepartHistoryList()" class="primary button">{{ 'SEARCH' | translate }}</button>
+    <button style="height: 40px;margin-left:8px;" (click)="searchValue = '';getDepartHistoryList()" class="alert button">Reset</button>
   </div>
 </div>
 
@@ -22,16 +24,16 @@
   </thead>
   <tbody>
   <tr app-depart-history-row
-    *ngFor="let depart of departHistoryList | departHistoryFilter:[searchValue] | paginate: {itemsPerPage: 10, currentPage: page}; let i = index"
+    *ngFor="let depart of departHistoryList | paginate: {itemsPerPage: 10, currentPage: page, totalItems: totalDepartItems}; let i = index"
     (revokeDepart)="selectDepart($event)" [depart]="depart" [depart_index]="i"></tr>
   </tbody>
 </table>
 
-<div *ngIf="isLoading" class="data-loader">
+<div *ngIf="isLoading" class="data-loader" style="padding:0;">
   <app-page-loading-spinner></app-page-loading-spinner>
 </div>
 
-<pagination-controls (pageChange)="page = $event"></pagination-controls>
+<pagination-controls (pageChange)="page = $event;getDepartHistoryList($event)"></pagination-controls>
 
 <!--REVOKE MODAL-->
 <div class="reveal-overlay" [ngStyle]="{'display': modal_display}">

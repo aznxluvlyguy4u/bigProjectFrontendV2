@@ -1,0 +1,29 @@
+<h4 style="text-align: center">{{'ANIMAL FEATURES PER YEAR OF BIRTH' | translate }}</h4>
+
+<div class="row">
+  <div class="small-12 medium-4 columns" style="text-align: left">
+    &nbsp;
+  </div>
+</div>
+<div class="row">
+  <div class="large-4 columns small-centered">
+    <label>
+      {{ 'YEAR OF BIRTH' | translate }}
+      <app-yeardropdown
+        [year]="yearOfBirth"
+        [allowNull]="false"
+        (yearChanged)="yearOfBirth = $event"
+      ></app-yeardropdown>
+    </label>
+  </div>
+</div>
+<div class="row">
+  <div class="small-12 medium-5 columns"  style="text-align: right">
+    &nbsp;
+  </div>
+  <div class="small-12 medium-2 columns end"  style="text-align: left">
+    <app-download-button
+      (click)="download()"
+    ></app-download-button>
+  </div>
+</div>

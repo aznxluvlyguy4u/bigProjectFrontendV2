@@ -23,4 +23,5 @@ export class Company {
   public owner: User;
   public company_address: Address;
   public invoices: Invoice[] = [];
+  public is_active: boolean;
 }
