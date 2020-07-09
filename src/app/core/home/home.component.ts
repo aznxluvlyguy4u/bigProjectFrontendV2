@@ -17,7 +17,7 @@ import {User} from '../../shared/models/person.model';
 import {JsonResponseModel} from '../../shared/models/json-response.model';
 import {CacheService} from '../../shared/services/settings/cache.service';
 import {ReportService} from '../../shared/services/report/report.service';
-import {IS_INVOICES_ACTIVE} from '../../shared/variables/feature.activation';
+import {IS_INVOICES_ACTIVE, IS_TREATMENTS_ACTIVE} from '../../shared/variables/feature.activation';
 import {POLLING_INTERVAL_MESSAGES_SECONDS} from '../../shared/variables/timeout.constant';
 
 @Component({
@@ -47,6 +47,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterContentChecked {
   public recheckMessages = true;
 
   public isInvoicesActive = IS_INVOICES_ACTIVE;
+  public isTreatmentsActive = IS_TREATMENTS_ACTIVE;
 
   constructor(private router: Router, private location: Location, private apiService: NSFOService,
               private cache: CacheService, private settings: SettingsService,

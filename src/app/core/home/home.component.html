@@ -106,9 +106,9 @@
             <li (click)="navigateTo('/main/weight'); isActiveSideMenu = false" [class.active]="isActiveRoute('/main/weight/declare')" class="item link">
                 {{ 'WEIGHT' | translate }}
             </li>
-<!--            <li (click)="navigateTo('/main/treatment'); isActiveSideMenu = false" [class.active]="isActiveRoute('/main/treatment/declare')" class="item link">-->
-<!--              {{ 'TREATMENT' | translate }}-->
-<!--            </li>-->
+            <li *ngIf="isTreatmentsActive" (click)="navigateTo('/main/treatment'); isActiveSideMenu = false" [class.active]="isActiveRoute('/main/treatment/declare')" class="item link">
+              {{ 'TREATMENT' | translate }}
+            </li>
             <li class="category">{{ 'MANAGE' | translate }}</li>
             <li (click)="navigateTo('/main/eartag'); isActiveSideMenu = false" [class.active]="isActiveRoute('/main/eartag')" class="item link">
                 {{ 'EARTAGS' | translate }}
