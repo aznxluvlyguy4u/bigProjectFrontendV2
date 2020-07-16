@@ -103,6 +103,10 @@
           <td>{{ 'COLLAR NUMBER' | translate}}</td>
           <td>{{ 'GENDER' | translate}}</td>
           <td>{{ 'DATE OF BIRTH' | translate}}</td>
+          <td>{{ 'RVO FLAG' | translate}}</td>
+          <td>{{ 'RVO FLAG START DATE' | translate}}</td>
+          <td>{{ 'RVO FLAG END DATE' | translate}}</td>
+          <td>{{ 'RVO FLAG STATUS' | translate}}</td>
         </tr>
         </thead>
         <tbody>
@@ -111,6 +115,10 @@
           <td>{{ animal.collar_color != null && animal.collar_number != null ? animal.collar_color + ' ' + animal.collar_number : '-' }}</td>
           <td>{{ animal.gender | translate }}</td>
           <td>{{ formatDate(animal.date_of_birth) }}</td>
+          <td>{{ animal.rvo_flag | translate }}</td>
+          <td>{{ animal.rvo_flag_start_date | translate }}</td>
+          <td>{{ animal.rvo_flag_end_date | translate }}</td>
+          <td>{{ animal.rvo_flag_status | translate }}</td>
         </tr>
         </tbody>
       </table>
