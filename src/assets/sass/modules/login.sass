@@ -42,7 +42,7 @@
     input:focus
       background: #DEDEDE
 
-    input[type=text], input[type=password]
+    input[type=text], input[type=password], input[type=email], input[type=number]
       height: 2.3rem !important
       border: none
       border-radius: 0
@@ -95,3 +95,12 @@
 
     &.ng-leave-active
       opacity: 0
+
+  @media only screen and (max-width: 450px)
+      #registerLink
+        position: static
+
+  @media only screen and (min-width: 450px)
+      #registerLink
+          position: relative
+          top: 18px

@@ -176,6 +176,7 @@ import {ReportAnimalTreatmentsPerYearComponent} from './report/animalTreatmentsP
 import {ReportCombiFormTransportDocumentComponent} from './report/combiFormTransportDocument/report.combiFormTransportDocument';
 
 import { StorageServiceModule } from 'ngx-webstorage-service';
+import { RegistrationComponent } from './auth/registration/registration.component';
 
 // AoT requires an exported function for factories
 export function CreateTranslateLoader(http: HttpClient) {
@@ -329,7 +330,8 @@ export function CreateTranslateLoader(http: HttpClient) {
     TreatmentHistoryRowComponent,
     TreatmentHistoryPipe,
     ReportAnimalTreatmentsPerYearComponent,
-    ReportCombiFormTransportDocumentComponent
+    ReportCombiFormTransportDocumentComponent,
+    RegistrationComponent
   ],
   imports: [
     BrowserAnimationsModule,

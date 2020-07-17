@@ -1,0 +1,93 @@
+<div id="login">
+  <div class="login-container">
+
+    <!--LOGO SECTION-->
+    <section class="logo column row">
+      NSFO <span>Online</span>
+    </section>
+
+    <!--LOGIN SECTION-->
+    <section class="login column row">
+      <h2 class="text-center register-header">{{ 'REGISTER' | translate }}</h2>
+      <form [formGroup]="form" class="ng-animate">
+
+        <!--INPUT FIELD: FIRSTNAME-->
+        <div class="input column row">
+          <input type="text" placeholder="{{ 'FIRST NAME' | translate }}" formControlName="firstName"/>
+          <i class="fa fa-user fa-fw"></i>
+        </div>
+
+        <!--INPUT FIELD: LASTNAME-->
+        <div class="input column row">
+          <input type="text" placeholder="{{ 'LAST NAME' | translate }}" formControlName="lastName"/>
+          <i class="fa fa-user fa-fw"></i>
+        </div>
+
+        <!--INPUT FIELD: LASTNAME-->
+        <div class="input column row">
+          <input type="email" placeholder="{{ 'EMAIL ADDRESS' | translate }}" formControlName="emailAddress"/>
+          <i class="fa fa-at fa-fw"></i>
+        </div>
+
+        <!--INPUT FIELD: LASTNAME-->
+        <div class="input column row">
+          <input type="text" placeholder="{{ 'ADDRESS' | translate }}" formControlName="address"/>
+          <i class="fa fa-envelope fa-fw"></i>
+        </div>
+
+        <!--INPUT FIELD: LASTNAME-->
+        <div class="input column row">
+          <input type="number" placeholder="{{ 'ADDRESS NUMBER' | translate }}" formControlName="addressNumber"/>
+          <i class="fa fa-envelope fa-fw"></i>
+        </div>
+
+        <!--INPUT FIELD: LASTNAME-->
+        <div class="input column row">
+          <input type="text" placeholder="{{ 'ADDRESS NUMBER SUFFIX' | translate }}" formControlName="addressNumberSuffix"/>
+          <i class="fa fa-envelope fa-fw"></i>
+        </div>
+
+        <!--INPUT FIELD: LASTNAME-->
+        <div class="input column row">
+          <input type="text" placeholder="{{ 'POSTAL CODE' | translate }}" formControlName="postalCode"/>
+          <i class="fa fa-envelope fa-fw"></i>
+        </div>
+
+        <!--INPUT FIELD: LASTNAME-->
+        <div class="input column row">
+          <input type="text" placeholder="{{ 'CITY' | translate }}" formControlName="city"/>
+          <i class="fa fa-envelope fa-fw"></i>
+        </div>
+
+        <!--INPUT FIELD: LASTNAME-->
+        <div class="input column row">
+          <input type="text" placeholder="{{ 'UBN' | translate }}" formControlName="ubn"/>
+          <i class="fa fa-building fa-fw"></i>
+        </div>
+
+        <!--INPUT FIELD: LASTNAME-->
+        <div class="input column row">
+          <input type="text" placeholder="{{ 'BRS' | translate }}" formControlName="brs"/>
+          <i class="fa fa-building fa-fw"></i>
+        </div>
+
+        <!--INPUT FIELD: LASTNAME-->
+        <div class="input column row">
+          <input type="text" placeholder="{{ 'PHONE NUMBER' | translate }}" formControlName="phoneNumber"/>
+          <i class="fa fa-phone fa-fw"></i>
+        </div>
+
+        <!--SUBMIT BUTTON-->
+        <button type="button" (click)="doRegistration()" [disabled]="registration_in_progress" class="button expanded">
+          <span *ngIf="!registration_in_progress"> {{ 'REGISTER' | translate }} </span>
+          <span *ngIf="registration_in_progress"> <i class="fa fa-gear fa-spin fa-fw"></i> </span>
+        </button>
+
+      </form>
+    </section>
+
+    <section class="sheep-image hide-for-small-only">
+      <img src="/assets/images/sheep-art.png"/>
+    </section>
+  </div>
+</div>

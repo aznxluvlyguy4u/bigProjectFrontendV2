@@ -38,6 +38,11 @@
           {{ 'ARE INCORRECT.' | translate }}
         </div>
 
+        <div class="text-left link" id="registerLink">
+          {{ 'NO ACCOUNT?' | translate }}
+          <a href="/register"> {{ 'REGISTER HERE' | translate }} </a>
+        </div>
+
         <div class="text-right link">
           {{ 'FORGOT PASSWORD?' | translate }}
           <a (click)="enableForgetPassword();resetForm();"> {{ 'CLICK HERE' | translate }} </a>
