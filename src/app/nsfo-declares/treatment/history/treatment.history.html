@@ -111,14 +111,14 @@
         </thead>
         <tbody>
         <tr *ngFor="let animal of treatment.animals">
-          <td>{{ animal.uln_country_code + animal.uln_number }}</td>
-          <td>{{ animal.collar_color != null && animal.collar_number != null ? animal.collar_color + ' ' + animal.collar_number : '-' }}</td>
-          <td>{{ animal.gender | translate }}</td>
-          <td>{{ formatDate(animal.date_of_birth) }}</td>
-          <td>{{ animal.rvo_flag | translate }}</td>
-          <td>{{ animal.rvo_flag_start_date | translate }}</td>
-          <td>{{ animal.rvo_flag_end_date | translate }}</td>
-          <td>{{ animal.rvo_flag_status | translate }}</td>
+          <td class="animal-modal-column">{{ animal.uln_country_code + animal.uln_number }}</td>
+          <td class="animal-modal-column">{{ animal.collar_color != null && animal.collar_number != null ? animal.collar_color + ' ' + animal.collar_number : '-' }}</td>
+          <td class="animal-modal-column">{{ animal.gender | translate }}</td>
+          <td class="animal-modal-column">{{ formatDate(animal.date_of_birth) }}</td>
+          <td class="animal-modal-column">{{ animal.rvo_flag | translate }}</td>
+          <td class="animal-modal-column">{{ animal.rvo_flag_start_date | translate }}</td>
+          <td class="animal-modal-column">{{ animal.rvo_flag_end_date | translate }}</td>
+          <td class="animal-modal-column">{{ animal.rvo_flag_status | translate }}</td>
         </tr>
         </tbody>
       </table>
