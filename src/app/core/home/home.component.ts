@@ -17,7 +17,7 @@ import {User} from '../../shared/models/person.model';
 import {JsonResponseModel} from '../../shared/models/json-response.model';
 import {CacheService} from '../../shared/services/settings/cache.service';
 import {ReportService} from '../../shared/services/report/report.service';
-import {IS_INVOICES_ACTIVE, IS_TREATMENTS_ACTIVE} from '../../shared/variables/feature.activation';
+import {IS_HEALTH_MODULE_ACTIVE, IS_INVOICES_ACTIVE, IS_TREATMENTS_ACTIVE} from '../../shared/variables/feature.activation';
 import {POLLING_INTERVAL_MESSAGES_SECONDS} from '../../shared/variables/timeout.constant';
 
 @Component({
@@ -222,6 +222,10 @@ export class HomeComponent implements OnInit, OnDestroy, AfterContentChecked {
   public logout() {
     this.cache.deleteTokens();
     this.navigateTo('/login');
+  }
+
+  public showHealthModule(): boolean {
+    return this.isHealthSubscribed && IS_HEALTH_MODULE_ACTIVE;
   }
 
   toggleActiveMessageMenu() {
