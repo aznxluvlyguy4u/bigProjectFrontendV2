@@ -6,9 +6,8 @@ import {FormControl, FormGroup, FormBuilder} from '@angular/forms';
 import {NSFOService} from '../../../shared/services/nsfo-api/nsfo.service';
 import {SettingsService} from '../../../shared/services/settings/settings.service';
 import {TreatmentTemplate} from '../../../shared/models/treatment-template.model';
-import {API_URI_GET_TREATMENT_TEMPLATES, API_URI_GET_Q_FEVER_TEMPLATE_DESCRIPTIONS} from '../../../shared/services/nsfo-api/nsfo.settings';
+import {API_URI_GET_TREATMENT_TEMPLATES} from '../../../shared/services/nsfo-api/nsfo.settings';
 import {Treatment} from '../../../shared/models/treatment-model';
-import {HttpResponse} from '@angular/common/http';
 
 @Component({
   selector: '[app-treatment-history-row]',
