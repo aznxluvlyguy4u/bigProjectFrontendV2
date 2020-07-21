@@ -2,7 +2,7 @@ import * as moment from 'moment';
 import * as _ from 'lodash';
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {NSFOService} from '../../../shared/services/nsfo-api/nsfo.service';
-import {API_URI_GET_Q_FEVER_TEMPLATE_DESCRIPTIONS, API_URI_GET_TREATMENT_TEMPLATES} from '../../../shared/services/nsfo-api/nsfo.settings';
+import {API_URI_GET_TREATMENT_TEMPLATES} from '../../../shared/services/nsfo-api/nsfo.settings';
 import {SettingsService} from '../../../shared/services/settings/settings.service';
 import {PaginationService} from 'ngx-pagination';
 import {ErrorMessage} from '../../../shared/models/error-message.model';
@@ -12,7 +12,6 @@ import {TreatmentTemplate} from '../../../shared/models/treatment-template.model
 import {TreatmentService} from '../treatment.service';
 import {Subscription} from 'rxjs';
 import {Treatment} from '../../../shared/models/treatment-model';
-import {HttpResponse} from '@angular/common/http';
 
 @Component({
   providers: [PaginationService],
@@ -40,8 +39,6 @@ export class TreatmentHistoryComponent implements OnInit, OnDestroy {
 
   public totalTreatments: number;
   public displayTreatmentLocationIndividualType = this.treatmentService.displayTreatmentLocationIndividualType;
-
-  private qFeverDescriptions = [];
 
   constructor(
     private apiService: NSFOService,
