@@ -140,5 +140,8 @@ export const API_URI_GET_COLLAR_COLORS = '/v1/collars';
 // TREATMENT TEMPLATES & TREATMENTS
 export const API_URI_GET_TREATMENT_TEMPLATES = '/v1/treatments';
 
+// USERS
+export const API_URI_SIGNUP_USER = '/v1/auth/signup';
+
 // OVERIG
 export const API_URI_GET_LOCATIONS_WITH_DEPART_DATES = '/v1/departs-history/depart-dates-and-ubn-new-owners';
