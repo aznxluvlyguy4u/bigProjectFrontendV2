@@ -56,10 +56,6 @@ export class TreatmentHistoryRowComponent implements OnInit {
     this.openAnimalModal.emit();
   }
 
-  private isQFeverTreatment() {
-      return this.qFeverDescriptions.includes(this.treatment.description);
-  }
-
   public sendChangeRequest() {
     if (this.form.valid) {
       this.isSending = true;

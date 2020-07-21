@@ -54,7 +54,6 @@ export class TreatmentHistoryComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.getTreatmentHistoryList();
-    this.getQFeverDescriptions();
 
     this.treatmentTemplatesSubscription = this.treatmentService.treatmentTemplatesChanged.subscribe(
       (templates: TreatmentTemplate[]) => {
@@ -189,13 +188,5 @@ export class TreatmentHistoryComponent implements OnInit, OnDestroy {
 
   public closeErrorModal() {
     this.errorModalDisplay = 'none';
-  }
-
-  private getQFeverDescriptions() {
-    this.apiService.doGetRequest(API_URI_GET_Q_FEVER_TEMPLATE_DESCRIPTIONS)
-      .subscribe((res) => {
-        // @ts-ignore
-        this.qFeverDescriptions = res.result;
-      });
   }
 }

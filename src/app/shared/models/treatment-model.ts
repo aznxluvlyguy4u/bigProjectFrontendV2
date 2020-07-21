@@ -13,4 +13,5 @@ export class Treatment {
   type: string;
   animals: Animal[];
   medications: TreatmentMedication[];
+  is_editable: boolean;
 }
