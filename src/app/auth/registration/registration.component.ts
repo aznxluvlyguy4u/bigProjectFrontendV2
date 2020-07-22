@@ -4,6 +4,8 @@ import {User} from '../../shared/models/user.model';
 import { API_URI_SIGNUP_USER } from '../../shared/services/nsfo-api/nsfo.settings';
 import {NSFOService} from '../../shared/services/nsfo-api/nsfo.service';
 import {Router} from '@angular/router';
+import {MatSnackBar} from '@angular/material';
+import {TranslateService} from '@ngx-translate/core';
 
 @Component({
   selector: 'app-registration',
@@ -18,7 +20,13 @@ export class RegistrationComponent implements OnInit {
 
   private user: User;
 
-  constructor(private fb: FormBuilder, private apiService: NSFOService, private router: Router) {
+  constructor(
+    private fb: FormBuilder,
+    private apiService: NSFOService,
+    private router: Router,
+    public snackBar: MatSnackBar,
+    private translate: TranslateService
+  ) {
     this.form = this.fb.group({
       firstName: new FormControl( '', Validators.required),
       lastName: new FormControl('', Validators.required),
@@ -58,6 +66,8 @@ export class RegistrationComponent implements OnInit {
       this.apiService.doPostRequest(API_URI_SIGNUP_USER, this.user)
         .subscribe((res) => {
           this.registration_in_progress = false;
+          const message = this.translate.instant('YOUR REGISTRATION APPLICATION SENT') + '!';
+          this.snackBar.open(message);
         },
           (error => {
             alert(this.apiService.getErrorMessage(error));
