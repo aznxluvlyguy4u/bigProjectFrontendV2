@@ -63,6 +63,8 @@ export class RegistrationComponent implements OnInit {
             this.registration_in_progress = false;
           })
         );
+    } else {
+      this.registration_in_progress = false;
     }
   }
 }
