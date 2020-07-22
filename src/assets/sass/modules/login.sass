@@ -9,6 +9,16 @@
     height: 100%
     background-color: $nsfo-green
 
+  .register-option
+    padding-right: 0
+    text-align: center
+
+  .register-option-text
+    overflow: visible
+
+  .password-reset-option
+    text-align: center
+
   .logo
     font-weight: 900
     font-size: 5em
@@ -40,7 +50,7 @@
     -moz-transition: opacity ease-in 0.5s
 
     input.input-error
-      background: #ffcccc !important
+      background: #ffcccc
 
     input:focus
       background: #DEDEDE
@@ -98,12 +108,3 @@
 
     &.ng-leave-active
       opacity: 0
-
-  @media only screen and (max-width: 450px)
-      #registerLink
-        position: static
-
-  @media only screen and (min-width: 450px)
-      #registerLink
-          position: relative
-          top: 18px
