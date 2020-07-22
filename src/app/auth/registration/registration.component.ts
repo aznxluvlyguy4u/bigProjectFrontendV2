@@ -13,7 +13,7 @@ export class RegistrationComponent implements OnInit {
   public form: FormGroup;
   public hasSubmitted = false;
 
-  private registration_in_progress = false;
+  public registration_in_progress = false;
 
   private user: User;
 
