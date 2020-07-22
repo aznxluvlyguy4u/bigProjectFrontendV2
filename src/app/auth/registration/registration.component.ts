@@ -11,6 +11,7 @@ import {NSFOService} from '../../shared/services/nsfo-api/nsfo.service';
 export class RegistrationComponent implements OnInit {
 
   public form: FormGroup;
+  public hasSubmitted = false;
 
   private registration_in_progress = false;
 
@@ -20,7 +21,7 @@ export class RegistrationComponent implements OnInit {
     this.form = this.fb.group({
       firstName: new FormControl( '', Validators.required),
       lastName: new FormControl('', Validators.required),
-      emailAddress: new FormControl('', Validators.required),
+      emailAddress: new FormControl('', [Validators.required, Validators.email]),
       address: new FormControl('', Validators.required),
       addressNumber: new FormControl('', Validators.required),
       addressNumberSuffix: new FormControl(''),
@@ -35,7 +36,8 @@ export class RegistrationComponent implements OnInit {
   ngOnInit() {
   }
 
-  private doRegistration() {
+  doRegistration() {
+    this.hasSubmitted = true;
     this.registration_in_progress = true;
     this.user = new User();
 
@@ -54,7 +56,6 @@ export class RegistrationComponent implements OnInit {
 
       this.apiService.doPostRequest(API_URI_SIGNUP_USER, this.user)
         .subscribe((res) => {
-          console.log(res);
           this.registration_in_progress = false;
         },
           (error => {
