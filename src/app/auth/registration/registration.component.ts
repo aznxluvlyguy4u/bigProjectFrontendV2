@@ -3,6 +3,7 @@ import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {User} from '../../shared/models/user.model';
 import { API_URI_SIGNUP_USER } from '../../shared/services/nsfo-api/nsfo.settings';
 import {NSFOService} from '../../shared/services/nsfo-api/nsfo.service';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-registration',
@@ -17,7 +18,7 @@ export class RegistrationComponent implements OnInit {
 
   private user: User;
 
-  constructor(private fb: FormBuilder, private apiService: NSFOService) {
+  constructor(private fb: FormBuilder, private apiService: NSFOService, private router: Router) {
     this.form = this.fb.group({
       firstName: new FormControl( '', Validators.required),
       lastName: new FormControl('', Validators.required),
@@ -66,5 +67,9 @@ export class RegistrationComponent implements OnInit {
     } else {
       this.registration_in_progress = false;
     }
+  }
+
+  public navigateToLogin() {
+    this.router.navigate(['/login']);
   }
 }
