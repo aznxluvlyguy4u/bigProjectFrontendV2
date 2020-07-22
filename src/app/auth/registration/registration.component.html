@@ -11,35 +11,30 @@
       <h2 class="text-center register-header">{{ 'REGISTER' | translate }}</h2>
       <form [formGroup]="form" class="ng-animate" (ngSubmit)="doRegistration()">
 
-        <!--INPUT FIELD: FIRSTNAME-->
         <div class="input column row">
           <input type="text" placeholder="{{ 'FIRST NAME' | translate }}" formControlName="firstName"
                  [ngClass]="{'input-error': form.controls.firstName.invalid && form.controls.firstName.dirty && hasSubmitted}"/>
           <i class="fa fa-user fa-fw"></i>
         </div>
 
-        <!--INPUT FIELD: LASTNAME-->
         <div class="input column row">
           <input type="text" placeholder="{{ 'LAST NAME' | translate }}" formControlName="lastName"
                  [ngClass]="{'input-error': form.controls.lastName.invalid && form.controls.lastName.dirty && hasSubmitted}"/>
           <i class="fa fa-user fa-fw"></i>
         </div>
 
-        <!--INPUT FIELD: LASTNAME-->
         <div class="input column row">
           <input type="email" placeholder="{{ 'EMAIL ADDRESS' | translate }}" formControlName="emailAddress"
                  [ngClass]="{'input-error': form.controls.emailAddress.invalid && form.controls.emailAddress.dirty && hasSubmitted}"/>
           <i class="fa fa-at fa-fw"></i>
         </div>
 
-        <!--INPUT FIELD: LASTNAME-->
         <div class="input column row">
           <input type="text" placeholder="{{ 'ADDRESS' | translate }}" formControlName="address"
                  [ngClass]="{'input-error': form.controls.address.invalid && form.controls.address.dirty && hasSubmitted}"/>
           <i class="fa fa-envelope fa-fw"></i>
         </div>
 
-        <!--INPUT FIELD: LASTNAME-->
         <div class="input column row">
           <input
             type="number"
@@ -50,42 +45,36 @@
           <i class="fa fa-envelope fa-fw"></i>
         </div>
 
-        <!--INPUT FIELD: LASTNAME-->
         <div class="input column row">
           <input type="text" placeholder="{{ 'ADDRESS NUMBER SUFFIX' | translate }}" formControlName="addressNumberSuffix"
                  [ngClass]="{'input-error': form.controls.addressNumberSuffix.invalid && form.controls.addressNumberSuffix.dirty && hasSubmitted}"/>
           <i class="fa fa-envelope fa-fw"></i>
         </div>
 
-        <!--INPUT FIELD: LASTNAME-->
         <div class="input column row">
           <input type="text" placeholder="{{ 'POSTAL CODE' | translate }}" formControlName="postalCode"
                  [ngClass]="{'input-error': form.controls.postalCode.invalid && form.controls.postalCode.dirty && hasSubmitted}"/>
           <i class="fa fa-envelope fa-fw"></i>
         </div>
 
-        <!--INPUT FIELD: LASTNAME-->
         <div class="input column row">
           <input type="text" placeholder="{{ 'CITY' | translate }}" formControlName="city"
                  [ngClass]="{'input-error': form.controls.city.invalid && form.controls.city.dirty && hasSubmitted}"/>
           <i class="fa fa-envelope fa-fw"></i>
         </div>
 
-        <!--INPUT FIELD: LASTNAME-->
         <div class="input column row">
           <input type="text" placeholder="{{ 'UBN' | translate }}" formControlName="ubn"
                  [ngClass]="{'input-error': form.controls.ubn.invalid && form.controls.ubn.dirty && hasSubmitted}"/>
           <i class="fa fa-building fa-fw"></i>
         </div>
 
-        <!--INPUT FIELD: LASTNAME-->
         <div class="input column row">
           <input type="text" placeholder="{{ 'BRS' | translate }}" formControlName="brs"
                  [ngClass]="{'input-error': form.controls.brs.invalid && form.controls.brs.dirty && hasSubmitted}"/>
           <i class="fa fa-building fa-fw"></i>
         </div>
 
-        <!--INPUT FIELD: LASTNAME-->
         <div class="input column row">
           <input type="text" placeholder="{{ 'PHONE NUMBER' | translate }}" formControlName="phoneNumber"
                  [ngClass]="{'input-error': form.controls.phoneNumber.invalid && form.controls.phoneNumber.dirty && hasSubmitted}"/>
