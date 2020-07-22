@@ -17,4 +17,5 @@ export class TreatmentTemplate {
   status: string;
   revoke_date: string;
   animals: Animal[];
+  is_editable: boolean;
 }
