@@ -39,7 +39,7 @@
         </div>
 
         <div class="row">
-          <div class="column medium-6 small-12 register-option">
+          <div class="column medium-6 small-12 register-option" *ngIf="isRegistrationActive">
             <span class="register-option-text">{{ 'NO ACCOUNT?' | translate }}
               <a href="/register"> {{ 'REGISTER HERE' | translate }} </a></span>
           </div>
