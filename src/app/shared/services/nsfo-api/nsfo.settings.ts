@@ -139,6 +139,7 @@ export const API_URI_GET_COLLAR_COLORS = '/v1/collars';
 
 // TREATMENT TEMPLATES & TREATMENTS
 export const API_URI_GET_TREATMENT_TEMPLATES = '/v1/treatments';
+export const API_URI_GET_Q_FEVER_TEMPLATE_DESCRIPTIONS = API_URI_GET_TREATMENT_TEMPLATES + '/template/q-fever/descriptions';
 
 // OVERIG
 export const API_URI_GET_LOCATIONS_WITH_DEPART_DATES = '/v1/departs-history/depart-dates-and-ubn-new-owners';

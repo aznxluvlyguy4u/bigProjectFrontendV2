@@ -69,10 +69,10 @@
   <div class="row">
     <span [hidden]="editMode || treatment.status == 'REVOKED'">
       <div class="small-6 columns">
-        <button class="tiny primary button" (click)="enableEditing()">{{ 'EDIT' | translate }}</button>
+        <button class="tiny primary button" [disabled]="!treatment.is_editable" (click)="enableEditing()">{{ 'EDIT' | translate }}</button>
       </div>
       <div class="small-6 columns">
-        <button class="tiny alert button" (click)="sendRevokeRequest()">{{ 'REVOKE' | translate }}</button>
+        <button class="tiny alert button" [disabled]="!treatment.is_editable" (click)="sendRevokeRequest()">{{ 'REVOKE' | translate }}</button>
       </div>
     </span>
 

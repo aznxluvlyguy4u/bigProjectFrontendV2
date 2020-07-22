@@ -18,6 +18,8 @@ import {TreatmentTemplate} from '../../../shared/models/treatment-template.model
 import {CacheService} from '../../../shared/services/settings/cache.service';
 import {TreatmentService} from '../treatment.service';
 import {TreatmentMedication} from '../../../shared/models/treatment-medication.model';
+import {MedicationOption} from '../../../shared/models/medication-option.model';
+import {Treatment} from '../../../shared/models/treatment-model';
 
 @Component({
   providers: [NSFOService, Constants],
@@ -202,6 +204,10 @@ export class TreatmentDeclareComponent implements OnInit, OnDestroy, AfterViewCh
           alert(this.nsfo.getErrorMessage(error));
         }
       );
+  }
+
+  public getCheckBoxTitle(treatmentTemplate: TreatmentTemplate): string {
+    return treatmentTemplate.is_editable ? '' : 'THIS MEDICINE IS OBLIGATORY';
   }
 
   public openModal() {
