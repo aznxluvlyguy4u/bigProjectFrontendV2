@@ -176,7 +176,7 @@
   "BREED STATUS": "Ras Status",
   "PURE BRED": "Volbloed",
   "PURE_BRED": "Volbloed",
-  "REGISTER": "Register",
+  "REGISTER": "Registreren",
   "SECONDARY_REGISTER": "Hulpboek",
   "BLIND_FACTOR": "Erfelijke afwijking",
   "HEREDITARY DEVIATION":  "Erfelijke afwijking",
@@ -820,5 +820,12 @@
   "ANIMALS": "Dieren",
   "CREATED": "Melding gedaan",
   "COMPLETED": "Afgerond",
-  "WAITING TIME END DATE": "Wachtijd einddatum"
+  "WAITING TIME END DATE": "Wachtijd einddatum",
+  "NO ACCOUNT?": "Nog geen account?",
+  "EMAIL ADDRESS": "E-mail adres",
+  "ADDRESS NUMBER": "Adres nummer",
+  "ADDRESS NUMBER SUFFIX": "Adres nummer toevoeging",
+  "PHONE NUMBER": "Telefoon-nummer",
+  "YOUR REGISTRATION APPLICATION SENT": "Uw registratieaanvraag is verstuurd",
+  "BRS": "brs"
 }

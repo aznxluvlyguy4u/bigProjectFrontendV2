@@ -72,6 +72,7 @@ import {TreatmentDeclareComponent} from './nsfo-declares/treatment/declare/treat
 import {TreatmentHistoryComponent} from './nsfo-declares/treatment/history/treatment.history';
 import {ReportAnimalTreatmentsPerYearComponent} from './report/animalTreatmentsPerYear/report.animal-treatments-per-year.component';
 import {ReportCombiFormTransportDocumentComponent} from './report/combiFormTransportDocument/report.combiFormTransportDocument';
+import { RegistrationComponent } from './auth/registration/registration.component';
 
 // const appRoutes: Routes = [
 const appRoutes = [
@@ -204,6 +205,7 @@ const appRoutes = [
     ]
   },
   {path: 'login', component: LoginComponent},
+  {path: 'register', component: RegistrationComponent},
   {path: 'ghostlogin/:ghostToken/:accessToken', component: GhostLoginComponent},
   {path: 'loading/:encodedUrl', component: LoadingComponent},
   {path: 'downloaded/:encodedUrl', component: DownloadLandingPageComponent},
