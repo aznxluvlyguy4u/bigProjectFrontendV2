@@ -1,0 +1,59 @@
+<!--LOG DATE-->
+<td>
+    <span>
+        <label class="show-for-small-only">{{ 'DATE' | translate }}</label>
+        {{ treatment.log_date }}
+    </span>
+</td>
+
+<!--ULN-->
+<td>
+  <label class="show-for-small-only">{{ 'ULN' | translate }}</label>
+  {{ treatment.uln_country_code + treatment.uln_number }}
+</td>
+
+<!--PEDIGREE-->
+<td>
+  <label class="show-for-small-only">{{ 'PEDIGREE NUMBER' | translate }}</label>
+  <span *ngIf="(treatment.pedigree_country_code && treatment.pedigree_number)">
+        {{ treatment.pedigree_country_code + treatment.pedigree_number }}
+    </span>
+  <span *ngIf="!(treatment.pedigree_country_code && treatment.pedigree_number)">
+        --
+    </span>
+</td>
+
+<!--FLAG TYPE-->
+<td>
+  <label class="show-for-small-only">{{ 'FLAG TYPE' | translate }}</label>
+  <span>{{ treatment.flag_type }}</span>
+</td>
+
+<!--FLAG START DATE-->
+<td>
+  <label class="show-for-small-only">{{ 'FLAG START DATE' | translate }}</label>
+  <span>{{ treatment.flag_start_date }}</span>
+</td>
+
+<!--FLAG END DATE-->
+<td>
+  <label class="show-for-small-only">{{ 'FLAG START DATE' | translate }}</label>
+  <span>{{ treatment.flag_end_date }}</span>
+</td>
+
+<!--ERROR CODE-->
+<td>
+  <label class="show-for-small-only">{{ 'ERROR CODE' | translate }}</label>
+  <span id="error-{{ treatment_index }}" data-tooltip aria-haspopup="true" class="has-tip top"
+        data-disable-hover="false" title="{{ treatment.error_message }}">
+        {{ treatment.error_code }}
+    </span>
+</td>
+
+<!--ROW BUTTONS-->
+<td>
+    <span>
+        <button *ngIf="!treatment.is_removed_by_user" class="tiny alert button" (click)="sendRemoveErrorRequest()">{{ 'DONT SHOW' | translate }}</button>
+        <button *ngIf="treatment.is_removed_by_user" class="tiny alert button" disabled>{{ 'HIDDEN' | translate}}</button>
+    </span>
+</td>

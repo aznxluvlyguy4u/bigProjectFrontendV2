@@ -70,6 +70,7 @@ import {ReportFertilizerAccountingComponent} from './report/fertilityAccounting/
 import {TreatmentComponent} from './nsfo-declares/treatment/treatment.component';
 import {TreatmentDeclareComponent} from './nsfo-declares/treatment/declare/treatment.declare';
 import {TreatmentHistoryComponent} from './nsfo-declares/treatment/history/treatment.history';
+import {TreatmentsErrorsComponent} from './nsfo-declares/treatment/errors/treatments.errors';
 import {ReportAnimalTreatmentsPerYearComponent} from './report/animalTreatmentsPerYear/report.animal-treatments-per-year.component';
 import {ReportCombiFormTransportDocumentComponent} from './report/combiFormTransportDocument/report.combiFormTransportDocument';
 import { RegistrationComponent } from './auth/registration/registration.component';
@@ -140,7 +141,8 @@ const appRoutes = [
         path: 'treatment', component: TreatmentComponent,
         children: [
           {path: 'declare', component: TreatmentDeclareComponent},
-          {path: 'history', component: TreatmentHistoryComponent}
+          {path: 'history', component: TreatmentHistoryComponent},
+          {path: 'errors', component: TreatmentsErrorsComponent},
         ]
       },
       {
