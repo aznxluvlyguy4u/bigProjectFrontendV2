@@ -18,6 +18,7 @@ export class TreatmentHistoryRowComponent implements OnInit {
   @Input() treatment: Treatment;
   @Input() treatmentTemplatesToSelect = <TreatmentTemplate[]>[];
   @Input() displayTreatmentLocationIndividualType: boolean;
+  @Input() qFeverDescriptions: Array<string>;
 
   @Output() showError = new EventEmitter();
   @Output() revokeTreatment = new EventEmitter();

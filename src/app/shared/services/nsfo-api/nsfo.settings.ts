@@ -143,6 +143,10 @@ export const API_URI_GET_UBN_CAN_REQUEST = '/v1/ubns';
 
 // TREATMENT TEMPLATES & TREATMENTS
 export const API_URI_GET_TREATMENT_TEMPLATES = '/v1/treatments';
+export const API_URI_GET_Q_FEVER_TEMPLATE_DESCRIPTIONS = API_URI_GET_TREATMENT_TEMPLATES + '/template/q-fever/descriptions';
+
+// USERS
+export const API_URI_SIGNUP_USER = '/v1/auth/signup';
 
 // OVERIG
 export const API_URI_GET_LOCATIONS_WITH_DEPART_DATES = '/v1/departs-history/depart-dates-and-ubn-new-owners';

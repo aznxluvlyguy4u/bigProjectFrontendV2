@@ -38,9 +38,16 @@
           {{ 'ARE INCORRECT.' | translate }}
         </div>
 
-        <div class="text-right link">
-          {{ 'FORGOT PASSWORD?' | translate }}
-          <a (click)="enableForgetPassword();resetForm();"> {{ 'CLICK HERE' | translate }} </a>
+        <div class="row">
+          <div class="column medium-6 small-12 register-option" *ngIf="isRegistrationActive">
+            <span class="register-option-text">{{ 'NO ACCOUNT?' | translate }}
+              <a href="/register"> {{ 'REGISTER HERE' | translate }} </a></span>
+          </div>
+
+          <div class="column medium-6 small-12 password-reset-option">
+            {{ 'FORGOT PASSWORD?' | translate }}
+            <a (click)="enableForgetPassword();resetForm();"> {{ 'CLICK HERE' | translate }} </a>
+          </div>
         </div>
       </form>
 

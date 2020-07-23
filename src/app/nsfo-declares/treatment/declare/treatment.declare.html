@@ -113,7 +113,13 @@
               {{medication.treatment_duration}} {{ 'DAYS LOWER' | translate }}
             </td>
             <td>
-              <mat-checkbox class="mat-checkbox" [(ngModel)]="medication.marked_to_keep" [color]="'primary'"></mat-checkbox>
+              <mat-checkbox
+                class="mat-checkbox"
+                [disabled]="!selectedTreatmentTemplate.is_editable"
+                [(ngModel)]="medication.marked_to_keep"
+                [title]="getCheckBoxTitle(selectedTreatmentTemplate) | translate"
+                [color]="'primary'">
+              </mat-checkbox>
             </td>
           </tr>
         </tbody>
