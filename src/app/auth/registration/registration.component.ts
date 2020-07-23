@@ -6,6 +6,7 @@ import {NSFOService} from '../../shared/services/nsfo-api/nsfo.service';
 import {Router} from '@angular/router';
 import {MatSnackBar} from '@angular/material';
 import {TranslateService} from '@ngx-translate/core';
+import {IS_REGISTRATIONS_ACTIVE} from '../../shared/variables/feature.activation';
 
 @Component({
   selector: 'app-registration',
@@ -43,6 +44,9 @@ export class RegistrationComponent implements OnInit {
   }
 
   ngOnInit() {
+    if (!IS_REGISTRATIONS_ACTIVE) {
+      this.router.navigate(['login']);
+    }
   }
 
   doRegistration() {
