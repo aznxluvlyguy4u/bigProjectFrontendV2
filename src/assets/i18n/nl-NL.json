@@ -827,5 +827,8 @@
   "ADDRESS NUMBER SUFFIX": "Adres nummer toevoeging",
   "PHONE NUMBER": "Telefoon-nummer",
   "YOUR REGISTRATION APPLICATION SENT": "Uw registratieaanvraag is verstuurd",
-  "BRS": "brs"
+  "BRS": "brs",
+  "FLAG TYPE": "Vlag type",
+  "FLAG START DATE": "Vlag begin-datum",
+  "FLAG END DATE": "Vlag eind-datum"
 }
