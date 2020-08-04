@@ -70,3 +70,41 @@ export class VatBreakdownRecord {
   price_excl_vat_total: number;
   vat: number;
 }
+
+export class TwinfieldInvoice {
+  public first: number;
+  public last: number;
+  public total: number;
+  public headers: TwinfieldInvoiceHeader[] = [];
+  public rows: TwinfieldInvoiceRow[] = [];
+}
+
+export class TwinfieldInvoiceHeader {
+  code: string;
+  label: string;
+  hide_for_user: boolean;
+  type: string;
+}
+
+export class TwinfieldInvoiceRow {
+  office: TwinfieldInvoiceOffice;
+  code: string;
+  number: number;
+  line: number;
+  cells: TwinfieldInvoiceCell[] = [];
+}
+
+export class TwinfieldInvoiceOffice {
+  field: string;
+  hide_for_user: boolean;
+  type: string;
+  value: string;
+}
+
+
+export class TwinfieldInvoiceCell {
+  field: string;
+  hide_for_user: boolean;
+  type: string;
+  value: string;
+}

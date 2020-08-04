@@ -76,7 +76,7 @@ export const API_URI_GET_BIRTHS_ERRORS = '/v1/births-errors';
 // INVOICE
 export const API_URI_INVOICES = '/v1/invoices';
 export const API_URI_INVOICE_PAYMENT = '/v1/mollie';
-
+export const API_URI_EXTERNAL_PROVIDER = '/v1/external-provider';
 // LOSS
 export const API_URI_DECLARE_LOSS = '/v1/losses';
 export const API_URI_CHANGE_LOSS = '/v1/losses';

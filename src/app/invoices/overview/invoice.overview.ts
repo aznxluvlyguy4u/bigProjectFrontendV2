@@ -1,11 +1,11 @@
 import * as moment from 'moment';
 import {Component, OnDestroy, OnInit} from '@angular/core';
 
-import {Invoice} from '../../shared/models/invoice.model';
+import {Invoice, TwinfieldInvoice} from '../../shared/models/invoice.model';
 import {NSFOService} from '../../shared/services/nsfo-api/nsfo.service';
 import {SettingsService} from '../../shared/services/settings/settings.service';
 import {Router} from '@angular/router';
-import {API_URI_INVOICE_PAYMENT, API_URI_INVOICES} from '../../shared/services/nsfo-api/nsfo.settings';
+import {API_URI_EXTERNAL_PROVIDER, API_URI_INVOICE_PAYMENT, API_URI_INVOICES} from '../../shared/services/nsfo-api/nsfo.settings';
 import {DownloadService} from '../../shared/services/download/download.service';
 import {PaginationService} from 'ngx-pagination';
 import {JsonResponseModel} from '../../shared/models/json-response.model';
@@ -21,6 +21,7 @@ export class InvoiceOverviewComponent implements OnInit, OnDestroy {
   public areRecurrentApiCallsActivated: boolean;
   public loopGetInvoicesList = true;
   public invoices: Invoice[] = [];
+  public twinfieldInvoices: TwinfieldInvoice = new TwinfieldInvoice;
   public isLoaded = false;
   public status = 'ALL';
   public filterSearch = '';
@@ -34,7 +35,9 @@ export class InvoiceOverviewComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.areRecurrentApiCallsActivated = true;
-    this.getInvoicesList();
+    this.isLoaded = false;
+    // this.getInvoicesList();
+    this.getTwinfieldInvoicesList();
   }
 
   ngOnDestroy() {
@@ -61,6 +64,26 @@ export class InvoiceOverviewComponent implements OnInit, OnDestroy {
     setTimeout(() => {
       if (this.areRecurrentApiCallsActivated && this.loopGetInvoicesList) {
         this.getInvoicesList();
+      }
+    }, POLLING_INTERVAL_INVOICES_SECONDS * 1000);
+  }
+
+  private getTwinfieldInvoicesList() {
+    this.apiService.doGetRequest(API_URI_EXTERNAL_PROVIDER + '/customer-invoices')
+      .subscribe(
+        (res: JsonResponseModel) => {
+          this.twinfieldInvoices = <TwinfieldInvoice> res.result;
+          this.isLoaded = true;
+        },
+        error => {
+          this.loopGetInvoicesList = false;
+          // DO NOT LOGOUT HERE TO PREVENT THE RISK OF BEING LOGGED OUT, WHILE TRYING TO LOGIN AGAIN
+        }
+      );
+
+    setTimeout(() => {
+      if (this.areRecurrentApiCallsActivated && this.loopGetInvoicesList) {
+        this.getTwinfieldInvoicesList();
       }
     }, POLLING_INTERVAL_INVOICES_SECONDS * 1000);
   }
