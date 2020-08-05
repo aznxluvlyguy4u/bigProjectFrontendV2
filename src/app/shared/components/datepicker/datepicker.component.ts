@@ -1,5 +1,5 @@
 import * as moment from 'moment';
-import {AfterViewInit, Component, EventEmitter, Input, Output, ViewContainerRef} from '@angular/core';
+import {AfterViewInit, Component, EventEmitter, Input, OnDestroy, Output, ViewContainerRef} from '@angular/core';
 import {FormControl} from '@angular/forms';
 
 @Component({
@@ -7,7 +7,7 @@ import {FormControl} from '@angular/forms';
   templateUrl: './datepicker.component.html'
 })
 
-export class DatepickerComponent implements AfterViewInit {
+export class DatepickerComponent implements AfterViewInit, OnDestroy {
   public isOpened: boolean;
   public dateValue: string;
   public viewValue: string;
