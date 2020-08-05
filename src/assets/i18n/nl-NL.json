@@ -802,6 +802,7 @@
   "READER": "Reader",
   "TREATMENT": "Behandeling",
   "DECLARE TREATMENT": "Behandeling melden",
+  "TREATMENT DATE": "Behandelingsdatum",
   "TREATMENT PERIOD": "Behandelingsperiode",
   "TREATMENT TEMPLATE": "Behandelingstemplate",
   "CHOOSE TEMPLATE": "Kies een template",
@@ -828,6 +829,8 @@
   "PHONE NUMBER": "Telefoon-nummer",
   "YOUR REGISTRATION APPLICATION SENT": "Uw registratieaanvraag is verstuurd",
   "BRS": "brs",
+  "ADD END DATE": "Voeg einddatum toe",
+  "REMOVE END DATE": "Verwijder einddatum",
   "FLAG TYPE": "Vlag type",
   "FLAG START DATE": "Vlag begin-datum",
   "FLAG END DATE": "Vlag eind-datum"
