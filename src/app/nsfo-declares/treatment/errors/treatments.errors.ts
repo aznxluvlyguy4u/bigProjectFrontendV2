@@ -36,7 +36,8 @@ export class TreatmentsErrorsComponent implements OnInit {
           for (const treatment of treatments) {
             treatment.log_date = moment(treatment.log_date).format(this.settings.getViewDateFormat());
             treatment.flag_start_date = moment(treatment.flag_start_date).format(this.settings.getViewDateFormat());
-            treatment.flag_end_date = moment(treatment.flag_end_date).format(this.settings.getViewDateFormat());
+            treatment.flag_end_date = treatment.flag_end_date ?
+              moment(treatment.flag_end_date).format(this.settings.getViewDateFormat()) : null;
             this.treatmentsErrorList.push(treatment);
           }
 
