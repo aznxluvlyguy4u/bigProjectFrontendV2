@@ -103,10 +103,10 @@
           <td>{{ 'COLLAR NUMBER' | translate}}</td>
           <td>{{ 'GENDER' | translate}}</td>
           <td>{{ 'DATE OF BIRTH' | translate}}</td>
-          <td>{{ 'RVO FLAG' | translate}}</td>
-          <td>{{ 'RVO FLAG START DATE' | translate}}</td>
-          <td>{{ 'RVO FLAG END DATE' | translate}}</td>
-          <td>{{ 'RVO FLAG STATUS' | translate}}</td>
+          <td *ngIf="treatment.has_rvo_details">{{ 'RVO FLAG' | translate}}</td>
+          <td *ngIf="treatment.has_rvo_details">{{ 'RVO FLAG START DATE' | translate}}</td>
+          <td *ngIf="treatment.has_rvo_details">{{ 'RVO FLAG END DATE' | translate}}</td>
+          <td *ngIf="treatment.has_rvo_details">{{ 'RVO FLAG STATUS' | translate}}</td>
         </tr>
         </thead>
         <tbody>
@@ -115,10 +115,10 @@
           <td class="animal-modal-column">{{ animal.collar_color != null && animal.collar_number != null ? animal.collar_color + ' ' + animal.collar_number : '-' }}</td>
           <td class="animal-modal-column">{{ animal.gender | translate }}</td>
           <td class="animal-modal-column">{{ formatDate(animal.date_of_birth) }}</td>
-          <td class="animal-modal-column">{{ animal.rvo_flag | translate }}</td>
-          <td class="animal-modal-column">{{ animal.rvo_flag_start_date | translate }}</td>
-          <td class="animal-modal-column">{{ animal.rvo_flag_end_date | translate }}</td>
-          <td class="animal-modal-column">{{ animal.rvo_flag_status | translate }}</td>
+          <td class="animal-modal-column" *ngIf="treatment.has_rvo_details">{{ animal.rvo_flag | translate }}</td>
+          <td class="animal-modal-column" *ngIf="treatment.has_rvo_details">{{ animal.rvo_flag_start_date | translate }}</td>
+          <td class="animal-modal-column" *ngIf="treatment.has_rvo_details">{{ animal.rvo_flag_end_date | translate }}</td>
+          <td class="animal-modal-column" *ngIf="treatment.has_rvo_details">{{ animal.rvo_flag_status | translate }}</td>
         </tr>
         </tbody>
       </table>
