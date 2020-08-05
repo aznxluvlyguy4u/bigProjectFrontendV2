@@ -83,7 +83,7 @@ export class TreatmentHistoryComponent implements OnInit, OnDestroy {
             this.totalTreatments = res.result.totalItems;
             for (const treatment of treatments) {
               treatment.start_date = moment(treatment.start_date).format(this.settings.getViewDateFormat());
-              treatment.end_date = moment(treatment.end_date).format(this.settings.getViewDateFormat());
+              treatment.end_date = treatment.end_date ? moment(treatment.end_date).format(this.settings.getViewDateFormat()) : null;
               treatment.create_date = moment(treatment.create_date).format(this.settings.getViewDateTimeFormat());
             }
             this.treatmentHistoryList = treatments; // Sorting is done in the backend
