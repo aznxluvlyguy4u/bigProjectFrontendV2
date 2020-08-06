@@ -80,6 +80,11 @@
                  [ngClass]="{'input-error': form.controls.phoneNumber.invalid && hasSubmitted}"/>
           <i class="fa fa-phone fa-fw"></i>
         </div>
+        <div class="input column row">
+          <input type="checkbox" formControlName="hasAutoIncasso"
+                 [ngClass]="{'input-error': form.controls.hasAutoIncasso.invalid && hasSubmitted}"/>
+          <label>Auto incasso</label>
+        </div>
 
         <!--SUBMIT BUTTON-->
         <button

@@ -11,4 +11,5 @@ export class User {
   public ubn;
   public brs;
   public phone_number;
+  public has_auto_incasso;
 }
