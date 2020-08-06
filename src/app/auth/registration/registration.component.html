@@ -64,6 +64,12 @@
         </div>
 
         <div class="input column row">
+          <input type="text" placeholder="{{ 'COMPANY' | translate }}" formControlName="companyName"
+                 [ngClass]="{'input-error': form.controls.companyName.invalid && hasSubmitted}"/>
+          <i class="fa fa-building fa-fw"></i>
+        </div>
+
+        <div class="input column row">
           <input type="text" placeholder="{{ 'UBN' | translate }}" formControlName="ubn"
                  [ngClass]="{'input-error': form.controls.ubn.invalid && hasSubmitted}"/>
           <i class="fa fa-building fa-fw"></i>

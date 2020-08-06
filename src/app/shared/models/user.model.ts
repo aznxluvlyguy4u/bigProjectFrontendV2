@@ -8,6 +8,7 @@ export class User {
   public address_number_suffix;
   public postal_code;
   public city;
+  public company_name;
   public ubn;
   public brs;
   public phone_number;

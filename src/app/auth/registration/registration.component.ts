@@ -37,6 +37,7 @@ export class RegistrationComponent implements OnInit {
       addressNumberSuffix: new FormControl(''),
       postalCode: new FormControl('', Validators.required),
       city: new FormControl('', Validators.required),
+      companyName: new FormControl('', Validators.required),
       ubn: new FormControl('', Validators.required),
       brs: new FormControl('', Validators.required),
       phoneNumber: new FormControl('', Validators.required),
@@ -63,6 +64,7 @@ export class RegistrationComponent implements OnInit {
       this.user.address_number_suffix = this.form.get('addressNumberSuffix').value;
       this.user.postal_code = this.form.get('postalCode').value;
       this.user.city = this.form.get('city').value;
+      this.user.company_name = this.form.get('companyName').value;
       this.user.ubn = this.form.get('ubn').value;
       this.user.brs = this.form.get('brs').value;
       this.user.phone_number = this.form.get('phoneNumber').value;
