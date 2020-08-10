@@ -593,6 +593,7 @@
   "AMOUNT RETRIEVED FROM RVO": "Aantal binnengehaald van RVO",
   "FINISHED": "Afgerond",
   "FINISHED_WITH_WARNING": "Afgerond met waarschuwing",
+  "FINISHED_WITH_ERRORS": "Afgerond met errors",
   "CANCELLED": "Geannuleerd",
   "OPEN": "In behandeling",
   "FAILED": "Mislukt",
