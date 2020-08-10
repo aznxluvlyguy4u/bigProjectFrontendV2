@@ -55,6 +55,7 @@ export class TreatmentDeclareComponent implements OnInit, OnDestroy, AfterViewCh
   public sendStartDateObservable = this.sendStartDateSubject.asObservable();
   public self;
   private startDate;
+  public userWantsToAddEndDate = false;
   private currentLocationUbn;
   public selectedTreatmentTemplate: TreatmentTemplate;
   public showTreatmentTemplates = true;
@@ -131,7 +132,9 @@ export class TreatmentDeclareComponent implements OnInit, OnDestroy, AfterViewCh
       requestData.treatment_template.location = {};
       requestData.description = this.selectedTreatmentTemplate.description;
       requestData.start_date = this.form.get('start_date').value;
-      requestData.end_date = this.form.get('end_date').value;
+      if (this.useEndDate()) {
+        requestData.end_date = this.form.get('end_date').value;
+      }
       requestData.animals = animals;
       requestData.treatment_template.location.id = this.cache.getLocation().id;
 
@@ -165,7 +168,7 @@ export class TreatmentDeclareComponent implements OnInit, OnDestroy, AfterViewCh
 
   public updateEndDate(startDate) {
     if (typeof startDate === 'object') {
-        this.form.get('mate_enddate').setValue(startDate.format());
+        this.form.get('end_date').setValue(startDate.format());
         this.updateEndDateSubject.next(startDate.format('DD-MM-YYYY'));
     }
   }
@@ -222,4 +225,16 @@ export class TreatmentDeclareComponent implements OnInit, OnDestroy, AfterViewCh
     this.router.navigate([route]);
   }
 
+  public useEndDate(): boolean {
+      return this.userWantsToAddEndDate && this.allowEndDate();
+  }
+
+  public activateUserWantsToUseEndDate() {
+    this.userWantsToAddEndDate = true;
+    this.updateEndDate(this.startDate);
+  }
+
+  public allowEndDate(): boolean {
+      return this.selectedTreatmentTemplate && this.selectedTreatmentTemplate.allow_end_date;
+  }
 }
