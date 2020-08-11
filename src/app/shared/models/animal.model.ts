@@ -88,6 +88,8 @@ export class Animal {
   public rvo_flag: string;
   public rvo_flag_start_date: string;
   public rvo_flag_end_date: string;
+  public error_message: string|undefined;
+  public error_code: string|undefined;
 }
 
 export class Ewe extends Animal {

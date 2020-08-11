@@ -27,7 +27,8 @@ export class TreatmentHistoryComponent implements OnInit, OnDestroy {
   public isSending = false;
   public modal_display = 'none';
   public medicine_modal_display = [];
-  public animal_modal_display = [];
+  public animal_modal_display_outer = [];
+  public animal_modal_display_inner = [];
   public errorModalDisplay = 'none';
   public errorMessages: ErrorMessage[] = [];
   private currentLocationUbn;
@@ -89,7 +90,8 @@ export class TreatmentHistoryComponent implements OnInit, OnDestroy {
             this.treatmentHistoryList = treatments; // Sorting is done in the backend
             this.treatmentHistoryList.forEach((treatment) => {
                 this.medicine_modal_display[treatment.treatment_id] = 'none';
-                this.animal_modal_display[treatment.treatment_id] = 'none';
+                this.animal_modal_display_inner[treatment.treatment_id] = 'none';
+                this.animal_modal_display_outer[treatment.treatment_id] = 'none';
             });
             this.isLoading = false;
         },
@@ -141,7 +143,8 @@ export class TreatmentHistoryComponent implements OnInit, OnDestroy {
         this.medicine_modal_display[treatment_id] = 'block';
         break;
       case 'animal':
-        this.animal_modal_display[treatment_id] = 'block';
+        this.animal_modal_display_inner[treatment_id] = 'table';
+        this.animal_modal_display_outer[treatment_id] = 'block';
         break;
     }
   }
@@ -155,7 +158,8 @@ export class TreatmentHistoryComponent implements OnInit, OnDestroy {
         this.medicine_modal_display[treatment_id] = 'none';
         break;
       case 'animal':
-        this.animal_modal_display[treatment_id] = 'none';
+        this.animal_modal_display_inner[treatment_id] = 'none';
+        this.animal_modal_display_outer[treatment_id] = 'none';
         break;
     }
   }
