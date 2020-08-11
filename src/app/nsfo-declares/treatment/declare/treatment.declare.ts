@@ -14,7 +14,7 @@ import {Animal, LivestockAnimal} from '../../../shared/models/animal.model';
 import {ErrorMessage} from '../../../shared/models/error-message.model';
 import {JsonResponseModel} from '../../../shared/models/json-response.model';
 import * as moment from 'moment';
-import {TreatmentTemplate} from '../../../shared/models/treatment-template.model';
+import {TreatmentTemplateSelectionGroup, TreatmentTemplate} from '../../../shared/models/treatment-template.model';
 import {CacheService} from '../../../shared/services/settings/cache.service';
 import {TreatmentService} from '../treatment.service';
 import {TreatmentMedication} from '../../../shared/models/treatment-medication.model';
@@ -36,6 +36,8 @@ export class TreatmentDeclareComponent implements OnInit, OnDestroy, AfterViewCh
 
   private treatmentTemplatesSubscription: Subscription;
   public treatmentTemplates = <TreatmentTemplate[]>[];
+  public treatmentTemplateSelectionGroups = <TreatmentTemplateSelectionGroup[]>[];
+
   public modalDisplay = 'none';
   public errorMessages: ErrorMessage[] = [];
   public view_date_format;
@@ -84,9 +86,26 @@ export class TreatmentDeclareComponent implements OnInit, OnDestroy, AfterViewCh
     this.treatmentTemplatesSubscription = this.treatmentService.treatmentTemplatesChanged.subscribe(
       (templates: TreatmentTemplate[]) => {
         this.treatmentTemplates = templates;
+        this.updateTreatmentTemplateSelectionGroups();
       }
     );
     this.treatmentTemplates = this.treatmentService.getTreatmentTemplates();
+    this.updateTreatmentTemplateSelectionGroups();
+  }
+
+  private updateTreatmentTemplateSelectionGroups() {
+    this.treatmentTemplateSelectionGroups = [];
+    this.treatmentTemplateSelectionGroups.push(
+      new TreatmentTemplateSelectionGroup('Q-FEVER',
+        this.treatmentService.getTreatmentTemplates().filter( template => template.templatetype === 'QFever')
+      ),
+      new TreatmentTemplateSelectionGroup('NEW',
+        this.treatmentService.getTreatmentTemplates().filter( template => template.templatetype === 'Default' && template.is_new)
+      ),
+      new TreatmentTemplateSelectionGroup('TREATMENT',
+        this.treatmentService.getTreatmentTemplates().filter( template => template.templatetype === 'Default' && !template.is_new)
+      ),
+    );
   }
 
   ngOnDestroy(): void {

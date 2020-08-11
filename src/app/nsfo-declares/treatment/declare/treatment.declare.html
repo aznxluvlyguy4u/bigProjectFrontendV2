@@ -1,13 +1,23 @@
 <form [formGroup]="form" class="form-declare">
 
   <!--TREATMENT TEMPLATE-->
-  <div class="medium-3 columns">
+  <div class="large-4 medium-12 small-12 columns ">
     <label *ngIf="showTreatmentTemplates; else noTreatmentTemplates">
       {{ 'TREATMENT' | translate }}
-      <select name="selectedTreatmentTemplate" [(ngModel)]="selectedTreatmentTemplate" (ngModelChange)="setDefaultMarkedForRemoval()" [ngModelOptions]="{standalone: true}">
-        <option *ngFor="let template of treatmentTemplates" [ngValue]="template">{{template.description}}</option>
-      </select>
     </label>
+
+    <mat-form-field *ngIf="showTreatmentTemplates" appearance="fill" class="treatment-dropdown">
+      <!--        <mat-label>{{ 'TREATMENT' | translate }}</mat-label>-->
+      <mat-select [(value)]="selectedTreatmentTemplate" [panelClass]="'treatment-dropdown-panel'">
+        <mat-optgroup *ngFor="let group of treatmentTemplateSelectionGroups" [label]="group.name | translate">
+          <mat-option *ngFor="let template of group.templates" [value]="template">
+            {{template.description}}
+          </mat-option>
+        </mat-optgroup>
+      </mat-select>
+    </mat-form-field>
+
+
     <ng-template #noTreatmentTemplates>
       <p>
         Er zijn voor deze UBN nog geen behandelingen ingesteld.
@@ -17,7 +27,7 @@
   </div>
 
   <!--TREATMENT BEGIN DATE-->
-  <div class="medium-2 columns">
+  <div class="large-2 medium-3 columns">
     <label>
       <span *ngIf="useEndDate()">{{ 'TREATMENT PERIOD' | translate }}</span>
       <span *ngIf="!useEndDate()">{{ 'TREATMENT DATE' | translate }}</span>
@@ -35,7 +45,7 @@
   </div>
 
   <!--TREATMENT END DATE-->
-  <div class="medium-2 columns" *ngIf="useEndDate()">
+  <div class="large-2 medium-3 columns" *ngIf="useEndDate()">
     <label>
       {{ 'TILL' | translate }} &nbsp;
       <app-datepicker
@@ -51,9 +61,9 @@
     </label>
   </div>
 
-  <div class="medium-2 columns" *ngIf="useEndDate()">
+  <div class="large-2 medium-2 columns" *ngIf="useEndDate()">
     <label>
-      <span style="opacity: 0.0"> --- </span> &nbsp;
+      <span style="opacity: 0.0"> ----------- </span> &nbsp;
       <button
         type="button"
         class="button primary"
@@ -66,7 +76,7 @@
 
   <div class="medium-2 columns" *ngIf="!useEndDate() && allowEndDate()">
     <label>
-      <span style="opacity: 0.0"> --- </span> &nbsp;
+      <span style="opacity: 0.0"> ---------- </span> &nbsp;
       <button
         type="button"
         class="button primary"

@@ -147,7 +147,7 @@ import {
   MAT_SNACK_BAR_DEFAULT_OPTIONS,
   MatButtonModule,
   MatCheckboxModule,
-  MatProgressSpinnerModule,
+  MatProgressSpinnerModule, MatSelectModule,
   MatSnackBar,
   MatSnackBarModule
 } from '@angular/material';
@@ -360,6 +360,7 @@ export function CreateTranslateLoader(http: HttpClient) {
     MatButtonModule,
     MatSnackBarModule,
     MatCheckboxModule,
+    MatSelectModule,
     StorageServiceModule,
   ],
   providers: [

@@ -19,4 +19,18 @@ export class TreatmentTemplate {
   animals: Animal[];
   is_editable: boolean;
   allow_end_date: boolean;
+  templatetype: string;
+  q_fever_type: string|undefined;
+  is_new: boolean;
+}
+
+
+export class TreatmentTemplateSelectionGroup {
+  name: string;
+  templates: TreatmentTemplate[];
+
+  constructor(name: string, templates: TreatmentTemplate[]) {
+    this.name = name;
+    this.templates = templates;
+  }
 }
