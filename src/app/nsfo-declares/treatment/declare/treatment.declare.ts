@@ -98,10 +98,19 @@ export class TreatmentDeclareComponent implements OnInit, OnDestroy, AfterViewCh
     this.treatmentTemplateSelectionGroups.push(
       new TreatmentTemplateSelectionGroup('Q-FEVER',
         this.treatmentService.getTreatmentTemplates().filter( template => template.templatetype === 'QFever')
-      ),
-      new TreatmentTemplateSelectionGroup('NEW',
-        this.treatmentService.getTreatmentTemplates().filter( template => template.templatetype === 'Default' && template.is_new)
-      ),
+      )
+    );
+
+    const newGroup = this.treatmentService.getTreatmentTemplates()
+      .filter( template => template.templatetype === 'Default' && template.is_new);
+
+    if (newGroup.length > 0) {
+      this.treatmentTemplateSelectionGroups.push(
+        new TreatmentTemplateSelectionGroup('NEW', newGroup),
+      );
+    }
+
+    this.treatmentTemplateSelectionGroups.push(
       new TreatmentTemplateSelectionGroup('TREATMENT',
         this.treatmentService.getTreatmentTemplates().filter( template => template.templatetype === 'Default' && !template.is_new)
       ),
