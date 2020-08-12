@@ -88,19 +88,21 @@
   </div>
 
   <!--ERROR OVERVIEW-->
-  <div class="medium-1 columns">
-    <label> &nbsp;
-      <button
-        type="button"
-        class="button alert"
-        [disabled]="errorMessages == null || errorMessages.length == 0"
-        (click)="openModal()"
-        title="{{'THERE ERRORS ARE ONLY SAVED IN THIS BROWSER SESSION' | translate }}"
-      >
-        <span *ngIf="errorMessages !== null && errorMessages.length > 0" class="badge">{{errorMessages.length}}</span>
-        {{'ERRORS'|translate}}
-      </button>
-    </label>
+  <div class="medium-2 columns">
+    <label> &nbsp; </label>
+    <button
+      type="button"
+      class="button alert"
+      [disabled]="treatmentService.declareErrorMessages == null || treatmentService.declareErrorMessages.length == 0"
+      (click)="openModal()"
+      title="{{'THERE ERRORS ARE ONLY SAVED IN THIS BROWSER SESSION' | translate }}"
+    >
+      <span
+        *ngIf="treatmentService.declareErrorMessages !== null &&
+        treatmentService.declareErrorMessages.length > 0" class="badge"
+      >{{treatmentService.declareErrorMessages.length}}</span>
+      {{'ERRORS'|translate}}
+    </button>
   </div>
 
 </form>
@@ -196,13 +198,13 @@
       <hr>
 
       <ul>
-        <li *ngFor="let errorMessage of errorMessages">
+        <li *ngFor="let errorMessage of treatmentService.declareErrorMessages ">
           {{ errorMessage.message | translate }}
         </li>
       </ul>
     </div>
     <div class="modal-footer">
-      <button [disabled]="errorMessages == null || errorMessages.length == 0"
+      <button [disabled]="treatmentService.declareErrorMessages == null || treatmentService.declareErrorMessages.length == 0"
               class="tiny alert button pull-left" (click)="purgeErrors()">{{ 'PURGE ERRORS' | translate}}
       </button>
       <button class="tiny primary button pull-right" (click)="closeModal()">{{ 'OK' | translate}}</button>

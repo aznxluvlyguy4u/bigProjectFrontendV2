@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {API_URI_VERIFY_GHOST_TOKEN,} from './nsfo.settings';
+import {API_URI_VERIFY_GHOST_TOKEN} from './nsfo.settings';
 import {TranslateService} from '@ngx-translate/core';
 import {Animal} from '../../models/animal.model';
 import {Router} from '@angular/router';
@@ -9,6 +9,7 @@ import {environment} from '../../../../environments/environment';
 import {CacheService} from '../settings/cache.service';
 
 import * as HttpStatus from 'http-status-codes';
+import {ErrorMessage} from '../../models/error-message.model';
 
 @Injectable()
 export class NSFOService {
@@ -143,6 +144,13 @@ export class NSFOService {
     this.cache.deleteAccessToken();
     this.cache.deleteGhostToken();
     this.navigateToLogin();
+  }
+
+  public getErrorDetails(err: HttpErrorResponse): ErrorMessage {
+    const error = new ErrorMessage();
+    error.message = this.getErrorMessage(err);
+    error.code = err.status;
+    return error;
   }
 
   public getErrorMessage(err: HttpErrorResponse): string {
