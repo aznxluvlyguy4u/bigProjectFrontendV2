@@ -5,6 +5,7 @@ import {CacheService} from '../shared/services/settings/cache.service';
 import {SettingsService} from '../shared/services/settings/settings.service';
 import {UtilsService} from '../shared/services/utils/utils.services';
 import {DownloadService} from '../shared/services/download/download.service';
+import {IS_HEALTH_MODULE_ACTIVE} from '../shared/variables/feature.activation';
 
 @Component({
   templateUrl: './animal-health.component.html'
@@ -13,6 +14,10 @@ import {DownloadService} from '../shared/services/download/download.service';
 export class AnimalHealthComponent {
 
   constructor(private router: Router) {
-    router.navigate(['/main/animal-health/request']);
+    if (IS_HEALTH_MODULE_ACTIVE) {
+      router.navigate(['/main/animal-health/request']);
+    } else {
+      router.navigate(['/main']);
+    }
   }
 }
