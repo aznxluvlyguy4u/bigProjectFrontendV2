@@ -9,6 +9,7 @@ import {Animal} from '../../shared/models/animal.model';
 import * as _ from 'lodash';
 import {FormGroup} from '@angular/forms';
 import {CacheService} from '../../shared/services/settings/cache.service';
+import {TreatmentMedication} from '../../shared/models/treatment-medication.model';
 
 @Injectable()
 export class TreatmentService {
@@ -39,6 +40,12 @@ export class TreatmentService {
       .subscribe(
         (res: JsonResponseModel) => {
           this.treatmentTemplates = res.result;
+          this.treatmentTemplates.forEach(function (treatmentTemplate: TreatmentTemplate) {
+              treatmentTemplate.treatment_medications.forEach(function (medication: TreatmentMedication) {
+                  medication.marked_to_keep = true;
+              });
+              return treatmentTemplate;
+          });
           this.notifyTreatmentTemplatesChanged();
         }
       );
