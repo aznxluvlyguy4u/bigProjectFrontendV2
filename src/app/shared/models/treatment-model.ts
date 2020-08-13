@@ -14,4 +14,6 @@ export class Treatment {
   animals: Animal[];
   medications: TreatmentMedication[];
   is_editable: boolean;
+  has_rvo_details: boolean;
+  rvo_flag: string|undefined;
 }

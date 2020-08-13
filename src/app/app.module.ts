@@ -147,7 +147,7 @@ import {
   MAT_SNACK_BAR_DEFAULT_OPTIONS,
   MatButtonModule,
   MatCheckboxModule,
-  MatProgressSpinnerModule,
+  MatProgressSpinnerModule, MatSelectModule,
   MatSnackBar,
   MatSnackBarModule
 } from '@angular/material';
@@ -173,6 +173,8 @@ import {TreatmentComponent} from './nsfo-declares/treatment/treatment.component'
 import {TreatmentDeclareComponent} from './nsfo-declares/treatment/declare/treatment.declare';
 import {TreatmentHistoryComponent} from './nsfo-declares/treatment/history/treatment.history';
 import {TreatmentHistoryRowComponent} from './nsfo-declares/treatment/history/treatment.history.row';
+import {TreatmentsErrorsComponent} from './nsfo-declares/treatment/errors/treatments.errors';
+import {TreatmentsErrorRowComponent} from './nsfo-declares/treatment/errors/treatments.errors.row';
 import {TreatmentHistoryPipe} from './nsfo-declares/treatment/history/pipes/treatment.history.pipe';
 import {ReportAnimalTreatmentsPerYearComponent} from './report/animalTreatmentsPerYear/report.animal-treatments-per-year.component';
 import {ReportCombiFormTransportDocumentComponent} from './report/combiFormTransportDocument/report.combiFormTransportDocument';
@@ -432,6 +434,8 @@ export function CreateTranslateLoader(http: HttpClient) {
     TreatmentDeclareComponent,
     TreatmentHistoryComponent,
     TreatmentHistoryRowComponent,
+    TreatmentsErrorsComponent,
+    TreatmentsErrorRowComponent,
     TreatmentHistoryPipe,
     ReportAnimalTreatmentsPerYearComponent,
     ReportCombiFormTransportDocumentComponent,
@@ -460,6 +464,7 @@ export function CreateTranslateLoader(http: HttpClient) {
     MatButtonModule,
     MatSnackBarModule,
     MatCheckboxModule,
+    MatSelectModule,
     StorageServiceModule,
   ],
   providers: [

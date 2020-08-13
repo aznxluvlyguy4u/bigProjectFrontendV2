@@ -1,0 +1,33 @@
+<!--SHOW HIDDEN MESSAGE-->
+<div class="large-12 table-search">
+  <div class="large-2 large-push-10">
+    <button (click)="displayHiddenMessages()" [ngClass]="{'toggled': showHiddenMessages}" class="small primary button">
+      {{ 'SHOW HIDDEN ERRORS' | translate}}
+    </button>
+  </div>
+</div>
+
+<!--TABLE HEADER-->
+<table class="stack errors">
+  <thead>
+  <th>{{ 'DATE' | translate }}</th>
+  <th>{{ 'ULN' | translate }}</th>
+  <th>{{ 'PEDIGREE NUMBER' | translate }}</th>
+  <th>{{ 'FLAG TYPE' | translate }}</th>
+  <th>{{ 'FLAG START DATE' | translate }}</th>
+  <th>{{ 'ERROR CODE' | translate }}</th>
+  <th>{{ 'ERROR MESSAGE' | translate }}</th>
+  <th></th>
+  </thead>
+  <tbody>
+  <tr app-treatments-error-row
+    *ngFor="let treatment of treatmentsErrorList | hiddenMessagesFilter:[showHiddenMessages] | paginate: {itemsPerPage: 10, currentPage: page}; let i = index"
+    (removeTreatment)="removeTreatment($event)" [treatment]="treatment" [treatment_index]="i"></tr>
+  </tbody>
+</table>
+
+<div *ngIf="isLoading" class="data-loader">
+  <app-page-loading-spinner></app-page-loading-spinner>
+</div>
+
+<pagination-controls (pageChange)="page = $event"></pagination-controls>

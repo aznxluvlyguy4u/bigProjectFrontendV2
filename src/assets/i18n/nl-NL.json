@@ -594,6 +594,7 @@
   "AMOUNT RETRIEVED FROM RVO": "Aantal binnengehaald van RVO",
   "FINISHED": "Afgerond",
   "FINISHED_WITH_WARNING": "Afgerond met waarschuwing",
+  "FINISHED_WITH_ERRORS": "Afgerond met errors",
   "CANCELLED": "Geannuleerd",
   "OPEN": "In behandeling",
   "FAILED": "Mislukt",
@@ -806,6 +807,7 @@
   "READER": "Reader",
   "TREATMENT": "Behandeling",
   "DECLARE TREATMENT": "Behandeling melden",
+  "TREATMENT DATE": "Behandelingsdatum",
   "TREATMENT PERIOD": "Behandelingsperiode",
   "TREATMENT TEMPLATE": "Behandelingstemplate",
   "CHOOSE TEMPLATE": "Kies een template",
@@ -831,5 +833,13 @@
   "ADDRESS NUMBER SUFFIX": "Adres nummer toevoeging",
   "PHONE NUMBER": "Telefoon-nummer",
   "YOUR REGISTRATION APPLICATION SENT": "Uw registratieaanvraag is verstuurd",
-  "BRS": "brs"
+  "BRS": "brs",
+  "NON-RVO TREATMENT": "Niet-RVO Behandeling",
+  "Q-FEVER": "Q-Koorts",
+  "NEW": "Nieuw",
+  "ADD END DATE": "Voeg einddatum toe",
+  "REMOVE END DATE": "Verwijder einddatum",
+  "FLAG TYPE": "Vlag type",
+  "FLAG START DATE": "Vlag begin-datum",
+  "FLAG END DATE": "Vlag eind-datum"
 }

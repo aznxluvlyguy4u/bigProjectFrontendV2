@@ -86,8 +86,8 @@
 </div>
 
 <!--ANIMAL MODAL-->
-<div id="treatment-animal-modal" class="reveal-overlay" [ngStyle]="{'display': animal_modal_display[treatment.treatment_id]}" *ngFor="let treatment of treatmentHistoryList">
-  <div class="tiny reveal" [ngStyle]="{'display': animal_modal_display[treatment.treatment_id]}">
+<div id="treatment-animal-modal" class="reveal-overlay" [ngStyle]="{'display': animal_modal_display_outer[treatment.treatment_id]}" *ngFor="let treatment of treatmentHistoryList">
+  <div class="tiny reveal" [ngStyle]="{'display': animal_modal_display_inner[treatment.treatment_id]}">
     <div class="modal-header">
       {{ 'ANIMALS' | translate }}
       <button type="button" (click)="closeModal('animal', treatment.treatment_id)" class="pull-right" aria-label="Close modal">
@@ -96,6 +96,24 @@
     </div>
 
     <div class="modal-body animal-modal-body">
+
+      <table *ngIf="treatment.has_rvo_details" class="stacked history animal-modal-table" style="margin-left: auto; margin-right: auto">
+        <thead>
+        <tr>
+          <td>{{ 'RVO FLAG' | translate}}</td>
+          <td>{{ 'RVO FLAG START DATE' | translate}}</td>
+          <td *ngIf="treatment.end_date">{{ 'RVO FLAG END DATE' | translate}}</td>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+          <td class="animal-modal-column">{{ treatment.rvo_flag }}</td>
+          <td class="animal-modal-column">{{ treatment.start_date }}</td>
+          <td class="animal-modal-column" *ngIf="treatment.end_date">{{ treatment.end_date | translate }}</td>
+        </tr>
+        </tbody>
+      </table>
+
       <table class="stacked history animal-modal-table">
         <thead>
         <tr>
@@ -103,10 +121,8 @@
           <td>{{ 'COLLAR NUMBER' | translate}}</td>
           <td>{{ 'GENDER' | translate}}</td>
           <td>{{ 'DATE OF BIRTH' | translate}}</td>
-          <td>{{ 'RVO FLAG' | translate}}</td>
-          <td>{{ 'RVO FLAG START DATE' | translate}}</td>
-          <td>{{ 'RVO FLAG END DATE' | translate}}</td>
-          <td>{{ 'RVO FLAG STATUS' | translate}}</td>
+          <td *ngIf="treatment.has_rvo_details">{{ 'RVO FLAG STATUS' | translate}}</td>
+          <td *ngIf="treatment.has_rvo_details">{{ 'ERROR MESSAGE' | translate}}</td>
         </tr>
         </thead>
         <tbody>
@@ -115,10 +131,10 @@
           <td class="animal-modal-column">{{ animal.collar_color != null && animal.collar_number != null ? animal.collar_color + ' ' + animal.collar_number : '-' }}</td>
           <td class="animal-modal-column">{{ animal.gender | translate }}</td>
           <td class="animal-modal-column">{{ formatDate(animal.date_of_birth) }}</td>
-          <td class="animal-modal-column">{{ animal.rvo_flag | translate }}</td>
-          <td class="animal-modal-column">{{ animal.rvo_flag_start_date | translate }}</td>
-          <td class="animal-modal-column">{{ animal.rvo_flag_end_date | translate }}</td>
-          <td class="animal-modal-column">{{ animal.rvo_flag_status | translate }}</td>
+          <td class="animal-modal-column" *ngIf="treatment.has_rvo_details"
+
+          >{{ animal.rvo_flag_status | translate }}</td>
+          <td class="animal-modal-column" *ngIf="treatment.has_rvo_details">{{ animal.error_message | translate }}</td>
         </tr>
         </tbody>
       </table>
