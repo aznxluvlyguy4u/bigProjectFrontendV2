@@ -8,7 +8,7 @@ import {
 } from '../../shared/services/nsfo-api/nsfo.settings';
 import {AnimalHealthRequest} from '../../shared/models/animal-health.model';
 import {CacheService} from '../../shared/services/settings/cache.service';
-import {JsonResponseModel} from "../../shared/models/json-response.model";
+import {JsonResponseModel} from '../../shared/models/json-response.model';
 
 @Component({
   templateUrl: './animal-health.request.html'
@@ -16,12 +16,12 @@ import {JsonResponseModel} from "../../shared/models/json-response.model";
 
 export class AnimalHealthRequestComponent {
 
-  private illnesses = ['MAEDI VISNA', 'SCRAPIE'];
-  private isError = false;
-  private form: FormGroup;
-  private ubn;
-  private selectedIllness = '';
-  private errorMessage = '';
+  public illnesses = ['MAEDI VISNA', 'SCRAPIE'];
+  public isError = false;
+  public form: FormGroup;
+  public ubn;
+  public selectedIllness = '';
+  public errorMessage = '';
 
 
   public constructor(private router: Router, private apiService: NSFOService, private fb: FormBuilder, private cache: CacheService) {
