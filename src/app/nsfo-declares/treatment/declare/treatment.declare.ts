@@ -27,6 +27,8 @@ import {Treatment} from '../../../shared/models/treatment-model';
 })
 
 export class TreatmentDeclareComponent implements OnInit, OnDestroy, AfterViewChecked {
+  public maxAnimalSelection = 50;
+
   livestockType = LIVESTOCK_TYPE_TREATMENT;
   public countryCode$;
   public country_code_list = [];

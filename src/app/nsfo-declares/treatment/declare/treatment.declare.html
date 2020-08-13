@@ -171,7 +171,8 @@
   <div class="medium-12 columns">
     <app-livestock-overview
       [customType]="livestockType"
-      [items_per_page]="100"
+      [items_per_page]="50"
+      [maxSelectionCount]="maxAnimalSelection"
       [onlyFemales]="false"
       (selected)="declareTreatment($event)"
       [extraDisabledCriteria]="isTreatmentTemplateNotSelected()"
