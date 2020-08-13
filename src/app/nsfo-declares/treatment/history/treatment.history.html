@@ -108,8 +108,8 @@
         <tbody>
         <tr>
           <td class="animal-modal-column">{{ treatment.rvo_flag }}</td>
-          <td class="animal-modal-column">{{ treatment.start_date }}</td>
-          <td class="animal-modal-column" *ngIf="treatment.end_date">{{ treatment.end_date | translate }}</td>
+          <td class="animal-modal-column">{{ treatment.rvo_flag_start_date }}</td>
+          <td class="animal-modal-column" *ngIf="treatment.rvo_flag_end_date">{{ treatment.rvo_flag_end_date | translate }}</td>
         </tr>
         </tbody>
       </table>

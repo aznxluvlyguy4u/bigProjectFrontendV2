@@ -16,4 +16,6 @@ export class Treatment {
   is_editable: boolean;
   has_rvo_details: boolean;
   rvo_flag: string|undefined;
+  rvo_flag_start_date: string|undefined;
+  rvo_flag_end_date: string|undefined;
 }
