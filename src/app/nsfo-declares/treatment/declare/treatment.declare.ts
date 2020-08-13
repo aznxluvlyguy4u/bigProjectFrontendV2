@@ -133,60 +133,6 @@ export class TreatmentDeclareComponent implements OnInit, OnDestroy, AfterViewCh
       this.selectedTreatmentTemplate,
       this.useEndDate()
     );
-
-    // const animals = [];
-    // event.animals.forEach((animal: Animal) => {
-    //   let type = '';
-    //   switch (animal.gender) {
-    //     case 'MALE':
-    //       type = 'Ram';
-    //     break;
-    //     case 'FEMALE':
-    //       type = 'Ewe';
-    //     break;
-    //     case 'NEUTER':
-    //       type = 'Neuter';
-    //     break;
-    //   }
-    //
-    //     animals.push({
-    //       id: animal.id,
-    //       type: type
-    //     });
-    // });
-    //
-    // if (this.form.valid) {
-    //   const requestData: any = {};
-    //
-    //   const clonedTreatmentTemplate = _.cloneDeep(this.selectedTreatmentTemplate);
-    //
-    //   _.remove(clonedTreatmentTemplate.treatment_medications, (treatment_medication) => {
-    //     return !treatment_medication.marked_to_keep;
-    //   });
-    //
-    //   requestData.treatment_template = clonedTreatmentTemplate;
-    //   requestData.treatment_template.location = {};
-    //   requestData.description = this.selectedTreatmentTemplate.description;
-    //   requestData.start_date = this.form.get('start_date').value;
-    //   if (this.useEndDate()) {
-    //     requestData.end_date = this.form.get('end_date').value;
-    //   }
-    //   requestData.animals = animals;
-    //   requestData.treatment_template.location.id = this.cache.getLocation().id;
-    //
-    //   this.nsfo
-    //     .doPostRequest(API_URI_GET_TREATMENT_TEMPLATES + '/' + this.selectedTreatmentTemplate.type.toLowerCase(), requestData)
-    //     .subscribe( (res: JsonResponseModel) => {
-    //         if (typeof res.result.code !== 'undefined' && res.result.code === 500) {
-    //           alert(res.result.message);
-    //         }
-    //       },
-    //       error => {
-    //         const errorDetails = this.nsfo.getErrorDetails(error);
-    //         this.treatmentService.declareErrorMessages.push(errorDetails);
-    //         alert(errorDetails.message);
-    //       });
-    // }
   }
 
   public setDefaultMarkedForRemoval() {
