@@ -86,6 +86,11 @@
                  [ngClass]="{'input-error': form.controls.phoneNumber.invalid && hasSubmitted}"/>
           <i class="fa fa-phone fa-fw"></i>
         </div>
+        <div class="input column row">
+          <input type="checkbox" formControlName="hasAutoDebit"
+                 [ngClass]="{'input-error': form.controls.hasAutoDebit.invalid && hasSubmitted}"/>
+          <label>{{ 'USE AUTO DEBIT' | translate }} </label>
+        </div>
 
         <div class="input column row">
           <input id="isPrivacyAccepted" type="checkbox" [checked]="isPrivacyAccepted" (change)="isPrivacyAccepted = !isPrivacyAccepted">

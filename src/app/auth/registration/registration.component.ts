@@ -41,7 +41,8 @@ export class RegistrationComponent implements OnInit {
       companyName: new FormControl('', Validators.required),
       ubn: new FormControl('', Validators.required),
       brs: new FormControl('', Validators.required),
-      phoneNumber: new FormControl('', Validators.required)
+      phoneNumber: new FormControl('', Validators.required),
+      hasAutoDebit: new FormControl('')
     });
   }
 
@@ -69,6 +70,7 @@ export class RegistrationComponent implements OnInit {
       this.user.ubn = this.form.get('ubn').value;
       this.user.brs = this.form.get('brs').value;
       this.user.phone_number = this.form.get('phoneNumber').value;
+      this.user.has_auto_debit = this.form.get('hasAutoDebit').value;
 
       this.apiService.doPostRequest(API_URI_SIGNUP_USER, this.user)
         .subscribe((res) => {
