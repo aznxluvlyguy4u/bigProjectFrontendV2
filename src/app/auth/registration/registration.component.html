@@ -87,10 +87,15 @@
           <i class="fa fa-phone fa-fw"></i>
         </div>
 
+        <div class="input column row">
+          <input id="isPrivacyAccepted" type="checkbox" [checked]="isPrivacyAccepted" (change)="isPrivacyAccepted = !isPrivacyAccepted">
+          <label for="isPrivacyAccepted">{{ 'IS PRIVACY ACCEPTED' | translate }}</label>
+        </div>
+
         <!--SUBMIT BUTTON-->
         <button
           type="submit"
-          [disabled]="registration_in_progress"
+          [disabled]="registration_in_progress || !isPrivacyAccepted"
           class="button expanded"
         >
           <span *ngIf="!registration_in_progress"> {{ 'REGISTER' | translate }} </span>

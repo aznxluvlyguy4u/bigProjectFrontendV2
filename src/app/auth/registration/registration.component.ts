@@ -18,6 +18,7 @@ export class RegistrationComponent implements OnInit {
   public hasSubmitted = false;
 
   public registration_in_progress = false;
+  public isPrivacyAccepted = false;
 
   private user: User;
 
@@ -40,7 +41,7 @@ export class RegistrationComponent implements OnInit {
       companyName: new FormControl('', Validators.required),
       ubn: new FormControl('', Validators.required),
       brs: new FormControl('', Validators.required),
-      phoneNumber: new FormControl('', Validators.required),
+      phoneNumber: new FormControl('', Validators.required)
     });
   }
 
@@ -55,7 +56,7 @@ export class RegistrationComponent implements OnInit {
     this.registration_in_progress = true;
     this.user = new User();
 
-    if (this.form.valid) {
+    if (this.form.valid && this.isPrivacyAccepted) {
       this.user.first_name = this.form.get('firstName').value;
       this.user.last_name = this.form.get('lastName').value;
       this.user.email_address = this.form.get('emailAddress').value;
@@ -76,12 +77,14 @@ export class RegistrationComponent implements OnInit {
           this.snackBar.open(message);
         },
           (error => {
-            alert(this.apiService.getErrorMessage(error));
             this.registration_in_progress = false;
           })
         );
     } else {
       this.registration_in_progress = false;
+      if (this.isPrivacyAccepted === false) {
+        alert(this.translate.instant('THE PRIVACY AND GENERAL TERMS HAVE NOT BEEN ACCEPTED'));
+      }
     }
   }
 
