@@ -35,12 +35,6 @@
   <span>{{ treatment.flag_start_date }}</span>
 </td>
 
-<!--FLAG END DATE-->
-<td>
-  <label class="show-for-small-only">{{ 'FLAG START DATE' | translate }}</label>
-  <span>{{ treatment.flag_end_date }}</span>
-</td>
-
 <!--ERROR CODE-->
 <td>
   <label class="show-for-small-only">{{ 'ERROR CODE' | translate }}</label>
@@ -48,6 +42,16 @@
         data-disable-hover="false" title="{{ treatment.error_message }}">
         {{ treatment.error_code }}
     </span>
+</td>
+
+<!--ERROR CODE-->
+<td class="hide-for-small-only" style="width: 20rem">
+  <label class="show-for-small-only">{{ 'ERROR MESSAGE' | translate }}</label>
+  <span>{{ treatment.error_message }}</span>
+</td>
+<td class="show-for-small-only"  style="width: 10rem">
+  <label>{{ 'ERROR MESSAGE' | translate }}</label>
+  <span>{{ treatment.error_message }}</span>
 </td>
 
 <!--ROW BUTTONS-->

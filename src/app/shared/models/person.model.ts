@@ -12,6 +12,7 @@ export class User {
   public email_address: string;
   public pedigrees: Pedigree[] = [];
   public access_level: string;
+  public health_subscription: boolean;
   public public_live_stock: boolean;
   public is_active: boolean;
   public type: string;

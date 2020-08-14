@@ -6,8 +6,8 @@ import {Router} from '@angular/router';
 import {NSFOService} from '../../shared/services/nsfo-api/nsfo.service';
 import {SettingsService} from '../../shared/services/settings/settings.service';
 import {
-    API_URI_GET_COUNTRY_CODES,
-    API_URI_GET_MESSAGES,
+  API_URI_GET_COUNTRY_CODES,
+  API_URI_GET_MESSAGES, API_URI_GET_UBN_CAN_REQUEST,
 } from '../../shared/services/nsfo-api/nsfo.settings';
 import {UtilsService} from '../../shared/services/utils/utils.services';
 import { DownloadService } from '../../shared/services/download/download.service';
@@ -17,7 +17,7 @@ import {User} from '../../shared/models/person.model';
 import {JsonResponseModel} from '../../shared/models/json-response.model';
 import {CacheService} from '../../shared/services/settings/cache.service';
 import {ReportService} from '../../shared/services/report/report.service';
-import {IS_INVOICES_ACTIVE, IS_TREATMENTS_ACTIVE} from '../../shared/variables/feature.activation';
+import {IS_HEALTH_MODULE_ACTIVE, IS_INVOICES_ACTIVE, IS_TREATMENTS_ACTIVE} from '../../shared/variables/feature.activation';
 import {POLLING_INTERVAL_MESSAGES_SECONDS} from '../../shared/variables/timeout.constant';
 
 @Component({
@@ -43,6 +43,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterContentChecked {
   public userInfo$;
   public currentUBN$;
   public isAdmin = false;
+  public isHealthSubscribed = false;
   public recheckMessages = true;
 
   public isInvoicesActive = IS_INVOICES_ACTIVE;
@@ -86,6 +87,15 @@ export class HomeComponent implements OnInit, OnDestroy, AfterContentChecked {
     this.recheckMessages = false;
   }
 
+  private validateHealthSubscription() {
+    this.apiService.doGetRequest(API_URI_GET_UBN_CAN_REQUEST + '/' + this.currentUBNValue)
+      .subscribe(
+        (res: JsonResponseModel) => {
+          this.isHealthSubscribed = res.result;
+        }
+      );
+  }
+
   private getUserInfo() {
     this.userInfo$ = this.utils.getUserInfo()
       .subscribe(
@@ -93,7 +103,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterContentChecked {
           this.currentUser.first_name_letter = res.first_name.charAt(0);
           this.currentUser.first_name = res.first_name;
           this.currentUser.last_name = res.last_name;
-
+          this.currentUser.health_subscription = res.health_subscription;
           this.locationList = res.locations;
 
           if (!!this.cache.getLocation()) {
@@ -111,6 +121,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterContentChecked {
             this.currentUBNValue = this.locationList[0].ubn;
             this.currentLocation = this.locationList[0];
           }
+          this.validateHealthSubscription();
         });
   }
 
@@ -211,6 +222,10 @@ export class HomeComponent implements OnInit, OnDestroy, AfterContentChecked {
   public logout() {
     this.cache.deleteTokens();
     this.navigateTo('/login');
+  }
+
+  public showHealthModule(): boolean {
+    return this.isHealthSubscribed && IS_HEALTH_MODULE_ACTIVE;
   }
 
   toggleActiveMessageMenu() {

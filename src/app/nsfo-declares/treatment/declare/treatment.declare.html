@@ -1,9 +1,36 @@
 <form [formGroup]="form" class="form-declare">
 
+  <!--TREATMENT TEMPLATE-->
+  <div class="large-4 medium-12 small-12 columns ">
+    <label *ngIf="showTreatmentTemplates; else noTreatmentTemplates">
+      {{ 'TREATMENT' | translate }}
+    </label>
+
+    <mat-form-field *ngIf="showTreatmentTemplates" appearance="fill" class="treatment-dropdown">
+      <!--        <mat-label>{{ 'TREATMENT' | translate }}</mat-label>-->
+      <mat-select [(value)]="selectedTreatmentTemplate" [panelClass]="'treatment-dropdown-panel'">
+        <mat-optgroup *ngFor="let group of treatmentTemplateSelectionGroups" [label]="group.name | translate">
+          <mat-option *ngFor="let template of group.templates" [value]="template">
+            {{template.description}}
+          </mat-option>
+        </mat-optgroup>
+      </mat-select>
+    </mat-form-field>
+
+
+    <ng-template #noTreatmentTemplates>
+      <p>
+        Er zijn voor deze UBN nog geen behandelingen ingesteld.
+        Neem contact op met ons kantoor voor meer informatie.
+      </p>
+    </ng-template>
+  </div>
+
   <!--TREATMENT BEGIN DATE-->
-  <div class="medium-2 columns">
+  <div class="large-2 medium-3 columns">
     <label>
-      {{ 'TREATMENT PERIOD' | translate }} &nbsp;
+      <span *ngIf="useEndDate()">{{ 'TREATMENT PERIOD' | translate }}</span>
+      <span *ngIf="!useEndDate()">{{ 'TREATMENT DATE' | translate }}</span>
       <app-datepicker
                   [formCtrl]="form.controls['start_date']"
                   [viewFormat]="view_date_format"
@@ -18,7 +45,7 @@
   </div>
 
   <!--TREATMENT END DATE-->
-  <div class="medium-2 columns">
+  <div class="large-2 medium-3 columns" *ngIf="useEndDate()">
     <label>
       {{ 'TILL' | translate }} &nbsp;
       <app-datepicker
@@ -34,36 +61,48 @@
     </label>
   </div>
 
-  <!--TREATMENT TEMPLATE-->
-  <div class="medium-3 columns">
-      <label *ngIf="showTreatmentTemplates; else noTreatmentTemplates">
-      {{ 'TREATMENT' | translate }}
-          <select name="selectedTreatmentTemplate" [(ngModel)]="selectedTreatmentTemplate" (ngModelChange)="setDefaultMarkedForRemoval()" [ngModelOptions]="{standalone: true}">
-        <option *ngFor="let template of treatmentTemplates" [ngValue]="template">{{template.description}}</option>
-      </select>
+  <div class="large-2 medium-2 columns" *ngIf="useEndDate()">
+    <label>
+      <span style="opacity: 0.0"> ----------- </span> &nbsp;
+      <button
+        type="button"
+        class="button primary"
+        (click)="userWantsToAddEndDate = false"
+      >
+        {{ 'REMOVE END DATE' | translate }}
+      </button>
     </label>
-    <ng-template #noTreatmentTemplates>
-      <p>
-        Er zijn voor deze UBN nog geen behandelingen ingesteld.
-        Neem contact op met ons kantoor voor meer informatie.
-      </p>
-    </ng-template>
+  </div>
+
+  <div class="medium-2 columns" *ngIf="!useEndDate() && allowEndDate()">
+    <label>
+      <span style="opacity: 0.0"> ---------- </span> &nbsp;
+      <button
+        type="button"
+        class="button primary"
+        (click)="activateUserWantsToUseEndDate()"
+      >
+        {{ 'ADD END DATE' | translate }}
+      </button>
+    </label>
   </div>
 
   <!--ERROR OVERVIEW-->
-  <div class="medium-1 columns">
-    <label> &nbsp;
-      <button
-        type="button"
-        class="button alert"
-        [disabled]="errorMessages == null || errorMessages.length == 0"
-        (click)="openModal()"
-        title="{{'THERE ERRORS ARE ONLY SAVED IN THIS BROWSER SESSION' | translate }}"
-      >
-        <span *ngIf="errorMessages !== null && errorMessages.length > 0" class="badge">{{errorMessages.length}}</span>
-        {{'ERRORS'|translate}}
-      </button>
-    </label>
+  <div class="medium-2 columns">
+    <label> &nbsp; </label>
+    <button
+      type="button"
+      class="button alert"
+      [disabled]="treatmentService.declareErrorMessages == null || treatmentService.declareErrorMessages.length == 0"
+      (click)="openModal()"
+      title="{{'THERE ERRORS ARE ONLY SAVED IN THIS BROWSER SESSION' | translate }}"
+    >
+      <span
+        *ngIf="treatmentService.declareErrorMessages !== null &&
+        treatmentService.declareErrorMessages.length > 0" class="badge"
+      >{{treatmentService.declareErrorMessages.length}}</span>
+      {{'ERRORS'|translate}}
+    </button>
   </div>
 
 </form>
@@ -132,7 +171,8 @@
   <div class="medium-12 columns">
     <app-livestock-overview
       [customType]="livestockType"
-      [items_per_page]="100"
+      [items_per_page]="50"
+      [maxSelectionCount]="maxAnimalSelection"
       [onlyFemales]="false"
       (selected)="declareTreatment($event)"
       [extraDisabledCriteria]="isTreatmentTemplateNotSelected()"
@@ -159,13 +199,13 @@
       <hr>
 
       <ul>
-        <li *ngFor="let errorMessage of errorMessages">
+        <li *ngFor="let errorMessage of treatmentService.declareErrorMessages ">
           {{ errorMessage.message | translate }}
         </li>
       </ul>
     </div>
     <div class="modal-footer">
-      <button [disabled]="errorMessages == null || errorMessages.length == 0"
+      <button [disabled]="treatmentService.declareErrorMessages == null || treatmentService.declareErrorMessages.length == 0"
               class="tiny alert button pull-left" (click)="purgeErrors()">{{ 'PURGE ERRORS' | translate}}
       </button>
       <button class="tiny primary button pull-right" (click)="closeModal()">{{ 'OK' | translate}}</button>

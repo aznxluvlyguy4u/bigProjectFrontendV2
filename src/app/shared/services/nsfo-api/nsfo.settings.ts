@@ -137,6 +137,10 @@ export const API_URI_ANIMAL_NICKNAME = '/v1/animals-nickname';
 // COLLAR Colors
 export const API_URI_GET_COLLAR_COLORS = '/v1/collars';
 
+// ANIMAL HEALTH
+export const API_URI_ANIMAL_HEALTH_ANNOUNCEMENTS = '/v1/announcements';
+export const API_URI_GET_UBN_CAN_REQUEST = '/v1/ubns';
+
 // TREATMENT TEMPLATES & TREATMENTS
 export const API_URI_GET_TREATMENT_TEMPLATES = '/v1/treatments';
 export const API_URI_GET_Q_FEVER_TEMPLATE_DESCRIPTIONS = API_URI_GET_TREATMENT_TEMPLATES + '/template/q-fever/descriptions';

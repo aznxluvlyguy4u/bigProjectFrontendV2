@@ -61,6 +61,8 @@ import {ReportLineageProofComponent} from './report/lineageProof/report.lineageP
 import {ReportInbreedingCoefficientComponent} from './report/inbreedingCoefficient/report.inbreedingCoefficient';
 import {ReportLivestockComponent} from './report/livestock/report.livestock';
 import {ReportOffspringComponent} from './report/offspring/report.offspring.component';
+import {AnimalHealthComponent} from './animal-health/animal-health.component';
+import {AnimalHealthRequestComponent} from './animal-health/request/animal-health.request';
 import {ReportBirthListComponent} from './report/birthlist/report.birth-list.component';
 import {ReportEweCardComponent} from './report/eweCard/report.ewe-card.component';
 import {ReportCompanyRegisterComponent} from './report/companyRegister/report.company-register.component';
@@ -80,6 +82,14 @@ const appRoutes = [
   {
     path: 'main',  component: HomeComponent, index: true, canActivate: [NSFOAuthService],
     children: [
+      {
+        path: 'animal-health', component: AnimalHealthComponent, canActivate: [NSFOAuthService],
+        children: [
+          {
+            path: 'request', component: AnimalHealthRequestComponent, canActivate: [NSFOAuthService]
+          }
+        ]
+      },
       {path: '', component: DashboardComponent, index: true},
       {
         path: 'admin',  component: AdminComponent, canActivate: [NSFOAdminAuthService],
