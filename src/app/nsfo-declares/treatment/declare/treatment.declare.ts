@@ -9,17 +9,17 @@ import {SettingsService} from '../../../shared/services/settings/settings.servic
 import {API_URI_GET_ANIMALS_LIVESTOCK, API_URI_GET_TREATMENT_TEMPLATES} from '../../../shared/services/nsfo-api/nsfo.settings';
 import {Router} from '@angular/router';
 import {Settings} from '../../../shared/variables/settings';
-import {Observable, Subject, Subscription} from 'rxjs';
-import {MateChangeResponse} from '../../../shared/models/nsfo-declare.model';
+import {Subject, Subscription} from 'rxjs';
 import {Animal, LivestockAnimal} from '../../../shared/models/animal.model';
-import {AnimalsOverviewSelection} from '../../../shared/components/livestock/animals-overview-selection.model';
 import {ErrorMessage} from '../../../shared/models/error-message.model';
 import {JsonResponseModel} from '../../../shared/models/json-response.model';
-import {HttpErrorResponse} from '@angular/common/http';
 import * as moment from 'moment';
-import {TreatmentTemplate} from '../../../shared/models/treatment-template.model';
+import {TreatmentTemplateSelectionGroup, TreatmentTemplate} from '../../../shared/models/treatment-template.model';
 import {CacheService} from '../../../shared/services/settings/cache.service';
 import {TreatmentService} from '../treatment.service';
+import {TreatmentMedication} from '../../../shared/models/treatment-medication.model';
+import {MedicationOption} from '../../../shared/models/medication-option.model';
+import {Treatment} from '../../../shared/models/treatment-model';
 
 @Component({
   providers: [NSFOService, Constants],
@@ -27,6 +27,8 @@ import {TreatmentService} from '../treatment.service';
 })
 
 export class TreatmentDeclareComponent implements OnInit, OnDestroy, AfterViewChecked {
+  public maxAnimalSelection = 50;
+
   livestockType = LIVESTOCK_TYPE_TREATMENT;
   public countryCode$;
   public country_code_list = [];
@@ -36,6 +38,8 @@ export class TreatmentDeclareComponent implements OnInit, OnDestroy, AfterViewCh
 
   private treatmentTemplatesSubscription: Subscription;
   public treatmentTemplates = <TreatmentTemplate[]>[];
+  public treatmentTemplateSelectionGroups = <TreatmentTemplateSelectionGroup[]>[];
+
   public modalDisplay = 'none';
   public errorMessages: ErrorMessage[] = [];
   public view_date_format;
@@ -44,8 +48,8 @@ export class TreatmentDeclareComponent implements OnInit, OnDestroy, AfterViewCh
         uln: new FormControl(''),
         pmsg: new FormControl('NO'),
         ki: new FormControl('NO'),
-        mate_startdate: new FormControl(),
-        mate_enddate: new FormControl()
+        start_date: new FormControl(),
+        end_date: new FormControl()
     });
   public uidPattern = '[0-9]';
   public successDurationSeconds = 3;
@@ -55,9 +59,11 @@ export class TreatmentDeclareComponent implements OnInit, OnDestroy, AfterViewCh
   public sendStartDateObservable = this.sendStartDateSubject.asObservable();
   public self;
   private startDate;
+  public userWantsToAddEndDate = false;
   private currentLocationUbn;
   public selectedTreatmentTemplate: TreatmentTemplate;
   public showTreatmentTemplates = true;
+  public displayTreatmentLocationIndividualType = this.treatmentService.displayTreatmentLocationIndividualType;
 
   constructor(private fb: FormBuilder,
               private nsfo: NSFOService,
@@ -66,7 +72,7 @@ export class TreatmentDeclareComponent implements OnInit, OnDestroy, AfterViewCh
               private settingsService: SettingsService,
               private settings: Settings,
               private translate: TranslateService,
-              private treatmentService: TreatmentService,
+              public treatmentService: TreatmentService,
               private cache: CacheService
   ) {
     this.self = this;
@@ -77,14 +83,39 @@ export class TreatmentDeclareComponent implements OnInit, OnDestroy, AfterViewCh
 
   ngOnInit() {
     this.getLivestockList();
-    this.errorMessages = [];
 
     this.treatmentTemplatesSubscription = this.treatmentService.treatmentTemplatesChanged.subscribe(
       (templates: TreatmentTemplate[]) => {
         this.treatmentTemplates = templates;
+        this.updateTreatmentTemplateSelectionGroups();
       }
     );
     this.treatmentTemplates = this.treatmentService.getTreatmentTemplates();
+    this.updateTreatmentTemplateSelectionGroups();
+  }
+
+  private updateTreatmentTemplateSelectionGroups() {
+    this.treatmentTemplateSelectionGroups = [];
+    this.treatmentTemplateSelectionGroups.push(
+      new TreatmentTemplateSelectionGroup('Q-FEVER',
+        this.treatmentService.getTreatmentTemplates().filter( template => template.templatetype === 'QFever')
+      )
+    );
+
+    const newGroup = this.treatmentService.getTreatmentTemplates()
+      .filter( template => template.templatetype === 'Default' && template.is_new);
+
+    if (newGroup.length > 0) {
+      this.treatmentTemplateSelectionGroups.push(
+        new TreatmentTemplateSelectionGroup('NEW', newGroup),
+      );
+    }
+
+    this.treatmentTemplateSelectionGroups.push(
+      new TreatmentTemplateSelectionGroup('TREATMENT',
+        this.treatmentService.getTreatmentTemplates().filter( template => template.templatetype === 'Default' && !template.is_new)
+      ),
+    );
   }
 
   ngOnDestroy(): void {
@@ -92,50 +123,22 @@ export class TreatmentDeclareComponent implements OnInit, OnDestroy, AfterViewCh
   }
 
   ngAfterViewChecked() {
-      this.startDate = moment(this.form.get('mate_startdate').value);
+      this.startDate = moment(this.form.get('start_date').value);
   }
 
   declareTreatment(event) {
-    const animals = [];
-    event.animals.forEach((animal: Animal) => {
-      let type = '';
-      switch (animal.gender) {
-        case 'MALE':
-          type = 'Ram';
-        break;
-        case 'FEMALE':
-          type = 'Ewe';
-        break;
-        case 'NEUTER':
-          type = 'Neuter';
-        break;
-      }
+    this.treatmentService.declareTreatment(
+      event,
+      this.form,
+      this.selectedTreatmentTemplate,
+      this.useEndDate()
+    );
+  }
 
-        animals.push({
-          id: animal.id,
-          type: type
-        });
+  public setDefaultMarkedForRemoval() {
+    this.selectedTreatmentTemplate.treatment_medications.forEach((treatmentMedication: TreatmentMedication) => {
+      treatmentMedication.marked_to_keep = true;
     });
-
-    if (this.form.valid) {
-      const requestData: any = {};
-      requestData.treatment_template = this.selectedTreatmentTemplate;
-      requestData.treatment_template.location = {};
-      requestData.description = this.selectedTreatmentTemplate.description;
-      requestData.start_date = this.form.get('mate_startdate').value;
-      requestData.end_date = this.form.get('mate_enddate').value;
-      requestData.animals = animals;
-
-      requestData.treatment_template.location.id = this.cache.getLocation().id;
-
-      this.nsfo
-        .doPostRequest(API_URI_GET_TREATMENT_TEMPLATES + '/' + this.selectedTreatmentTemplate.type.toLowerCase(), requestData)
-        .subscribe((res: JsonResponseModel) => {
-          if (typeof res.result.code !== 'undefined' && res.result.code === 500) {
-            alert(res.result.message);
-          }
-        });
-    }
   }
 
   public isTreatmentTemplateNotSelected() {
@@ -143,13 +146,13 @@ export class TreatmentDeclareComponent implements OnInit, OnDestroy, AfterViewCh
   }
 
   purgeErrors() {
-    this.errorMessages = [];
+    this.treatmentService.declareErrorMessages = [];
     this.closeModal();
   }
 
   public updateEndDate(startDate) {
     if (typeof startDate === 'object') {
-        this.form.get('mate_enddate').setValue(startDate.format());
+        this.form.get('end_date').setValue(startDate.format());
         this.updateEndDateSubject.next(startDate.format('DD-MM-YYYY'));
     }
   }
@@ -190,6 +193,10 @@ export class TreatmentDeclareComponent implements OnInit, OnDestroy, AfterViewCh
       );
   }
 
+  public getCheckBoxTitle(treatmentTemplate: TreatmentTemplate): string {
+    return treatmentTemplate.is_editable ? '' : 'THIS MEDICINE IS OBLIGATORY';
+  }
+
   public openModal() {
     this.modalDisplay = 'block';
   }
@@ -202,4 +209,16 @@ export class TreatmentDeclareComponent implements OnInit, OnDestroy, AfterViewCh
     this.router.navigate([route]);
   }
 
+  public useEndDate(): boolean {
+      return this.userWantsToAddEndDate && this.allowEndDate();
+  }
+
+  public activateUserWantsToUseEndDate() {
+    this.userWantsToAddEndDate = true;
+    this.updateEndDate(this.startDate);
+  }
+
+  public allowEndDate(): boolean {
+      return this.selectedTreatmentTemplate && this.selectedTreatmentTemplate.allow_end_date;
+  }
 }

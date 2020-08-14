@@ -1,47 +1,23 @@
 <form [formGroup]="form" class="form-declare">
 
-  <!--TREATMENT BEGIN DATE-->
-  <div class="medium-2 columns">
-    <label>
-      {{ 'TREATMENT PERIOD' | translate }} &nbsp;
-      <app-datepicker
-                  [formCtrl]="form.controls['mate_startdate']"
-                  [viewFormat]="view_date_format"
-                  [modelFormat]="model_datetime_format"
-                  (valueChange)="updateEndDate($event)"
-                  [name]="'mate_startdate'"
-                  [parentComponent]="self"
-      ></app-datepicker>
-      <div [hidden]="form.controls['mate_startdate'].valid" class="input-error-msg pull-right">{{ 'FILL IN THE TREATMENT PERIOD' | translate }}
-      </div>
-    </label>
-  </div>
-
-  <!--TREATMENT END DATE-->
-  <div class="medium-2 columns">
-    <label>
-      {{ 'TILL' | translate }} &nbsp;
-      <app-datepicker
-                  [formCtrl]="form.controls['mate_enddate']"
-                  [viewFormat]="view_date_format"
-                  [modelFormat]="model_datetime_format"
-                  (valueChange)="sendStartDateToDatePicker()"
-                  [name]="'mate_enddate'"
-                  [parentComponent]="self"
-      ></app-datepicker>
-      <div [hidden]="form.controls['mate_enddate'].valid" class="input-error-msg pull-right">{{ 'FILL IN THE TREATMENT PERIOD' | translate }}
-      </div>
-    </label>
-  </div>
-
   <!--TREATMENT TEMPLATE-->
-  <div class="medium-3 columns">
-      <label *ngIf="showTreatmentTemplates; else noTreatmentTemplates">
-      {{ 'TREATMENT TEMPLATE' | translate }}
-          <select name="selectedTreatmentTemplate" [(ngModel)]="selectedTreatmentTemplate" [ngModelOptions]="{standalone: true}">
-        <option *ngFor="let template of treatmentTemplates" [ngValue]="template">{{template.description}}</option>
-      </select>
+  <div class="large-4 medium-12 small-12 columns ">
+    <label *ngIf="showTreatmentTemplates; else noTreatmentTemplates">
+      {{ 'TREATMENT' | translate }}
     </label>
+
+    <mat-form-field *ngIf="showTreatmentTemplates" appearance="fill" class="treatment-dropdown">
+      <!--        <mat-label>{{ 'TREATMENT' | translate }}</mat-label>-->
+      <mat-select [(value)]="selectedTreatmentTemplate" [panelClass]="'treatment-dropdown-panel'">
+        <mat-optgroup *ngFor="let group of treatmentTemplateSelectionGroups" [label]="group.name | translate">
+          <mat-option *ngFor="let template of group.templates" [value]="template">
+            {{template.description}}
+          </mat-option>
+        </mat-optgroup>
+      </mat-select>
+    </mat-form-field>
+
+
     <ng-template #noTreatmentTemplates>
       <p>
         Er zijn voor deze UBN nog geen behandelingen ingesteld.
@@ -50,36 +26,93 @@
     </ng-template>
   </div>
 
-  <!--ERROR OVERVIEW-->
-  <div class="medium-1 columns">
-    <label> &nbsp;
+  <!--TREATMENT BEGIN DATE-->
+  <div class="large-2 medium-3 columns">
+    <label>
+      <span *ngIf="useEndDate()">{{ 'TREATMENT PERIOD' | translate }}</span>
+      <span *ngIf="!useEndDate()">{{ 'TREATMENT DATE' | translate }}</span>
+      <app-datepicker
+                  [formCtrl]="form.controls['start_date']"
+                  [viewFormat]="view_date_format"
+                  [modelFormat]="model_datetime_format"
+                  (valueChange)="updateEndDate($event)"
+                  [name]="'start_date'"
+                  [parentComponent]="self"
+      ></app-datepicker>
+      <div [hidden]="form.controls['start_date'].valid" class="input-error-msg pull-right">{{ 'FILL IN THE TREATMENT PERIOD' | translate }}
+      </div>
+    </label>
+  </div>
+
+  <!--TREATMENT END DATE-->
+  <div class="large-2 medium-3 columns" *ngIf="useEndDate()">
+    <label>
+      {{ 'TILL' | translate }} &nbsp;
+      <app-datepicker
+                  [formCtrl]="form.controls['end_date']"
+                  [viewFormat]="view_date_format"
+                  [modelFormat]="model_datetime_format"
+                  (valueChange)="sendStartDateToDatePicker()"
+                  [name]="'end_date'"
+                  [parentComponent]="self"
+      ></app-datepicker>
+      <div [hidden]="form.controls['end_date'].valid" class="input-error-msg pull-right">{{ 'FILL IN THE TREATMENT PERIOD' | translate }}
+      </div>
+    </label>
+  </div>
+
+  <div class="large-2 medium-2 columns" *ngIf="useEndDate()">
+    <label>
+      <span style="opacity: 0.0"> ----------- </span> &nbsp;
       <button
         type="button"
-        class="button alert"
-        [disabled]="errorMessages == null || errorMessages.length == 0"
-        (click)="openModal()"
-        title="{{'THERE ERRORS ARE ONLY SAVED IN THIS BROWSER SESSION' | translate }}"
+        class="button primary"
+        (click)="userWantsToAddEndDate = false"
       >
-        <span *ngIf="errorMessages !== null && errorMessages.length > 0" class="badge">{{errorMessages.length}}</span>
-        {{'ERRORS'|translate}}
+        {{ 'REMOVE END DATE' | translate }}
       </button>
     </label>
   </div>
 
-  <!--INBREEDING COEFFICIENT-->
-  <!--<div class="medium-1 columns end" >-->
-  <!--<label>&nbsp;-->
-  <!--<button type="button" class="small primary button" (click)="navigateTo('/main/report/inbreeding')"> {{ 'INBREEDING COEFFICIENT' | translate }}</button>-->
-  <!--</label>-->
-  <!--</div>-->
+  <div class="medium-2 columns" *ngIf="!useEndDate() && allowEndDate()">
+    <label>
+      <span style="opacity: 0.0"> ---------- </span> &nbsp;
+      <button
+        type="button"
+        class="button primary"
+        (click)="activateUserWantsToUseEndDate()"
+      >
+        {{ 'ADD END DATE' | translate }}
+      </button>
+    </label>
+  </div>
+
+  <!--ERROR OVERVIEW-->
+  <div class="medium-2 columns">
+    <label> &nbsp; </label>
+    <button
+      type="button"
+      class="button alert"
+      [disabled]="treatmentService.declareErrorMessages == null || treatmentService.declareErrorMessages.length == 0"
+      (click)="openModal()"
+      title="{{'THERE ERRORS ARE ONLY SAVED IN THIS BROWSER SESSION' | translate }}"
+    >
+      <span
+        *ngIf="treatmentService.declareErrorMessages !== null &&
+        treatmentService.declareErrorMessages.length > 0" class="badge"
+      >{{treatmentService.declareErrorMessages.length}}</span>
+      {{'ERRORS'|translate}}
+    </button>
+  </div>
+
 </form>
 
 <!--SELECTED TEMPLATE INFORMATION-->
 <div class="row" style="background-color: #E1E1E1;margin-left: auto;margin-right: auto;" *ngIf="selectedTreatmentTemplate">
   <div class="medium-12 columns">
-    <h3>{{ 'TREATMENT TEMPLATE' | translate }}</h3>
+    <h3>{{ 'TREATMENT' | translate }}</h3>
     <p><b>{{'DESCRIPTION' | translate}}:</b> {{selectedTreatmentTemplate.description}}</p>
-    <p><b>{{'DUTCH TYPE' | translate}}:</b> {{selectedTreatmentTemplate.dutchType}}</p>
+    <p *ngIf="displayTreatmentLocationIndividualType"><b>{{'DUTCH TYPE' | translate}}:</b> {{selectedTreatmentTemplate.dutchType}}</p>
     <p><b>{{'MEDICATIONS' | translate}}:</b></p>
       <table class="stack">
         <thead>
@@ -89,33 +122,43 @@
             <th class="padding-column">{{'REG NL' | translate}}</th>
             <th class="padding-column">{{'WAITING DAYS' | translate }}</th>
             <th class="padding-column">{{'TREATMENT DURATION' | translate}}</th>
+            <th class="padding-column"></th>
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let medication of selectedTreatmentTemplate.medications">
-            <td class="padding-column">
+          <tr *ngFor="let medication of selectedTreatmentTemplate.treatment_medications">
+            <td class="padding-column" [class]="!medication.marked_to_keep ? 'disabled-medication' : ''">
               <label class="show-for-small-only">{{ 'NAME' | translate }}</label>
-              {{medication.treatment_medication.name}}
+              {{medication.name}}
             </td>
-            <td class="padding-column" *ngIf="medication.dosage_unit !== 'aantal'">
+            <td class="padding-column" *ngIf="medication.dosage_unit !== 'aantal'" [class]="!medication.marked_to_keep ? 'disabled-medication' : ''">
               <label class="show-for-small-only">{{ 'DOSAGE' | translate }}</label>
               {{medication.dosage}} {{medication.dosage_unit}}
             </td>
-            <td class="padding-column" *ngIf="medication.dosage_unit === 'aantal'">
+            <td class="padding-column" *ngIf="medication.dosage_unit === 'aantal'" [class]="!medication.marked_to_keep ? 'disabled-medication' : ''">
               <label class="show-for-small-only">{{ 'DOSAGE' | translate }}</label>
               {{medication.dosage_unit}}: {{medication.dosage}}
             </td>
-            <td class="padding-column">
+            <td class="padding-column" [class]="!medication.marked_to_keep ? 'disabled-medication' : ''">
               <label class="show-for-small-only">{{ 'REG NL' | translate }}</label>
               {{medication.reg_nl}}
             </td>
-            <td class="padding-column">
+            <td class="padding-column" [class]="!medication.marked_to_keep ? 'disabled-medication' : ''">
               <label class="show-for-small-only">{{ 'WAITING DAYS' | translate }}</label>
               {{medication.waiting_days}}
             </td>
-            <td class="padding-column">
+            <td class="padding-column" [class]="!medication.marked_to_keep ? 'disabled-medication' : ''">
               <label class="show-for-small-only">{{ 'TREATMENT DURATION' | translate }}</label>
               {{medication.treatment_duration}} {{ 'DAYS LOWER' | translate }}
+            </td>
+            <td>
+              <mat-checkbox
+                class="mat-checkbox"
+                [disabled]="!selectedTreatmentTemplate.is_editable"
+                [(ngModel)]="medication.marked_to_keep"
+                [title]="getCheckBoxTitle(selectedTreatmentTemplate) | translate"
+                [color]="'primary'">
+              </mat-checkbox>
             </td>
           </tr>
         </tbody>
@@ -128,10 +171,12 @@
   <div class="medium-12 columns">
     <app-livestock-overview
       [customType]="livestockType"
-      [items_per_page]="100"
+      [items_per_page]="50"
+      [maxSelectionCount]="maxAnimalSelection"
       [onlyFemales]="false"
       (selected)="declareTreatment($event)"
       [extraDisabledCriteria]="isTreatmentTemplateNotSelected()"
+      [load_historic_animals_in_non_view_mode]="true"
     ></app-livestock-overview>
   </div>
 </div>
@@ -154,13 +199,13 @@
       <hr>
 
       <ul>
-        <li *ngFor="let errorMessage of errorMessages">
+        <li *ngFor="let errorMessage of treatmentService.declareErrorMessages ">
           {{ errorMessage.message | translate }}
         </li>
       </ul>
     </div>
     <div class="modal-footer">
-      <button [disabled]="errorMessages == null || errorMessages.length == 0"
+      <button [disabled]="treatmentService.declareErrorMessages == null || treatmentService.declareErrorMessages.length == 0"
               class="tiny alert button pull-left" (click)="purgeErrors()">{{ 'PURGE ERRORS' | translate}}
       </button>
       <button class="tiny primary button pull-right" (click)="closeModal()">{{ 'OK' | translate}}</button>

@@ -1,5 +1,5 @@
 import * as moment from 'moment';
-import {AfterViewInit, Component, EventEmitter, Input, Output, ViewContainerRef} from '@angular/core';
+import {AfterViewInit, Component, EventEmitter, Input, OnDestroy, Output, ViewContainerRef} from '@angular/core';
 import {FormControl} from '@angular/forms';
 
 @Component({
@@ -7,7 +7,7 @@ import {FormControl} from '@angular/forms';
   templateUrl: './datepicker.component.html'
 })
 
-export class DatepickerComponent implements AfterViewInit {
+export class DatepickerComponent implements AfterViewInit, OnDestroy {
   public isOpened: boolean;
   public dateValue: string;
   public viewValue: string;
@@ -49,13 +49,13 @@ export class DatepickerComponent implements AfterViewInit {
     this.initValue();
     if (this.parentComponent !== null) {
       this.updateEndDateSubscriber = this.parentComponent.updateEndDateObservable.subscribe(newEndDate => {
-        if(this.name === 'mate_enddate') {
+        if (this.name === 'mate_enddate' || this.name === 'end_date') {
           this.viewValue = newEndDate;
         }
       });
 
       this.receiveStartDate = this.parentComponent.sendStartDateObservable.subscribe(startDate => {
-        if(this.name === 'mate_enddate') {
+        if (this.name === 'mate_enddate' || this.name === 'end_date') {
           let dateDiff = this.currentDayObject.diff(startDate, 'days') + 1;
           if (this.currentDayObject.format('DD-MM-YYYY') === startDate.format('DD-MM-YYYY')) {
             dateDiff = 0;

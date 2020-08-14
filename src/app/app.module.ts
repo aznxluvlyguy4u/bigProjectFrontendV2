@@ -143,10 +143,19 @@ import {LineComponent} from './shared/components/googlechart/line.component';
 import {GoogleLineChartService} from './shared/services/google/googlelinechart.service';
 import {AnimalDetailsCardComponent} from './shared/components/animal-details-card/animal-details-card.component';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {MAT_SNACK_BAR_DEFAULT_OPTIONS, MatButtonModule, MatProgressSpinnerModule, MatSnackBar, MatSnackBarModule} from '@angular/material';
+import {
+  MAT_SNACK_BAR_DEFAULT_OPTIONS,
+  MatButtonModule,
+  MatCheckboxModule,
+  MatProgressSpinnerModule, MatSelectModule,
+  MatSnackBar,
+  MatSnackBarModule
+} from '@angular/material';
 import {PageLoadingSpinnerComponent} from './shared/components/page-loading-spinner/page-loading-spinner.component';
 import {ButtonPrimaryComponent} from './shared/components/button-primary/button-primary.component';
 import {InsideComponentLoadingSpinnerComponent} from './shared/components/inside-component-loading-spinner/inside-component-loading-spinner.component';
+import {AnimalHealthComponent} from './animal-health/animal-health.component';
+import {AnimalHealthRequestComponent} from './animal-health/request/animal-health.request';
 import { PapaParseModule } from 'ngx-papaparse';
 import {ReportService} from './shared/services/report/report.service';
 import {ReportModalComponent} from './shared/components/reportmodal/report-modal.component';
@@ -164,10 +173,14 @@ import {TreatmentComponent} from './nsfo-declares/treatment/treatment.component'
 import {TreatmentDeclareComponent} from './nsfo-declares/treatment/declare/treatment.declare';
 import {TreatmentHistoryComponent} from './nsfo-declares/treatment/history/treatment.history';
 import {TreatmentHistoryRowComponent} from './nsfo-declares/treatment/history/treatment.history.row';
+import {TreatmentsErrorsComponent} from './nsfo-declares/treatment/errors/treatments.errors';
+import {TreatmentsErrorRowComponent} from './nsfo-declares/treatment/errors/treatments.errors.row';
 import {TreatmentHistoryPipe} from './nsfo-declares/treatment/history/pipes/treatment.history.pipe';
 import {ReportAnimalTreatmentsPerYearComponent} from './report/animalTreatmentsPerYear/report.animal-treatments-per-year.component';
+import {ReportCombiFormTransportDocumentComponent} from './report/combiFormTransportDocument/report.combiFormTransportDocument';
 
 import { StorageServiceModule } from 'ngx-webstorage-service';
+import { RegistrationComponent } from './auth/registration/registration.component';
 
 // AoT requires an exported function for factories
 export function CreateTranslateLoader(http: HttpClient) {
@@ -177,6 +190,108 @@ export function CreateTranslateLoader(http: HttpClient) {
 @NgModule({
   declarations: [
     AppComponent,
+      AnimalHealthComponent,
+      AnimalHealthRequestComponent,
+      LiveSearchComponent,
+      RvoLeadingLivestockSyncComponent,
+      AdminComponent,
+      GhostLoginComponent,
+      LoginComponent,
+      DashboardComponent,
+      HomeComponent,
+      InvoiceDetailsComponent,
+      InvoiceOverviewComponent,
+      InvoiceFilterPipe,
+      InvoiceComponent,
+      LivestockOverviewComponent,
+      LivestockDetailComponent,
+      AnimalDetailsCardComponent,
+      DatepickerComponent,
+      DatepickerV2Component,
+      ExteriorComponent,
+      DownloadButtonComponent,
+      ExteriorComponent,
+      LivestockComponent,
+      LivestockMainOverviewComponent,
+      MessagesComponent,
+      PaginationComponent,
+      MateComponent,
+      SelectorComponent,
+      MateDeclareComponent,
+      MateHistoryPipe,
+      MateHistoryRowComponent,
+      MateHistoryComponent,
+      WeightComponent,
+      WeightHistoryRowComponent,
+      WeightHistoryComponent,
+      WeightDeclareComponent,
+      DownloadLandingPageComponent,
+      LoadingComponent,
+      DatepickerV2Component,
+      FileTypeDropdownComponent,
+      ReportFertilizerAccountingComponent,
+      ReportInbreedingCoefficientComponent,
+      ReportLineageProofComponent,
+      ReportLivestockComponent,
+      ReportOffspringComponent,
+      BooleanSwitchComponent,
+      ReportComponent,
+      ReportOffspringComponent,
+      ArrivalDeclareComponent,
+      ArrivalErrorRowComponent,
+      ArrivalErrorsComponent,
+      ArrivalHistoryRowComponent,
+      RevokeButtonComponent,
+      HistoryErrorInfoComponent,
+      ArrivalHistoryComponent,
+      ArrivalHistoryFilterPipe,
+      ArrivalComponent,
+      BirthDeclareRowComponent,
+      BirthDeclareComponent,
+      BirthErrorRowComponent,
+      BirthErrorsComponent,
+      BirthHistoryRowComponent,
+      BirthHistoryComponent,
+      BirthHistoryPipe,
+      BirthComponent,
+      DepartDeclareComponent,
+      DepartErrorsComponent,
+      DepartErrorRowComponent,
+      DepartHistoryComponent,
+      DepartHistoryRowComponent,
+      DepartHistoryFilterPipe,
+      DepartComponent,
+      EartagComponent,
+      LossDeclareComponent,
+      LossErrorRowComponent,
+      LossErrorsComponent,
+      LossHistoryRowComponent,
+      LossHistoryComponent,
+      LossHistoryFilterPipe,
+      LossComponent,
+      TagReplacementDeclareComponent,
+      TagReplacementErrorRowComponent,
+      TagReplacementErrorsComponent,
+      TagReplacementHistoryRowComponent,
+      TagReplacementHistoryComponent,
+      TagReplacementComponent,
+      ContactComponent,
+      ProfileComponent,
+      ProfileCompanyComponent,
+      ProfileEmailComponent,
+      ProfileLoginComponent,
+      DownloadModalComponent,
+      DeclareManagerModalComponent,
+      EartagDeclareComponent,
+      EartagErrorsComponent,
+      EartagHistoryComponent,
+      EartagHistoryRowComponent,
+      EartagHistoryFilterPipe,
+      CheckMarkComponent,
+      DatepickerComponent,
+      DatepickerV2Component,
+      EartagErrorRowComponent,
+      LineComponent,
     LiveSearchComponent,
     RvoLeadingLivestockSyncComponent,
     AdminComponent,
@@ -319,8 +434,12 @@ export function CreateTranslateLoader(http: HttpClient) {
     TreatmentDeclareComponent,
     TreatmentHistoryComponent,
     TreatmentHistoryRowComponent,
+    TreatmentsErrorsComponent,
+    TreatmentsErrorRowComponent,
     TreatmentHistoryPipe,
-    ReportAnimalTreatmentsPerYearComponent
+    ReportAnimalTreatmentsPerYearComponent,
+    ReportCombiFormTransportDocumentComponent,
+    RegistrationComponent
   ],
   imports: [
     BrowserAnimationsModule,
@@ -344,6 +463,8 @@ export function CreateTranslateLoader(http: HttpClient) {
     MatProgressSpinnerModule,
     MatButtonModule,
     MatSnackBarModule,
+    MatCheckboxModule,
+    MatSelectModule,
     StorageServiceModule,
   ],
   providers: [

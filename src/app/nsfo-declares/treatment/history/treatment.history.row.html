@@ -28,20 +28,14 @@
 
 <!--TREATMENT TEMPLATE-->
 <td>
-  <label class="show-for-small-only">{{ 'TREATMENT TEMPLATE' | translate }}</label>
-  <span *ngIf="!editMode">{{ treatment.description }}</span>
-  <div *ngIf="editMode && treatmentTemplatesToSelect.length > 0" [formGroup]="form">
-      <select name="selectedTreatmentTemplate" [(ngModel)]="selectedTreatmentTemplate" [ngModelOptions]="{standalone: true}">
-        <option *ngFor="let template of treatmentTemplatesToSelect" [ngValue]="template">{{template.description}}</option>
-      </select>
-    <div *ngIf="!form.controls['description'].valid" class="input-error-msg text-center">{{ 'FILL IN THE TREATMENT DESCRIPTION' | translate }}</div>
-  </div>
+  <label class="show-for-small-only">{{ 'TREATMENT' | translate }}</label>
+  <span>{{ treatment.description }}</span>
 </td>
 
 <!-- TREATMENT MEDICATIONS -->
 <td>
-  {{treatment.medications ? treatment.medications.length: '0'}}x
-  <span>
+  {{hasMedications(treatment) ? treatment.medications.length : 'NONE' | translate }}<span *ngIf="hasMedications(treatment)">x</span>
+  <span *ngIf="hasMedications(treatment)">
       <a (click)="openMedicineModal()" class="overview-controls">
           <i class="fa fa-info-circle" aria-hidden="true"></i>
       </a>
@@ -59,7 +53,7 @@
 </td>
 
 <!--TREATMENT DUTCH TYPE  -->
-<td>
+<td *ngIf="displayTreatmentLocationIndividualType">
   <label class="show-for-small-only">{{ 'DUTCH TYPE' | translate }}</label>
   <span>{{ treatment.dutchType }}</span>
 </td>
@@ -75,16 +69,16 @@
   <div class="row">
     <span [hidden]="editMode || treatment.status == 'REVOKED'">
       <div class="small-6 columns">
-        <button class="tiny primary button expanded" (click)="enableEditing()">{{ 'EDIT' | translate }}</button>
+        <button class="tiny primary button" [disabled]="!treatment.is_editable" (click)="enableEditing()">{{ 'EDIT' | translate }}</button>
       </div>
       <div class="small-6 columns">
-        <button class="tiny alert button expanded" (click)="sendRevokeRequest()">{{ 'REVOKE' | translate }}</button>
+        <button class="tiny alert button" [disabled]="!treatment.is_editable" (click)="sendRevokeRequest()">{{ 'REVOKE' | translate }}</button>
       </div>
     </span>
 
     <span *ngIf="editMode">
         <div class="small-6 columns">
-            <button class="tiny primary button expanded" (click)="sendChangeRequest()"
+            <button class="tiny primary button" (click)="sendChangeRequest()"
                     [disabled]="isSending || treatmentTemplatesToSelect.length == 0 || selectedTreatmentTemplate == null">
                 <span *ngIf="!isSending">
                     {{ 'SEND' | translate }}
@@ -95,7 +89,7 @@
             </button>
         </div>
         <div class="small-6 columns">
-            <button class="tiny alert button expanded" (click)="cancelEditing()" [disabled]="isSending">{{ 'CANCEL' | translate }}</button>
+            <button class="tiny alert button" (click)="cancelEditing()" [disabled]="isSending">{{ 'CANCEL' | translate }}</button>
         </div>
     </span>
 

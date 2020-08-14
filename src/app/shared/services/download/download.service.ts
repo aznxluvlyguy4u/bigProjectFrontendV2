@@ -3,32 +3,34 @@ import {Subject} from 'rxjs';
 import {DownloadRequest} from './download-request.model';
 import {NSFOService} from '../nsfo-api/nsfo.service';
 import {
+  API_URI_GET_ANIMAL_FEATURES_PER_YEAR_OF_BIRTH_REPORT,
+  API_URI_GET_ANIMAL_TREATMENTS_PER_YEAR_REPORT,
+  API_URI_GET_BIRTH_LIST_REPORT,
+  API_URI_GET_COMBI_FORM_TRANSPORT_DOCUMENT,
+  API_URI_GET_COMPANY_REGISTER_REPORT,
+  API_URI_GET_EWE_CARD_REPORT,
   API_URI_GET_FERTILIZER_ACCOUNTING_REPORT,
   API_URI_GET_INBREEDING_COEFFICIENT,
-  API_URI_GET_BIRTH_LIST_REPORT,
   API_URI_GET_LINEAGE_PROOF,
   API_URI_GET_LIVESTOCK_DOCUMENT,
   API_URI_GET_OFFSPRING_REPORT,
-  API_URI_INVOICES,
-  API_URI_GET_EWE_CARD_REPORT,
-  API_URI_GET_COMPANY_REGISTER_REPORT,
   API_URI_GET_WEIGHTS_PER_YEAR_OF_BIRTH_REPORT,
-  API_URI_GET_ANIMAL_FEATURES_PER_YEAR_OF_BIRTH_REPORT,
-  API_URI_GET_ANIMAL_TREATMENTS_PER_YEAR_REPORT
+  API_URI_INVOICES
 } from '../nsfo-api/nsfo.settings';
 import {
+  QUERY_PARAM_BREED_CODE,
   QUERY_PARAM_CONCAT_VALUE_AND_ACCURACY,
   QUERY_PARAM_FILE_TYPE,
-  QUERY_PARAM_REFERENCE_DATE,
-  QUERY_PARAM_BREED_CODE,
   QUERY_PARAM_PEDIGREE_REGISTER,
+  QUERY_PARAM_PROCESS_AS_WORKER_TASK,
+  QUERY_PARAM_REFERENCE_DATE,
   QUERY_PARAM_SAMPLE_DATE,
+  QUERY_PARAM_YEAR,
   QUERY_PARAM_YEAR_OF_BIRTH,
-  QUERY_PARAM_PROCESS_AS_WORKER_TASK, QUERY_PARAM_YEAR,
 } from '../../variables/query-param.constant';
 import {UtilsService} from '../utils/utils.services';
 import {QueryParamsService} from '../utils/query-params.service';
-import {CSV, PDF} from '../../variables/file-type.enum';
+import {PDF} from '../../variables/file-type.enum';
 import * as _ from 'lodash';
 import {Animal, LivestockAnimal} from '../../models/animal.model';
 import {Invoice} from '../../models/invoice.model';
@@ -37,6 +39,8 @@ import {QueryParamSetModel} from '../../models/query-param-set.model';
 import {ReportService} from '../report/report.service';
 import {UlnRequestModel} from '../../request/UlnRequestModel';
 import {ReportType} from '../report/report-request.model';
+import {FormGroup} from '@angular/forms';
+import * as moment from 'moment';
 
 export const INBREEDING_COEFFICIENT_REPORT = 'INBREEDING_COEFFICIENT_REPORT';
 export const LINEAGE_PROOF_REPORT = 'LINEAGE_PROOF_REPORT';
@@ -185,6 +189,21 @@ export class DownloadService {
 
     const queryParam = typeof fileType === 'string' ? '?' + QUERY_PARAM_FILE_TYPE + '=' + fileType.toLowerCase() : '';
     this.doDownloadPostRequestByReportWorker(API_URI_GET_LINEAGE_PROOF + queryParam, request);
+  }
+
+  doCombiFormTransportDocumentPostRequest(form: FormGroup, exportUbn = '') {
+    const request = {
+      transport_date: moment(form.get('transport_date').value.depart_date).format('DD-MM-YYYY'),
+      export_ubn: exportUbn
+    };
+
+    const queryParam = '?' + QUERY_PARAM_FILE_TYPE + '=pdf&' + QUERY_PARAM_PROCESS_AS_WORKER_TASK + '=true';
+
+    this.doDownloadPostRequestByReportWorker(
+      API_URI_GET_COMBI_FORM_TRANSPORT_DOCUMENT + queryParam,
+      request,
+      ReportType.COMBI_FORMS_VKI_AND_TRANSPORT_DOCUMENTS
+    );
   }
 
   doLivestockReportPostRequest(animals: LivestockAnimal[], fileType: string, concatBreedValueAndAccuracyColumns: boolean) {

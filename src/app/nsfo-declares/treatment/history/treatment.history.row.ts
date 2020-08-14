@@ -7,6 +7,7 @@ import {NSFOService} from '../../../shared/services/nsfo-api/nsfo.service';
 import {SettingsService} from '../../../shared/services/settings/settings.service';
 import {TreatmentTemplate} from '../../../shared/models/treatment-template.model';
 import {API_URI_GET_TREATMENT_TEMPLATES} from '../../../shared/services/nsfo-api/nsfo.settings';
+import {Treatment} from '../../../shared/models/treatment-model';
 
 @Component({
   selector: '[app-treatment-history-row]',
@@ -14,16 +15,18 @@ import {API_URI_GET_TREATMENT_TEMPLATES} from '../../../shared/services/nsfo-api
 })
 
 export class TreatmentHistoryRowComponent implements OnInit {
-  @Input() treatment: TreatmentTemplate;
+  @Input() treatment: Treatment;
   @Input() treatmentTemplatesToSelect = <TreatmentTemplate[]>[];
-  // @Output() revokeTreatment = new EventEmitter();
+  @Input() displayTreatmentLocationIndividualType: boolean;
+  @Input() qFeverDescriptions: Array<string>;
+
   @Output() showError = new EventEmitter();
   @Output() revokeTreatment = new EventEmitter();
   @Output() openMedicationModal = new EventEmitter();
   @Output() openAnimalModal = new EventEmitter();
 
   public editMode = false;
-  public temp_treatment: TreatmentTemplate;
+  public temp_treatment: Treatment;
   public isSending = false;
   public form: FormGroup;
   public selectedTreatmentTemplate: TreatmentTemplate;
@@ -33,8 +36,7 @@ export class TreatmentHistoryRowComponent implements OnInit {
               private settings: SettingsService) {
     this.form = new FormGroup({
       start_date: new FormControl(''),
-      end_date: new FormControl(''),
-      description: new FormControl('')
+      end_date: new FormControl('')
     });
   }
 
@@ -59,17 +61,15 @@ export class TreatmentHistoryRowComponent implements OnInit {
 
       const request = {
         start_date: this.form.get('start_date').value,
-        end_date: this.form.get('end_date').value,
-        description: this.selectedTreatmentTemplate.description
+        end_date: this.form.get('end_date').value
       };
 
       this.nsfo
-        .doPutRequest(API_URI_GET_TREATMENT_TEMPLATES + '/' + this.treatment.id, request)
+        .doPutRequest(API_URI_GET_TREATMENT_TEMPLATES + '/' + this.treatment.treatment_id, request)
         .subscribe(
-          res => {
+          () => {
             this.treatment.start_date = moment(request.start_date).format(this.settings.getViewDateFormat());
             this.treatment.end_date = moment(request.end_date).format(this.settings.getViewDateFormat());
-            this.treatment.description = request.description;
 
             this.editMode = false;
             this.isSending = false;
@@ -84,6 +84,10 @@ export class TreatmentHistoryRowComponent implements OnInit {
     }
   }
 
+  public hasMedications(treatment: Treatment): boolean {
+    return treatment && treatment.medications && treatment.medications.length > 0;
+  }
+
   public sendRevokeRequest() {
     this.revokeTreatment.emit(this.treatment);
   }
@@ -94,18 +98,6 @@ export class TreatmentHistoryRowComponent implements OnInit {
     }
     this.editMode = true;
     this.temp_treatment = _.cloneDeep(this.treatment);
-
-    // if (this.treatment.pmsg === 'YES') {
-    //   this.form.get('pmsg').setValue('YES');
-    // } else {
-    //   this.form.get('pmsg').setValue('NO');
-    // }
-    //
-    // if (this.mate.ki === 'YES') {
-    //   this.form.get('ki').setValue('YES');
-    // } else {
-    //   this.form.get('ki').setValue('NO');
-    // }
   }
 
   public cancelEditing() {

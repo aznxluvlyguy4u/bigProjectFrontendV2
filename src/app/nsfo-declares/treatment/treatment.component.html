@@ -17,6 +17,9 @@
       <li [class.active]="isActiveRoute('/main/treatment/history')" class="tabs-title">
         <a (click)="navigateTo('/main/treatment/history')">{{ 'HISTORY' | translate }}</a>
       </li>
+      <li [class.active]="isActiveRoute('/main/treatment/errors')" class="tabs-title">
+        <a (click)="navigateTo('/main/treatment/errors')">{{ 'ERRORS' | translate }}</a>
+      </li>
     </ul>
   </div>
 
@@ -26,6 +29,7 @@
       <select [(ngModel)]="selectedRoute" (change)="selectRoute($event)">
         <option value="/main/treatment/declare">{{ 'DECLARE TREATMENT' | translate }}</option>
         <option value="/main/treatment/history">{{ 'HISTORY' | translate }}</option>
+        <option value="/main/treatment/errors">{{ 'ERRORS' | translate }}</option>
       </select>
     </label>
   </div>

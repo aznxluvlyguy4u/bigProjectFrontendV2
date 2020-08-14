@@ -29,6 +29,7 @@ const fileTypeDropdownMinCount = 2;
 export const LIVESTOCK_TYPE_MATE = 'LIVE_STOCK_TYPE_MATE';
 export const LIVESTOCK_TYPE_WEIGHT = 'LIVE_STOCK_TYPE_WEIGHT';
 export const LIVESTOCK_TYPE_TREATMENT = 'LIVE_STOCK_TYPE_TREATMENT';
+export const LIVESTOCK_TYPE_EXPORT = 'LIVE_STOCK_TYPE_EXPORT';
 
 @Component({
     selector: 'app-livestock-overview',
@@ -51,6 +52,7 @@ export class LivestockOverviewComponent implements OnInit, OnDestroy {
     @Input() lastMateChanged: Subject<MateChangeResponse>;
     @Input() displaySubUlnText = false;
     @Input() extraDisabledCriteria = false;
+    @Input() exportDate = null;
     mateMode = false;
     weightMode = false;
     updateLastMateSubscription: Subscription;
@@ -87,6 +89,18 @@ export class LivestockOverviewComponent implements OnInit, OnDestroy {
     public report_options_toggled = false;
     public filterHistoric  = 'NO';
 
+    private _export_date;
+
+    get export_date(): any {
+      return this._export_date;
+    }
+
+    @Input()
+    set export_date(val) {
+      this._export_date = val;
+      this.getLiveStockExport();
+    }
+
   constructor(private apiService: NSFOService,
                 private router: Router,
                 private settings: Settings,
@@ -122,7 +136,11 @@ export class LivestockOverviewComponent implements OnInit, OnDestroy {
                 this.weightMode = true;
                 this.getLivestockLastWeight();
                 break;
-
+            case LIVESTOCK_TYPE_EXPORT:
+                setTimeout(() => {
+                  this.getLiveStockExport();
+                }, 3000);
+                break;
           default:
                 if (typeof livestockListInStorage !== 'undefined') {
                   this.livestock_list = livestockListInStorage;
@@ -236,6 +254,10 @@ export class LivestockOverviewComponent implements OnInit, OnDestroy {
       this.getLivestockListBase('?type=last_weight');
     }
 
+    private getLiveStockExport() {
+      this.getLivestockListBase('?type=export&export_date=' + moment(this.export_date).format('D-M-YYYY'));
+    }
+
     private getLivestockList() {
         this.getLivestockListBase('');
     }
@@ -250,8 +272,8 @@ export class LivestockOverviewComponent implements OnInit, OnDestroy {
                     this.livestock_list = <LivestockAnimal[]> res.result;
                     for (const animal of this.livestock_list) {
                         animal.date_of_birth_sort = animal.date_of_birth;
-                        animal.date_of_birth = moment(animal.date_of_birth).format(this.settings.VIEW_DATE_FORMAT);
-                        animal.inflow_date = moment(animal.inflow_date).format(this.settings.VIEW_DATE_FORMAT);
+                        animal.date_of_birth = this.getNullCheckedDate(animal.date_of_birth);
+                        animal.inflow_date = this.getNullCheckedDate(animal.inflow_date);
 
                         if (animal.last_mate) {
                             if (animal.last_mate.start_date) {
@@ -288,6 +310,14 @@ export class LivestockOverviewComponent implements OnInit, OnDestroy {
             );
     }
 
+    private getNullCheckedDate(dateString: string): string {
+      if (dateString == null) {
+        return '--';
+      } else {
+        return moment(dateString).format(this.settings.VIEW_DATE_FORMAT);
+      }
+    }
+
     private getHistoricAnimals() {
         this.apiService
             .doGetRequest(API_URI_GET_ANIMALS_HISTORIC_LIVESTOCK)
@@ -296,8 +326,8 @@ export class LivestockOverviewComponent implements OnInit, OnDestroy {
                     this.historic_livestock_list = <LivestockAnimal[]> res.result;
                     for (const animal of this.historic_livestock_list) {
                         animal.date_of_birth_sort = animal.date_of_birth;
-                        animal.date_of_birth = moment(animal.date_of_birth).format(this.settings.VIEW_DATE_FORMAT);
-                        animal.inflow_date = moment(animal.inflow_date).format(this.settings.VIEW_DATE_FORMAT);
+                        animal.date_of_birth = this.getNullCheckedDate(animal.date_of_birth);
+                        animal.inflow_date = this.getNullCheckedDate(animal.inflow_date);
 
                         if (animal.last_mate) {
                             if (animal.last_mate.start_date) {
@@ -471,7 +501,7 @@ export class LivestockOverviewComponent implements OnInit, OnDestroy {
                 return animal.date_of_birth;
 
             case 'WORK NUMBER':
-                return animal.work_number;
+                return animal.worker_number;
 
             case 'COLLAR NUMBER':
                 return animal.collar_color && animal.collar_number ?

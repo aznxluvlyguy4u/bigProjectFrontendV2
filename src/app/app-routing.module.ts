@@ -61,6 +61,8 @@ import {ReportLineageProofComponent} from './report/lineageProof/report.lineageP
 import {ReportInbreedingCoefficientComponent} from './report/inbreedingCoefficient/report.inbreedingCoefficient';
 import {ReportLivestockComponent} from './report/livestock/report.livestock';
 import {ReportOffspringComponent} from './report/offspring/report.offspring.component';
+import {AnimalHealthComponent} from './animal-health/animal-health.component';
+import {AnimalHealthRequestComponent} from './animal-health/request/animal-health.request';
 import {ReportBirthListComponent} from './report/birthlist/report.birth-list.component';
 import {ReportEweCardComponent} from './report/eweCard/report.ewe-card.component';
 import {ReportCompanyRegisterComponent} from './report/companyRegister/report.company-register.component';
@@ -70,13 +72,24 @@ import {ReportFertilizerAccountingComponent} from './report/fertilityAccounting/
 import {TreatmentComponent} from './nsfo-declares/treatment/treatment.component';
 import {TreatmentDeclareComponent} from './nsfo-declares/treatment/declare/treatment.declare';
 import {TreatmentHistoryComponent} from './nsfo-declares/treatment/history/treatment.history';
+import {TreatmentsErrorsComponent} from './nsfo-declares/treatment/errors/treatments.errors';
 import {ReportAnimalTreatmentsPerYearComponent} from './report/animalTreatmentsPerYear/report.animal-treatments-per-year.component';
+import {ReportCombiFormTransportDocumentComponent} from './report/combiFormTransportDocument/report.combiFormTransportDocument';
+import { RegistrationComponent } from './auth/registration/registration.component';
 
 // const appRoutes: Routes = [
 const appRoutes = [
   {
     path: 'main',  component: HomeComponent, index: true, canActivate: [NSFOAuthService],
     children: [
+      {
+        path: 'animal-health', component: AnimalHealthComponent, canActivate: [NSFOAuthService],
+        children: [
+          {
+            path: 'request', component: AnimalHealthRequestComponent, canActivate: [NSFOAuthService]
+          }
+        ]
+      },
       {path: '', component: DashboardComponent, index: true},
       {
         path: 'admin',  component: AdminComponent, canActivate: [NSFOAdminAuthService],
@@ -138,7 +151,8 @@ const appRoutes = [
         path: 'treatment', component: TreatmentComponent,
         children: [
           {path: 'declare', component: TreatmentDeclareComponent},
-          {path: 'history', component: TreatmentHistoryComponent}
+          {path: 'history', component: TreatmentHistoryComponent},
+          {path: 'errors', component: TreatmentsErrorsComponent},
         ]
       },
       {
@@ -177,6 +191,7 @@ const appRoutes = [
           {path: 'weights_per_year_of_birth', component: ReportWeightsPerYearOfBirthComponent},
           {path: 'animal_features_per_year_of_birth', component: ReportAnimalFeaturesPerYearOfBirthComponent},
           {path: 'animal_treatments_per_year', component: ReportAnimalTreatmentsPerYearComponent},
+          {path: 'combi_form_transport_document', component: ReportCombiFormTransportDocumentComponent},
         ]
       },
       {
@@ -202,6 +217,7 @@ const appRoutes = [
     ]
   },
   {path: 'login', component: LoginComponent},
+  {path: 'register', component: RegistrationComponent},
   {path: 'ghostlogin/:ghostToken/:accessToken', component: GhostLoginComponent},
   {path: 'loading/:encodedUrl', component: LoadingComponent},
   {path: 'downloaded/:encodedUrl', component: DownloadLandingPageComponent},

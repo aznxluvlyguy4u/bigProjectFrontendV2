@@ -83,6 +83,10 @@
                 <i class="fa fa-phone fa-fw" aria-hidden="true"></i>
                 {{ 'CONTACT NSFO' | translate }}
             </li>
+            <li *ngIf="showHealthModule()" (click)="navigateTo('/main/animal-health'); isActiveSideMenu = false" [class.active]="isActiveRoute('/main/animal-health')" class="link">
+                <i class="fa fa-flask fa-fw" aria-hidden="true"></i>
+                {{ 'ANIMAL HEALTH' | translate }}
+            </li>
             <li class="category">{{ 'DECLARE' | translate }}</li>
             <li (click)="navigateTo('/main/arrival'); isActiveSideMenu = false" [class.active]="isActiveRoute('/main/arrival/declare') || isActiveRoute('/main/arrival/history') || isActiveRoute('/main/arrival/errors')" class="item link">
                 {{ 'ARRIVAL' | translate }}
@@ -102,9 +106,9 @@
             <li (click)="navigateTo('/main/weight'); isActiveSideMenu = false" [class.active]="isActiveRoute('/main/weight/declare')" class="item link">
                 {{ 'WEIGHT' | translate }}
             </li>
-<!--            <li (click)="navigateTo('/main/treatment'); isActiveSideMenu = false" [class.active]="isActiveRoute('/main/treatment/declare')" class="item link">-->
-<!--              {{ 'TREATMENT' | translate }}-->
-<!--            </li>-->
+            <li *ngIf="isTreatmentsActive" (click)="navigateTo('/main/treatment'); isActiveSideMenu = false" [class.active]="isActiveRoute('/main/treatment/declare')" class="item link">
+              {{ 'TREATMENT' | translate }}
+            </li>
             <li class="category">{{ 'MANAGE' | translate }}</li>
             <li (click)="navigateTo('/main/eartag'); isActiveSideMenu = false" [class.active]="isActiveRoute('/main/eartag')" class="item link">
                 {{ 'EARTAGS' | translate }}

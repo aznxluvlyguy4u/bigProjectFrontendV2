@@ -15,11 +15,17 @@ export class ReportFertilizerAccountingComponent implements OnInit {
   referenceDateString: string;
   initialValuesChanged = new EventEmitter<boolean>();
 
+  private maxWarningDate = new Date('2021-07-01 00:00:00');
+
   constructor(private downloadService: DownloadService, public settings: SettingsService) {}
 
   ngOnInit() {
     this.selectedFileType = this.getFileTypesList()[0];
     this.referenceDateString = SettingsService.getDateString_YYYY_MM_DD_fromDate();
+  }
+
+  displayWarningText(): boolean {
+    return (new Date(this.referenceDateString)) < this.maxWarningDate;
   }
 
   updateReferenceDateString(referenceDateString: string) {

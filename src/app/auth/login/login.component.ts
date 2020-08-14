@@ -5,6 +5,7 @@ import {ACCESS_TOKEN_NAMESPACE, API_URI_RESET_PASSWORD} from '../../shared/servi
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {CacheService} from '../../shared/services/settings/cache.service';
 import {TranslateService} from '@ngx-translate/core';
+import {IS_REGISTRATIONS_ACTIVE} from '../../shared/variables/feature.activation';
 
 @Component({
   templateUrl: './login.component.html'
@@ -14,6 +15,8 @@ export class LoginComponent {
   public login_in_progress = false;
   public form_valid = true;
   public form: FormGroup;
+
+  public isRegistrationActive = IS_REGISTRATIONS_ACTIVE;
 
   public form_forgot_pw_valid = true;
   public form_forgot_pw: FormGroup;

@@ -39,18 +39,8 @@ export class ArrivalHistoryComponent implements OnInit {
 
     this.page = page;
 
-    let queryParam = '';
-
-    let doRequest = true;
-
-    if (this.searchValue.length >= 2) {
-      queryParam = `&query=${this.searchValue}`;
-      doRequest = true;
-    }
-
-    if (doRequest) {
       this.apiService
-        .doGetRequest(`${API_URI_GET_ARRIVALS_HISTORY}?page=${page}${queryParam}`)
+        .doGetRequest(`${API_URI_GET_ARRIVALS_HISTORY}?page=${page}&query=${this.searchValue}`)
         .subscribe((res: JsonResponseModel) => {
           const arrivals = <ArrivalChangeResponse[]> res.result.arrivals.items;
           this.totalArrivalItems = res.result.arrivals.totalItems;
@@ -75,9 +65,7 @@ export class ArrivalHistoryComponent implements OnInit {
 
           this.arrivalHistoryList = _.orderBy(this.arrivalHistoryList, ['log_date'], ['desc']);
           this.isLoading = false;
-          doRequest = false;
         });
-    }
   }
 
   public selectArrival(event) {

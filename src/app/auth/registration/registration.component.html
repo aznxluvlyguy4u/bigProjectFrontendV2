@@ -1,0 +1,117 @@
+<div id="login">
+  <div class="login-container">
+
+    <!--LOGO SECTION-->
+    <section class="logo column row">
+      <div style="cursor: pointer" (click)="navigateToLogin()">NSFO <span>Online</span></div>
+    </section>
+
+    <!--LOGIN SECTION-->
+    <section class="login column row">
+      <h2 class="text-center register-header">{{ 'REGISTER' | translate }}</h2>
+      <form [formGroup]="form" class="ng-animate" (ngSubmit)="doRegistration()">
+
+        <div class="input column row">
+          <input type="text" placeholder="{{ 'FIRST NAME' | translate }}" formControlName="firstName"
+                 [ngClass]="{'input-error': form.controls.firstName.invalid && hasSubmitted}"/>
+          <i class="fa fa-user fa-fw"></i>
+        </div>
+
+        <div class="input column row">
+          <input type="text" placeholder="{{ 'LAST NAME' | translate }}" formControlName="lastName"
+                 [ngClass]="{'input-error': form.controls.lastName.invalid && hasSubmitted}"/>
+          <i class="fa fa-user fa-fw"></i>
+        </div>
+
+        <div class="input column row">
+          <input type="email" placeholder="{{ 'EMAIL ADDRESS' | translate }}" formControlName="emailAddress"
+                 [ngClass]="{'input-error': form.controls.emailAddress.invalid && hasSubmitted}"/>
+          <i class="fa fa-at fa-fw"></i>
+        </div>
+
+        <div class="input column row">
+          <input type="text" placeholder="{{ 'ADDRESS' | translate }}" formControlName="address"
+                 [ngClass]="{'input-error': form.controls.address.invalid && hasSubmitted}"/>
+          <i class="fa fa-envelope fa-fw"></i>
+        </div>
+
+        <div class="input column row">
+          <input
+            type="number"
+            min="1"
+            step="1"
+            placeholder="{{ 'ADDRESS NUMBER' | translate }}" formControlName="addressNumber"
+            [ngClass]="{'input-error': form.controls.addressNumber.invalid && hasSubmitted}"/>
+          <i class="fa fa-envelope fa-fw"></i>
+        </div>
+
+        <div class="input column row">
+          <input type="text" placeholder="{{ 'ADDRESS NUMBER SUFFIX' | translate }}" formControlName="addressNumberSuffix"
+                 [ngClass]="{'input-error': form.controls.addressNumberSuffix.invalid && hasSubmitted}"/>
+          <i class="fa fa-envelope fa-fw"></i>
+        </div>
+
+        <div class="input column row">
+          <input type="text" placeholder="{{ 'POSTAL CODE' | translate }}" formControlName="postalCode"
+                 [ngClass]="{'input-error': form.controls.postalCode.invalid && hasSubmitted}"/>
+          <i class="fa fa-envelope fa-fw"></i>
+        </div>
+
+        <div class="input column row">
+          <input type="text" placeholder="{{ 'CITY' | translate }}" formControlName="city"
+                 [ngClass]="{'input-error': form.controls.city.invalid && hasSubmitted}"/>
+          <i class="fa fa-envelope fa-fw"></i>
+        </div>
+
+        <div class="input column row">
+          <input type="text" placeholder="{{ 'COMPANY' | translate }}" formControlName="companyName"
+                 [ngClass]="{'input-error': form.controls.companyName.invalid && hasSubmitted}"/>
+          <i class="fa fa-building fa-fw"></i>
+        </div>
+
+        <div class="input column row">
+          <input type="text" placeholder="{{ 'UBN' | translate }}" formControlName="ubn"
+                 [ngClass]="{'input-error': form.controls.ubn.invalid && hasSubmitted}"/>
+          <i class="fa fa-building fa-fw"></i>
+        </div>
+
+        <div class="input column row">
+          <input type="text" placeholder="{{ 'BRS' | translate }}" formControlName="brs"
+                 [ngClass]="{'input-error': form.controls.brs.invalid && hasSubmitted}"/>
+          <i class="fa fa-building fa-fw"></i>
+        </div>
+
+        <div class="input column row">
+          <input type="text" placeholder="{{ 'PHONE NUMBER' | translate }}" formControlName="phoneNumber"
+                 [ngClass]="{'input-error': form.controls.phoneNumber.invalid && hasSubmitted}"/>
+          <i class="fa fa-phone fa-fw"></i>
+        </div>
+        <div class="input column row">
+          <input type="checkbox" formControlName="hasAutoDebit"
+                 [ngClass]="{'input-error': form.controls.hasAutoDebit.invalid && hasSubmitted}"/>
+          <label>{{ 'USE AUTO DEBIT' | translate }} </label>
+        </div>
+
+        <div class="input column row">
+          <input id="isPrivacyAccepted" type="checkbox" [checked]="isPrivacyAccepted" (change)="isPrivacyAccepted = !isPrivacyAccepted">
+          <label for="isPrivacyAccepted">{{ 'IS PRIVACY ACCEPTED' | translate }}</label>
+        </div>
+
+        <!--SUBMIT BUTTON-->
+        <button
+          type="submit"
+          [disabled]="registration_in_progress || !isPrivacyAccepted"
+          class="button expanded"
+        >
+          <span *ngIf="!registration_in_progress"> {{ 'REGISTER' | translate }} </span>
+          <span *ngIf="registration_in_progress"> <i class="fa fa-gear fa-spin fa-fw"></i> </span>
+        </button>
+
+      </form>
+    </section>
+
+    <section class="sheep-image hide-for-small-only">
+      <img src="/assets/images/sheep-art.png"/>
+    </section>
+  </div>
+</div>
