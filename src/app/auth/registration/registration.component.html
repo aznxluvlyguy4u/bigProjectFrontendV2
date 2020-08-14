@@ -81,9 +81,9 @@
           <i class="fa fa-phone fa-fw"></i>
         </div>
         <div class="input column row">
-          <input type="checkbox" formControlName="hasAutoIncasso"
-                 [ngClass]="{'input-error': form.controls.hasAutoIncasso.invalid && hasSubmitted}"/>
-          <label>Auto incasso</label>
+          <input type="checkbox" formControlName="hasAutoDebit"
+                 [ngClass]="{'input-error': form.controls.hasAutoDebit.invalid && hasSubmitted}"/>
+          <label>{{ 'USE AUTO DEBIT' | translate }} </label>
         </div>
 
         <!--SUBMIT BUTTON-->
