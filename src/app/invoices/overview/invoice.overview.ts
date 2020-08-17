@@ -36,7 +36,6 @@ export class InvoiceOverviewComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.areRecurrentApiCallsActivated = true;
     this.isLoaded = false;
-    // this.getInvoicesList();
     this.getTwinfieldInvoicesList();
   }
 
@@ -46,26 +45,6 @@ export class InvoiceOverviewComponent implements OnInit, OnDestroy {
 
   public downloadPdf(invoice: Invoice) {
     this.downloadService.doInvoicePdfGetRequest(invoice);
-  }
-
-  private getInvoicesList() {
-    this.apiService.doGetRequest(API_URI_INVOICES)
-      .subscribe(
-          (res: JsonResponseModel) => {
-          this.invoices = <Invoice[]> res.result;
-          this.isLoaded = true;
-        },
-        error => {
-          this.loopGetInvoicesList = false;
-          // DO NOT LOGOUT HERE TO PREVENT THE RISK OF BEING LOGGED OUT, WHILE TRYING TO LOGIN AGAIN
-        }
-      );
-
-    setTimeout(() => {
-      if (this.areRecurrentApiCallsActivated && this.loopGetInvoicesList) {
-        this.getInvoicesList();
-      }
-    }, POLLING_INTERVAL_INVOICES_SECONDS * 1000);
   }
 
   private getTwinfieldInvoicesList() {
