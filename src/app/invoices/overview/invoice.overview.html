@@ -74,14 +74,14 @@
                 </span>
       </td>
       <td>
-                <span *ngIf="invoice.status == 'UNPAID'" class="alert label">
-                    {{ 'UNPAID' | translate }} ({{ calculateDays(invoice.invoice_date)}} {{ 'DAYS' | translate }})
+                <span *ngIf="invoice.cells[6].value == 'available'" class="alert label">
+                    {{ 'UNPAID' | translate }}
                 </span>
-        <span *ngIf="invoice.status == 'CANCELLED'" class="alert label">
-                    {{ 'PAYMENT CANCELLED' | translate }} ({{ calculateDays(invoice.invoice_date)}} {{ 'DAYS' | translate }})
+                <span *ngIf="invoice.cells[6].value == 'proposed'" class="alert label">
+                    {{ 'PAYMENT CANCELLED' | translate }}
                 </span>
-        <span *ngIf="invoice.status == 'PAID'" class="success label">
-                    {{ 'PAID' | translate }}: {{ subStringPaidDate(invoice.paid_date) }}
+                <span *ngIf="invoice.cells[6].value == 'matched'" class="success label">
+                    {{ 'PAID' | translate }}
                 </span>
       </td>
       <td>
@@ -90,12 +90,12 @@
                             (click)="startInvoicePaymentProcedure(invoice.id, invoice.company_name)">
                         {{'PAY INVOICE' | translate}}
                     </button>
-                    <button type="button" class="small primary button spanned-button" (click)="navigateToInvoiceView(invoice.id)">
-                        {{ 'VIEW' | translate }}
-                    </button>
-                    <button (click)="downloadPdf(invoice)" type="button" class="small primary button spanned-button">
-                        {{ "DOWNLOAD PDF"| translate }}
-                    </button>
+<!--                    <button type="button" class="small primary button spanned-button" (click)="navigateToInvoiceView(invoice.id)">-->
+<!--                        {{ 'VIEW' | translate }}-->
+<!--                    </button>-->
+<!--                    <button (click)="downloadPdf(invoice)" type="button" class="small primary button spanned-button">-->
+<!--                        {{ "DOWNLOAD PDF"| translate }}-->
+<!--                    </button>-->
                 </span>
       </td>
     </tr>
